@@ -1,0 +1,50 @@
+# this script is run by /etc/bash.bashrc.local
+
+############################################################################################
+# Configuration of basic library location
+export AGILE_LOCAL=/usr/local_gtb
+
+########### HEADAS Setting ##############
+export HEADAS=$AGILE_LOCAL/headas/install_dir
+. $HEADAS/headas-init.sh
+
+########### ROOT Setting ################
+export ROOTSYS=$AGILE_LOCAL/root
+
+
+########### external libraries ##########
+export AGILE_CFITSIO_INCLUDE=$HEADAS/include
+export AGILE_CFITSIO_LIB=$HEADAS/lib
+export AGILE_CFITSIO_LIBNAME=lcfitsio
+export AGILE_CCFITSIO_INCLUDE=$HEADAS/include
+export AGILE_CCFITSIO_LIB=$HEADAS/lib
+export AGILE_CCFITSIO_LIBNAME=lCCfits
+
+########### ASTROROOT Settings
+export WORK_ENV=$ROOTSYS
+
+
+########### working directories #########
+export AGILE_PROJECTS=$HOME/Projects_GRID
+
+########### library for development system #########
+export AGILE_LIBPIL_INCLUDE=$AGILE_PROJECTS/agile_pil_lib/include
+export AGILE_LIBPIL_LIB=$AGILE_PROJECTS/agile_pil_lib/lib
+export AGILE_LIBWCS_INCLUDE=$AGILE_PROJECTS/agile_wcs_lib/include
+export AGILE_LIBWCS_LIB=$AGILE_PROJECTS/agile_wcs_lib/lib
+export GTB_COMMON_INCLUDE
+export GTB_LIBQL2_INCLUDE
+export GTB_LIBQL2_LIB
+export GTB_AGILELIB_INCLUDE
+export GTB_AGILELIB_LIB
+
+########## General settings
+export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH:$HEADAS/lib
+export PATH=$ROOTSYS/bin:$PATH
+
+############ADC##############
+export ADC=$HOME/ADC
+export PFILES=$ADC/PFILES:$WORK_ENV/pfiles
+
+echo "$AGILE_LOCAL/etc/profile_agile: AGILE environment setup completed"
+

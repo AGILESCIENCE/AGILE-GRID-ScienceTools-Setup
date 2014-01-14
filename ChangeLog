@@ -1,0 +1,391 @@
+22 November 2010
+TAG CVS: BUILD20
++ aggiunto AG_multi4 e AG_multiiterative4
++ conversione AG_spotfinder e AG_checkMapValue a 64 bit -> ora sono AG_spotfinder3
++ Verificata compatibilità OSX
++ aggiunti parametri fovradmin a AG_ctsmapgen e AG_expmapgen
++ aggiunto AG_gasmapgen2
+
+
+31 July 2009
+TAG CVS: BUILD19
++ rimossi da scientific_analysis i seguenti tools: AG_multi, AG_srclist, AG_srcloc, AG_srctest, AG_srctest_fixed, AG_TSMap
++ modificato AG_multi2 con aggiunta del fit con ellisse e del risultato del semiasse maggiore, minore e raggio del fit con un cerchio nei file di output
++ nuovi output di AG_multi2: .ellipse.con e .reg con le ellissi. Utilizzare solo i .con per l'analisi scientifica
++ riscritta AG_srctest_fixed che utilizza lo stesso motore di calcolo di AG_multi2
++ verifica generale AG_expmapgen e correzione bug sugli estremi di energia. Aggiunta anche verifica dei range energetici immessi dall'utente: se non corrisponde ai range energetici standard viene spostata al range piu' vicino
++ AG multi iterativa, nuova versione
++ verificata la compatibilita' a 64 bit
++ verificata la compatibilita' con root: il software risulta compatibile da root 5.14 a root 5.20
+
+20 May 2009
+RETAG CVS: BUILD18
+AG_multi2:
++ included <vector>
++ TVirtualFitter::GetFitter() called after any call to Fit()
++ single PIL parameter checking
++ issuing a message if an input file does not exist
++ removed a, b parameters from output files
+
+23 April 2009
+TAG CVS: BUILD18
++ new AG_multi2 from AG_multi (optimization and bug correction):
+
+1 Funzione CalcWeighted
+1.1 Correzione degli indici del loop nel calcolo della dispersione energetica
+1.2 Correzione dell'ultimo valore di specwt
+
+2 Funzione AlikePsfMap::Align() (riscrittura di codice precedentemente nel costruttore)
+Correnzione del metodo di individuazione dell'angolo rho, che in alcuni casi non veniva individuato correttamente. Il metodo e' ora anche piu' efficiente, e utilizza l'assunzione che la spaziatura dei rho sia costatente (stessa assunzione adottata anche in precedenza in CalcWeighted)
+WARNING: Si noti che tale assunzione NON e' autorizzata dal formato del file di ingresso da cui i valori di rho sono prelevati.
+
+3 Riscrittura della funzione alikeSphdist (ora denominata AlikeSphdistDeg)
+La funzione ora opera solo in gradi (da cui il nome) ed e' molto piu' efficiente
+
+4 Ristrutturazione di tutta l'architettra delle classi usate da AG_Multi
+Sono stati eliminati gli Smart Pointer e tutta la parte di struttura e' stata riscritta in modo piu' efficiente. Le classi AlikeSourceMap e AlikeSrcTMap sono state accorpate (riutilizzando il nome AlikeSourceMap).
+A seguito di questa ristrutturazione l'applicativo AG_Multi si genera a partire da 7 file sorgente, 4 .cpp e 3 .h.
+Controllo generale dell'efficienza utilizzando il profiler gprof.
+
+5 Velocizzazione della funzione FitFunction
+Si tratta della funzione che viene ripetutamente chiamata dalle librerie di Root per l'esecuzione del fit.
+La modifica riguarda due aspetti
+5.1 Eliminazione della necessita' di effettuare una copia dell'oggetto che rappresenta la sorgente quando essa va spostata.
+5.2 Memorizzazione dei valori da restituire in variabili cache quando le sorgeti non vengono spostate, e loro ricostruzione per differenza in tali casi. Questo metodo porta un errore di approssimazione che per ora e' stato stimato come inferiore a un milionesimo.
+
+6 Eliminazione dell'offset di un bin
+L'errore consisteva in una errata interpretazione dei parametri con cui venivano utilizzate le funzioni delle classi TF1 e TH1 di Root, quelle usate per il fitting.
+A seguito dello studio della  documentazione di Root ho concluso che:
+6.1 I parametri di creazione xmin e xmax dell'oggetto TF1 (la funzione di fitting) non sono usati nel contesto che a noi interessa.
+6.2 I parametri xmin e xmax della funzione SetBins() di TH1 (l'istogramma) sono invece quelli di nostro interesse, e devono rispecchiare gli indici utilizzati dalle nostre strutture dati interne.
+6.3 Il paramentro bin di TH1::SetBinContent(Int_t bin, Double_t content) deve sempre iniziare da 1, e non da zero come le nostre strutture interne. I parametri di cui al punto 6.2 si occupano di rimappare il bin sui valori giusti.
+
+7 Controllo della funzione di attivazione del fitting RoiMulti::DoFit() (work in progress)
+Quest'attivita' consiste nel controllo che gli user requirement siano rispechiati dal codice, in modo analogo a quanto fatto per il punto 1. 
+La strategia di DoFit() e' stata controllata e approvata. A seguito di una rilettaura delle specifiche di Root su come fissare e lasciar variare i paramentri e' stata modificata la delimitazione di alcuni di essi (i conteggi) che occasionalmente potevano assumenre valori negativi. 
+
+8. La classe che contiene i paramentri di creazione di AlikeSourceMap e la classe che rappresenta la lista di questi (per intenderci, la lista delle sorgenti lette da file) sono ora pubblicate in RoiMulti.h e la lista e' uno dei parametri di creazione dell'oggetto RoiMulti. 
+
++ new matrix I0007 (SAR, EDP, PSF)
+
++ new sky maps with I0007 version: lo sky map dipende ora dal filtro (WARNING) 
+
+
+
+18 March 2009
+BUILD18D
++ new AG_multi2
++ added EDP matrix to exp map generator
++ new matrix I0007 (SAR, EDP, PSF)
++ new sky maps with I0007 version
+
+23 January 2009
+TAG CVS: BUILD17_SCI
+
+The following files are changed:
+src/Roi_multi_funcs.cpp
+AG_expmapgen.cpp
+AG_multi.cpp
+AG_quicksim_point.cpp
+AG_writepsf.cpp
+AlikeMap.cpp
+alikeLib.cpp
+
+include/Alike.h
+Roi_multi.h
+alikeLib.h
+
+conf/AG_expmapgen.par
+AG_multi.par
+AG_quicksim_point.par
+AG_writepsf.par
+
+
+AG_expmapgen has an additional parameter used to specify the version of the
+date used as input. If this parameter is set to 0 the input data is of BUILD17
+of standard analysis, if is set to 1 the input date is < BUILD17
+
+
+
+26 Novembre 2008
+TAG CVS: BUILD16_SCI
++ AG_gasmapgen: fixed il problema dello shift in output.
+Cambiato: Roi_multi_funcs.cpp
+1) Quando una sorgente con fixflag>0 e' sotto minTS, il flusso e' messo a zero per l'analisi delle altre sorgenti.  Comunque sono calcolati e scritti il flusso, UL, etc. per lei.
+
++ Aggiunte le matrici di calibrazione versione I0006 per FT3ab, FM3.119, F4
+AG_GRID_G0017_SFT3abS_I0006.sar.gz
+AG_GRID_G0017_SFT3abS_I0006.edp.gz
+AG_GRID_G0017_SFT3abL_I0006.sar.gz
+AG_GRID_G0017_SFT3abL_I0006.edp.gz
+AG_GRID_G0017_SFT3abG_I0006.sar.gz
+AG_GRID_G0017_SFT3abG_I0006.edp.gz
+AG_GRID_G0017_SFMS_I0006.sar.gz
+AG_GRID_G0017_SFMS_I0006.edp.gz
+AG_GRID_G0017_SFML_I0006.sar.gz
+AG_GRID_G0017_SFML_I0006.edp.gz
+AG_GRID_G0017_SFMG_I0006.sar.gz
+AG_GRID_G0017_SFMG_I0006.edp.gz
+AG_GRID_G0017_SF4S_I0006.sar.gz
+AG_GRID_G0017_SF4S_I0006.edp.gz
+AG_GRID_G0017_SF4L_I0006.sar.gz
+AG_GRID_G0017_SF4L_I0006.edp.gz
+AG_GRID_G0017_SF4G_I0006.sar.gz
+AG_GRID_G0017_SF4G_I0006.edp.gz
+AG_GRID_G0017_S0001_I0006_template.sar.gz
+AG_GRID_G0017_S0001_I0006_template.edp.gz
+AG_GRID_G0017_SFT3abS_I0006.psd.gz
+AG_GRID_G0017_SFT3abL_I0006.psd.gz
+AG_GRID_G0017_SFT3abG_I0006.psd.gz
+AG_GRID_G0017_SFMS_I0006.psd.gz
+AG_GRID_G0017_SFML_I0006.psd.gz
+AG_GRID_G0017_SFMG_I0006.psd.gz
+AG_GRID_G0017_SF4S_I0006.psd.gz
+AG_GRID_G0017_SF4L_I0006.psd.gz
+AG_GRID_G0017_SF4G_I0006.psd.gz
+AG_GRID_G0017_S0001_I0006_template.psd.gz
+
+16 Settembre 2008
+TAG CVS: BUILD15_2_SCI
++ modifiche al AG_multi per eliminare il problema delle sorgenti distanti: si fissa il flusso di tutte le sorgenti che sono a 0.75 il raggio di analisi, scrive il nome dei parametri in output. Quando analizza una sorgente, fissa i flussi delle sorgente piu' distanti di 0.75 * il raggio di analisi
++ AG_gasmapgen: fixed il problema dello shift in output. Da terminare il test
++ Roi_multi_funcs.cpp: Aggiunto i nomi dei parametri nell'output sullo schermo
+
+4 August 2008
+TAG CVS: BUILD15_1_SCI
+
++ added AG_spotfinder
++ added sar matrix for FM3.119 filter
+
+7 July 2008
+===============================================================
++ added AG_multi
+
+
+02 Giugno 2008
+===============================================================
+TAG CVS: BUILD15_SCI
+
++ separazione di BUILD_GRID_STD da BUILD_GRID_SCI. 
+
++ tutti i tools hanno tag BUILD15_SCI
+
+30 Aprile 2008
+===============================================================
+TAG CVS: BUILD15
+
+AG_CTSMAPGEN
++ projection ARC o AIT
+
+AG_EXPMAPGEN
++ projection ARC o AIT
++ new algorithm for approximation of the exposure. Use parameter step
++ bug correction about y_tol and earth_tol
++ bug correction about approximation borders
+
+AG_GASMAPGEN
++ bug correction about the calculation of the pixel area
+
+AG_SRCLOC
++ added parameters ranal, iso e gas coefficient
+
+AG_SRCLIST
++ added parameters ranal, iso e gas coefficient
+
+SKY MAP MATRIX
++ added the follwings sky maps with the updated and convolved galactic model (with bin 0.5 and 0.1):
+U scientific_analysis/Data/10000_50000.0.1.conv.sky
+U scientific_analysis/Data/1000_10000.0.1.conv.sky
+U scientific_analysis/Data/1000_3000.0.1.conv.sky
+U scientific_analysis/Data/1000_3000.conv.sky
+U scientific_analysis/Data/1000_50000.0.1.conv.sky
+U scientific_analysis/Data/100_1000.0.1.conv.sky
+U scientific_analysis/Data/100_10000.0.1.conv.sky
+U scientific_analysis/Data/100_10000.conv.sky
+U scientific_analysis/Data/100_200.0.1.conv.sky
+U scientific_analysis/Data/100_200.conv.sky
+U scientific_analysis/Data/100_400.0.1.conv.sky
+U scientific_analysis/Data/100_50000.0.1.conv.sky
+U scientific_analysis/Data/200_400.0.1.conv.sky
+U scientific_analysis/Data/200_400.conv.sky
+U scientific_analysis/Data/3000_10000.0.1.conv.sky
+U scientific_analysis/Data/3000_10000.conv.sky
+U scientific_analysis/Data/30_50.conv.sky
+U scientific_analysis/Data/400_1000.0.1.conv.sky
+U scientific_analysis/Data/400_1000.conv.sky
+U scientific_analysis/Data/50_100.conv.sky
+
+
+SCRIPTS
++ added mergeSkyMaps.sh for the generation of new sky maps
++ modified all the scripts of the scripts directory. See related README
+
+29 February 2008
+===============================================================
+TAG CVS: BUILD14
++ change log generator with dead time (19 February)
++ added ruby scripts (see related REDME in scripts directory) (19 february)
++ changed log generator with a bug correction related to dead time (229 February)
+
+18 January 2008
+================================================================
+TAG CVS: BUILD13
+
+AG_SRCTEST
++ ranal - raggio di analisi della ALIKE.
+
+AG_SRCTEST_FIXED 
+AG_srctest_fixed adesso scrive l'upper limit quando non c'e' detection
+significativa.  Funziona cosi':
+1) Fa l'analisi likelihood.
+2) Se TS < 9.0 (cioe' sqrt(TS) < 3.0), rifa' il fit con ErrorDef(4.0) 
+(cioe' 2 sigma).
+3) Mette gli errori in cnts_plus, cnts_minus e cnts_parab.
+4) Se il valore migliore di counts e' negativo (< 0.0), aggiunge il valore
+assoluto di quello a cnts_plus *
+5) Scrive a standard output il valore cnts_plus .
+6) In output si scrivono cnts_minus, cnts_plus e anche gli errori nei
+flussi, cnts_minus/srcexp e cnts_plus/srcexp.
+7) In practica vuol dire che se il sqrt(TS)<3.0, i valori di +Err in counts e flusso saranno gli
+upper limit a 2 sigma.
+* Per una discussione della ragione per questo passo vedete Mattox et al 1996
+
+Parametri di input per AG_srctest_fixed significativi:
++ gascoeff - diffuse emission coefficient
++ isocoeff - isotropic coefficient
+servono per specificare valori fissi di ISO e GAL.
+Se si mette -999 e quel parametro non sara' fissato a -999 ma invece puo' variare con valori non-negativi.  
+I due parametri sono indipendenti:  si puo' tenere libro solo uno e non l'altro, o viceversa,
+o tutti due, o nessuno dei due.
++ ranal - raggio di analisi della ALIKE.
+
+
+AG_CTSMAPGEN, AG_EXPMAPGEN, AG_GASMAPGEN
++ flipped counts, exposure, and gas maps
+
+GRIDEVGEN
++ added 3 void columns: X, Y e TIMEBAR
+
+FILTERS
+Aggiunte le seguenti matrici di calibrazione per i vari filtri (per analisi con Gamma):
+
+Filtro F2G:
+Area efficace
+AG_GRID_G0017_S0000F2G_I0003.sar.gz
+Matrice di risposta
+AG_GRID_G0017_S0001_I0002.edp.gz
+Point Spread Function
+AG_GRID_G0017_S0001_I0001_NEW3.psd
+
+Filtro F4G:
+Area efficace
+AG_GRID_G0017_S0000F4G_I0003.sar.gz
+Matrice di risposta
+AG_GRID_G0017_S0001_I0002.edp.gz
+Point Spread Function
+AG_GRID_G0017_S0001_I0001_NEW3.psd
+
+Filtro FT3G:
+Area efficace
+AG_GRID_G0017_S000FT3G_I0003.sar.gz
+Matrice di risposta
+AG_GRID_G0017_S0001_I0002.edp.gz
+Point Spread Function
+AG_GRID_G0017_S0001_I0001_NEW3.psd
+
+Filtro FT3GabG:
+Area efficace
+AG_GRID_G0017_S0FT3abG_I0003.sar.gz
+Matrice di risposta
+AG_GRID_G0017_S0001_I0002.edp.gz
+Point Spread Function
+AG_GRID_G0017_S0001_I0001_NEW3.psd
+
+Per ogni filtro sono presenti anche i rispettivi files sar per G, L e S.
+
+18 October 2007
+================================================================
+TAG CVS: BUILD12
+SCIENTIFIC ANALYSIS
+
++ AG_ctsmapgen.cpp : fix casi quando il conteggio e' 
+vicinissimo al centro della mappa.
++ 100_10000.conv.sky : modificato header keywords
++ AG_srclist_funcs.cpp: set TS=0.1 for cts<0
+
+LOG GENERATOR
++ LogGenerator.cpp: fixed case where t1 < tf1, fixed PHASE, MODE, and LOG_STATUS(syncbit) 
++ eliminazione del template.log ridondante
+
+14 September 2007
+================================================================
+TAG CVS: BUILD11
+
+STANDARD ANALYSIS
+
+FILTRO
+	* New filter modules: tree_f4.pro
+			      mod_single_f4.pro
+			      macete2007.pro
+
+	* Two different FILTER versions:
+	      - filter_f4.sh (filter_f4.pro + NewTree_ID4.card)
+
+	* Default FILTER is *NOW* filter_f4.sh
+
+GRIDEVGEN
+
+	
+LOGGEN
+	* Solved a Celestial coordinate computation bug in 
+	  the Earth direction columns.
+	* aggiornamento template.log
+
+SCIENTIFIC ANALYSIS
+*) GridEvGen: no change
+
+*) AG_ctsmapgen: no change
+
+*) AG_expmapgen: no change
+
+*) AG_gasmapgen
+fixed error when Galactic pole in FOV
+
+*) AG_quicksim: no change
+
+*) AG_quicksim_point: no change
+
+*) AG_srclist
+fixed several bugs
+added TS threshhold
+Clean exit for 0 sources
+
+*) AG_srcloc: new project
+
+*) AG_srctest
+Ranal set to 15.0
+
+
+19 February 2007
+================================================================
+TAG CVS: BUILD9
+
+
+08 June 2006
+================================================================
+TAG CVS: BUILD8
++ added health_monitoring
++ added quick_look
+
+20 March 2006
+================================================================
+TAG CVS: BUILD7
+
+27 January 2006
+================================================================
+TAG CVS: BUILD6
+
+17 May 2005
+================================================================
+TAG CVS: BUILD3
++ added the scientific analysis

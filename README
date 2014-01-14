@@ -1,0 +1,157 @@
+BUILD TE SYSTEM - README
+===========================================
+This file describe the key concept for building a TE system starting from a CVS 
+server.
+
+
+Key concept
+===========================================
+A system is identified by the following concept:
+1. instrument: the instrument under test
+2. model: the model of the instrument under test. For example: SEM, PFM
+3. test_level: the level of the test under the instrument. For example, the FEE, 
+
+the DFE, the Analog front end of the instrument.
+4. TE_name: a particular configuration of the TE. For example, for the same 
+instrument, model and campaign it is possible to use different acquisition 
+processes.
+
+The tupla
+
+	instrument x model x test_level x TE_name
+
+builds the name of a particular system. For example: MCALSEMDFETE.
+The name of the system identifies:
+- the process used for building the system
+- the telemetry used (and, as consequence, the telemetry configuration files)
+- the configuration files for the Science Console Control Panel (scpanel 
+project)
+
+The same system could be used in different setups. A setup is identified
+
+by the following key:
+
+1. campaing: the campaing of test. For example: cbr, cer, lab
+2. period: the time of the situation
+
+A setup is useful for the identification of a particular version of the
+system.
+
+The version of the system
+===========================================
+A version is identified by a TAG into the CVS repository applied to the
+configuration files of a system.
+
+For example, for the MCALSEMDFETE, the following campaing and period are present
+
+	period		campaing
+	----------------------------------
+	jan		lab
+	feb-jun		cnr
+	jul		cer
+	aug		cnr
+
+For the correct identification of the version, it is possible to use the TAG in 
+the following way:
+
+	situation	situation name		TAG CVS (situation)	TAG CVS (sub/version)	comment
+	--------------------------------------------------------------------------------------------------------
+						START_JAN_LAB
+	jan/lab		JAN_LAB
+						END_JAN_LAB
+						START_CNR_P1
+	feb/cnr		CNR_P1
+									CNR_P1_V1		see 1.1
+									CNR_P1_V2		see 1.2
+						END_CNR_P1
+						START_CERN
+	jul/cer		CERN
+						END_CERN
+						START_CNR_P2
+	aug/cnr		CNR_P2
+						END_CNR_P2
+
+A version of the system could identify:
+- the start of a setup
+- the end of a setup
+- the sub-version of a particular setup.
+
+There is no rule for the name of the setup, but START_X identifies the start
+
+of a setup cofniguration, END_X identifies the end of a setup configuration. X_Vk identifies a
+sub/version k for the setup X.
+
+ChangeLog
+===========================================
+The above table with additional comment should be reported into the ChangeLog 
+file.
+
+TODO
+===========================================
+Into the TODO file should be reported the tasks necessary for the evolution of 
+the system.
+
+Makefile
+===========================================
+The Makefile is the core of the process for building the system.
+The target contained into the Makefile are the following:
+- checkout: checkout of the project from the CVS
+- all: compile and install the system (depending on the prefix variable, root 
+password
+is needed)
+- install: as all
+
+Into the checkout target the following commands are present:
+
+	cvs checkout -r TAG_NAME prj_name
+
+The -r option is used to identify a different version of the project. Each
+project has its own TAG_NAME and the combination of the TAG_NAME and prj_name
+identifies a system. The following rules are useful for a correct management of
+a system version:
+- after the START_X TAG is added to the files of this system configuration,
+remove the -r TAG_NAME option: without this option, the last source of the code
+is obtained from CVS
+- at the end of a setup, before the END_X TAG:
+	1. change the ChangeLog and make the commit of each project used by this system
+configuration, if changes are made
+	2. add a TAG to each project used by this system configuration
+	3. add the -r TAG_NAME option for each project into the Makefile of this system
+configuration
+	4. change the ChangeLog and TODO (if needed) of this system configuration. Into
+the ChangeLog add the comment for the END_X tag name.
+	5. make the commit of the files of this system configuration.
+	6. add the END_X tag to this system configuration
+If needed, add a new START_Y tag.
+
+System variable
+===========================================
+The following system variable (presents into /etc/progile or .bash_profile) 
+should be correctly configured:
+
+Paths for the running system
+- GTB_ROOT: where the system is installed
+- GTB_INCLUDE: where the include file are present
+- GTB_LIB: where the libraries are present
+- GTB_BIN: where the bin file are present
+
+Working directories
+- GTB_PROJECTS: where the projects for the development are present
+
+Library linking and include, useful for the compilation of the system:
+- GTB_COMMON_INCLUDE: the path for the common_include project
+- GTB_DISCOS_INCLUDE: the path of the include files of the DISCOS system
+- GTB_DISCOS_LIB: the path of the DISCOS library
+- GTB_PACKETLIB_INCLUDE: the path of the include files of the PacketLib
+- GTB_PACKETLIB_LIB: the path of the PacketLib library
+- GTB_PROCESSORLIB_INCLUDE: the path of the include files of the ProcessorLib
+- GTB_PROCESSORLIB_LIB: the path of the ProcessorLib library
+- GTB_CFITSIO_INCLUDE: the path of the include files of the cfitsio
+- GTB_CFITSIO_LIB: the path of the cfitsio library
+Some additional system variable could be present depending on the configuration of the particular system.
+
+CVS standard configuration:
+- CVSROOT=:pserver:$USER@agilesc2.bo.iasf.cnr.it:/home/repository/cvs/gtb
+- CVSROOT_CONF=:pserver:$USER@agilesc2.bo.iasf.cnr.it/home/repository/cvs/conf
+
+

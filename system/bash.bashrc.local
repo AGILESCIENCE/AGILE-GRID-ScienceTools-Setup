@@ -1,0 +1,5 @@
+# Launch the environement definition script
+ . /usr/local/etc/profile_agile
+#
+# End of /etc/bash.bashrc.local
+#
