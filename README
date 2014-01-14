@@ -1,12 +1,12 @@
 AGILE build environment
 
-We need only 3 environment variable
+We need only 3 environment variables to compile the code
 
 - CFITSIO
 - ROOTSYS
 - AGILE=~/ADC/scientific_analysis
 
-At the end we set
+And the following variable to run the code
 
 export PFILES=$AGILE/conf
 
