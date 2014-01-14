@@ -12,25 +12,18 @@ if [ -z "$ROOTSYS" ] || [ -z $(env | grep ROOTSYS) ]; then
 	exit
 fi
 
-git clone https://github.com/AGILESCIENCE/libagilepil.git 
 cd libagilepil
-#git checkout v1.0.0
 make install prefix=$AGILE
 cd ..
 
-git clone https://github.com/AGILESCIENCE/libagilewcs.git    
 cd libagilewcs
-#git checkout v1.0.0
 make install prefix=$AGILE
 cd ..
 
-git clone https://github.com/AGILESCIENCE/libagilesci.git    
 cd libagilesci
-#git checkout v1.0.0
 make install prefix=$AGILE
 cd ..
 
-git clone https://github.com/AGILESCIENCE/agilesci1.git 
 cd agilesci1
 make install prefix=$AGILE
 cd ..
