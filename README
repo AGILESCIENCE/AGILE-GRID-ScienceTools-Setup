@@ -14,8 +14,8 @@ To install the system
 
 git clone git@github.com:AGILESCIENCE/BUILD_GRID_SCI_git.git
 cd BUILD_GRID_SCI_git
-sh download.sh
-sh install.sh
+./download.sh
+./install.sh
 
 To recompile the code
-sh install.sh
+./install.sh
