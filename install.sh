@@ -28,4 +28,6 @@ cd agilesci1
 make install prefix=$AGILE
 cd ..
 
+cp profile $AGILE
 
+cp -rf scripts $AGILE
