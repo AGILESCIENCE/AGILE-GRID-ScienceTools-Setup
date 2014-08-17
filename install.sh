@@ -30,4 +30,7 @@ cd ..
 
 cp profile $AGILE
 
-cp -rf scripts $AGILE
+echo "install scripts"
+#mkdir $AGILE/scripts
+
+cp -rf scripts/* $AGILE/scripts

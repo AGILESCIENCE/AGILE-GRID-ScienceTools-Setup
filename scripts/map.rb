@@ -1,24 +1,24 @@
 #! /usr/bin/ruby
-#script compatible with BUILD22
-#0) filter DIR (es: FM3.119_2_I0023, FM3.119_ASDCe_I0023, FM3.119_ASDCSTDf_I0023, FM3.119_ASDCSTDk_I0023)
-#1) output file name prefix
-#2) time start: contact or TT or MJD (default TT, use timetype)
-#3) time end: contact or TT or MJD (default TT, use timetype)
-#4) l (map center)
-#5) b (map center)
+#script for BUILD22
+#00) filter DIR (es: FM3.119_2_I0023, FM3.119_ASDCe_I0023, FM3.119_ASDCSTDf_I0023, FM3.119_ASDCSTDk_I0023)
+#01) output file name prefix
+#02) time start: contact or TT or MJD (default TT, use timetype)
+#03) time end: contact or TT or MJD (default TT, use timetype)
+#04) l (map center)
+#05) b (map center)
 # Optional
 ### COMMON
-#6) timetype: CONTACT, MJD, TT, default TT
-#6) emin: energy min in MeV, if energybin=0, default 100
-#7) emax: energy max in MeV, if energybin=0, default 500000
-#1) fovradmin: fov rad min, to be used also with fovbinnumber, default 0
-#8) fovradmax: fov rad max, to be used also with fovbinnumber, default 60
-#9) mapsize: map size (diameter of the map in degree), default 40
-#10) binsize: bin size, default 0.3
-#12) proj: projection ARC or AIT, default ARC
-#11) albedorad: default 80
-#18) fovbinnumber: number of bins between fovradmin and fovradmax. Dim = (fovradmax-fovradmin)/fovbinnumber, default 1
-#30) energybin: default 0, 
+#06) timetype: CONTACT, MJD, TT, default TT
+#07) emin: energy min in MeV, if energybin=0, default 100
+#08) emax: energy max in MeV, if energybin=0, default 500000
+#09) fovradmin: fov rad min, to be used also with fovbinnumber, default 0
+#10) fovradmax: fov rad max, to be used also with fovbinnumber, default 60
+#11) mapsize: map size (diameter of the map in degree), default 40
+#12) binsize: bin size, default 0.3
+#13) proj: projection ARC or AIT, default ARC
+#14) albedorad: default 80
+#15) (SEL) fovbinnumber: number of bins between fovradmin and fovradmax. Dim = (fovradmax-fovradmin)/fovbinnumber, default 1
+#16) (SEL) energybin: default 0, 
 #	=1 activate [00030-00050] [00050-00100], [00100-00400], [00400-01000], [01000-03000], [03000, 500000])
 #	=2 activate [00030-00050] [00050-00100], [00100-00200], [00200-00400], [00400-01000], [01000-03000], [03000, 500000])
 #	=3 activate [00100-00200], [00200-00400], [00400-01000], [01000-03000])
@@ -27,21 +27,22 @@
 #	=6 activate [00100-00200], [00200-00400], [00400-01000], [01000-03000], [03000, 500000])
 #	=7 activate [00050-00100], [00100-00200], [00200-00400], [00400-01000], [01000-03000], [03000, 500000])
 #	=8 activate [00050-00100], [00100-00400], [00400-01000], [01000-03000], [03000-50000])
-#19) phasecode: optional, default 2. If -1 => automatic determination ==>  if (time end  > 182692800.0 (MJD 55119.5, UTC 2009-10-15T12:00:00, fine pointing) && phasecode == -1) then phasecode = 2 (SPIN) else phasecode = 18 (POIN)
-#31) timelist: a file with a list of tstart/stop
-#20) timebinsize: optional, default 999999999
-#21) makelc: optional, default 0
-#22) lpointing: optinal, default -999
-#23) bpointing: optional, default -999
+#17) phasecode: optional, default 2. If -1 => automatic determination ==>  if (time end  > 182692800.0 (MJD 55119.5, UTC 2009-10-15T12:00:00, fine pointing) && phasecode == -1) then phasecode = 2 (SPIN) else phasecode = 18 (POIN)
+#18) timelist: a file with a list of tstart/stop
+#19) timebinsize: optional, default 999999999
+#20) makelc: optional, default 0
+#21) lpointing: optinal, default -1
+#22) bpointing: optional, default -1
 ### EXPOSURE
-#11) useEDPmatrixforEXP: use the EDP matrix to generate expmap, default 0
-#13) expstep: step size of exp map gen, it depends by binsize (e.g. 0.3->3, 0.25->4, 0.1->10)
-#14) spectralindex: spectral index of exp map, default 2.1
-#29) timestep: LOG file step size, default 160
+#23) (SEL) useEDPmatrixforEXP: use the EDP matrix to generate expmap, default 0. WARNING: 1 does not work
+#24) expstep: step size of exp map gen, it depends by binsize (e.g. 0.3->3, 0.25->4, 0.1->10)
+#25) spectralindex: spectral index of exp map, default 2.1
+#26) timestep: LOG file step size, default 160
 ### GAS MAP
-#26) skymapL: sky map low resolution
-#27) skymapH: sky map high resolution
-#28) skytype: 0 standard hires diffuse maps, 1 gc_allsky maps, default 0
+#27) (SEL) skytype: 0 standard hires diffuse maps, 1 gc_allsky maps, default 0
+#28) skymapL: sky map low resolution
+#29) skymapH: sky map high resolution
+
 
 #Lo script crea le mappe mancanti, e se ne crea almeno uno aggiunge la corrispondente riga nel .maplitsX. Attenzione quindi alle duplicazioni
 
@@ -257,7 +258,7 @@ while time.to_f < tstop.to_f
 				fovmin = parameters.fovradmin
 				fovmax = parameters.fovradmax
 				bincenter = 30
-				if parameters.lpointing.to_i != -999
+				if parameters.lpointing.to_i != -1
 					bincenter = datautils.distance(l, b, parameters.lpointing, parameters.bpointing);
 				end
 			else
@@ -290,6 +291,7 @@ while time.to_f < tstop.to_f
 			end
 			if File.exists?(exp2) == false
 				#campionamento ogni 0.1 sec del file di LOG
+				#maplist = mapstream >> mapspec.fovradmin >> mapspec.fovradmax >> mapspec.emin >> mapspec.emax >> mapspec.index;
 				cmd = PATH + "bin/AG_expmapgen5 " + exp2.to_s + " " + indexlog.to_s  +  " " + sarmatrixfull.to_s +  " " + edpmatrixfull.to_s + " None " + " " + parameters.timelist.to_s + " " + parameters.mapsize.to_s + " " + parameters.binsize.to_s  + " " + l.to_s + " " + b.to_s + " " + lonpole.to_s + " " + parameters.albedorad.to_s + " 0.5 360.0 5.0 " + parameters.phasecode.to_s + " " +  parameters.proj.to_s + " " + parameters.expstep.to_s + " " + parameters.timestep.to_s +  " " + parameters.spectralindex.to_s + " " + t0.to_s + " " + t1.to_s + " " + emin.to_s + " " + emax.to_s  + " " + fovmin.to_s + " " + fovmax.to_s;
 				datautils.execute(prefix, cmd);
 				createdmap = true

@@ -1,17 +1,17 @@
 #! /usr/bin/ruby
-#script compatible with BUILD22
+#script for BUILD22
 ################ Mandatory and ordered parameters:
-#0) maplist - Note that the extension .maplist4 is mandatory. See below for more details.
-#1) listsource - extension .multi - file name of the list (in alike multi format - example 73.0e-08 80.27227 0.73223 2.1 1 2 3EGJ2033+4118). See below for more details.
-#2) outfile - output file name
+#00) maplist - Note that the extension .maplist4 is mandatory. See below for more details.
+#01) listsource - extension .multi - file name of the list (in alike multi format - example 73.0e-08 80.27227 0.73223 2.1 1 2 3EGJ2033+4118). See below for more details.
+#02) outfile - output file name
 ################ Optional parameters
-#3) prefix (if specify a prefix, use only 1 map, if -999 use all the maps in the directory) - disabled with parameter maplist
-#4) offaxis - off axix pointing (default 30) - set into .maplist4
-#5) ranal   - radius of analysis (default 10)
-#6) galcoeff     - gal coefficient (default -1) - set into .maplist4
-#7) isocoeff     - iso coefficient (default -1) - set into .maplist4
-#8) galmode     - gal mode, default 1 - See below for more details.
-#9) isomode     - iso mode, default 1 - See below for more details.
+#03) prefix (if specify a prefix, use only 1 map, if -999 use all the maps in the directory) - disabled with parameter maplist
+#04) offaxis - off axix pointing (default 30) - set into .maplist4
+#05) ranal   - radius of analysis (default 10)
+#06) galcoeff     - gal coefficient (default -1) - set into .maplist4
+#07) isocoeff     - iso coefficient (default -1) - set into .maplist4
+#08) galmode     - gal mode, default 1 - See below for more details.
+#09) isomode     - iso mode, default 1 - See below for more details.
 #10) ulcl    - upper limit confidence level (default 2),  espressed as sqrt(TS)
 #11) loccl   - source location contour confidence level (default 95 (%)confidence level) Vales: 99, 95, 68, 50
 #12) flag    - a flag of the analysis (that is written in the final file)
@@ -70,7 +70,8 @@ alikeutils = AlikeUtils.new
 multioutput = MultiOutput.new
 
 prefix = p.prefix
-if prefix != -999 then
+cts = ""
+if prefix != -1 then
 	cts = prefix.to_s + ".cts.gz";
 	exp = prefix.to_s + ".exp.gz";
 	gas = prefix.to_s + ".gas.gz";
@@ -80,6 +81,12 @@ inputmaplist = ARGV[0];
 listsource = ARGV[1];
 baseoutfile = ARGV[2];
 baseoutfile2 = ARGV[2];
+
+File.open(inputmaplist).each_line do | line |
+	cts = line.split(" ")[0];
+	exp = line.split(" ")[1];
+	gas = line.split(" ")[2];
+end
 
 stepi=1
 prefixi = ""
@@ -212,13 +219,12 @@ for i in 1..stepi
 	cmd = "ruby " + ENV["AGILE"] + "/scripts/convertMultiInputToReg.rb " + newlistsource.to_s + " blue";
 	datautils.execute(outfile2, cmd)
 
-
-	datautils.extractFITSKeyword(cts.to_s, "DATE-OBS");
-	cmd = "echo \"" + datautils.fitskeyword.to_s + "\" >> " + newoutfile.to_s;
+	
+	datautils.readFitsHeader(cts.to_s);
+	cmd = "echo \"" + datautils.header["DATE-OBS"] + "\" >> " + newoutfile.to_s;
 	datautils.execute(outfile2, cmd)
 
-	datautils.extractFITSKeyword(cts.to_s, "DATE-END");
-	cmd = "echo \"" + datautils.fitskeyword.to_s + "\" >> " + newoutfile.to_s;
+	cmd = "echo \"" + datautils.header["DATE-END"] + "\" >> " + newoutfile.to_s;
 	datautils.execute(outfile2, cmd)
 
 	#cmd = "ruby ~/grid_scripts3/convertMultiResToRegData.rb " + outfile.to_s;

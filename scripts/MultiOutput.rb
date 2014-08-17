@@ -1,4 +1,4 @@
-
+load ENV["AGILE"] + "/scripts/DataUtils.rb"
 
 class MultiOutput
 	def readDataSingleSource2(res, sourcename)
@@ -29,49 +29,49 @@ class MultiOutput
 			@isocoeff_err = "-1"
 			@isocoeffzero = "-1"
 			@isocoeffzero_err = "-1"	
+			@fitdata = "-1, -1, -1, -1, -1, -1, -1"
 			File.open(nameout).each_line do | line |
 				index2 = index2 + 1;
 				lll = line.split(" ")
-				if index2.to_i == 12
+				if index2.to_i == 15
 					@label =lll[0];
 					@fix =lll[1];
 					@si_start = lll[2];
 					@ulconflevel = lll[3];
 					@srcconflevel = lll[4];
-				end
-				if index2.to_i == 13
-					@sqrtTS =lll[0];
-				end
-				if index2.to_i == 14
-					@l_peak = lll[0];
-					@b_peak = lll[1];
-				end
-				if index2.to_i == 15
-					@fullellipseline = line;
-					if lll.size.to_i != 3
-						@l = lll[0]
-						@b = lll[1]
-						@r = lll[2];
-						@ell_a = lll[3];
-						@ell_b = lll[4];
-						@ell_phi = lll[5];
-					else
-						@l = -1
-						@b = -1
-						@r = -1
-						@ell_a = -1
-						@ell_b = -1
-						@ell_phi = -1
-					end
+					@startL = lll[5];
+					@startB = lll[6];
+					@startFlux = lll[7];
+					@lmin = lll[9];
+					@lmax = lll[11];
+					@bmin = lll[14];
+					@bmax = lll[16];
 				end
 				if index2.to_i == 16
+					@sqrtTS =lll[0];
+				end
+				if index2.to_i == 17
+					@l_peak = lll[0];
+					@b_peak = lll[1];
+					@dist = lll[2];
+				end
+				if index2.to_i == 18
+					@l = lll[0]
+					@b = lll[1]
+					@distellipse = lll[2];
+					@r = lll[3];
+					@ell_a = lll[4];
+					@ell_b = lll[5];
+					@ell_phi = lll[6];
+				end
+				if index2.to_i == 19
 					@counts = lll[0]
 					@counts_error = lll[1]
 					@counts_error_p = lll[2]
 					@counts_error_m = lll[3]
 					@counts_ul = lll[4];
 				end
-				if index2.to_i == 17
+				if index2.to_i == 20
 					@flux = lll[0]
 					@flux_error = lll[1]
 					@flux_error_p = lll[2]
@@ -79,37 +79,57 @@ class MultiOutput
 					@flux_ul = lll[4];
 					@exposure = lll[5]
 				end
-				if index2.to_i == 18
+				if index2.to_i == 21
 					@sicalc = lll[0]
 					@sicalc_error = lll[1]
 				end
 				
-				if index2.to_i == 19
+				if index2.to_i == 22
+					@fit_cts = lll[0]
+					@fit_fcn0 = lll[1]
+					@fit_fcn1 = lll[2]
+					@fit_edm0 = lll[3]
+					@fit_edm1 = lll[4]
+					@fit_iter0 = lll[5]
+					@fit_iter1 = lll[6]
+				end
+				
+				if index2.to_i == 23
 					@galcoeff = lll[0]
 					@galcoeff_err = lll[1]
 				end
 				
-				if index2.to_i == 20
+				if index2.to_i == 24
 					@galcoeffzero = lll[0]
 					@galcoeffzero_err = lll[1]
 				end
 				
-				if index2.to_i == 21
+				if index2.to_i == 25
 					@isocoeff = lll[0]
 					@isocoeff_err = lll[1]
 				end
 				
-				if index2.to_i == 22
+				if index2.to_i == 26
 					@isocoeffzero = lll[0]
 					@isocoeffzero_err = lll[1]
+				end
+				
+				if index2.to_i == 27
+					@tstart = lll[0]
+					@tstop = lll[1]
+				end
+				
+				if index2.to_i == 28
+					@energyrange = lll[0]
+					@fovrange = lll[1]
+					@albedo = lll[2]
+					@binsize  = lll[3] 
+					@expstep  = lll[4]  
+					@phasecode = lll[5]  
 				end
 			end
 
 	end
-	
-
-	
-	
 
 	def multiOutputLine()
 		@multiOutputLine = @label.to_s  + " " + @sqrtTS.to_s + " " + @l_peak.to_s + " " + @b_peak.to_s + " " + @counts.to_s + " " + @counts_error.to_s + " " + @flux.to_s + " " + @flux_error.to_s + " " + @sicalc.to_s + " " + @sicalc_error.to_s
@@ -120,17 +140,117 @@ class MultiOutput
 	end
 	
 	def multiOutputLineFull2()
-		@multiOutputLineFull2 = @label.to_s  + " " + @sqrtTS.to_s + " " + @l_peak.to_s + " " + @b_peak.to_s + " " + @counts.to_s + " " + @counts_error.to_s + " " + @counts_ul.to_s + " " + @flux.to_s + " " + @flux_error.to_s + " " + @flux_ul.to_s + " " + @sicalc.to_s + " " + @sicalc_error.to_s + " " + @l.to_s + " " + @b.to_s + " " + @r.to_s + " " + @ell_a.to_s +  " " + @ell_b.to_s + " " + @ell_phi.to_s + " " + @galcoeff + " " + @galcoeff_err + " " + @isocoeff + " " + @isocoeff_err + " " + @galcoeffzero + " " + @galcoeffzero_err + " " + @isocoeffzero + " " + @isocoeffzero_err
+		@multiOutputLineFull2 = @label.to_s  + " " + @sqrtTS.to_s + " " + @l_peak.to_s + " " + @b_peak.to_s + " " + @dist.to_s + " " + @counts.to_s + " " + @counts_error.to_s + " " + @counts_ul.to_s + " " + @flux.to_s + " " + @flux_error.to_s + " " + @flux_ul.to_s + " " + @sicalc.to_s + " " + @sicalc_error.to_s + " " + @l.to_s + " " + @b.to_s + " " + @r.to_s + " " + @ell_a.to_s +  " " + @ell_b.to_s + " " + @ell_phi.to_s + " " + @galcoeff + " " + @galcoeff_err + " " + @isocoeff + " " + @isocoeff_err + " " + @galcoeffzero + " " + @galcoeffzero_err + " " + @isocoeffzero + " " + @isocoeffzero_err
 		
 	end
 	
 	def multiOutputLineFull3(flag)
-		@multiOutputLineFull3 = flag + " " + @label.to_s  + " " + @fix.to_s + " " + @si_start.to_s + " " + @ulconflevel.to_s + " " + @srcconflevel.to_s + " " + @sqrtTS.to_s + " " + @l_peak.to_s + " " + @b_peak.to_s + " " + @l.to_s + " " + @b.to_s + " " + @r.to_s + " " + @ell_a.to_s +  " " + @ell_b.to_s + " " + @ell_phi.to_s + " " + @counts.to_s + " " + @counts_error.to_s + " " + @counts_error_p.to_s + " " + @counts_error_m.to_s + " " + @counts_ul.to_s + " " + @flux.to_s + " " + @flux_error.to_s + " " + @flux_error_p.to_s + " " + @flux_error_m.to_s + " " + @flux_ul.to_s + " " + @exposure.to_s + " " + @sicalc.to_s + " " + @sicalc_error.to_s + " "  + @galcoeff + " " + @galcoeff_err + " " + @galcoeffzero + " " + @galcoeffzero_err + " "  + @isocoeff + " " + @isocoeff_err + " "  + @isocoeffzero + " " + @isocoeffzero_err
+		d = DataUtils.new
+		mjdstart = d.time_utc_to_mjd(tstart);
+		mjdstop = d.time_utc_to_mjd(tstop);
+		ttstart = d.time_utc_to_tt(tstart);
+		ttstop = d.time_utc_to_tt(tstop);
+		@multiOutputLineFull3 = flag + " " + @label.to_s + " " + @sqrtTS.to_s + " POS " + @l_peak.to_s + " " + @b_peak.to_s + " " + @dist.to_s + " " + @l.to_s + " " + @b.to_s + " " + @distellipse.to_s + " " + @r.to_s + " " + @ell_a.to_s +  " " + @ell_b.to_s + " " + @ell_phi.to_s + " CTS " + @counts.to_s + " " + @counts_error.to_s + " " + @counts_error_p.to_s + " " + @counts_error_m.to_s + " " + @counts_ul.to_s + " FL " + @flux.to_s + " " + @flux_error.to_s + " " + @flux_error_p.to_s + " " + @flux_error_m.to_s + " " + @flux_ul.to_s + " EXP " + @exposure.to_s + " SI " + @sicalc.to_s + " " + @sicalc_error.to_s + " TI " + tstart.to_s + " " + tstop.to_s + " " + mjdstart.to_s + " " + mjdstop.to_s + " " + ttstart.to_s + " " + ttstop.to_s + " GI " + @galcoeff + " " + @galcoeff_err + " " + @galcoeffzero + " " + @galcoeffzero_err + " "  + @isocoeff + " " + @isocoeff_err + " "  + @isocoeffzero + " " + @isocoeffzero_err + " FIT " + @fit_cts + " "  + @fit_fcn0 + " " + @fit_fcn1 + " " + @fit_edm0 + " " + @fit_edm1 + " " + @fit_iter0 + " " + @fit_iter1  + " ANA " + @fix.to_s + " " + @si_start.to_s + " " + @ulconflevel.to_s + " " + @srcconflevel.to_s + " " + @startL.to_s + " " + @startB.to_s + " " + @startFlux.to_s + " [ " + @lmin.to_s + " , " + @lmax.to_s + " ] [ " + @bmin.to_s + " , " + @bmax.to_s + " ] " + " " + @energyrange + " " + @fovrange + " " + @albedo + " " + @binsize + " " + @expstep + " " + @phasecode;
 		
+	end
+	
+	def	phasecode
+		@phasecode
+	end
+	
+	def	expstep
+		@expstep
+	end
+	
+	def	binsize
+		@binsize
+	end
+	
+	def	albedo
+		@albedo
+	end
+	
+	def	fovrange
+		@fovrange
+	end
+	
+	def	energyrange
+		@energyrange
+	end
+	
+	def	lmax
+		@lmax
+	end
+	
+	def	lmin
+		@lmin
+	end
+	
+	def	bmax
+		@bmax
+	end
+	
+	def	bmin
+		@bmin
+	end
+	
+	def	tstart
+		@tstart
+	end
+	
+	def tstop
+		@tstop
+	end
+	def	startL
+		@startL
+	end
+	
+	def startB
+		@startB
+	end
+	
+	def startFlux
+		@startFlux
+	end
+	
+	def dist
+		@dist
 	end
 	
 	def galcoeff
 		@galcoeff
+	end
+	
+	def distellipse
+		@distellipse
+	end
+	
+	def fit_cts
+		@fit_cts
+	end
+	
+	def fit_fcn0
+		@fit_fcn0
+	end
+
+	def fit_fcn1
+		@fit_fcn1
+	end
+
+	def fit_edm0
+		@fit_edm0
+	end
+
+	def fit_edm1
+		@fit_edm1
+	end
+	
+	def fit_iter0
+		@fit_iter0
+	end
+
+	def fit_iter1
+		@fit_iter1
 	end
 	
 	def isocoeff
@@ -260,7 +380,7 @@ end
 
 class MultiOutputList
 	def readSources(resname, multilist, flag)
-		f = File.new(resname + ".res", "w")
+		f = File.new(resname + ".resfull", "w")
 		File.open(multilist).each_line do | line |
 			multioutput = MultiOutput.new()
 			name = line.split(" ")[6];

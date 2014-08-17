@@ -1,11 +1,46 @@
 
-
 class DataUtils
 		def initialize
 			@lines = [];
 		end
 		
+		def readFitsHeader(filename)
+			fexta = filename.split(".")
+			fext = fexta[fexta.size() -1]
+			out = filename
+			if fext == "gz"
+				value = ""; 20.times{value  << (65 + rand(25)).chr}
+				out = "/tmp/" + value
+				cmd = "gunzip -c " + filename + " > " + out
+				puts cmd
+				system(cmd)
+				
+			else
+				out = filename
+			end
+			puts filename
+			
+			s = File.open(out, 'r') { |io| io.read };
+			str = s[0..5000].to_str;
+			str2 = str.split(" ")
+			@header = Hash.new
+			for i in 0..str2.size()
+				if str2[i] != nil and str2[i].include?("=")
+					@header[str2[i].split("=")[0]] = str2[i+1].gsub("'", " ").strip
+				end
+				if str2[i] == "="
+					@header[str2[i-1]] = str2[i+1].gsub("'", " ").strip
+				end
+			end
+			puts @header
+			if(out != filename)
+				system("rm " + out)
+			end
+		end	
 		
+		def header
+			@header
+		end	
 
 		def extractlc(file, prefix, l, b, t0, t1)
 			cts2 = prefix.to_s  + ".cts.gz"
@@ -261,31 +296,65 @@ class DataUtils
 		def time_tt_to_mjd(time)
 			@time_tt_to_mjd = (time.to_f / 86400.0)+53005.0
 		end
+		
+		def julian? (jd, sg)
+			case sg
+			when Numeric
+				jd < sg
+			else
+				not sg
+			end
+		end
+		
+		# Convert a fractional day +fr+ to [hours, minutes, seconds,
+		# fraction_of_a_second]
+		def day_fraction_to_time(fr)
+			ss,  fr = fr.divmod(Rational(1, 86400)) # 4p
+			h,   ss = ss.divmod(3600)
+			min, s  = ss.divmod(60)
+			return h, min, s, fr
+		end
+		
+		# Convert a Julian Day Number to a Civil Date.  +jd+ is
+		# the Julian Day Number. +sg+ specifies the Day of
+		# Calendar Reform.
+		#
+		# Returns the corresponding [year, month, day_of_month]
+		# as a three-element array.
+		def jd_to_civil(jd, sg=Date::GREGORIAN)
+			if julian?(jd, sg)
+				a = jd
+			else
+				x = ((jd - 1867216.25) / 36524.25).floor
+				a = jd + 1 + x - (x / 4.0).floor
+			end
+			b = a + 1524
+			c = ((b - 122.1) / 365.25).floor
+			d = (365.25 * c).floor
+			e = ((b - d) / 30.6001).floor
+			dom = b - d - (30.6001 * e).floor
+			if e <= 13
+				m = e - 1
+				y = c - 4716
+			else
+				m = e - 13
+				y = c - 4715
+			end
+			return y, m, dom
+		end
 
 		def time_tt_to_utc(time)
-			#ss = rand(10000000)
-			#cmd1 = "/tmp/time_utc_to_tt." + ss.to_s + ".cmd"
-			#cmd2 = "/tmp/time_utc_to_tt." + ss.to_s + ".out"
-			#a1 = File.new(cmd1, "w")
-			#a1.write("time_tt_to_utc, " + time.to_s)
-			#a1.close()
-			#cmd = "idl < " + cmd1.to_s + " 2> /dev/null > " + cmd2.to_s 
-			#system(cmd)
-			#File.open(cmd2).each_line do | line |
-			#	@time_tt_to_utc = line
-			#end
-			#cmd = "rm " + cmd1.to_s + " " + cmd2.to_s
- 			#system(cmd)
-			#@time_tt_to_utc
+			#TODO
+			@time_tt_to_utc = -1;
+			#return
 			
-			@time_tt_to_utc = 0;
 			utc_offset = 2400000.5.to_f
 			mjdref = 53005.0.to_f
 			sod = 86400.0.to_f
 			sec_offset = 43200.0.to_f
 			
-			a=Date.jd_to_civil(utc_offset + mjdref + ( (time.to_f+sec_offset)/86400.0 ))
-			b=Date.day_fraction_to_time(a[2].modulo(1).to_f)
+			a=jd_to_civil(utc_offset + mjdref + ( (time.to_f+sec_offset)/86400.0 ))
+			b=day_fraction_to_time(a[2].modulo(1).to_f)
 			utc = [a[0] , a[1] , a[2].to_i.to_f , b[0] , b[1] , b[2] , b[3]]
 			utc_s = a[0].to_s+"-"+format("%02d", a[1].to_i)+"-"+format("%02d", a[2].to_i)+"T"+format("%02d", b[0])+":"+format("%02d", b[1])+":"+format("%02d", b[2]);
 			#+":"+b[3].to_s
@@ -296,9 +365,19 @@ class DataUtils
 			@time_tt_to_utc = utc_s
 			@time_tt_to_utc
 		end
+		
+		def time_to_day_fraction(h, min, s)
+			if Integer === h && Integer === min && Integer === s
+			  Rational(h * 3600 + min * 60 + s, 86400) # 4p
+			else
+			  (h * 3600 + min * 60 + s).to_r/86400 # 4p
+			end
+   		end
 
 		def time_utc_to_tt(time)
-			@time_utc_to_tt = 0;
+		
+			@time_utc_to_tt = -1;
+			
 			if time == nil or  time == ""
 				return
 			end
@@ -317,26 +396,13 @@ class DataUtils
 			mjdref = 53005.0.to_f
 			sod = 86400.0.to_f
 			sec_offset = 43200.0.to_f
-			fod = Date.time_to_day_fraction( hour.to_i , min.to_i , sec.to_i )
-			mjd = Date.civil_to_jd( year.to_i , month.to_i , day.to_f ).to_f + fod.to_f
-			tt = (mjd - utc_offset - mjdref) * sod
+			fod = time_to_day_fraction( hour.to_i , min.to_i , sec.to_i ).to_f
+			#mjd = Date.civil_to_jd( year.to_i , month.to_i , day.to_f ).to_f + fod.to_f
+			jd = DateTime.strptime(time, '%Y-%m-%dT%H:%M:%S').jd + fod.to_f
+			#puts jd
+			tt = (jd - utc_offset - mjdref) * sod
 			tt -= sec_offset
-			
-			
-			#cmd1 = "/tmp/time_utc_to_tt." + ss.to_s + ".cmd"
-			#cmd2 = "/tmp/time_utc_to_tt." + ss.to_s + ".out"			
-			#a1 = File.new(cmd1, "w")
-			#a1.write("time_utc_to_tt, time=[" + year.to_s + ", " + month.to_s + ", " + day.to_s + ", " + hour.to_s + ", " + min.to_s + ", " + sec.to_s + "]");
-			#a1.close();
-			#cmd = "idl < " + cmd1.to_s + " 2> /dev/null > " + cmd2.to_s 
-			#puts cmd;
-			#system(cmd);
-			#File.open(cmd2).each_line do | line |
-			#	@time_utc_to_tt = line.to_i
-			#	puts @time_utc_to_tt 
-			#end
-			#cmd = "rm " + cmd1.to_s + " " + cmd2.to_s
- 			#system(cmd)
+
 			@time_utc_to_tt = tt
 			@time_utc_to_tt
 		end
@@ -357,25 +423,7 @@ class DataUtils
 			@fitskeyword
 		end
 
-		def extractFITSKeyword(fn, keyword)
-			begin
-				aa = rand(100000000);
-				tmpfile = "/tmp/tmp1." + aa.to_s;
-				cmd = "fkeyprint " + fn + " " + keyword.to_s + " > " + tmpfile.to_s;
-				system(cmd);
-				File.open(tmpfile).each_line do |x|
-					b=x.split("=");
-					if b[0].strip == keyword.to_s
-						@fitskeyword = b[b.size()-1].split(" ")[0];
-						#puts @fitskeyword
-					end
-				end
-				system("rm " + tmpfile.to_s)
-				@extractFITSKeyword = @fitskeyword
-			rescue SystemCallError
-				puts "DataUtils::extractFITSKeyword error";
-			end
-		end
+		
 
 		def extractALIKEFIXED_FLUX(input)
 			index = 0;

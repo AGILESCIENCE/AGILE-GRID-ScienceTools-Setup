@@ -2,7 +2,7 @@ class Parameters
 	public
 		def initialize() 
 			@filter = "FM3.119_ASDCe_I0023"
-			@prefix=-999
+			@prefix=-1
 			@timetype="TT"
 			@useEDPmatrixforEXP = 0
 			@flag="F0"
@@ -60,8 +60,8 @@ class Parameters
 			@galmode = 1;
 			@isomode = 1;
 			@multitype = 4;
-			@lpointing = -999;
-			@bpointing = -999;
+			@lpointing = -1;
+			@bpointing = -1;
 			@outputres = nil
 			
 			#only for multi

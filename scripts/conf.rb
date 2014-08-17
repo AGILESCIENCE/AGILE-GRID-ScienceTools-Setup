@@ -24,11 +24,11 @@ TYPE_MATRIX = "I0023"
 #ARCHIVE_ID = 0 BUILD17, 1 = BUILD15 or 16
 ARCHIVE_ID = 0
 
-load "~/grid_scripts3/DataUtils.rb"
-load "~/grid_scripts3/AgileFOV.rb"
-load "~/grid_scripts3/MultiOutput.rb"
-load "~/grid_scripts3/AlikeUtils.rb"
-load "~/grid_scripts3/DataConversion.rb"
-load "~/grid_scripts3/Parameters.rb"
+load PATH + "scripts/DataUtils.rb"
+load PATH + "scripts/AgileFOV.rb"
+load PATH + "scripts/MultiOutput.rb"
+load PATH + "scripts/AlikeUtils.rb"
+load PATH + "scripts/DataConversion.rb"
+load PATH + "scripts/Parameters.rb"
 
 load "date.rb"
