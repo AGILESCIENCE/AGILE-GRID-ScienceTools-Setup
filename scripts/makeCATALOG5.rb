@@ -1,68 +1,42 @@
 #! /usr/bin/ruby
-#0) General type of analysis
-#	1) analyzePeriods.rb
-#	2) multi4 with list generated from a .cat file
-#   3) makecatalog_phase3
-#1) filter
-#2) period (PERIOD.ob file)
-#3) analysis type for analyzePeriods.rb (see analysePeriods.rb
-#4) number of rings (optional, default 128) - 36 - A (48) B (192) C (128) D (36) E (15) F (6) G (2) H (20)
-
-#optional
-#5 catfile: cat file
-#X) additional parameters processed by Parameters class
-
-
-#a PERIOD.ob file should be present
-#111412735.      178804735.      OB0000  -999 -999 -999 -999
+#0) filter
+#1) prefix
+#2) number of rings (optional, default 128) - 36 - A (48) B (192) C (128) D (36) E (15) F (6) G (2) H (20)
+#3) addparams map
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -18 " + $0 );
+	system("head -6 " + $0 );
 	exit;
 end
 
 lock = true
 
-gentype = ARGV[0]
-filter = ARGV[1];
-periodfile = ARGV[2];
-antype = ARGV[3];
-indexmax = ARGV[4];
+filter = ARGV[0]
+prefix = ARGV[1];
+indexmax = ARGV[2];
+addparams = ARGV[3];
 
 p = Parameters.new
 p.processInput(5, ARGV)
 
-catfile = ""
+#catfile = ""
 sleepsecs = 30
-for i in 5...ARGV.size
-	if ARGV[i] == nil
-		break;
-	else
-		keyw = ARGV[i].split("=")[0];
-		value = ARGV[i].split("=")[1];
-		case keyw
-			when "catfile"
-				catfile = value;
-			when "sleepsecs"
-				sleepsecs = value
-		end
-	end
-
-end
-
-
-
-if p.binsize.to_f >= 0.1
-	prefix = "OB0000_" + filter.to_s + "_b0" + format("%0d", p.binsize.to_f * 100) + "_D001"
-else
-	prefix = "OB0000_" + filter.to_s + "_b00" + format("%0d", p.binsize.to_f * 100) + "_D001";
-end
-
-
-
-
+#for i in 5...ARGV.size
+#	if ARGV[i] == nil
+#		break;
+#	else
+#		keyw = ARGV[i].split("=")[0];
+#		value = ARGV[i].split("=")[1];
+#		case keyw
+#			when "catfile"
+#				catfile = value;
+#			when "sleepsecs"
+#				sleepsecs = value
+#		end
+#	end
+#end
 
 
 b = Array.new(indexmax.to_i)
@@ -656,106 +630,24 @@ while index.to_i < indexmax.to_i
 
 	l1 = l[index];
 	b1 = b[index];		
-#	puts index.to_s + " alike " + aliketype.to_s	
 
 	dir = format("%04d", l1) + "." + format("%04d", b1);
 
+	if lock == true
+		sss = rand(sleepsecs)
+		puts "lock activated... wait for " + sss.to_s
+		sleep(sss)
+	end
+	if File.exists?(dir) == false
+		cmd = "mkdir " + dir.to_s;
+		puts cmd
+		system(cmd);	
+	
+		cmd = "cd " + dir.to_s + "; ruby " + PATH + "scripts/map.rb " + filter.to_s + " " + prefix + " 111412735.	182692800.0 " + l1.to_s + " " + b1.to_s + " " + addparams.to_s
+		puts cmd
+		system cmd
+	end
 
-	
-		
-	
-		if gentype.to_i == 1
-			if lock == true
-				sss = rand(sleepsecs)
-				puts "lock activated... wait for " + sss.to_s
-				sleep(sss)
-			end
-			if File.exists?(dir) == false
-				cmd = "mkdir " + dir.to_s;
-				puts cmd
-				system(cmd);	
-			
-				cmd = "cd " + dir.to_s + "; ruby ~/grid_scripts2/analyzePeriods.rb " + filter.to_s + " ../" + periodfile.to_s + " " + antype.to_s + " " + l1.to_s + " " + b1.to_s + " " + p.buildCommandLine()
-				puts cmd
-				system cmd
-			end
-		end
-		
-		if gentype.to_i == 2
-			if lock == true
-				sss = rand(sleepsecs)
-				puts "lock activated... wait for " + sss.to_s
-				sleep(sss)
-			end
-			multifile = catfile.to_s  + ".multi";
-			if File.exists?(dir) == true
-				if File.exists?(dir + "/" + multifile.to_s) == false
-					cmd = "cd " + dir.to_s + "; ruby ~/grid_scripts2/extract_catalog.rb ../" + catfile.to_s + " " + l1.to_s + " " + b1.to_s + " " +  (diameter_sky.to_f/2.0).to_s + " " + catfile.to_s  + ".multi 1 0 1"
-					puts cmd
-					system cmd
-			
-					maplist=Dir["*.maplist4"][0]
-					cmd = "cd " + dir.to_s + "; ruby ~/grid_scripts2/multi.rb " + filter.to_s + " -999 " +  catfile.to_s  + ".multi " + " maplist=" + maplist.to_s + " outfile=" + catfile.to_s  + ".res"
-					puts cmd
-					system cmd
-				end
-			end
-		end
-		
-		if gentype.to_i == 3
-			if lock == true
-				sss = rand(sleepsecs)
-				puts "lock activated... wait for " + sss.to_s
-				sleep(sss)
-			end
-			multifile = catfile.to_s  + ".multi";
-			if File.exists?(dir) == true
-				if File.exists?(dir + "/" + multifile.to_s) == false
-					cmd = "cd " + dir.to_s + "; ruby ~/grid_scripts2/extract_catalog.rb ../" + catfile.to_s + " " + l1.to_s + " " + b1.to_s + " " +  (diameter_sky.to_f/2.0).to_s + " " + catfile.to_s  + ".multi 1 0 1"
-					puts cmd
-					system cmd
-			
-					maplist=Dir["*.maplist4"][0]
-					cmd = "cd " + dir.to_s + "; ruby ~/grid_scripts2/make_catalogs/makecatalog_phase3.rb " + catfile.to_s + ".multi " + " P " +  filter.to_s   + " -999 OUT 3 maplist=" + maplist.to_s
-					puts cmd
-					system cmd
-				end
-			end
-		end
-		
-		if gentype.to_i == 4
-			if lock == true
-				sss = rand(sleepsecs)
-				puts "lock activated... wait for " + sss.to_s
-				sleep(sss)
-			end
-			if File.exists?(dir) == false
-				cmd = "mkdir " + dir.to_s;
-				puts cmd
-				system(cmd);	
-			
-				cmd = "cd " + dir.to_s + "; ruby ~/grid_scripts2/map.rb " + filter.to_s + " MAPS 111412735.	182692800.0 " + l1.to_s + " " + b1.to_s + " mapsize=" + mapsize.to_s + " binsize=0.5"
-				puts cmd
-				system cmd
-			end
-		end
-		
-		if gentype.to_i == 5
-			if lock == true
-				sss = rand(sleepsecs)
-				puts "lock activated... wait for " + sss.to_s
-				sleep(sss)
-			end
-			if File.exists?(dir) == false
-				cmd = "mkdir " + dir.to_s;
-				puts cmd
-				system(cmd);	
-			
-				cmd = "cd " + dir.to_s + "; ruby " + PATH + "scripts/map.rb " + filter.to_s + " " + prefix + " 111412735.	182692800.0 " + l1.to_s + " " + b1.to_s + " mapsize=" + mapsize.to_s + " binsize=0.1 energybin=8 fovbinnumber=1 "
-				puts cmd
-				system cmd
-			end
-		end
 	
 	index = index.to_i + 1
 end
