@@ -1,3 +1,4 @@
+#! /usr/bin/ruby
 #0) start file of source list
 #1) maplist
 #2) filter
@@ -8,20 +9,17 @@
 #8) additional commands to multi5.rb (optional)
 #9) fixisogalstep0 = 0 none, 1 apply
 
-#Questo script si usa per fare la scansione su una lista di sorgenti (source list) fissandole tutte tranne una. 
-#Alla fine si raccoglie il risultato finale nelle directory che viene creata (dir output)
+#Questo script si usa per fare la scansione su una lista di sorgenti (source list) fissandole tutte tranne una. Alla fine si raccoglie il risultato finale nelle directory che viene creata (dir output)
 #NB: tutte le sorgenti sono messe con fixflag=0 di default prima di inziare l'analisi
 #Le sorgenti che hanno il nome che inizia con _ non sono analizzate, ma lasciate nel fondo
 
-#ruby ~/grid_scripts3/make_catalog/makecatalog_phase3.rb list3.multi OB1 FM3.119_ASDCe_I0023 OUT 1 "additionalcmd=OB0000_FM3.119_ASDCd_I0007_b020.additionalcmd4"
-
 load ENV["AGILE"] + "/scripts/conf.rb"
 
-
-if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil 
-	system("head -13 " + $0 );
+if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
+	system("head -14 " + $0 );
 	exit;
 end
+
 datautils = DataUtils.new
 
 sourcelist = ARGV[0]
@@ -71,18 +69,18 @@ sources = Array.new
 a = File.open(sourcelist, "r")
 
 a.each_line do | line |
- words = line.split(" ")
- s = Source.new
- s.flux = words[0].to_f
- s.l = words[1].to_f
- s.b = words[2].to_f
- s.si = words[3].to_f
- s.fixflag = words[4].to_i
- s.minsqrtts = words[5].to_f
- s.name = words[6].to_s
- s.rmax = words[7].to_f
- sources.push(s)
-#   s.print
+	 words = line.split(" ")
+	 s = Source.new
+	 s.flux = words[0].to_f
+	 s.l = words[1].to_f
+	 s.b = words[2].to_f
+	 s.si = words[3].to_f
+	 s.fixflag = words[4].to_i
+	 s.minsqrtts = words[5].to_f
+	 s.name = words[6].to_s
+	 s.rmax = words[7].to_f
+	 sources.push(s)
+	#   s.print
 end
 
 sources2 = sources.sort_by { |a| [ -a.flux ] }
