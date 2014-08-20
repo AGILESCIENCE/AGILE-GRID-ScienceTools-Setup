@@ -4,7 +4,7 @@
 
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
-	system("head -2 " + $0 );
+	system("head -3 " + $0 );
 	exit;
 end
 
