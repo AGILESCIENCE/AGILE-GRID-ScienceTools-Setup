@@ -3,7 +3,7 @@
 #2) filter
 #3) dir output
 #4) fixflag of analysis of the main source
-#6) distanceToFixFlag0
+#6) distanceToFixFlag0: see next parameters
 #7) fixflagneighbour: if the source of the list is < distanceToFixFlag0 put its fixflag=fixflagneighbour
 #8) additional commands to multi5.rb (optional)
 #9) fixisogalstep0 = 0 none, 1 apply
@@ -15,7 +15,7 @@
 
 #ruby ~/grid_scripts3/make_catalog/makecatalog_phase3.rb list3.multi OB1 FM3.119_ASDCe_I0023 OUT 1 "additionalcmd=OB0000_FM3.119_ASDCd_I0007_b020.additionalcmd4"
 
-load "~/grid_scripts3/conf.rb"
+load ENV["AGILE"] + "/scripts/conf.rb"
 
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil 
@@ -149,7 +149,7 @@ sources2.each { |s|
 		addcmd = addcmd + " fixisogalstep0=" + namesource.to_s
 	end
 
-	cmd = "ruby ~/grid_scripts3/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
+	cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
 	datautils.execute(outlog, cmd)
 	
 	#eseguita la alike, copio via i risulati

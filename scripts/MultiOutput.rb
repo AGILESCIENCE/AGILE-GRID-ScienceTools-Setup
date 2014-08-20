@@ -381,13 +381,18 @@ end
 class MultiOutputList
 	def readSources(resname, multilist, flag)
 		f = File.new(resname + ".resfull", "w")
+		f1 = File.new(resname + ".resfullsel", "w")
 		File.open(multilist).each_line do | line |
 			multioutput = MultiOutput.new()
 			name = line.split(" ")[6];
 			multioutput.readDataSingleSource2(resname, name)
 			f.write(multioutput.multiOutputLineFull3(flag) + "\n");
+			if multioutput.fix.to_i >= 1
+				f1.write(multioutput.multiOutputLineFull3(flag) + "\n");
+			end
 		end
 		f.close();
+		f1.close();
 	end
 	
 	def sources
