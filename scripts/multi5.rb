@@ -16,8 +16,7 @@
 #11) loccl   - source location contour confidence level (default 95 (%)confidence level) Vales: 99, 95, 68, 50
 #12) flag    - a flag of the analysis (that is written in the final file)
 #13) token (enabled if host,token with token >= 1)
-#14) fixisogalstep0 - default 0 = do not calculate, or calculate the gal and iso (if not specified by galcoeff or isocoeff parameters, otherwise use these values also in this step):
-#	(0) calculate gal and iso setting fixflag=1 for the source under analysis
+#14) fixisogalstep0 - default 0 = do not calculate, otherwise specify the name of the source to calculate the gal and iso (if not specified by galcoeff or isocoeff parameters, otherwise use these values also in this step): calculate gal and iso setting fixflag=1 for the source under analysis
 #15) findermultimode - default 0 = do not use, or the name of the source to be found. Analysis in 2 steps:
 #	(1) ulcl=0, loccl=0, fixflag=3 to perform the first search
 #	(2) use standard ulcl and loccl but with the new position of the source found in step (1)

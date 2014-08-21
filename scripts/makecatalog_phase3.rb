@@ -104,7 +104,7 @@ sources2.each { |s|
 	resfilename = diroutput.to_s + "_" + format("%03d", index) + ".res"
 	namesource = s.name
 	#salta quelle che iniziano con _
-	if namesource[0] == "_"
+	if namesource[0] == "_" or namesource[0] == 95
 		next
 	else
 		puts "1"
