@@ -12,13 +12,13 @@ class DataUtils
 				value = ""; 20.times{value  << (65 + rand(25)).chr}
 				out = "/tmp/" + value
 				cmd = "gunzip -c " + filename + " > " + out
-				puts cmd
+				#puts cmd
 				system(cmd)
 				
 			else
 				out = filename
 			end
-			puts filename
+			#puts filename
 			
 			s = File.open(out, 'r') { |io| io.read };
 			str = s[0..5000].to_str;
@@ -32,7 +32,7 @@ class DataUtils
 					@header[str2[i-1]] = str2[i+1].gsub("'", " ").strip
 				end
 			end
-			puts @header
+			#puts @header
 			if(out != filename)
 				system("rm " + out)
 			end

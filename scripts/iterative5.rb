@@ -50,15 +50,15 @@ File.open(maplist).each_line do | line |
 	cts = line.split(" ")[0]
 end
 
-datautils.extractFITSKeyword(cts, "CDELT2");
-binsize = datautils.fitskeyword.to_f
+datautils.readFitsHeader(cts);
+
+binsize = datautils.header["CDELT2"].to_f;
 if binsize.to_f < 0
 	binsize = -binsize
 end
 puts "BINSIZE " + binsize.to_s
 
-datautils.extractFITSKeyword(cts, "NAXIS1");
-naxis1 = datautils.fitskeyword.to_f;
+naxis1 = datautils.header["NAXIS1"].to_f;
 mapsize = ((naxis1.to_i-1) * binsize.to_f).to_i
 puts "MAPSIZE " + mapsize.to_s
 
@@ -79,6 +79,8 @@ fixflagscan = 1;
 fixflagstep2 = 3;
 scanlistdistthr = 2.0
 minsourcesqrts = 2.0
+lcenter = -1
+bcenter = -1
 
 ulcl = 2.0;
 loccl = 5.9914659;
@@ -140,13 +142,12 @@ for i in 2...1000
 
 end
 
+datautils.readFitsHeader(cts);
 if lcenter.to_f == -1
-	datautils.extractFITSKeyword(cts, "CRVAL1");
-	lcenter = datautils.fitskeyword.to_f;
+	lcenter = datautils.header["CRVAL1"].to_f;
 end
 if bcenter.to_f == -1
-	datautils.extractFITSKeyword(cts, "CRVAL2");
-	bcenter = datautils.fitskeyword.to_f;
+	bcenter = datautils.header["CRVAL2"].to_f;
 end
 puts "LCENTER " + lcenter.to_s
 puts "BCENTER " + bcenter.to_s
@@ -204,7 +205,7 @@ psdmatrix = datautils.psdmatrix
 
 if scanlist == "none"
 	scanlist = outfile.to_s + ".scanlist";
-	cmd = PATH + "/bin/AG_iterativeGenSrcList5 " + cts.to_s + " " + lcenter.to_s + " " + bcenter.to_s + " " + rextract.to_s + " " + binstep.to_s + " 2.1 " + fixflagscan.to_s + " 0.0 " + scanlist.to_s + " " + scanlistdistthr.to_s;
+	cmd = ENV["AGILE"] + "/bin/AG_iterativeGenSrcList5 " + cts.to_s + " " + lcenter.to_s + " " + bcenter.to_s + " " + rextract.to_s + " " + binstep.to_s + " 2.1 " + fixflagscan.to_s + " 0.0 " + scanlist.to_s + " " + scanlistdistthr.to_s;
 	puts cmd
 	system(cmd)
 end
@@ -215,7 +216,7 @@ startlistmulti = startlist.to_s
 
 matrixconf = datautils.getResponseMatrixString(filter);
 
-cmd = PATH + "/bin/AG_multiterative5 " + maplist.to_s + matrixconf.to_s + " " + scanlist.to_s + " " + scanitmax.to_s + " " + scantsthr.to_s + " " + scandistthr.to_s + " " + fixdistthr.to_s + " " + minsourcesqrts.to_s + " " + ranal.to_s + " " + galmode.to_s + " " + isomode.to_s +  " " + startlistmulti.to_s + " " + outfile.to_s + " " + ulcl.to_s + " " + loccl.to_s + " " + fixflagscan.to_s + " " + fixflagstep2.to_s;
+cmd = ENV["AGILE"] + "/bin/AG_multiterative5 " + maplist.to_s + matrixconf.to_s + " " + scanlist.to_s + " " + scanitmax.to_s + " " + scantsthr.to_s + " " + scandistthr.to_s + " " + fixdistthr.to_s + " " + minsourcesqrts.to_s + " " + ranal.to_s + " " + galmode.to_s + " " + isomode.to_s +  " " + startlistmulti.to_s + " " + outfile.to_s + " " + ulcl.to_s + " " + loccl.to_s + " " + fixflagscan.to_s + " " + fixflagstep2.to_s;
 puts cmd
 system(cmd)
 
