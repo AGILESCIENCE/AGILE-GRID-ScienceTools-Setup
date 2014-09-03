@@ -3,6 +3,7 @@
 #1) prefix
 #2) number of rings (optional, default 128) - 36 - A (48) B (192) C (128) D (36) E (15) F (6) G (2) H (20)
 #3) addparams map
+#4) run type: 0 generate maps - 1 iterative
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
@@ -17,12 +18,13 @@ filter = ARGV[0]
 prefix = ARGV[1];
 indexmax = ARGV[2];
 addparams = ARGV[3];
+runtype = ARGV[4];
 
 p = Parameters.new
 p.processInput(5, ARGV)
 
 #catfile = ""
-sleepsecs = 30
+sleepsecs = 3
 #for i in 5...ARGV.size
 #	if ARGV[i] == nil
 #		break;
@@ -638,16 +640,39 @@ while index.to_i < indexmax.to_i
 		puts "lock activated... wait for " + sss.to_s
 		sleep(sss)
 	end
-	if File.exists?(dir) == false
-		cmd = "mkdir " + dir.to_s;
-		puts cmd
-		system(cmd);	
 	
-		cmd = "cd " + dir.to_s + "; ruby " + PATH + "scripts/map.rb " + filter.to_s + " " + prefix + " 111412735.	182692800.0 " + l1.to_s + " " + b1.to_s + " " + addparams.to_s
-		puts cmd
-		system cmd
+	if runtype.to_i == 0
+		if File.exists?(dir) == false
+			cmd = "mkdir " + dir.to_s;
+			puts cmd
+			system(cmd);	
+	
+			cmd = "cd " + dir.to_s + "; ruby " + PATH + "scripts/map.rb " + filter.to_s + " " + prefix + " 111412735.	182692800.0 " + l1.to_s + " " + b1.to_s + " " + addparams.to_s
+			puts cmd
+			system cmd
+		end
 	end
-
+	if runtype.to_i == 1
+		dir2 = dir + "/S0/";
+		if File.exists?(dir2) == false
+			cmd = "mkdir -p " + dir2.to_s;
+			puts cmd
+			system(cmd);
+			cmd = "cp " + dir.to_s + "/* " + dir2.to_s
+			puts cmd
+			system(cmd)
+			
+			#cmd = "cd " + dir2.to_s + "; iterative5.rb FM3.119_ASDCe_I0023 FM3.119_ASDCe_I0023_B05.maplist4  outfile=S0.R0 scanitmax=15 binstep=1"
+			cmd = "cd " + dir2.to_s + "; iterative5.rb " + filter.to_s + "  " + prefix.to_s + ".maplist4  outfile=S0.R0 scanitmax=15 binstep=1"
+			
+			puts cmd
+			system(cmd)
+			
+			cmd = "cd " + dir2.to_s + "; convertMultiResToInput.rb S0.R0_14 S1.R0.multi 1 0 0"
+			puts cmd
+			system(cmd)
+		end
+	end
 	
 	index = index.to_i + 1
 end
