@@ -3,7 +3,7 @@
 #1) prefix
 #2) number of rings (optional, default 128) - 36 - A (48) B (192) C (128) D (36) E (15) F (6) G (2) H (20)
 #3) addparams map
-#4) run type: 0 generate maps - 1 iterative
+#4) run type: 0 generate maps - 1 iterative (S0) - 2 (S1) 
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
@@ -24,7 +24,7 @@ p = Parameters.new
 p.processInput(5, ARGV)
 
 #catfile = ""
-sleepsecs = 3
+sleepsecs = 30
 #for i in 5...ARGV.size
 #	if ARGV[i] == nil
 #		break;
@@ -667,10 +667,40 @@ while index.to_i < indexmax.to_i
 			
 			puts cmd
 			system(cmd)
-			
-			cmd = "cd " + dir2.to_s + "; convertMultiResToInput.rb S0.R0_14 S1.R0.multi 1 0 0"
+			filelist = Dir[dir0.to_s + "/S0.R0_??"].sort!
+			fileinput = filelist[filelist.size()-1];
+			cmd = "cd " + dir2.to_s + "; convertMultiResToInput.rb " + fileinput.to_s + " S1.R0.multi 1 0 0"
 			puts cmd
 			system(cmd)
+		end
+	end
+	
+	if runtype.to_i == 2
+		dir2 = dir + "/S1/";
+		dir0 = dir + "/S0/";
+		if File.exists?(dir2) == false
+			cmd = "mkdir -p " + dir2.to_s;
+			puts cmd
+			system(cmd);
+			cmd = "cp " + dir.to_s + "/* " + dir2.to_s
+			puts cmd
+			system(cmd)
+			if File.exists?(dir0) == false
+				filelist = Dir[dir0.to_s + "/S1.R*.multi"].sort!
+				filemulti = filelist[filelist.size()-1];
+				filemultibase = filemulti.split(".multi")[0]
+				cmd = "cp " + dir0.to_s + "/" + filemulti.to_s + " " + dir2.to_s
+				puts cmd
+				system(cmd)
+				
+				cmd = "cd " + dir2.to_s + "; multi5.rb " + prefix.to_s + ".maplist4 " + filemulti.to_s + " " + filemultibase.to_s + " flag=" + filemultibase.to_s
+				puts cmd
+				system(cmd)
+				
+			end
+			
+			
+		
 		end
 	end
 	
