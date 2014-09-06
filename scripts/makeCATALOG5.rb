@@ -702,6 +702,63 @@ while index.to_i < indexmax.to_i
 		end
 	end
 	
+	if runtype.to_i == 3
+		dir2 = dir + "/S3F1/";
+		dir0 = dir + "/S0/";
+		if File.exists?(dir2) == false
+				cmd = "mkdir -p " + dir2.to_s;
+				puts cmd
+				system(cmd);
+				cmd = "cp " + dir.to_s + "/* " + dir2.to_s
+				puts cmd
+				system(cmd)
+				if File.exists?(dir0) == true
+						filelist = Dir[dir0.to_s + "/S1.R*.multi"].sort!
+						filemulti = filelist[filelist.size()-1];
+						filemultibase = filemulti.split(".multi")[0].split("/")
+						filemultibase = filemultibase[filemultibase.size()-1]
+						cmd = "cp " + filemulti.to_s + " " + dir2.to_s
+						puts cmd
+						system(cmd)
+
+						#cmd = "cd " + dir2.to_s + "; multi5.rb " + prefix.to_s + ".maplist4 " + filemultibase.to_s + ".multi " + filemultibase.to_s + " flag=" + filemultibase.to_s
+						cmd = "cd " + dir2.to_s + "; makecatalog_phase3.rb " + filemultibase.to_s + ".multi  " + prefix.to_s + ".maplist4 " + prefix.to_s + " OUTS3F1 1 5 1 \" flag=S3.F1 \" 1"
+						puts cmd
+						system(cmd)
+
+				end
+		end
+	end
+	
+	if runtype.to_i == 4
+		dir2 = dir + "/S3F3/";
+		dir0 = dir + "/S0/";
+		if File.exists?(dir2) == false
+				cmd = "mkdir -p " + dir2.to_s;
+				puts cmd
+				system(cmd);
+				cmd = "cp " + dir.to_s + "/* " + dir2.to_s
+				puts cmd
+				system(cmd)
+				if File.exists?(dir0) == true
+						filelist = Dir[dir0.to_s + "/S1.R*.multi"].sort!
+						filemulti = filelist[filelist.size()-1];
+						filemultibase = filemulti.split(".multi")[0].split("/")
+						filemultibase = filemultibase[filemultibase.size()-1]
+						cmd = "cp " + filemulti.to_s + " " + dir2.to_s
+						puts cmd
+						system(cmd)
+
+						#cmd = "cd " + dir2.to_s + "; multi5.rb " + prefix.to_s + ".maplist4 " + filemultibase.to_s + ".multi " + filemultibase.to_s + " flag=" + filemultibase.to_s
+						cmd = "cd " + dir2.to_s + "; makecatalog_phase3.rb " + filemultibase.to_s + ".multi  " + prefix.to_s + ".maplist4 " + prefix.to_s + " OUTS3F3 3 5 1 \" flag=S3.F3 \" 1"
+						puts cmd
+						system(cmd)
+
+				end
+		end
+	end
+	
+	
 	index = index.to_i + 1
 end
 
