@@ -148,36 +148,42 @@ sources2.each { |s|
 	end
 
 	cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
-	datautils.execute(outlog, cmd)
+	#puts cmd;
 	
-	#eseguita la alike, copio via i risulati
-	cmd = "cp " + resfilename.to_s + "_" + namesource.to_s + "* " + diroutput
-	datautils.execute(outlog, cmd)
-	cmd = "cp " + resfilename.to_s + " " + diroutput + "/" + namesource.to_s + ".res"
-	datautils.execute(outlog, cmd)
-	#modifico ora i dati della sorgente che e' stata calcolata
-	sout = MultiOutput.new
-	sout.readDataSingleSource(resfilename.to_s + "_" + namesource.to_s);
+	if true then
+		
+		datautils.execute(outlog, cmd)
 	
-	d = datautils.distance(sout.l_peak, sout.b_peak, s.l, s.b)
+		#eseguita la alike, copio via i risulati
+		cmd = "cp " + resfilename.to_s + "_" + namesource.to_s + "* " + diroutput
+		datautils.execute(outlog, cmd)
+		cmd = "cp " + resfilename.to_s + " " + diroutput + "/" + namesource.to_s + ".res"
+		datautils.execute(outlog, cmd)
+		#modifico ora i dati della sorgente che e' stata calcolata
+		sout = MultiOutput.new
+		sout.readDataSingleSource(resfilename.to_s + "_" + namesource.to_s);
 	
-	fout1.write(sout.multiOutputLine + "\n")
-	fout2.write(sout.multiOutputLineFull3(diroutput) + " " + d.to_s + "\n")
+		d = datautils.distance(sout.l_peak, sout.b_peak, s.l, s.b)
 	
-	#aggiorna i valori
-	s.flux = sout.flux
-	s.l = sout.l_peak
-	s.b = sout.b_peak
-	#alla fine rimettilo a 0
-	sources2.each { |s|
-		s.print
-		s.fixflag=0
-	}
+		fout1.write(sout.multiOutputLine + "\n")
+		fout2.write(sout.multiOutputLineFull3(diroutput) + " " + d.to_s + "\n")
 	
-	fout3.write(sout.flux.to_s + " " + sout.l_peak.to_s + " " + sout.b_peak.to_s + " " + sout.sicalc.to_s + " " + " 0 2 " + namesource.to_s + "\n")
+		#aggiorna i valori
+		s.flux = sout.flux
+		s.l = sout.l_peak
+		s.b = sout.b_peak
+		#alla fine rimettilo a 0
+		sources2.each { |s|
+			s.print
+			s.fixflag=0
+		}
+	
+		fout3.write(sout.flux.to_s + " " + sout.l_peak.to_s + " " + sout.b_peak.to_s + " " + sout.sicalc.to_s + " " + " 0 2 " + namesource.to_s + "\n")
+	end
 	
 	index = index + 1
 }
+puts index
 fout1.close()
 fout2.close()
 fout3.close()
