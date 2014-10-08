@@ -164,6 +164,11 @@ if(parameters.timetype == "MJD")
 	tstop = datautils.time_mjd_to_tt(contact1);
 end
 
+if(parameters.timetype == "UTC")
+	tstart = datautils.time_utc_to_tt(contact0)
+	tstop = datautils.time_utc_to_tt(contact1)
+end
+
 puts "TMIN: " + tstart.to_s;
 puts "TMAX: " + tstop.to_s;
 
