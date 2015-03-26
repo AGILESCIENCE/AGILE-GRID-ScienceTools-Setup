@@ -74,14 +74,14 @@ end
 			c1.write("\\textbf{ Name } & \\textbf{ l } & \\textbf{ b } & Counts & \\textbf{ $\\sqrt(TS)$ } & \\textbf{ Flux 10$^{-6}$ }  & \\textbf{ r } & \\textbf{ S.Index } \\\\\n")
 		end
 		if index.to_i >= 0
-			#puts l
+			puts l
 			ee = l.split(" ");
 			if ee.size() <= 2
 				next
 			end
 			
 			#new
-			multioutput.readDataSingleSource(fileinp1, ee[0].to_s)
+			multioutput.readDataSingleSource2(fileinp1, ee[0].to_s)
 			dist = multioutput.sicalc
 			disterr = multioutput.sicalc_error
 			#dist = ""	
@@ -127,15 +127,17 @@ end
 						rrr = "500\""
 						marker = "*"
 					end
-					fidl = File.new("idlcom", "w")
-					fidl.write("getsource_name, " + lll.to_s + ", " + bbb.to_s)
-					fidl.close()
-					system("$IDL_DIR/bin/idl < idlcom")
-					ssname = ""
-					File.open("source_name.prt", "r").each_line do |line2|
-						ssname = line2
-					end
-					ssname = "2AGLJ" + ssname.chomp
+					
+					#fidl = File.new("idlcom", "w")
+					#fidl.write("getsource_name, " + lll.to_s + ", " + bbb.to_s)
+					#fidl.close()
+					#system("$IDL_DIR/bin/idl < idlcom")
+					#ssname = ""
+					#File.open("source_name.prt", "r").each_line do |line2|
+					#	ssname = line2
+					#end
+					#ssname = "2AGLJ" + ssname.chomp
+					ssname = ee[0].to_s
 					#outline = "ellipse(" + ee[2].to_s + "," + ee[3].to_s + "," + rrr.to_s + "," + rrr.to_s + ",0) #color=" + color.to_s + " width=1 text={" + ee[0].to_s + " " + format("%.2f", ee[1])  + marker.to_s + " (" + format("%.2f", ee[2]) + "," + format("%.2f", ee[3]) + "," + dist.to_s + ")}";
 					outline = "ellipse(" + lll.to_s + "," + bbb.to_s + "," + rrr.to_s + "," + rrr.to_s + ",0) #color=" + color.to_s + " width=1 text={" + ssname + " " + format("%.2f", ee[1])  + marker.to_s + " (" + format("%.2f", lll) + "," + format("%.2f", bbb) + "," + dist.to_s + ")}";
 					c.write(outline);

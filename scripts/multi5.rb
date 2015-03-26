@@ -149,8 +149,9 @@ for i in 1..stepi
 	if maplist != nil
 		inputfilemaps = outfile.to_s + prefixi.to_s + ".maplist4"
 		#if p.findermultimode != nil
+		if maplist != inputfilemaps
 			datautils.execute(outfile2, "cp " + maplist.to_s + " " + inputfilemaps.to_s)
-		#end
+		end
 		maplist = inputfilemaps
 	end
 	
