@@ -1,3 +1,4 @@
+#! /usr/bin/ruby
 #0) config file name
 
 filenameconf = ARGV[0];
