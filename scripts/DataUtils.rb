@@ -486,6 +486,10 @@ class DataUtils
 						bl1 = Math::PI / 2.0 - (bl.to_f * Math::PI  / 180.0)
 						bf1 = Math::PI / 2.0 - (bf.to_f * Math::PI  / 180.0)
 						m4 = Math.cos(bl1) * Math.cos(bf1)  + Math.sin(bl1) * Math.sin(bf1) * Math.cos(d2.to_f * Math::PI  / 180.0);			
+						if m4.to_f > 1 
+							m4 = 1
+						end
+						puts "DEBUG " + m4.to_s
 						d4 = Math.acos(m4.to_f) *  180.0 / Math::PI;
 						@distance = d4;
 					end
