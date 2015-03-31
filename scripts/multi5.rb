@@ -216,7 +216,7 @@ for i in 1..stepi
 	mout = MultiOutputList.new
 	mout.readSources(newoutfile, newlistsource, p.flag);
 
-	cmd = "ruby " + ENV["AGILE"] + "/scripts/convertMultiInputToReg.rb " + newlistsource.to_s + " blue";
+	cmd = "ruby " + ENV["AGILE"] + "/scripts/convertMultiInputToReg.rb " + newlistsource.to_s + " green";
 	datautils.execute(outfile2, cmd)
 
 	
