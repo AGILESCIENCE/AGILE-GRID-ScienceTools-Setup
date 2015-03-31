@@ -2,13 +2,13 @@
 #script for BUILD22
 #00) filter DIR (es: FM3.119_2_I0023, FM3.119_ASDCe_I0023, FM3.119_ASDCSTDf_I0023, FM3.119_ASDCSTDk_I0023)
 #01) output file name prefix
-#02) time start: contact or TT or MJD (default TT, use timetype)
-#03) time end: contact or TT or MJD (default TT, use timetype)
+#02) time start: contact or TT or MJD or UTC (default TT, use timetype)
+#03) time end: contact or TT or MJD or UTC (default TT, use timetype)
 #04) l (map center)
 #05) b (map center)
 # Optional
 ### COMMON
-#06) timetype: CONTACT, MJD, TT, default TT
+#06) timetype: CONTACT, MJD, UTC, TT, default TT
 #07) emin: energy min in MeV, if energybin=0, default 100
 #08) emax: energy max in MeV, if energybin=0, default 500000
 #09) fovradmin: fov rad min, to be used also with fovbinnumber, default 0
