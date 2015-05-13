@@ -489,7 +489,7 @@ class DataUtils
 						if m4.to_f > 1 
 							m4 = 1
 						end
-						puts "DEBUG " + m4.to_s
+						#puts "DEBUG " + m4.to_s
 						d4 = Math.acos(m4.to_f) *  180.0 / Math::PI;
 						@distance = d4;
 					end
