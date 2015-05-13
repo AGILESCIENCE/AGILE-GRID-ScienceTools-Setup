@@ -440,7 +440,7 @@ class AlikeUtils
 					end
 				end
 				ll1 = line.split(" ")
-				if(ll1.size() == 0)
+				if(ll1.size() < 3)
 					next
 				end
 				l1 = ll1[2].chomp;
