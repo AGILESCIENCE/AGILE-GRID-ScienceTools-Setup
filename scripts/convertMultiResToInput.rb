@@ -1,7 +1,7 @@
 #! /usr/bin/ruby
 #0) input file name
 #1) output file name
-#2) analysis type (optional, default 2)
+#2) analysis type (optional, default 1)
 #3) minsqrtTS to cut (optional, default 0)
 #4) radious search for alike (optional, default 0)
 #5) max off-axis (optional, if appliable ( column 9 is present), default 90)
@@ -18,7 +18,7 @@ fileout1 = ARGV[1]
 if ARGV[2] != nil
 	ant = ARGV[2]
 else
-	ant = 2
+	ant = 1
 end
 if ARGV[3] != nil
 	mins = ARGV[3]
