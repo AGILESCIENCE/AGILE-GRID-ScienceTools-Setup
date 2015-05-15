@@ -229,6 +229,9 @@ for i in 1..stepi
 	
 	cmd = "ruby " + ENV["AGILE"] + "/scripts/convertMultiResToInput.rb " + newoutfile.to_s + " " + newoutfile.to_s + ".resfull.multi";
 	datautils.execute(outfile2, cmd)
+	
+	cmd = "ruby " + ENV["AGILE"] + "/scripts/extractres2.rb " + newoutfile.to_s + ".resfull " + newoutfile.to_s + ".res2";
+	datautils.execute(outfile2, cmd)
 
 	#cmd = "ruby ~/grid_scripts3/convertMultiResToRegData.rb " + outfile.to_s;
 	#datautils.execute(outfile2, cmd)
