@@ -3,6 +3,7 @@
 #1) file name output (optional): if specified, generate a multi file
 #2) mints
 #3) color
+#4) 2AGL name (1 yes, 0 no)
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
@@ -59,6 +60,7 @@ if ARGV[1] != nil
 	end
 	fout = File.new(ARGV[1], "w")
 	fout2 = File.new(ARGV[1] + ".reg", "w");
+	fout3 = File.new(ARGV[1] + ".ell", "w");
 	File.open(ARGV[0]).each do | line1 |
 		lll1 = line1.split(" ")
 		name = lll1[0]
@@ -69,16 +71,50 @@ if ARGV[1] != nil
 		l1 = lll1[2]
 		b1 = lll1[3]
 		if ts.to_f >= mints.to_f
+			if lll1[10].to_i != -1
+				lll = lll1[10]
+				bbb = lll1[11]
+			else
+				lll = l1
+				bbb = b1
+			end
+			if(ARGV[4].to_i == 1)
+				fidl = File.new("idlcom", "w")
+
+                        	fidl.write("getsource_name, " + lll.to_s + ", " + bbb.to_s)
+
+                        	fidl.close()
+
+                        	system("idl < idlcom > /dev/null 2> /dev/null")
+
+                        	ssname = ""
+
+                        	File.open("source_name.prt", "r").each_line do |line2|
+
+                                                ssname = line2
+
+                        	end
+
+                        	ssname = "2AGLJ" + ssname.chomp
+
+				name = ssname;
+				#puts name
+			end
 			fout.write(flux + " " + l1 + " " + b1 + " 2.1 0 2 " + name + " 0.0\n")
 			if lll1[10].to_i != -1
-				fout2.write("galactic;ellipse(" + lll1[10].to_s + "," + lll1[11].to_s + "," + (lll1[13].to_f+0.1).to_s + "," + (lll1[14].to_f+0.1).to_s + "," + lll1[15].to_s + ") # color=" + color + " text={" + name + "}")
+				fout2.write("galactic;ellipse(" + lll1[10].to_s + "," + lll1[11].to_s + "," + (lll1[13].to_f+0.1).to_s + "," + (lll1[14].to_f+0.1).to_s + ", " + (- lll1[15].to_f).to_s + ") # color=" + color + " text={" + name + "}")
+				fout3.write(name + " " + lll1[10].to_s + " " + lll1[11].to_s + " " + (lll1[13].to_f+0.1).to_s + " " + (lll1[14].to_f+0.1).to_s + " " + (- lll1[15].to_f).to_s)
+				
 			else
 				fout2.write("galactic;ellipse(" + l1.to_s + "," + b1.to_s + ",1800\",1800\",0.0) # color=" + color + " text={" + name + "}")
+				fout3.write(name + l1.to_s + " " + b1.to_s + " 0.6 0.6 0.0 ")
 			end
 			fout2.write("\n")
+			fout3.write("\n")
 		end
 	end
 	fout.close()
 	fout2.close()
+	fout3.close()
 end
 
