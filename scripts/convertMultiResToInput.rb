@@ -5,11 +5,12 @@
 #3) minsqrtTS to cut (optional, default 0)
 #4) radious search for alike (optional, default 0)
 #5) max off-axis (optional, if appliable ( column 9 is present), default 90)
+#6) fixflag=0 for sources that starts with _
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -6 " + $0 );
+	system("head -9 " + $0 );
 	exit;
 end
 
@@ -35,10 +36,35 @@ if ARGV[5] != nil
 else
 	maxoff = 90
 end
+if ARGV[6] != nil
+	flag = ARGV[6]
+else
+	flag = 0
+end
 
 alikeutils = AlikeUtils.new
 
 alikeutils.convertMultiResToMulti(fileinp1, fileout1, ant, 2.0, mins, maxoff, radiuossearch);
+
+if flag.to_i != 0
+        fout = File.new(ARGV[1] + ".tmp", "w")
+        File.open(ARGV[1]).each do | line1 |
+                lll1 = line1.split(" ")
+                name = lll1[6]
+                fixflag = lll1[4]
+                dist = "0.0"
+                if lll1.size() == 8
+                        dist = lll1[7]
+                end
+                if name[0] == 49 || name[0] == "_"
+                        fixflag = "0"
+                end
+                fout.write(lll1[0] + " " + lll1[1] + " " + lll1[2] + " " + lll1[3] + " " + fixflag + " " + lll1[5] + " " + lll1[6] + " " + dist + "\n")
+        end
+        fout.close()
+        system("mv " + ARGV[1] + ".tmp " + ARGV[1])
+        system("cat " + ARGV[1]);
+end
 
 
 

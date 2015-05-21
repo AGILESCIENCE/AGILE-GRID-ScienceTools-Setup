@@ -458,8 +458,10 @@ class AlikeUtils
 					multioutput.readDataSingleSource(filenameinput.to_s + "_" + ll1[0].to_s)
 					spectralindex = multioutput.si
 				end
-				if sqrtts.to_f >= cutsqrtts.to_f
-					if flux.to_s == "Inf" || flux.to_f <= 0
+				
+				if sqrtts.to_f >= cutsqrtts.to_f || name[0] == "_" || name[0] == 49
+					
+					if flux.to_s == "Inf" || flux.to_f < 0
 						index = index + 1
 						next
 					end

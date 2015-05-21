@@ -1,7 +1,7 @@
 #! /usr/bin/ruby
 #0) tstep 
 #1) tbinsize (1 day = 86400)
-#2) .ob file with gal e iso
+#2) .ob file with gal e iso (generated with readOB.rb)
 #3) output file name
 #4) prefix (OP, OS, OB)
 
