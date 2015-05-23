@@ -4,10 +4,11 @@
 #2) filter
 #3) dir output
 #4) fixflag of analysis of the main source
-#6) distanceToFixFlag0: see next parameters
-#7) fixflagneighbour: if the source of the list is < distanceToFixFlag0 put its fixflag=fixflagneighbour
-#8) additional commands to multi5.rb (optional)
-#9) fixisogalstep0 = 0 none, 1 apply
+#5) distanceToFixFlag0: see next parameters
+#6) fixflagneighbour: if the source of the list is < distanceToFixFlag0 put its fixflag=fixflagneighbour
+#7) additional commands to multi5.rb (optional)
+#8) fixisogalstep0 = 0 none, 1 apply
+#9) update results for each step (default yes)
 
 #Questo script si usa per fare la scansione su una lista di sorgenti (source list) fissandole tutte tranne una. Alla fine si raccoglie il risultato finale nelle directory che viene creata (dir output)
 #NB: tutte le sorgenti sono messe con fixflag=0 di default prima di inziare l'analisi
@@ -31,6 +32,7 @@ diroutput = ARGV[3]
 multilist = diroutput
 fixflaganalysis=ARGV[4]
 
+
 distanceToFixFlag0 = ARGV[5]
 fixflagneighbour = ARGV[6]
 
@@ -43,6 +45,13 @@ fixisogalstep0 = 0
 if ARGV[8] != nil
 	fixisogalstep0  = ARGV[8]
 end
+
+updateres = 1
+if ARGV[9] != nil
+	updateres  = ARGV[9]
+end
+
+
 class Source < 
  Struct.new(:flux, :l, :b, :si, :fixflag, :minsqrtts, :name, :rmax)
 
@@ -169,9 +178,11 @@ sources2.each { |s|
 		fout2.write(sout.multiOutputLineFull3(diroutput) + " " + d.to_s + "\n")
 	
 		#aggiorna i valori
-		s.flux = sout.flux
-		s.l = sout.l_peak
-		s.b = sout.b_peak
+		if updateres
+			s.flux = sout.flux
+			s.l = sout.l_peak
+			s.b = sout.b_peak
+		end
 		#alla fine rimettilo a 0
 		sources2.each { |s|
 			s.print

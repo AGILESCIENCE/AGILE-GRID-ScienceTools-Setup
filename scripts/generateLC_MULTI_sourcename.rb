@@ -1,3 +1,4 @@
+#! /usr/bin/ruby
 #0) pattern (OB*.res)
 #1) output file name
 #2) source name
@@ -20,7 +21,7 @@ datautils = DataUtils.new
 agilefov = AgileFOV.new
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
-	system("head -14 " + $0 );
+	system("head -16 " + $0 );
 	exit;
 end
 

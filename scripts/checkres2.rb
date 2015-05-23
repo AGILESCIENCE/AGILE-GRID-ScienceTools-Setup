@@ -3,7 +3,8 @@
 #1) file name output (optional): if specified, generate a multi file
 #2) mints
 #3) color
-#4) 2AGL name (1 yes, 0 no)
+#4) 2AGL name generation (1 yes, 0 no)
+#5) list of sources to write to output
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
@@ -58,12 +59,14 @@ if ARGV[1] != nil
 	else
 		color = "green"
 	end
-	fout = File.new(ARGV[1], "w")
+	fout = File.new(ARGV[1] + ".multi", "w")
 	fout2 = File.new(ARGV[1] + ".reg", "w");
 	fout3 = File.new(ARGV[1] + ".ell", "w");
+	fout4 = File.new(ARGV[1] + ".res2", "w");
 	File.open(ARGV[0]).each do | line1 |
 		lll1 = line1.split(" ")
 		name = lll1[0]
+		
 		ts = lll1[1]
 		flux = lll1[6]
 		fixflag = "0"
@@ -91,7 +94,7 @@ if ARGV[1] != nil
 
                         	File.open("source_name.prt", "r").each_line do |line2|
 
-                                                ssname = line2
+                            ssname = line2
 
                         	end
 
@@ -100,14 +103,35 @@ if ARGV[1] != nil
 				name = ssname;
 				#puts name
 			end
+			wr = false
+			if ARGV[5] != nil
+				File.open(ARGV[5]).each_line do | line2 |
+					if name.chomp == line2.chomp
+						wr = true
+					end
+				end
+			else
+				wr = true
+			end
+			if wr == false
+				next
+			end
 			fout.write(flux + " " + l1 + " " + b1 + " 2.1 0 2 " + name + " 0.0\n")
+			out2 = name
+			for i in 1..lll1.size()
+				out2 = out2 + " " + lll1[i].to_s
+			end
+			fout4.write(out2 + "\n")
+			
+			systematicerror = 0.2
+			
 			if lll1[10].to_i != -1
-				fout2.write("galactic;ellipse(" + lll1[10].to_s + "," + lll1[11].to_s + "," + (lll1[13].to_f+0.1).to_s + "," + (lll1[14].to_f+0.1).to_s + ", " + (- lll1[15].to_f).to_s + ") # color=" + color + " text={" + name + "}")
-				fout3.write(name + " " + lll1[10].to_s + " " + lll1[11].to_s + " " + (lll1[13].to_f+0.1).to_s + " " + (lll1[14].to_f+0.1).to_s + " " + (- lll1[15].to_f).to_s)
+				fout2.write("galactic;ellipse(" + lll1[10].to_s + "," + lll1[11].to_s + "," + (lll1[13].to_f+systematicerror.to_f).to_s + "," + (lll1[14].to_f+systematicerror.to_f).to_s + ", " + (- lll1[15].to_f).to_s + ") # color=" + color + " text={" + name + "}")
+				fout3.write(name + " " + lll1[10].to_s + " " + lll1[11].to_s + " " + (lll1[13].to_f+systematicerror.to_f).to_s + " " + (lll1[14].to_f+systematicerror.to_f).to_s + " " + (- lll1[15].to_f).to_s)
 				
 			else
 				fout2.write("galactic;ellipse(" + l1.to_s + "," + b1.to_s + ",1800\",1800\",0.0) # color=" + color + " text={" + name + "}")
-				fout3.write(name + l1.to_s + " " + b1.to_s + " 0.6 0.6 0.0 ")
+				fout3.write(name + " " + l1.to_s + " " + b1.to_s + " 0.6 0.6 0.0 ")
 			end
 			fout2.write("\n")
 			fout3.write("\n")
@@ -116,5 +140,6 @@ if ARGV[1] != nil
 	fout.close()
 	fout2.close()
 	fout3.close()
+	fout4.close()
 end
 
