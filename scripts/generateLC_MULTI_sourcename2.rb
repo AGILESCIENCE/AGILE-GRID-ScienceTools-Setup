@@ -1,4 +1,3 @@
-#! /usr/bin/ruby
 #0) pattern (OB*.res)
 #1) output file name
 #2) source name
@@ -13,15 +12,14 @@
 #10) period: for calc phase
 
 #generate a LC list reading the files with the pattern contained in prefix
-
-load ENV["AGILE"] + "scripts/conf.rb"
-load ENV["AGILE"] + "scripts/MultiOutput.rb"
+load "~/grid_scripts2/conf.rb"
+load "~/grid_scripts2/MultiOutput.rb"
 
 datautils = DataUtils.new
 agilefov = AgileFOV.new
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
-	system("head -16 " + $0 );
+	system("head -13 " + $0 );
 	exit;
 end
 
@@ -29,12 +27,13 @@ end
 a = Dir[ARGV[0]]
 a.sort!
 ndim = a.size();
+
 output = ARGV[1];
 sourcename = ARGV[2]
 
-minsqrtTS = ARGV[3]
-l = ARGV[4]
-b = ARGV[5]
+	minsqrtTS = ARGV[3]
+	l = ARGV[4]
+	b = ARGV[5]
 
 radius = -999;
 maxR = -999;
@@ -65,6 +64,9 @@ for i in 6...ARGV.size
 
 end
 
+
+
+
 out = File.new(output, "w");
 out1file = output.to_s + ".lc"
 out2 = File.new(out1file, "w");
@@ -94,18 +96,16 @@ a.each do | xx |
 	File.open(xx).each_line do | line |
 		 
 		if index.to_i == nrow - 2
-			#ee = line.split("'");
-			#if ee.size().to_i > 1
-				#tstart = ee[1];
-			#end
-			tstart = line.chomp
+			ee = line.split("'");
+			if ee.size().to_i > 2
+				tstart = ee[1];
+			end
 		end
 		if index.to_i == nrow - 1
-			#ee = line.split("'");
-			#if ee.size().to_i > 1
-				#tstop = ee[1];
-			#end
-			tstop = line.chomp
+			ee = line.split("'");
+			if ee.size().to_i > 2
+				tstop = ee[1];
+			end
 		end
 		index = index.to_i + 1;
 	end
@@ -128,7 +128,7 @@ a.each do | xx |
 
 	mo = MultiOutput.new;
 	
-	mo.readDataSingleSource2(xx, sourcename);
+	mo.readDataSingleSource(xx, sourcename);
 
 	ul = 0.0;
 	exp = 0.0;
@@ -144,9 +144,6 @@ a.each do | xx |
 	dimr = " l b R A B PHI " 
 	if mo.l != -1
 		dimr = mo.fullellipseline
-	end
-	if dimr == nil
-		dimr = " l b R A B PHI " 
 	end
 	
 	#identificazione dell'off-axis
@@ -216,7 +213,7 @@ a.each do | xx |
 	if tstart.to_s != ""
 		outstr = format("%3.2f", mo.l_peak) + "\t" + format("%3.2f", mo.b_peak) + "\t" + format("%3.2f", mo.counts.to_f) + "\t" + format("%3.2f", mo.counts_error.to_f) + "\t" + format("%3.2f", mo.sqrtTS.to_f) + "\t" +  format("%.2e", mo.flux.to_f) + "\t" +  format("%.2e", mo.flux_error.to_f) + "\t" +  format("%.2e", ul.to_f) + "\t" + format("%.2f", gascoeff.to_f) + "\t" + format("%.2f", isocoeff.to_f) + "\t" + format("%3.2f", d3.to_f) + "\t" + obname.to_s + "\t" + format("%.4f", phase.to_f) + "\t" + format("%.2f", timestartmjd) + "-" + format("%.2f", timestopmjd) + "\t" + format("%.2f",distfov);
 		
-		outstrb = tstart.to_s + "-" + tstop.to_s  + "\t"  + format("%.6f", timestartobs.to_f) + "\t" + format("%.6f", timestopobs.to_f) + "\t" + lobs.to_s + "\t" + bobs.to_s + "\t" + dimr.chomp.to_s + "\t" + parama.chomp.to_s + "\t" + spectindex.to_s + "\t" + exp.to_s + "\n"
+		outstrb = tstart + "-" + tstop  + "\t"  + format("%.6f", timestartobs.to_f) + "\t" + format("%.6f", timestopobs.to_f) + "\t" + lobs.to_s + "\t" + bobs.to_s + "\t" + dimr.chomp.to_s + "\t" + parama.chomp.to_s + "\t" + spectindex.to_s + "\t" + exp.to_s + "\n"
 		#timestartobs.to_s + "\t"
 		if mo.sqrtTS.to_f >= minsqrtTS.to_f && ul.to_f != 0.0
 			puts "OUT " + outstr.to_s + "\t" + outstrb.to_s
