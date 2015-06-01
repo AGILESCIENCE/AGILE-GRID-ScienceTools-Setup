@@ -18,7 +18,7 @@ load  ENV["AGILE"] + "/scripts/conf.rb"
 
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
-	system("head -14 " + $0 );
+	system("head -16 " + $0 );
 	exit;
 end
 alikeutils = AlikeUtils.new;
