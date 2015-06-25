@@ -4,7 +4,9 @@
 #2) mints
 #3) color
 #4) 2AGL name generation (1 yes, 0 no)
-#5) list of sources to write to output
+#5) minimum exposure (default 0, e.g. 5.4e8)
+#6) systematic error (default 0.2)
+#7) list of sources to write to output
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
@@ -13,8 +15,20 @@ filename = ARGV[0]
 datautils = DataUtils.new
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -3 " + $0 );
+	system("head -10 " + $0 );
 	exit;
+end
+
+if ARGV[5] != nil
+	expmin = ARGV[5]
+else
+	expmin = 0
+end
+
+if ARGV[6] != nil
+	systematicerror = ARGV[6]
+else
+	systematicerror = 0.2
 end
 
 
@@ -73,7 +87,8 @@ if ARGV[1] != nil
 		dist = "0.0"
 		l1 = lll1[2]
 		b1 = lll1[3]
-		if ts.to_f >= mints.to_f
+		exp = lll1[16]
+		if ts.to_f >= mints.to_f && exp.to_f > expmin.to_f
 			if lll1[10].to_i != -1
 				lll = lll1[10]
 				bbb = lll1[11]
@@ -104,8 +119,8 @@ if ARGV[1] != nil
 				#puts name
 			end
 			wr = false
-			if ARGV[5] != nil
-				File.open(ARGV[5]).each_line do | line2 |
+			if ARGV[7] != nil
+				File.open(ARGV[7]).each_line do | line2 |
 					if name.chomp == line2.chomp
 						wr = true
 					end
@@ -123,7 +138,7 @@ if ARGV[1] != nil
 			end
 			fout4.write(out2 + "\n")
 			
-			systematicerror = 0.2
+			
 			
 			if lll1[10].to_i != -1
 				fout2.write("galactic;ellipse(" + lll1[10].to_s + "," + lll1[11].to_s + "," + (lll1[13].to_f+systematicerror.to_f).to_s + "," + (lll1[14].to_f+systematicerror.to_f).to_s + ", " + (- lll1[15].to_f).to_s + ") # color=" + color + " text={" + name + "}")

@@ -72,6 +72,8 @@ out2file = output.to_s + ".short"
 out3 = File.new(out2file, "w");
 out3file = output.to_s + ".ob"
 out4 = File.new(out3file, "w");
+out5file = output.to_s + ".tlist"
+out5 = File.new(out5file, "w");
 
 startmjd = -1
 endmjd = -1
@@ -222,6 +224,7 @@ a.each do | xx |
 			puts "OUT " + outstr.to_s + "\t" + outstrb.to_s
 			out.write(outstr.chomp + "\t");
 			out.write(outstrb.chomp + "\n");
+			out5.write(format("%.6f", timestartobs.to_f) + "\t" + format("%.6f", timestopobs.to_f)+ "\n");
 			#out.write("\n")
 		end
 		outstr3 = format("%3.2f", mo.l_peak) + "\t" + format("%3.2f", mo.b_peak) + "\t" + "\t" + format("%3.2f", mo.sqrtTS.to_f) + "\t" +  format("%.2e", mo.flux.to_f) + "\t" +  format("%.2e", mo.flux_error.to_f) + "\t" +  format("%.2e", ul.to_f) + "\t"  + format("%3.2f", d3.to_f) + "\t" + obname.to_s + "\t" + format("%.4f", phase) + "\t" + format("%.2f", timestartmjd) + "-" + format("%.2f", timestopmjd) + "\t" + tstart + "-" + tstop  + "\t" + format("%.2f",distfov) + "\t" + spectindex.to_s + "\t" + exp.to_s + "\n"
@@ -273,6 +276,7 @@ a.each do | xx |
 end
 out.close();
 out2.close();
+out5.close();
 
 cmd = "mv " + out1file.to_s + " " + out1file.to_s + ".tmp"
 puts cmd
