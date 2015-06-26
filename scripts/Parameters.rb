@@ -55,6 +55,7 @@ class Parameters
 			@seed=0
 			
 			@fixisogalstep0 = nil;
+			@doublestep = nil;
 			@galcoeff = "-1";
 			@isocoeff = "-1";
 			@galmode = 1;
@@ -186,6 +187,10 @@ class Parameters
 		
 		def fixisogalstep0
 			@fixisogalstep0 
+		end
+		
+		def doublestep
+			@doublestep
 		end
 		
 		def galcoeff
@@ -428,6 +433,7 @@ class Parameters
 				a = a + "fovbinnumber=" + @fovbinnumber.to_s + " "
 				a = a + "galcoeff=" + @galcoeff.to_s + " "
 				a = a + "fixisogalstep0=" + @fixisogalstep0.to_s + " "
+				a = a + "doublestep=" + @doublestep.to_s + " "
 				a = a + "isocoeff=" + @isocoeff.to_s + " "
 				a = a + "multitype=" + @multitype.to_s + " "
 				a = a + "lpointing=" + @lpointing.to_s + " "
@@ -584,6 +590,8 @@ class Parameters
 					@galcoeff = value;
 				when "fixisogalstep0"
 					@fixisogalstep0 = value;
+				when "doublestep"
+					@doublestep = value;
 				when "isocoeff"
 					@isocoeff = value;
 				when "multitype"

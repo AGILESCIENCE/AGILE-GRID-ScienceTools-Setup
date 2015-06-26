@@ -189,6 +189,7 @@ class AlikeUtils
 		#Le sorgenti della seconda lista sono messe in cima alla lista
 		#E' quindi la seconda lista che ha la precedenza
 		def appendMulti(fileinputmulti, fileinputappend, fileoutput, radiousremove)
+				datautil = DataUtils.new
 				list = [];
 				listinsert = [];
 				index = 0;
@@ -216,20 +217,13 @@ class AlikeUtils
 						sl = sourcel.split(" ");
 						ll = sl[1];
 						bl = sl[2];
-						if (ll.to_f > 180)
-							ll = -(360 - ll.to_f);
-						end
-						
 						sf = sourcef.split(" ");
 						lf = sf[1];
 						bf = sf[2];
-						if(lf.to_f > 180)
-							lf = -(360 - lf.to_f )
-						end
-						d1 = bl.to_f - bf.to_f
-						d2 = ll.to_f - lf.to_f;
-						d3 = Math.sqrt(d1.to_f*d1.to_f + d2.to_f * d2.to_f);
-			
+						
+						#d3 = Math.sqrt(d1.to_f*d1.to_f + d2.to_f * d2.to_f);
+						d3 = datautil.distance(ll, bl, lf, bf)
+						
 						if d3.to_f < radiousremove.to_f
 							#remove the source from list of spot finder
 							listinsert[indexk] = 0;
@@ -254,76 +248,6 @@ class AlikeUtils
 				afo.close();
 		end
 
-		#Aggiunge ad una lista per AG_srclist (primo file) un'altra lista AG_srclist (secondo file). Le sorgenti della seconda lista sono sempre tenute, quelle della prima lista sono rimosse se troppo vicino (<= radiusremove) rispetto a quelle della seconda.
-		#Le sorgenti della seconda lista sono messe in cima alla lista
-		#E' quindi la seconda lista che ha la precedenza
-		def appendList(fileinputbase, fileinputappend, fileoutput, radiousremove)
-				
-	
-				list = [];
-				listinsert = [];
-				index = 0;
-				File.open(fileinputbase).each_line do |line|
-					list += [line];
-					listinsert += [1];
-					index = index + 1;
-				end
-				puts "NUMBER OF SOURCE FOUND " + index.to_s;
-				
-				list_fixed = [];
-				listinsert_fixed = [];
-				index_fixed = 0;
-				File.open(fileinputappend).each_line do |line|
-					list_fixed += [line];
-					listinsert_fixed += [1];
-					index_fixed = index_fixed + 1;
-				end
-				puts "NUMBER OF SOURCE FIXED " + index_fixed.to_s;
-				indexk = 0;
-				list.each do | sourcel |
-					puts sourcel
-					list_fixed.each do | sourcef |
-						puts sourcef;
-						sl = sourcel.split(" ");
-						ll = sl[5];
-						bl = sl[6];
-						if (ll.to_f > 180)
-							ll = -(360 - ll.to_f);
-						end
-						
-						sf = sourcef.split(" ");
-						lf = sf[5];
-						bf = sf[6];
-						if(lf.to_f > 180)
-							lf = -(360 - lf.to_f )
-						end
-						d1 = bl.to_f - bf.to_f
-						d2 = ll.to_f - lf.to_f;
-						d3 = Math.sqrt(d1.to_f*d1.to_f + d2.to_f * d2.to_f);
-			
-						if d3.to_f < radiousremove.to_f
-							#remove the source from list of spot finder
-							listinsert[indexk] = 0;
-						end
-					end
-					indexk = indexk + 1
-				end
-				#e ora costruisci la lista finale mettendo prima quelle fixed, poi le restanti di spot finder
-				afo = File.new(fileoutput, "w")
-				
-				indexl = 0
-				list_fixed.each do | sourcef |
-					afo.write(sourcef);
-				end
-				list.each do | sourcel |
-					if listinsert[indexl] == 1
-						afo.write(sourcel);
-					end
-					indexl = indexl + 1;
-				end
-				
-				afo.close();
-		end
 
 		def addDistanceToList(filename, l, b) 
 			datautil = DataUtils.new;
@@ -612,7 +536,7 @@ class AlikeUtils
 					puts "A " + index.to_s + " " + ll[1].to_s + " " + dist.to_s + " " + maxoffaxis.to_s
 					if dist.to_f <= maxoffaxis.to_f and dist.to_f >= 0
 						ntotsource = ntotsource + 1;
-						puts "AAAAAAAAAAAAAA" + ll[1].to_s
+						#puts "AAAAAAAAAAAAAA" + ll[1].to_s
 						if ll[1].to_f <= 0.01
 							ntotsource0 = ntotsource0 + 1
 						end
@@ -655,4 +579,30 @@ class AlikeUtils
 			fdiag.write(outline);
 			fdiag.close();
 		end
+		
+		#spot6
+		def rewriteMultiListWithFixflag(inputname, outputname, ff)
+			
+			fout = File.new(outputname, "w")
+			File.open(inputname).each do | line1 |
+				lll1 = line1.split(" ")
+				l1 = lll1[1]
+				b1 = lll1[2]
+				name = lll1[6]
+				fixflag = lll1[4]
+				dist = "0.0"
+				if lll1.size() == 8
+					dist = "0.0"
+				end
+				fixflag = ff.to_s
+				if name[0] == 49 || name[0] == "_"
+					fixflag = "0"
+				end
+				fout.write(lll1[0] + " " + lll1[1] + " " + lll1[2] + " " + lll1[3] + " " + fixflag + " " + lll1[5] + " " + lll1[6] + " " + dist + "\n")
+			end
+			fout.close()
+		end
+		
+		
+
 end

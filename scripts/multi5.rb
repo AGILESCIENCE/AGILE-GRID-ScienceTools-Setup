@@ -20,6 +20,9 @@
 #15) findermultimode - default 0 = do not use, or the name of the source to be found. Analysis in 2 steps:
 #	(1) ulcl=0, loccl=0, fixflag=3 to perform the first search
 #	(2) use standard ulcl and loccl but with the new position of the source found in step (1)
+#16) doublestep - default none = do not perform double step, otherwise doublestep=minsqrttsthr,secondstepfixflag,secondstepmaxradius and perform analysis in two steps (spot6 mode), where secondstepmaxradius is the last column of the .multi
+#	(1) fixflag=1 for all the sources of the list
+#	(2) generate a new list selecting the sources of the first list with sqrt(TS) > minsqrttsthr. The new list has fixflag = secondstepfixflag
 
 #MAPLIST
 #Each line contains a set of maps:
@@ -59,7 +62,7 @@ load ENV["AGILE"] + "/scripts/conf.rb"
 datautils = DataUtils.new
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
-	system("head -58 " + $0 );
+	system("head -60 " + $0 );
 	exit;
 end
 
@@ -91,11 +94,29 @@ stepi=1
 prefixi = ""
 ulcl = p.ulcl
 loccl = p.loccl
+
 if p.findermultimode != nil
 	stepi=2
 	prefixi = ".step1"
 	ulcl = 0
 	loccl = 0
+end
+
+doublestep_thr = nil
+doublestep_fixflag = nil
+if p.doublestep != nil
+	stepi=2
+	prefixi = ".step1"
+	begin
+		doublestep_thr = "3.0";
+		doublestep_fixflag = "1";
+		doublestep_maxradius = "0.0";
+		doublestep_thr = p.doublestep.split(",")[0]
+		doublestep_fixflag = p.doublestep.split(",")[1]
+		doublestep_maxradius = p.doublestep.split(",")[2]
+	rescue
+		puts "error in doublestep parameters"
+	end
 end
 
 lastoutfile = ""
@@ -145,6 +166,10 @@ for i in 1..stepi
 		ulcl = p.ulcl
 		loccl = p.loccl
 	end
+	
+	if p.doublestep != nil && i.to_i == 2
+		prefixi = ""
+	end
 
 	if maplist != nil
 		inputfilemaps = outfile.to_s + prefixi.to_s + ".maplist4"
@@ -163,12 +188,22 @@ for i in 1..stepi
 		datautils.execute(outfile2, "cp " + listsource.to_s + " " + newlistsource.to_s)
 	#end
 	if p.findermultimode != nil && i.to_i == 2
-		#elaborazione della source list
+		#rewrite newlistsource
 	
 		multioutput.readDataSingleSource2(lastoutfile, p.findermultimode.split(",")[0])
 	
 		alikeutils.rewriteMultiInputWithNewCoordinatesSource(listsource, newlistsource, p.findermultimode.split(",")[0], multioutput.l_peak, multioutput.b_peak);
 	
+	end
+
+	if p.doublestep != nil && i.to_i == 1
+		#rewrite newlistsource with fixflag == 1 for all the sources except source names starting with _
+		alikeutils.rewriteMultiListWithFixflag(listsource, newlistsource, 1)
+	end
+	
+	if p.doublestep != nil && i.to_i == 2
+		#rewrite newlistsource with fixflag = doublestep_fixflag, sqrt(TS) > doublestep_thr except for sources with source name starting with _
+		system("convertMultiResToInput.rb " + lastoutfile.to_s + " " + newlistsource.to_s + " " + doublestep_fixflag.to_s + " " + doublestep_thr.to_s + " " + doublestep_maxradius.to_s + " 90 1")
 	end
 
 	newoutfile = outfile.to_s + prefixi.to_s
