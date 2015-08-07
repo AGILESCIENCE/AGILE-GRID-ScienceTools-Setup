@@ -211,9 +211,9 @@ class AlikeUtils
 				puts "NUMBER OF SOURCE FIXED " + index_fixed.to_s;
 				indexk = 0;
 				list.each do | sourcel |
-					puts sourcel
+					#puts sourcel
 					list_fixed.each do | sourcef |
-						puts sourcef;
+						#puts sourcef;
 						sl = sourcel.split(" ");
 						ll = sl[1];
 						bl = sl[2];

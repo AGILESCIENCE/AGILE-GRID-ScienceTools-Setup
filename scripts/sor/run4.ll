@@ -5,7 +5,7 @@
 # 
 
 #@ shell = /bin/bash
-#@ job_name = sor
+#@ job_name = sor4
 #@ job_type = serial
 #@ environment= COPY_ALL
 #@ class    = large
@@ -30,4 +30,4 @@
 
   . ~/profile
 
-  ruby sor.rb txt.conf
+  analysis4.rb txtv4.conf

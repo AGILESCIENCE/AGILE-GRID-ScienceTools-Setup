@@ -1,5 +1,5 @@
 #! /usr/bin/ruby
-#0) catalog (~/grid_scripts2/catalogs/integral_lmxb.cat)
+#0) catalog (~/grid_scripts2/catalogs/integral_lmxb.multi) - .multi format
 #1) l center
 #2) b center
 #3) outfile
