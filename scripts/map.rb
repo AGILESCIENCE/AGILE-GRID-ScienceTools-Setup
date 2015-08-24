@@ -248,12 +248,12 @@ while time.to_f < tstop.to_f
 			end
 			datautils.getSkyMatrix(filter, emin, emax, parameters.skytype)
 			skymap =  datautils.skymatrix;
-			if skymapL == ""
+			#if skymapL == ""
 				skymapL =  datautils.skymatrixL;
-			end
-			if skymapH == ""
+			#end
+			#if skymapH == ""
 				skymapH =  datautils.skymatrixH;
-			end
+			#end
 			puts "skymap: " + skymap.to_s
 			puts "skymap LOW res: " + skymapL.to_s
 			puts "skymap HIGH res: " + skymapH.to_s
