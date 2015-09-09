@@ -87,6 +87,7 @@ if ARGV[1] != nil
 		dist = "0.0"
 		l1 = lll1[2]
 		b1 = lll1[3]
+		si1 = lll1[8]
 		exp = lll1[16]
 		if ts.to_f >= mints.to_f && exp.to_f > expmin.to_f
 			if lll1[10].to_i != -1
@@ -131,7 +132,7 @@ if ARGV[1] != nil
 			if wr == false
 				next
 			end
-			fout.write(flux + " " + l1 + " " + b1 + " 2.1 0 2 " + name + " 0.0\n")
+			fout.write(flux + " " + l1 + " " + b1 + " " + si1.to_s + " 0 2 " + name + " 0.0\n")
 			out2 = name
 			for i in 1..lll1.size()
 				out2 = out2 + " " + lll1[i].to_s
