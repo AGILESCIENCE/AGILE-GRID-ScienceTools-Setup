@@ -5,10 +5,10 @@ clear all
 close all
 clc
 
-fname1   = 'cat2b_4_gal.ell';
+fname1   = 'cat2_res3_3.ell';
 fname2   = '3FGL_FermiLAT.ell';
 
-outfname = 'cat2b_4_gal_vs_fermi.txt';
+outfname = 'cat2_res3_3_VS_fermi.assoc';
 
 e1 = ellload(fname1);
 e2 = ellload(fname2);
@@ -43,7 +43,7 @@ for i = 1 : length(e1)
             
             res = elltest(e1(i).C, e1(i).D, e1(i).R, e1(i).M, e2(j).C, e2(j).D, e2(j).R, e2(j).M, 1e-6);
             
-            %fprintf(fid, '   [%05d] %s', j, e2(j).name);
+            %fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
             
             switch res
                 
@@ -52,32 +52,32 @@ for i = 1 : length(e1)
                     %fprintf(fid, ' not overlap\n');
                     
                 case 1
-                    fprintf(fid, '   [%05d] %s', j, e2(j).name);
+                    fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' tangent external\n');
                     included = 1;
    
                 case 2
-                    fprintf(fid, '   [%05d] %s', j, e2(j).name);
+                    fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' overlap\n');
 		    		included = 1;
                     
                 case 3
-                    fprintf(fid, '   [%05d] %s', j, e2(j).name);
+                    fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' equal\n');
 		    		included = 1;
 	                    
                 case 4
-                    fprintf(fid, '   [%05d] %s', j, e2(j).name);
+                    fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' tangent contained\n');
 		   		  	included = 1;
                 
                 case 5
-                    fprintf(fid, '   [%05d] %s', j, e2(j).name);
+                    fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' contained\n');
 		    		included = 1;
                     
                 otherwise
-                    fprintf(fid, '   [%05d] %s', j, e2(j).name);
+                    fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' error\n');
 		    		included = 1;
                     
