@@ -64,6 +64,10 @@ begin
         		system(cmd)
         		lastcontacttime = 0
         		
+        		cmd = "cp /AGILE_PROC3/FM3.119_2/INDEX/EVT.index /AGILE_PROC3/ANALYSIS3/commands/"
+        		system(cmd)
+        		
+        		
         		File.open("/AGILE_PROC3/ANALYSIS3/commands/lastorbit", "r").each_line do | line |
         			lastcontacttime = line.split(" ")[2].to_i
         		end
@@ -78,7 +82,7 @@ begin
         		#run07
         		runait(lastcontacttime, 7, 12);
         		
-                sleep (10);
+                sleep (100);
                 
                 begin
 					abspath="/AGILE_PROC3/ANALYSIS3/aitoff_rt/"

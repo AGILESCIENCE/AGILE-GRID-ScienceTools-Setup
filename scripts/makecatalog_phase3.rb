@@ -8,7 +8,7 @@
 #6) fixflagneighbour: if the source of the list is < distanceToFixFlag0 put its fixflag=fixflagneighbour
 #7) additional commands to multi5.rb (optional)
 #8) fixisogalstep0 = 0 none, 1 apply
-#9) update results for each step (default yes)
+#9) update results for each step (0, 1 - default 1)
 
 #Questo script si usa per fare la scansione su una lista di sorgenti (source list) fissandole tutte tranne una. Alla fine si raccoglie il risultato finale nelle directory che viene creata (dir output)
 #NB: tutte le sorgenti sono messe con fixflag=0 di default prima di inziare l'analisi
@@ -178,7 +178,7 @@ sources2.each { |s|
 		fout2.write(sout.multiOutputLineFull3(diroutput) + " " + d.to_s + "\n")
 	
 		#aggiorna i valori
-		if updateres
+		if updateres == 1
 			s.flux = sout.flux
 			s.l = sout.l_peak
 			s.b = sout.b_peak
