@@ -102,7 +102,7 @@ reg = "" #yes/no
 binsize = 0.3
 
 mleindex = 0;
-ml = Dir["MLE???"].sort
+ml = Dir["MLE????"].sort
 puts "index: " + ml.size().to_s
 if ml.size() > 0
 	mleindex = ml[ml.size()-1].split("MLE")[1].to_i;
@@ -110,17 +110,22 @@ if ml.size() > 0
 else
 	cmd = "cp MLE0000.conf tmp.conf"
 	puts cmd
-	system(cmd)
+	#system(cmd)
 	cmd = "rm MAP* MLE*"
 	puts cmd
-	system(cmd)
+	#system(cmd)
 	cmd = "mv tmp.conf MLE0000.conf"
 	puts cmd
-	system(cmd)
+	#system(cmd)
 end
 
 mle = "MLE" + format("%04d", mleindex)
 
+cmd = "cp " + filenameconf  + " " + mle + ".conf "
+puts cmd
+system(cmd)
+
+filenameconf = mle + ".conf "
 
 #estrazione lista sorgenti
 fndisplayreg = mle + "display.reg"
@@ -320,9 +325,7 @@ cmd = "mv " + mle + "hypothesisM0.multi " + fnhyp
 puts cmd
 system(cmd)
 
-cmd = "cp " + filenameconf  + " " + mle + ".conf "
-puts cmd
-system(cmd)
+
 
 if not (multiparam.to_s == "nop" || proj.to_s == "AIT")
 	cmd = "multi5.rb " + " MAP.maplist4 " + fnhyp + " " + mle + " galcoeff=" + galcoeff + " isocoeff=" + isocoeff + " " + multiparam
