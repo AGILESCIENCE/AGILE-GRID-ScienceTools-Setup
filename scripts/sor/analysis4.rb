@@ -250,7 +250,7 @@ else
 	system(cmd)
 end
 
-mle = "MLE" + format("%03d", mleindex)
+mle = "MLE" + format("%04d", mleindex)
 
 l = l.to_f + 0.0001
 l = l.to_s
@@ -312,7 +312,7 @@ alikeutils.appendMulti(fnh2, fnh1, mle+"hypothesisM1.multi", radmerger );
 alikeutils.appendMulti(mle+"hypothesisM1.multi", mle+"hypothesis0.multi", mle+"hypothesisM0.multi", radmerger );
 
 #copy input files
-cmd = "cp " + mle + "hypothesisM0.multi " + mle + "hypothesis.multi "
+cmd = "mv " + mle + "hypothesisM0.multi " + mle + "hypothesis.multi "
 puts cmd
 system(cmd)
 
