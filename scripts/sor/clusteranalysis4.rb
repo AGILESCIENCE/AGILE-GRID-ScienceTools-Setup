@@ -175,10 +175,12 @@ puts cmd
 system(cmd)
 
 f = File.open(newcmd, "a")
-f.write("\#\@ job_name = sor4_" + analysisname)
-f.write("\#\@ notify_user = " + mail)
-f.write("analysis4.rb " + mle + ".conf)"
+f.write("\#\@ job_name = sor4_" + analysisname + "\n")
+f.write("\#\@ notify_user = " + mail + "\n")
+f.write("analysis4.rb " + mle + ".conf" + "n\")
+f.close()
 
+puts basedir
 
 Dir.chdir(basedir)
 cmd = "cd " + basedir + "; llsubmit " + newcmd;
