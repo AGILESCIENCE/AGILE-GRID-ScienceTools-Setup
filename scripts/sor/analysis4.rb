@@ -101,9 +101,34 @@ comments = ""
 reg = "" #yes/no
 binsize = 0.3
 
+mleindex = 0;
+ml = Dir["MLE???"].sort
+puts "index: " + ml.size().to_s
+if ml.size() > 0
+	mleindex = ml[ml.size()-1].split("MLE")[1].to_i;
+	mleindex = mleindex.to_i + 1
+else
+	cmd = "cp MLE000.conf tmp.conf"
+	puts cmd
+	system(cmd)
+	cmd = "rm MAP* MLE*"
+	puts cmd
+	system(cmd)
+	cmd = "mv tmp.conf MLE000.conf"
+	puts cmd
+	system(cmd)
+end
+
+mle = "MLE" + format("%04d", mleindex)
+
+
 #estrazione lista sorgenti
-f = File.new("hypothesis0.multi" , "w")
-fr = File.new("display.reg" , "w")
+fndisplayreg = mle + "display.reg"
+fnhyp0 = mle+"hypothesis0.multi"
+fnhyp = mle+"hypothesis.multi"
+
+f = File.new(fnhyp0 , "w")
+fr = File.new(fndisplayreg , "w")
 
 extractmulti = true
 
@@ -232,25 +257,6 @@ end
 f.close()
 fr.close()
 
-mleindex = 0;
-ml = Dir["MLE???"].sort
-puts "index: " + ml.size().to_s
-if ml.size() > 0
-	mleindex = ml[ml.size()-1].split("MLE")[1].to_i;
-	mleindex = mleindex.to_i + 1
-else
-	cmd = "cp MLE000.conf tmp.conf"
-	puts cmd
-	system(cmd)
-	cmd = "rm MAP* MLE*"
-	puts cmd
-	system(cmd)
-	cmd = "mv tmp.conf MLE000.conf"
-	puts cmd
-	system(cmd)
-end
-
-mle = "MLE" + format("%04d", mleindex)
 
 l = l.to_f + 0.0001
 l = l.to_s
@@ -281,9 +287,8 @@ end
 op = hypothesisgen1.split(" ")[0]
 
 fnh1 = mle + "hypothesis1.multi"
+system("touch " + fnh1)
 if op != "nop"
-	system("touch " + fnh1)
-	
 	if op == "cat"
 		extractcat(hypothesisgen1, l, b, fnh1);
 	end
@@ -296,9 +301,8 @@ end
 op = hypothesisgen2.split(" ")[0]
 
 fnh2 = mle + "hypothesis2.multi"
+system("touch " + fnh2)
 if op != "nop"
-	system("touch " + fnh2)
-	
 	if op == "cat"
 		extractcat(hypothesisgen2, l, b, fnh2);
 	end
@@ -309,10 +313,10 @@ end
 
 
 alikeutils.appendMulti(fnh2, fnh1, mle+"hypothesisM1.multi", radmerger );
-alikeutils.appendMulti(mle+"hypothesisM1.multi", mle+"hypothesis0.multi", mle+"hypothesisM0.multi", radmerger );
+alikeutils.appendMulti(mle+"hypothesisM1.multi", fnhyp0, mle+"hypothesisM0.multi", radmerger );
 
 #copy input files
-cmd = "mv " + mle + "hypothesisM0.multi " + mle + "hypothesis.multi "
+cmd = "mv " + mle + "hypothesisM0.multi " + fnhyp
 puts cmd
 system(cmd)
 
@@ -321,7 +325,7 @@ puts cmd
 system(cmd)
 
 if not (multiparam.to_s == "nop" || proj.to_s == "AIT")
-	cmd = "multi5.rb " + " MAP.maplist4 " + mle + "hypothesis.multi " + mle + " galcoeff=" + galcoeff + " isocoeff=" + isocoeff + " " + multiparam
+	cmd = "multi5.rb " + " MAP.maplist4 " + fnhyp + " " + mle + " galcoeff=" + galcoeff + " isocoeff=" + isocoeff + " " + multiparam
 	puts cmd
 	system(cmd)
 	
@@ -427,7 +431,8 @@ if proj.to_s == "AIT"
 			cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb MAP.cts.gz " + mle  + ".ctsall " + ds91.to_s + " jpg 1400x1000 ";
 		end
 		if reg == "yes"
-			cmd += " display.reg "
+			cmd += " "
+			cmd += fndisplayreg
 		end
 		puts cmd
 		system(cmd)
@@ -439,7 +444,8 @@ if proj.to_s == "AIT"
 			cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb MAP.int.gz " + mle  + ".intall " + ds92.to_s + " jpg 1400x1000 ";
 		end
 		if reg == "yes"
-			cmd += " display.reg "
+			cmd += " "
+			cmd += fndisplayreg
 		end
         puts cmd
         system(cmd)
@@ -451,7 +457,8 @@ if proj.to_s == "AIT"
 			cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb MAP.exp.gz " + mle  + ".expall " + ds93.to_s +  " jpg 1400x1000 ";
 		end
 		if reg == "yes"
-			cmd += " display.reg "
+			cmd += " "
+			cmd += fndisplayreg
 		end
 		puts cmd
 		system(cmd)
