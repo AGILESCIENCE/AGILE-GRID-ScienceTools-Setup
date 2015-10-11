@@ -121,11 +121,11 @@ end
 
 mle = "MLE" + format("%04d", mleindex)
 
-cmd = "cp " + filenameconf  + " " + mle + ".conf "
-puts cmd
-system(cmd)
+#cmd = "cp " + filenameconf  + " " + mle + ".conf "
+#puts cmd
+#system(cmd)
 
-filenameconf = mle + ".conf "
+filenameconf = mle + ".conf"
 
 #estrazione lista sorgenti
 fndisplayreg = mle + "display.reg"

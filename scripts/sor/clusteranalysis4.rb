@@ -177,7 +177,7 @@ system(cmd)
 f = File.open(newcmd, "a")
 f.write("\#\@ job_name = sor4_" + analysisname + "\n")
 f.write("\#\@ notify_user = " + mail + "\n")
-f.write("analysis4.rb " + mle + ".conf" + "n\")
+f.write("analysis4.rb " + mle + ".conf" + "\n")
 f.close()
 
 puts basedir
