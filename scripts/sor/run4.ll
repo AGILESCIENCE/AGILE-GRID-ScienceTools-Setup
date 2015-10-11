@@ -5,7 +5,6 @@
 # 
 
 #@ shell = /bin/bash
-#@ job_name = sor4
 #@ job_type = serial
 #@ environment= COPY_ALL
 #@ class    = large
@@ -19,7 +18,6 @@
 ##@ total_tasks = 4
 #@ error   = job1.$(jobid).err
 #@ output  = job1.$(jobid).out
-#@ notify_user = bulgarelli@iasfbo.inaf.it
 #@ queue
 
   date
@@ -30,4 +28,9 @@
 
   . ~/profile
 
+#@ job_name = sor4
+#@ notify_user = bulgarelli@iasfbo.inaf.it
+
   analysis4.rb txtv4.conf
+
+
