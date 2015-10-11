@@ -168,15 +168,17 @@ cmd = "cp " + ARGV[0] + " " + basedir + "/" + mle + ".conf"
 puts cmd
 system(cmd)
 
-cmd = "cp ~/sor/run4.ll " + basedir
+cmd = "cp ~/sor/run5.ll " + basedir + "/" + mle + ".ll"
 puts cmd
 system(cmd)
 
-cmd = "cd " + basedir + "; rm txtv4.conf; ln -s " + mle + ".conf txtv4.conf "
-puts cmd
-system(cmd)
+f = File.open(mle + ".ll", "a")
+f.write("#@ job_name = sor4_" + analysisname
+f.write("#@ notify_user = " + mail)
+f.write("analysis4.rb " + mle + ".conf)"
+
 
 Dir.chdir(basedir)
-cmd = "cd " + basedir + "; llsubmit run4.ll "
+cmd = "cd " + basedir + "; llsubmit " + mle + ".ll"
 puts cmd
 system(cmd)
