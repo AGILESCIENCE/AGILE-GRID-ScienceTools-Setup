@@ -108,13 +108,13 @@ if ml.size() > 0
 	mleindex = ml[ml.size()-1].split("MLE")[1].to_i;
 	mleindex = mleindex.to_i + 1
 else
-	cmd = "cp MLE000.conf tmp.conf"
+	cmd = "cp MLE0000.conf tmp.conf"
 	puts cmd
 	system(cmd)
 	cmd = "rm MAP* MLE*"
 	puts cmd
 	system(cmd)
-	cmd = "mv tmp.conf MLE000.conf"
+	cmd = "mv tmp.conf MLE0000.conf"
 	puts cmd
 	system(cmd)
 end
