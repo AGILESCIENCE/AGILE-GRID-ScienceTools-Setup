@@ -53,7 +53,7 @@ end
 def spotfinder(hypothesisgen, outfile, prefix, mapsize)
 	h = hypothesisgen.split(" ")
 	map = ""
-	if h[1] == 0
+	if h[1].to_i == 0
 		map = prefix + ".cts.gz"
 	else	
 		map = prefix + ".int.gz"
@@ -279,31 +279,40 @@ end
 
 #TODO hypothesis1.multi
 op = hypothesisgen1.split(" ")[0]
-system("touch hypothesis1.multi")
-if op == "cat"
-	extractcat(hypothesisgen1, l, b, "hypothesis1.multi");
-end
-if op == "spotfinder"
-	spotfinder(hypothesisgen1, "hypothesis1.multi", "MAP", mapsize);
-end
 
+fnh1 = mle + "hypothesis1.multi"
+if op != "nop"
+	system("touch " + fnh1)
+	
+	if op == "cat"
+		extractcat(hypothesisgen1, l, b, fnh1);
+	end
+	if op == "spotfinder"
+		spotfinder(hypothesisgen1, fnh1, "MAP", mapsize);
+	end
+end
 
 #TODO hypothesis2.multi
 op = hypothesisgen2.split(" ")[0]
-system("touch hypothesis2.multi")
-if op == "cat"
-	extractcat(hypothesisgen2, l, b, "hypothesis2.multi");
-end
-if op == "spotfinder"
-	spotfinder(hypothesisgen2, "hypothesis2.multi", "MAP", mapsize);
+
+fnh2 = mle + "hypothesis2.multi"
+if op != "nop"
+	system("touch " + fnh2)
+	
+	if op == "cat"
+		extractcat(hypothesisgen2, l, b, fnh2);
+	end
+	if op == "spotfinder"
+		spotfinder(hypothesisgen2, fnh2, "MAP", mapsize);
+	end
 end
 
 
-alikeutils.appendMulti("hypothesis2.multi", "hypothesis1.multi", "hypothesisM1.multi", radmerger );
-alikeutils.appendMulti("hypothesisM1.multi", "hypothesis0.multi", "hypothesisM0.multi", radmerger );
+alikeutils.appendMulti(fnh2, fnh1, mle+"hypothesisM1.multi", radmerger );
+alikeutils.appendMulti(mle+"hypothesisM1.multi", mle+"hypothesis0.multi", mle+"hypothesisM0.multi", radmerger );
 
 #copy input files
-cmd = "cp hypothesisM0.multi " + mle + "hypothesis.multi "
+cmd = "cp " + mle + "hypothesisM0.multi " + mle + "hypothesis.multi "
 puts cmd
 system(cmd)
 
