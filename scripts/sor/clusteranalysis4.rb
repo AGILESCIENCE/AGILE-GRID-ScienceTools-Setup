@@ -144,7 +144,7 @@ end
 
 mleindex = 0;
 if File.exists?(basedir)
-	ml = Dir[basedir+"/MLE???"].sort
+	ml = Dir[basedir+"/MLE????"].sort
 	puts basedir + " with index " + ml.size().to_s
 	if ml.size() > 0
 		mleindex = ml[ml.size()-1].split("MLE")[1].to_i;
@@ -156,7 +156,7 @@ if File.exists?(basedir)
 	end
 end
 
-mle = "MLE" + format("%03d", mleindex)
+mle = "MLE" + format("%04d", mleindex)
 puts mle
 
 cmd = "mkdir -p " + basedir;

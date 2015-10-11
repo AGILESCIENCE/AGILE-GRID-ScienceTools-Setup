@@ -88,19 +88,19 @@ begin
 					abspath="/AGILE_PROC3/ANALYSIS3/aitoff_rt/"
 					b02=Dir[abspath + "*RT02*/orbit"].sort()
 					last02 = b02[b02.size() - 1].split("orbit")[0]
-					system("cp " + last02 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/lastait2.jpg")
+					system("cp " + last02 + "/MLE0000.ctsall.jpg /home/bulgarelli/sor/app/lastait2.jpg")
 					system("cp " + last02 + "/orbit /home/bulgarelli/sor/app/lastait2.orb")
-					system("cp " + last02 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/public.jpg")
+					system("cp " + last02 + "/MLE0000.ctsall.jpg /home/bulgarelli/sor/app/public.jpg")
 					system("cp " + last02 + "/orbit /home/bulgarelli/sor/app/public.orb")
 				
 					b04=Dir[abspath + "*RT04*/orbit"].sort()
 					last04 = b04[b04.size() - 1].split("orbit")[0]
-					system("cp " + last04 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/lastait4.jpg")
+					system("cp " + last04 + "/MLE0000.ctsall.jpg /home/bulgarelli/sor/app/lastait4.jpg")
 					system("cp " + last04 + "/orbit /home/bulgarelli/sor/app/lastait4.orb")
 				
 					b07=Dir[abspath + "*RT07*/orbit"].sort()
 					last07 = b07[b07.size() - 1].split("orbit")[0]
-					system("cp " + last07 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/lastait7.jpg")
+					system("cp " + last07 + "/MLE0000.ctsall.jpg /home/bulgarelli/sor/app/lastait7.jpg")
 					system("cp " + last07 + "/orbit /home/bulgarelli/sor/app/lastait7.orb")
                 rescue
                 	puts "error in file system"
