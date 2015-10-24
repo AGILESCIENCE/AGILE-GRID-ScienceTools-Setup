@@ -13,6 +13,7 @@
 #Questo script si usa per fare la scansione su una lista di sorgenti (source list) fissandole tutte tranne una. Alla fine si raccoglie il risultato finale nelle directory che viene creata (dir output)
 #NB: tutte le sorgenti sono messe con fixflag=0 di default prima di inziare l'analisi
 #Le sorgenti che hanno il nome che inizia con _ non sono analizzate, ma lasciate nel fondo
+#Per le sorgenti che hanno il nome che inizia con # si mette fixflag=3
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
@@ -115,8 +116,6 @@ sources2.each { |s|
 	#salta quelle che iniziano con _
 	if namesource[0] == "_" or namesource[0] == 95
 		next
-	else
-		puts "1"
 	end
 	puts namesource
 	
@@ -137,6 +136,10 @@ sources2.each { |s|
 	
 	#metti la sorgente da analizzare con fixflag passato da input
 	s.fixflag = fixflaganalysis
+	#se le sorgenti iniziano con # mett fixflag=3
+	if namesource[0] == "#" 
+		s.fixflag = 3;
+	end
 
 	
 	#scrivi il file delle sorgenti
@@ -182,6 +185,7 @@ sources2.each { |s|
 			s.flux = sout.flux
 			s.l = sout.l_peak
 			s.b = sout.b_peak
+			s.si = sout.sicalc
 		end
 		#alla fine rimettilo a 0
 		sources2.each { |s|
