@@ -18,7 +18,7 @@
 load ENV["AGILE"] + "/scripts/conf.rb"
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -14 " + $0 );
+	system("head -17 " + $0 );
 	exit;
 end
 
