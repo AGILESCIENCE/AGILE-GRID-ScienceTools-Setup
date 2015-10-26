@@ -311,7 +311,7 @@ while time.to_f < tstop.to_f
 				
 				#campionamento ogni 0.1 sec del file di LOG
 				#maplist = mapstream >> mapspec.fovradmin >> mapspec.fovradmax >> mapspec.emin >> mapspec.emax >> mapspec.index;
-				cmd = cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_expmapgen5 " + exp2.to_s + " " + indexlog.to_s  +  " " + sarmatrixfull.to_s +  " " + edpmatrixfull.to_s + " None " + " " + parameters.timelist.to_s + " " + parameters.mapsize.to_s + " " + parameters.binsize.to_s  + " " + l.to_s + " " + b.to_s + " " + lonpole.to_s + " " + parameters.albedorad.to_s + " 0.5 360.0 5.0 " + parameters.phasecode.to_s + " " +  parameters.proj.to_s + " " + parameters.expstep.to_s + " " + parameters.timestep.to_s +  " " + parameters.spectralindex.to_s + " " + t0.to_s + " " + t1.to_s + " " + emin.to_s + " " + emax.to_s  + " " + fovmin.to_s + " " + fovmax.to_s;
+				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_expmapgen5 " + exp2.to_s + " " + indexlog.to_s  +  " " + sarmatrixfull.to_s +  " " + edpmatrixfull.to_s + " None " + " " + parameters.timelist.to_s + " " + parameters.mapsize.to_s + " " + parameters.binsize.to_s  + " " + l.to_s + " " + b.to_s + " " + lonpole.to_s + " " + parameters.albedorad.to_s + " 0.5 360.0 5.0 " + parameters.phasecode.to_s + " " +  parameters.proj.to_s + " " + parameters.expstep.to_s + " " + parameters.timestep.to_s +  " " + parameters.spectralindex.to_s + " " + t0.to_s + " " + t1.to_s + " " + emin.to_s + " " + emax.to_s  + " " + fovmin.to_s + " " + fovmax.to_s;
 				datautils.execute(prefix, cmd);
 				createdmap = true
 			end
@@ -319,8 +319,7 @@ while time.to_f < tstop.to_f
 			if File.exists?(gas2) == false
 				cmd = "cp " + PATH + "share/AG_gasmapgen5.par . "
 				datautils.execute(prefix, cmd);
-				
-				cmd = cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_gasmapgen5 " + exp2.to_s + " " + gas2.to_s + " " + skymapL.to_s + " " + skymapH.to_s;
+				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_gasmapgen5 " + exp2.to_s + " " + gas2.to_s + " " + skymapL.to_s + " " + skymapH.to_s;
 				datautils.execute(prefix, cmd);
 				createdmap = true
 			end
@@ -328,7 +327,7 @@ while time.to_f < tstop.to_f
 			if File.exists?(int2) == false
 				cmd = "cp " + PATH + "share/AG_intmapgen5.par . "
 				datautils.execute(prefix, cmd);
-				cmd = cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_intmapgen5 " + exp2.to_s + " " + int2.to_s + " " + cts2.to_s;
+				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_intmapgen5 " + exp2.to_s + " " + int2.to_s + " " + cts2.to_s;
 				datautils.execute(prefix, cmd);
 			end
 		

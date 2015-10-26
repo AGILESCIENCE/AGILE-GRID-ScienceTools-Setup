@@ -121,6 +121,9 @@ end
 
 lastoutfile = ""
 
+cmd = "cp " + PATH + "share/AG_multi5.par . "
+datautils.execute(prefix, cmd);
+
 for i in 1..stepi
 	#outfile
 	outfile = baseoutfile
@@ -142,7 +145,7 @@ for i in 1..stepi
 		newlistsource = outfile.to_s + ".step0" + ".multi"
 		alikeutils.rewriteMultiInputWithSingleSourceToAnalyze(listsource, newlistsource, p.fixisogalstep0, "1");
 		
-		cmd = PATH + "bin/AG_multi5 " + inputfilemaps22.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource.to_s + "  " + outfile22.to_s + " " + ulcl.to_s + " " + loccl.to_s;	
+		cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5 " + inputfilemaps22.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource.to_s + "  " + outfile22.to_s + " " + ulcl.to_s + " " + loccl.to_s;	
 		datautils.execute(outfile2, cmd)
 		
 		#step0b: prendi il valore di gal e iso calcolati e genera il maplist4 per le analisi successive
@@ -208,7 +211,7 @@ for i in 1..stepi
 
 	newoutfile = outfile.to_s + prefixi.to_s
 	
-	cmd = PATH + "bin/AG_multi5 " + inputfilemaps.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource.to_s + "  " + newoutfile + " " + ulcl.to_s + " " + loccl.to_s;
+	cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5 " + inputfilemaps.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource.to_s + "  " + newoutfile + " " + ulcl.to_s + " " + loccl.to_s;
 
 	#ablitazione del token
 	cmd2 = "";
