@@ -56,7 +56,7 @@ load ENV["AGILE"] + "/scripts/conf.rb"
 datautils = DataUtils.new
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
-	system("head -53 " + $0 );
+	system("head -54 " + $0 );
 	exit;
 end
 
