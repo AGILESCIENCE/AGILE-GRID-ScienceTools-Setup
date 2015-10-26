@@ -4,11 +4,13 @@
 #2) number of rings (optional, default 128) - 36 - A (48) B (192) C (128) D (36) E (15) F (6) G (2) H (20)
 #3) addparams map
 #4) run type: 0 generate maps - 1 iterative (S0) - 2 (S1) 
+#pointing: 111412735.       182692800.0
+#spinning: 184075134  315575933
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -6 " + $0 );
+	system("head -8 " + $0 );
 	exit;
 end
 

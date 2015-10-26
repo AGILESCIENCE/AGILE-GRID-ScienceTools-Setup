@@ -137,7 +137,7 @@ sources2.each { |s|
 	#metti la sorgente da analizzare con fixflag passato da input
 	s.fixflag = fixflaganalysis
 	#se le sorgenti iniziano con # mett fixflag=3
-	if namesource[0] == "#" 
+	if namesource[0] == "#" or namesource[0] == 35
 		s.fixflag = 3;
 	end
 
