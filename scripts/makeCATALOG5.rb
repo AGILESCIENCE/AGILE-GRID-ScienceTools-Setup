@@ -1,7 +1,7 @@
 #! /usr/bin/ruby
 #0) filter
 #1) prefix
-#2) number of rings (optional, default 128) - 36 - A (48) B (192) C (128) D (36) E (15) F (6) G (2) H (20)
+#2) number of rings (optional, default 128) - 36 - A (48) B (192) C (128) D (36) E (15) F (6) G (2) H (20) I (432)
 #3) addparams map
 #4) run type: 0 generate maps - 1 iterative (S0) - 2 (S1) 
 #pointing: 111412735.       182692800.0
@@ -627,6 +627,20 @@ if indexmax.to_i == 20 then #H
 	mapsize = 50
 end
 
+#solo il centro galattico
+if indexmax.to_i == 144*3 then #i
+	for i in 0...144
+		b[i]= 0.0; l[i]= 2.5 * i.to_f
+	end
+	for i in 0...144
+		b[i+144]= 2.5; l[i+144]= 2.5 * i.to_f
+	end
+	for i in 0...144
+		b[i+288]= -2.5; l[i+288]= 2.5 * i.to_f
+	end
+	diameter_sky = 5
+	mapsize = 25
+end
 
 while index.to_i < indexmax.to_i
 
