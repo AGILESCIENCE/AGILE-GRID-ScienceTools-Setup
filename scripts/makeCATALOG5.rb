@@ -681,7 +681,7 @@ while index.to_i < indexmax.to_i
 			puts cmd
 			system(cmd);	
 	
-			cmd = "cd " + dir.to_s + "; ruby " + PATH + "scripts/map.rb " + filter.to_s + " " + prefix + " 111412735.	182692800.0 " + l1.to_s + " " + b1.to_s + " " + addparams.to_s
+			cmd = "cd " + dir.to_s + "; ruby " + PATH + "scripts/map.rb " + filter.to_s + " " + prefix + " 111412735.	182692800.0 " + l1.to_s + " " + b1.to_s + " " + addparams.to_s + " mapsize=" + mapsize.to_s
 			puts cmd
 			system cmd
 		end
