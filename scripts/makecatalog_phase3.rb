@@ -55,7 +55,7 @@ end
 
 galcoeff = "-1"
 if ARGV[10] != nil
-	galcoeff  = ARGV[9]
+	galcoeff  = ARGV[10]
 end
 
 
@@ -116,7 +116,10 @@ fout1 = File.new(ffinal, "w")
 fout2 = File.new(ffinalfull, "w")
 fout3 = File.new(ffmulti, "w")
 
+
 sources2.each { |s|
+
+
 	resfilename = diroutput.to_s + "_" + format("%03d", index) + ".res"
 	namesource = s.name
 	#salta quelle che iniziano con _
@@ -208,7 +211,7 @@ sources2.each { |s|
 		fout2.write(sout.multiOutputLineFull3(diroutput) + " " + d.to_s + "\n")
 	
 		#aggiorna i valori
-		if updateres == 1
+		if updateres.to_i == 1
 			s.flux = sout.flux
 			s.l = sout.l_peak
 			s.b = sout.b_peak
