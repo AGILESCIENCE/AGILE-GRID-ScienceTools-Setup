@@ -34,6 +34,7 @@
 #20) makelc: optional, default 0
 #21) lpointing: optinal, default -1
 #22) bpointing: optional, default -1
+#23) maplistexp: filename of a file with  mapspec.fovradmin >> mapspec.fovradmax >> mapspec.emin >> mapspec.emax >> mapspec.index
 ### EXPOSURE
 #23) (SEL) useEDPmatrixforEXP: use the EDP matrix to generate expmap, default 0. WARNING: 1 does not work
 #24) expstep: step size of exp map gen, it depends by binsize (e.g. 0.3->3, 0.25->4, 0.1->10)
@@ -311,7 +312,7 @@ while time.to_f < tstop.to_f
 				
 				#campionamento ogni 0.1 sec del file di LOG
 				#maplist = mapstream >> mapspec.fovradmin >> mapspec.fovradmax >> mapspec.emin >> mapspec.emax >> mapspec.index;
-				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_expmapgen5 " + exp2.to_s + " " + indexlog.to_s  +  " " + sarmatrixfull.to_s +  " " + edpmatrixfull.to_s + " None " + " " + parameters.timelist.to_s + " " + parameters.mapsize.to_s + " " + parameters.binsize.to_s  + " " + l.to_s + " " + b.to_s + " " + lonpole.to_s + " " + parameters.albedorad.to_s + " 0.5 360.0 5.0 " + parameters.phasecode.to_s + " " +  parameters.proj.to_s + " " + parameters.expstep.to_s + " " + parameters.timestep.to_s +  " " + parameters.spectralindex.to_s + " " + t0.to_s + " " + t1.to_s + " " + emin.to_s + " " + emax.to_s  + " " + fovmin.to_s + " " + fovmax.to_s;
+				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_expmapgen5 " + exp2.to_s + " " + indexlog.to_s  +  " " + sarmatrixfull.to_s +  " " + edpmatrixfull.to_s + " " + parameters.maplistexp.to_s + " " + " " + parameters.timelist.to_s + " " + parameters.mapsize.to_s + " " + parameters.binsize.to_s  + " " + l.to_s + " " + b.to_s + " " + lonpole.to_s + " " + parameters.albedorad.to_s + " 0.5 360.0 5.0 " + parameters.phasecode.to_s + " " +  parameters.proj.to_s + " " + parameters.expstep.to_s + " " + parameters.timestep.to_s +  " " + parameters.spectralindex.to_s + " " + t0.to_s + " " + t1.to_s + " " + emin.to_s + " " + emax.to_s  + " " + fovmin.to_s + " " + fovmax.to_s;
 				datautils.execute(prefix, cmd);
 				createdmap = true
 			end

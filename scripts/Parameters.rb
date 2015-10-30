@@ -69,6 +69,7 @@ class Parameters
 			@offaxis = 30;
 			@maplist = nil;
 			@timelist = "None";
+			@maplistexp = "None"
 			@outfile = nil
 			@outfile2 = nil
 			@energybin = 0;
@@ -135,6 +136,10 @@ class Parameters
 		
 		def maplist
 			@maplist
+		end
+		
+		def maplistexp
+			@maplistexp
 		end
 		
 		def timelist
@@ -380,6 +385,9 @@ class Parameters
 				if @maplist != nil
 					a = a + "maplist=" + @maplist.to_s + " "
 				end
+				if @maplistexp != nil
+					a = a + "maplistexp=" + @maplistexp.to_s + " "
+				end
 				if @timelist != nil
 					a = a + "timelist=" + @timelist.to_s + " "
 				end
@@ -494,6 +502,8 @@ class Parameters
 					@skytype = value;
 				when "maplist"
 					@maplist = value;
+				when "maplistexp"
+					@maplistexp = value;
 				when "timelist"
 					@timelist = value;
 				when "cluster"
