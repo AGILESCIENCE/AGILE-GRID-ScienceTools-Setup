@@ -26,7 +26,7 @@ p = Parameters.new
 p.processInput(5, ARGV)
 
 #catfile = ""
-sleepsecs = 30
+sleepsecs = 10
 #for i in 5...ARGV.size
 #	if ARGV[i] == nil
 #		break;
