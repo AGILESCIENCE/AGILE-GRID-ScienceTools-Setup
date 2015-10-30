@@ -3,44 +3,6 @@ class DataUtils
 		def initialize
 			@lines = [];
 		end
-		
-		def readFitsHeader(filename)
-			fexta = filename.split(".")
-			fext = fexta[fexta.size() -1]
-			out = filename
-			if fext == "gz"
-				value = ""; 20.times{value  << (65 + rand(25)).chr}
-				out = "/tmp/" + value
-				cmd = "gunzip -c " + filename + " > " + out
-				#puts cmd
-				system(cmd)
-				
-			else
-				out = filename
-			end
-			#puts filename
-			
-			s = File.open(out, 'r') { |io| io.read };
-			str = s[0..5000].to_str;
-			str2 = str.split(" ")
-			@header = Hash.new
-			for i in 0..str2.size()
-				if str2[i] != nil and str2[i].include?("=")
-					@header[str2[i].split("=")[0]] = str2[i+1].gsub("'", " ").strip
-				end
-				if str2[i] == "="
-					@header[str2[i-1]] = str2[i+1].gsub("'", " ").strip
-				end
-			end
-			#puts @header
-			if(out != filename)
-				system("rm " + out)
-			end
-		end	
-		
-		def header
-			@header
-		end	
 
 		def extractlc(file, prefix, l, b, t0, t1)
 			cts2 = prefix.to_s  + ".cts.gz"

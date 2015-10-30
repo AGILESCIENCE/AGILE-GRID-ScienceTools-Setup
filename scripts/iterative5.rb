@@ -36,6 +36,7 @@
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 datautils = DataUtils.new
+fits = Fits.new
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil
 	system("head -34 " + $0 );
@@ -50,17 +51,11 @@ File.open(maplist).each_line do | line |
 	cts = line.split(" ")[0]
 end
 
-datautils.readFitsHeader(cts);
+fits.readFitsHeader(cts);
+binsize = fits.binsize;
+mapsize = fits.mapsize;
 
-binsize = datautils.header["CDELT2"].to_f;
-if binsize.to_f < 0
-	binsize = -binsize
-end
-puts "BINSIZE " + binsize.to_s
 
-naxis1 = datautils.header["NAXIS1"].to_f;
-mapsize = ((naxis1.to_i-1) * binsize.to_f).to_i
-puts "MAPSIZE " + mapsize.to_s
 
 startlist = "none"
 scanlist = "none"
@@ -142,12 +137,12 @@ for i in 2...1000
 
 end
 
-datautils.readFitsHeader(cts);
+
 if lcenter.to_f == -1
-	lcenter = datautils.header["CRVAL1"].to_f;
+	lcenter = fits.lcenter.to_f;
 end
 if bcenter.to_f == -1
-	bcenter = datautils.header["CRVAL2"].to_f;
+	bcenter = fits.bcenter.to_f;
 end
 puts "LCENTER " + lcenter.to_s
 puts "BCENTER " + bcenter.to_s

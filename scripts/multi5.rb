@@ -60,6 +60,7 @@
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 datautils = DataUtils.new
+fits = Fits.new
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
 	system("head -60 " + $0 );
@@ -258,11 +259,11 @@ for i in 1..stepi
 	datautils.execute(outfile2, cmd)
 
 	
-	datautils.readFitsHeader(cts.to_s);
-	cmd = "echo \"" + datautils.header["DATE-OBS"] + "\" >> " + newoutfile.to_s;
+	fits.readFitsHeader(cts.to_s);
+	cmd = "echo \"" + fits.utc_start + "\" >> " + newoutfile.to_s;
 	datautils.execute(outfile2, cmd)
 
-	cmd = "echo \"" + datautils.header["DATE-END"] + "\" >> " + newoutfile.to_s;
+	cmd = "echo \"" + fits.utc_end + "\" >> " + newoutfile.to_s;
 	datautils.execute(outfile2, cmd)
 	
 	cmd = "ruby " + ENV["AGILE"] + "/scripts/convertMultiResToInput.rb " + newoutfile.to_s + " " + newoutfile.to_s + ".resfull.multi";

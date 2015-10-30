@@ -49,7 +49,20 @@ l = Array.new(indexmax.to_i);
 index = 0;
 
 if indexmax.to_i == 3072  then
-
+	#healpix
+	#res=4
+	#nside=16
+	#npixel=3072
+	f = File.open(ENV["AGILE"] + "/healpix/healpix_pixel_coords_map_ring_galactic_res4_nside16_l_b.txt")
+	ind = 0;
+	f.each_line do | line |
+		l[ind] = line.split(" ")[0].to_f; b[ind] = line.split(" ")[1].to_f;
+		ind = ind.to_i + 1
+	end
+	#4 + 4 + 20
+	mapsize = 28
+	diameter_sky = 30
+	f.close()
 end
 
 if indexmax.to_i == 48 then #A
@@ -103,7 +116,7 @@ if indexmax.to_i == 48 then #A
       b[46]=       41.810315;   l[46]=     292.50000
       b[47]=       41.810315;   l[47]=     337.50000
       mapsize = 75
-
+	
 end
 
 if indexmax.to_i == 192 then #B
@@ -654,7 +667,7 @@ while index.to_i < indexmax.to_i
 	l1 = l[index];
 	b1 = b[index];		
 
-	dir = format("%04d", l1) + "." + format("%04d", b1);
+	dir =  format("%7f", l1.to_f) + "_" + format("%7f", b1.to_f);
 
 	if lock == true
 		sss = rand(sleepsecs)

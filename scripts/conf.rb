@@ -24,6 +24,7 @@ TYPE_MATRIX = "I0023"
 #ARCHIVE_ID = 0 BUILD17, 1 = BUILD15 or 16
 ARCHIVE_ID = 0
 
+load PATH + "scripts/Fits.rb"
 load PATH + "scripts/DataUtils.rb"
 load PATH + "scripts/AgileFOV.rb"
 load PATH + "scripts/MultiOutput.rb"
