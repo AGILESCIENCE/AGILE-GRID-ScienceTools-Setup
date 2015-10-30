@@ -1,11 +1,11 @@
 #! /usr/bin/ruby
 #0) filter
 #1) prefix
-#2) number of rings (optional, default 128) - 36 - A (48) B (192) C (128) D (36) E (15) F (6) G (2) H (20) I (432)
+#2) number of rings (optional, default 128) - 36 - A (48) B (192) C (128) D (36) E (15) F (6) G (2) H (20) I (432) J (3072, NSIDE=16
 #3) addparams map
 #4) run type: 0 generate maps - 1 iterative (S0) - 2 (S1) 
-#pointing: 111412735.       182692800.0
-#spinning: 184075134  315575933
+#pointing: 111412735       182692800
+#spinning: 184075134  		315575933
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
@@ -47,6 +47,11 @@ b = Array.new(indexmax.to_i)
 l = Array.new(indexmax.to_i);
 
 index = 0;
+
+if indexmax.to_i == 3072  then
+
+end
+
 if indexmax.to_i == 48 then #A
 
       b[0]=       0.0000000;   l[0]=     22.500000

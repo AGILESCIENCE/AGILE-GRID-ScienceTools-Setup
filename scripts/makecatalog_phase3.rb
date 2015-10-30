@@ -9,6 +9,7 @@
 #7) additional commands to multi5.rb (optional)
 #8) fixisogalstep0 = 0 none, 1 apply
 #9) update results for each step (0, 1 - default 1)
+#10) galcoeff (apply this galcoeff for source with | b | > 7
 
 #Questo script si usa per fare la scansione su una lista di sorgenti (source list) fissandole tutte tranne una. Alla fine si raccoglie il risultato finale nelle directory che viene creata (dir output)
 #NB: tutte le sorgenti sono messe con fixflag=0 di default prima di inziare l'analisi
@@ -18,7 +19,7 @@
 load ENV["AGILE"] + "/scripts/conf.rb"
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -17 " + $0 );
+	system("head -18 " + $0 );
 	exit;
 end
 
@@ -50,6 +51,11 @@ end
 updateres = 1
 if ARGV[9] != nil
 	updateres  = ARGV[9]
+end
+
+galcoeff = "-1"
+if ARGV[10] != nil
+	galcoeff  = ARGV[9]
 end
 
 
@@ -137,7 +143,7 @@ sources2.each { |s|
 	#metti la sorgente da analizzare con fixflag passato da input
 	s.fixflag = fixflaganalysis
 	#se le sorgenti iniziano con # mett fixflag=3
-	if namesource[0] == "#" or namesource[0] == 35
+	if (namesource[0] == "#" or namesource[0] == 35) and s.fixflag.to_i == 7
 		s.fixflag = 3;
 	end
 
@@ -160,22 +166,43 @@ sources2.each { |s|
 	end
 
 	cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
+	if s.b >= 7 or s.b <= -7
+		cmd += " galcoeff=";
+		cmd += galcoeff.to_s;
+		cmd += " "
+	end
 	#puts cmd;
 	
 	if true then
 		
 		datautils.execute(outlog, cmd)
+		
+		#modifico ora i dati della sorgente che e' stata calcolata
+		sout = MultiOutput.new
+		sout.readDataSingleSource(resfilename.to_s + "_" + namesource.to_s);
+		
+		#se la significativita' con fixflag=7 e' troppo bassa, metti fixflag=3 e ripeti l'analisi
+		#e crea i file che finiscono con .ff3.res
+		if sout.sqrtTS.to_f < 4.0 and s.fixflag.to_i == 7
+			s.fixflag = 3;
+			resfilename = diroutput.to_s + "_" + format("%03d", index) + ".ff3.res"
+			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
+			if s.b >= 7 or s.b <= -7
+				cmd += " galcoeff=";
+				cmd += galcoeff.to_s;
+				cmd += " "
+			end
+			datautils.execute(outlog, cmd)
+			sout.readDataSingleSource(resfilename.to_s + "_" + namesource.to_s);
+		end
 	
-		#eseguita la alike, copio via i risulati
+		d = datautils.distance(sout.l_peak, sout.b_peak, s.l, s.b)
+		
+		#eseguita la alike, copio i risulati
 		cmd = "cp " + resfilename.to_s + "_" + namesource.to_s + "* " + diroutput
 		datautils.execute(outlog, cmd)
 		cmd = "cp " + resfilename.to_s + " " + diroutput + "/" + namesource.to_s + ".res"
 		datautils.execute(outlog, cmd)
-		#modifico ora i dati della sorgente che e' stata calcolata
-		sout = MultiOutput.new
-		sout.readDataSingleSource(resfilename.to_s + "_" + namesource.to_s);
-	
-		d = datautils.distance(sout.l_peak, sout.b_peak, s.l, s.b)
 	
 		fout1.write(sout.multiOutputLine + "\n")
 		fout2.write(sout.multiOutputLineFull3(diroutput) + " " + d.to_s + "\n")
