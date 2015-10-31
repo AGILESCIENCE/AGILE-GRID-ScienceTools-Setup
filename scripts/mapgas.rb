@@ -47,7 +47,9 @@ puts "Sky map L: " + skymapL.to_s;
 
 cmd = "cp " + PATH + "share/AG_gasmapgen5.par . "
 datautils.execute("", cmd);
-cmd = PATH + "bin/AG_gasmapgen5 " + exp.to_s + " " + gas.to_s + " " + skymapL.to_s + " " + skymapH.to_s;
+cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_gasmapgen5 " + exp.to_s + " " + gas.to_s + " " + skymapL.to_s + " " + skymapH.to_s;
+datautils.execute("", cmd);
+cmd = "rm " + PATH + "share/AG_gasmapgen5.par"
 datautils.execute("", cmd);
 		
 				
