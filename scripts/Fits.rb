@@ -47,6 +47,9 @@ class Fits
 			@lcenter = @header["CRVAL1"].to_f;
 			@bcenter = @header["CRVAL2"].to_f;
 			
+			@minenergy = @header["MINENG"].to_f;
+			@maxenergy = @header["MAXENG"].to_f;
+			
 			@utc_start = @header["DATE-OBS"];
 			
 			@utc_end = @header["DATE-END"];
@@ -81,4 +84,11 @@ class Fits
 			@utc_end
 		end	
 		
+		def minenergy
+			@minenergy
+		end	
+		
+		def maxenergy
+			@maxenergy
+		end	
 end
