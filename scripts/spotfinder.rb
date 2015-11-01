@@ -16,6 +16,7 @@
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 datautils = DataUtils.new
+fits = Fits.new
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
 	system("head -16 " + $0 );
@@ -25,9 +26,9 @@ end
 outputfilename = ARGV[0]
 map = ARGV[1]
 
-datautils.readFitsHeader(map.to_s);
+fits.readFitsHeader(map.to_s);
 
-binsize= datautils.header["CDELT2"]
+binsize= fits.binsize
 
 
 useint = ARGV[2]
