@@ -69,7 +69,7 @@ class Parameters
 			@offaxis = 30;
 			@maplist = nil;
 			@timelist = "None";
-			@maplistgen = "None"
+			@maplistgen = "None";
 			@outfile = nil
 			@outfile2 = nil
 			@energybin = 0;

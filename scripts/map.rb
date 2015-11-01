@@ -319,7 +319,7 @@ while time.to_f < tstop.to_f
 					datautils.execute(prefix, cmd);
 					createdmap = true
 					if parameters.maplistgen != "None" 
-						createdexpmap == true
+						createdexpmap = true
 					end
 				end
 			end
