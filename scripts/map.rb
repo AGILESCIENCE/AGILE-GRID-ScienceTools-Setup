@@ -244,7 +244,7 @@ while time.to_f < tstop.to_f
 	
 	puts "energybinnumber=" + energybinnumber.to_s
 
-	createexpmap = false
+	createdexpmap = false
 	for stepi in 1..parameters.fovbinnumber.to_i
 
 		for stepe in 1..energybinnumber.to_i
