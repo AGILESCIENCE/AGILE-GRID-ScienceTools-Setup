@@ -8,7 +8,7 @@ We need only 3 environment variables to compile the code
 
 And the following variable to run the code
 
-export PFILES=$AGILE/conf
+export PFILES=$AGILE/share
 
 To install the system
 
