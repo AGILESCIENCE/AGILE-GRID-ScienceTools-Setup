@@ -4,11 +4,11 @@ We need only 3 environment variables to compile the code
 
 - CFITSIO
 - ROOTSYS
-- AGILE=~/ADC/scientific_analysis
+- AGILE=...
 
 And the following variable to run the code
 
-export PFILES=$AGILE/share
+export PFILES=$AGILE/share:$PFILES
 
 To install the system
 
