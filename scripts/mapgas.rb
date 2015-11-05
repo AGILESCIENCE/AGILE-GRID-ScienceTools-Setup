@@ -3,7 +3,7 @@
 #0) filter DIR (es: FT3ab_2_I0007, FM3.119_2c, F4_2c_I0010)
 #1) output file name prefix
 #2) exp map
-#3) skytype: 0 standard hires diffuse maps, 1 gc_allsky maps
+#3) skytype: 0 standard hires diffuse maps, 1 gc_allsky maps, 2 lowres
 #optional
 #emin
 #emax
@@ -34,7 +34,7 @@ filterall = filterdir;
 
 filterbase2 = filter.split("_")[0] + "_" + filter.split("_")[1];
 
-parameters.processInput(3, ARGV)
+parameters.processInput(4, ARGV)
 
 emin1 = fits.minenergy;
 emax1 = fits.maxenergy;
