@@ -235,6 +235,14 @@ begin
 			addcmd += " galcoeff=";
 			addcmd += galcoeff.to_s;
 			addcmd += " "
+		else
+			ss = galcoeff.split(",").size
+			addcmd += " galcoeff=";
+			for i in 0...ss.to_i-1
+				addcmd += "-1,"
+			end	
+			addcmd += "-1"
+			addcmd += " "
 		end
 		
 		#Select the right ring
