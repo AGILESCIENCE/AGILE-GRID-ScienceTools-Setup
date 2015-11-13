@@ -250,8 +250,8 @@ begin
 		mind = 1000
 		ringmin = ""
 		dir1.each do | dir |
-			lc = dir.split(".")[0].to_f
-			bc = dir.split(".")[1].to_f
+			lc = dir.split("_")[0].to_f
+			bc = dir.split("_")[1].to_f
 			d = datautils.distance(lc, bc, s.l, s.b)
 			if d.to_f < mind.to_f
 				mind = d
