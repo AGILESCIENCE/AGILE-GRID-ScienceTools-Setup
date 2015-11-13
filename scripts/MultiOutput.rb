@@ -154,6 +154,11 @@ class MultiOutput
 		
 	end
 	
+	def multiOutputLineFull4(flag, ring, dist)
+		multiOutputLineFull3(flag)
+		@multiOutputLineFull4 = @multiOutputLineFull3 + " RING " + ring.to_s + " " + dist.to_s;
+	end
+	
 	def	phasecode
 		@phasecode
 	end

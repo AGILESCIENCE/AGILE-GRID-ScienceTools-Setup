@@ -1,21 +1,29 @@
 #! /usr/bin/ruby
-#0) start file of source list
-#1) maplist
+#Analysis of a single source for each healpix ring. Procedure
+#A. select a source from the list
+#B. select the right ring
+#C. analysis of the source with that ring
+#D. collection of results
+#E. maybe, update of the soure list (it depends by parameters)
+
+#0) source list
+#1) maplist (thas must be present in any dir)
 #2) filter
 #3) dir output
 #4) fixflag of analysis of the main source
-#5) distanceToFixFlag0: see next parameters
-#6) fixflagneighbour: if the source of the list is < distanceToFixFlag0 put its fixflag=fixflagneighbour
-#7) additional commands to multi5.rb (optional)
-#8) fixisogalstep0 = 0 none, 1 apply
-#9) update results for each step (0, 1 - default 1)
-#10) galcoeff (apply this galcoeff for source with | b | > 7
-#11) maxdistancefromcenter: default 360. Use fixflag=1 if the source position is maxdistancefromcenter of the map
+#5) (optional) distanceToFixFlag0 - for analysis of neighbors. Defaul 360. See next parameters
+#6) (optional) fixflagneighbour - if the source of the list is < distanceToFixFlag0 put its fixflag=fixflagneighbour. Default 1
+#7) (optional) additionalcmd - additional commands to multi5.rb (optional), e.g. " param=value "
+#8) (optional) fixisogalstep0 - 0 none, 1 apply - evaluate gal/iso values. Default 1
+#9) (optional) updateres - update results for each step (0, 1). Default 1
+#10) (optional) galcoeff - (apply this galcoeff for source with | b | > galcoeffthres_b). Default -1 - Be carefull. One for each map.
+#11) (optional) galcoeffthres_b - (see above). Default 6
+#11) (optional) maxdistancefromcenter - Default 360. Use fixflag=1 if the calculated source position is maxdistancefromcenter of the map
 
-#Questo script si usa per fare la scansione su una lista di sorgenti (source list) fissandole tutte tranne una. Alla fine si raccoglie il risultato finale nelle directory che viene creata (dir output)
 #NB: tutte le sorgenti sono messe con fixflag=0 di default prima di inziare l'analisi
-#Le sorgenti che hanno il nome che inizia con _ non sono analizzate, ma lasciate nel fondo
-#Per le sorgenti che hanno il nome che inizia con # si mette fixflag=3
+#Modificatori:
+#_ Le sorgenti che hanno il nome che inizia con _ non sono analizzate, ma lasciate nel fondo
+## Per le sorgenti che hanno il nome che inizia con # si mette fixflag=3
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
@@ -30,6 +38,43 @@ def savesourcelist(listfile, sources2)
 	fo.close()
 end
 
+def processInput(startindex, s)
+	for i in startindex...s.size
+		if s[i] == nil
+			break;
+		else
+			processLine(s[i]);
+		end
+	end
+end
+
+
+def processLine(argv)
+	keyw = argv.split("=")[0];
+	value = argv.split("=")[1];
+	puts keyw.to_s + " " + value.to_s
+	case keyw
+		when "updateres"
+			updateres = value;
+		when "galcoeff"
+			galcoeff = value;
+		when "galcoeffthres_b"
+			galcoeffthres_b = value;
+		when "maxdistancefromcenter"
+			maxdistancefromcenter = value;
+		when "additionalcmd"
+			additionalcmd = value;
+		when "fixisogalstep0"
+			fixisogalstep0 = value;
+		when "distanceToFixFlag0"
+			distanceToFixFlag0 = value;
+		when "fixflagneighbour"
+			fixflagneighbour = value;
+		else
+			puts "Keyword " + argv.to_s + " error."
+	end
+end
+
 class Source < 
 	Struct.new(:flux, :l, :b, :si, :fixflag, :minsqrtts, :name, :rmax)
 	 	
@@ -42,9 +87,34 @@ class Source <
 	end
 end
 
+#0) sources2
+#1) l center
+#2) b center
+#3) outfile
+#4) 0) d0 distance from (l,b)
+#5) 0) fixflag for source with dist <= d0
+def extract_catalog(sources2, l, b, out, dist0)
+	datautils = DataUtils.new
+	outfile = File.new(out, "w");
+	
+	sources2.each { |s|
+		
+		d = datautils.distance(s.l, s.b, l, b);
+		
+		if d.to_f <= dist0.to_f
+			outline = s.output
+			outline += "\n";
+			puts outline
+			outfile.write(outline.to_s);
+			puts outline;
+		end	
+	}
+	outfile.close()
+end
+
 begin 
 	if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-		system("head -19 " + $0 );
+		system("head -25 " + $0 );
 		exit;
 	end
 
@@ -59,41 +129,18 @@ begin
 	multilist = diroutput
 	fixflaganalysis=ARGV[4]
 
-	distanceToFixFlag0 = ARGV[5]
-	fixflagneighbour = ARGV[6]
-
+	distanceToFixFlag0 = 360
+	fixflagneighbour = 0
 	additionalcmd=nil
-	if ARGV[7] != nil
-		additionalcmd=ARGV[7]
-	end
-
 	fixisogalstep0 = 0
-	if ARGV[8] != nil
-		fixisogalstep0  = ARGV[8]
-	end
-
 	updateres = 1
-	if ARGV[9] != nil
-		updateres  = ARGV[9]
-	end
-
 	galcoeff = "-1"
-	if ARGV[10] != nil
-		galcoeff  = ARGV[10]
-	end
-	
 	maxdistancefromcenter = 360.0
-	if ARGV[11] != nil
-		maxdistancefromcenter  = ARGV[11]
-	end
+	galcoeffthres_b  = 6;
 	
-	cts=""
-	File.open(maplist).each_line do | line |
-		cts = line.split(" ")[0]
-	end
-	fits = Fits.new
-	fits.readFitsHeader(cts);
-
+	processInput(5, ARGV);
+	
+	
 	outlog = diroutput + ".log"
 
 	cmd = "mkdir " + diroutput
@@ -103,9 +150,9 @@ begin
 
 	sources = Array.new
 
-	a = File.open(sourcelist, "r")
+	fsourcesinput = File.open(sourcelist, "r")
 
-	a.each_line do | line |
+	fsourcesinput.each_line do | line |
 		 words = line.split(" ")
 		 s = Source.new
 		 s.flux = words[0].to_f
@@ -119,13 +166,16 @@ begin
 		 sources.push(s)
 		#   s.print
 	end
+	
+	fsourcesinput.close();
 
 	sources2 = sources.sort_by { |a| [ -a.flux ] }
 
 	sources2.each { |s|
-		s.print
+		#s.print
 		s.fixflag=0
 		#s.rmax = 2.0
+		#s.print
 	}
 
 	index = 0
@@ -136,16 +186,23 @@ begin
 	fout1 = File.new(ffinal, "w")
 	fout2 = File.new(ffinalfull, "w")
 	fout3 = File.new(ffmulti, "w")
+	
+	#create the dir with the results
+	system(" mkdir " + diroutput);
 
 	sources2.each { |s|
 
 		namesource = s.name
+		puts "############## Analysis of source " + s.name
+		
 		#salta quelle che iniziano con _
 		if namesource[0] == "_" or namesource[0] == 95
 			next
 		end
+		
 		puts namesource
 	
+		#change fixflag for sources too near
 		if distanceToFixFlag0.to_f > 0
 			sources2.each { |s1|
 				d = datautils.distance(s1.l, s1.b, s.l, s.b)
@@ -174,16 +231,45 @@ begin
 			addcmd = addcmd + " fixisogalstep0=" + namesource.to_s + " "
 		end
 	
-		if s.b >= 6 or s.b <= -6
+		if s.b >= galcoeffthres_b.to_f or s.b <= -galcoeffthres_b.to_f
 			addcmd += " galcoeff=";
 			addcmd += galcoeff.to_s;
 			addcmd += " "
 		end
+		
+		#Select the right ring
+		dir1 = Dir["[0-9]*.*"].sort
+		mind = 1000
+		ringmin = ""
+		dir1.each do | dir |
+			lc = dir.split(".")[0].to_f
+			bc = dir.split(".")[1].to_f
+			d = datautils.distance(lc, bc, s.l, s.b)
+			if d.to_f < mind.to_f
+				mind = d
+				ringmin = dir
+			end
+		end
+		Dir.chdir(ringmin);
+		system(" mkdir " + diroutput);
+		
+		cts=""
+		File.open(maplist).each_line do | line |
+			cts = line.split(" ")[0]
+		end
+		fits = Fits.new
+		fits.readFitsHeader(cts);
 
+		
+		#Generate the listfile source list
+		extractradius = (fits.mapsize.to_f / 2) * 0.95
+		
+		#-------------------------------------------------------------------------------
+		#Analysis ----------------------------------------------------------------------
 		#----------
 		resfilename = diroutput.to_s + "_" + format("%03d", index) + ".res"
 		listfile = multilist.to_s + "_" + format("%03d", index) + ".multi"
-		savesourcelist(listfile, sources2)
+		extract_catalog(sources2, fits.lcenter, fits.bcenter, listfile, extractradius)
 		cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
 		datautils.execute(outlog, cmd)
 		#--------
@@ -199,12 +285,14 @@ begin
 	
 			s.fixflag = 3;
 		
+			#----------
 			resfilename = diroutput.to_s + "_" + format("%03d", index) + ".ff3.res"
 			listfile = multilist.to_s + "_" + format("%03d", index) + ".ff3.multi"
 			postfix += "_ff3"
-			savesourcelist(listfile, sources2)
+			extract_catalog(sources2, fits.lcenter, fits.bcenter, listfile, extractradius)
 			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
 			datautils.execute(outlog, cmd)
+			#----------
 		
 			sout.readDataSingleSource(resfilename.to_s + "_" + namesource.to_s);
 	
@@ -215,26 +303,29 @@ begin
 		if d1.to_f > maxdistancefromcenter.to_f
 			s.fixflag = 1;
 		
+			#----------
 			resfilename = diroutput.to_s + "_" + format("%03d", index) + ".ff1.res"
 			listfile = multilist.to_s + "_" + format("%03d", index) + ".ff1.multi"
 			postfix += "_ff1"
-			savesourcelist(listfile, sources2)
+			extract_catalog(sources2, fits.lcenter, fits.bcenter, listfile, extractradius)
 			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
 			datautils.execute(outlog, cmd)
+			#----------
 		
 			sout.readDataSingleSource(resfilename.to_s + "_" + namesource.to_s);
 		end
 	
 		d = datautils.distance(sout.l_peak, sout.b_peak, s.l, s.b)
-	
+		d1 =  datautils.distance(sout.l_peak, sout.b_peak, fits.lcenter, fits.bcenter)
+		
 		#eseguita la alike, copio i risulati
 		cmd = "cp " + resfilename.to_s + "_" + namesource.to_s + "* " + diroutput
 		datautils.execute(outlog, cmd)
 		cmd = "cp " + resfilename.to_s + " " + diroutput + "/" + namesource.to_s + ".res"
 		datautils.execute(outlog, cmd)
 
-		fout1.write(sout.multiOutputLine + "\n")
-		fout2.write(sout.multiOutputLineFull3(diroutput + postfix) + " " + d.to_s + "\n")
+		fout1.write(format("%04d ", index) + sout.multiOutputLine + "\n")
+		fout2.write(format("%04d ", index) + sout.multiOutputLineFull4(diroutput + postfix,  ringmin, d1) + "\n")
 
 		#aggiorna i valori
 		if updateres.to_i == 1
@@ -243,15 +334,20 @@ begin
 			s.b = sout.b_peak
 			s.si = sout.sicalc
 		end
+		
 		#alla fine rimettilo a 0
 		sources2.each { |s|
-			s.print
 			s.fixflag=0
+			#s.print
 		}
 
 		fout3.write(sout.flux.to_s + " " + sout.l_peak.to_s + " " + sout.b_peak.to_s + " " + sout.sicalc.to_s + " " + " 0 2 " + namesource.to_s + "\n")
 		
 		index = index + 1
+		
+		system("cp " + diroutput + "/* " + " ../" + diroutput);
+		
+		Dir.chdir("..");
 	}
 	puts index
 	fout1.close()
