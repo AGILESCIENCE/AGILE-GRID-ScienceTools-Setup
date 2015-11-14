@@ -17,7 +17,7 @@
 #8) (optional) fixisogalstep0 - 0 none, 1 apply - evaluate gal/iso values. Default 1
 #9) (optional) updateres - update results for each step (0, 1). Default 1
 #10) (optional) galcoeff - (apply this galcoeff for source with | b | > galcoeffthres_b). Default -1 - Be carefull. One for each map.
-#11) (optional) galcoeffthres_b - (see above). Default 6
+#11) (optional) galcoeffthres_b - (see above). Default 5
 #11) (optional) maxdistancefromcenter - Default 360. Use fixflag=1 if the calculated source position is maxdistancefromcenter of the map
 
 #NB: tutte le sorgenti sono messe con fixflag=0 di default prima di inziare l'analisi
@@ -48,6 +48,16 @@ def processInput(startindex, s)
 	end
 end
 
+
+
+distanceToFixFlag0 = 360
+fixflagneighbour = 0
+additionalcmd=nil
+fixisogalstep0 = 1
+updateres = 1
+galcoeff = "-1"
+maxdistancefromcenter = 360.0
+galcoeffthres_b  = 5;
 
 def processLine(argv)
 	keyw = argv.split("=")[0];
@@ -129,17 +139,13 @@ begin
 	multilist = diroutput
 	fixflaganalysis=ARGV[4]
 
-	distanceToFixFlag0 = 360
-	fixflagneighbour = 0
-	additionalcmd=nil
-	fixisogalstep0 = 0
-	updateres = 1
-	galcoeff = "-1"
-	maxdistancefromcenter = 360.0
-	galcoeffthres_b  = 6;
 	
 	processInput(5, ARGV);
 	
+	puts "fixisogalstep0=" + fixisogalstep0.to_s
+	puts "updateres=" + updateres.to_s
+	puts "maxdistancefromcenter=" + maxdistancefromcenter.to_s
+
 	
 	outlog = diroutput + ".log"
 
@@ -268,6 +274,7 @@ begin
 		fits = Fits.new
 		fits.readFitsHeader(cts);
 
+		puts "addcmd=" + addcmd.to_s
 		
 		#Generate the listfile source list
 		extractradius = (fits.mapsize.to_f / 2) * 0.95
@@ -350,7 +357,7 @@ begin
 			#s.print
 		}
 		
-		savesourcelist(format("SOURCES_%05d.multi", index), sources2);
+		
 
 		fout3.write(sout.flux.to_s + " " + sout.l_peak.to_s + " " + sout.b_peak.to_s + " " + sout.sicalc.to_s + " " + " 0 2 " + namesource.to_s + "\n")
 		
@@ -359,6 +366,8 @@ begin
 		system("cp " + diroutput + "/* " + " ../" + diroutput);
 		
 		Dir.chdir("..");
+		
+		savesourcelist(format("%s_SOURCES_%05d.multi", diroutput, index), sources2);
 	}
 	puts index
 	fout1.close()

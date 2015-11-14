@@ -338,8 +338,8 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 	TF1* f3 = new TF1("1/sqrt(N)", "1.0 / (TMath::Sqrt(x)) ", 0, max_cumTSdisbinx); 
 	Int_t numberofTSgood = 0;
 	Int_t numberofFLUXgood = 0;
-	Float_t SOURCE, L, B, TS, FLUX, GAL, ISO, R, EXP, SI, MINTS, FIXFLAG ;
-	L = B = TS = FLUX = GAL = ISO = R = EXP = SI = MINTS = FIXFLAG = 1;
+	Float_t SOURCE, L, B, TS, FLUX, FLUXERR, FLUXUL, GAL, ISO, R, EXP, SI, MINTS, FIXFLAG , CTS, CTSERR, CTSUL, TOTEXP, TOTNCOUNTS, FCN0, FCN1, EDM0, EDM1, ITER0, ITER1;
+	L = B = TS = FLUX = FLUXERR = FLUXUL = GAL = ISO = R = EXP = SI = MINTS = FIXFLAG = CTS = CTSERR = CTSUL = TOTEXP = TOTNCOUNTS = FCN0 = FCN1 = EDM0 =  EDM1 = ITER0 =  ITER1 = 1;
 
 	
 	
@@ -380,9 +380,32 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 		}
 		//output restituito da AG_multisim4
 		if(inputtype == 5) {
-			nlines = T->ReadFile(filenameinput, "SOURCE:L:B:TS:FLUX:INDEX:FIXFLAG:MINTS:GAL:ISO:R:A:B:C:D:E:F:G:G1:G2:G3:G4");
+			/*
+			After R:
+			double exposure = GetTotalExposure(i);
+			srcout << " " << exposure*m_sources[i].GetFlux();
+			srcout << " " << exposure*m_sources[i].GetFluxerr();
+			srcout << " " << exposure*m_sources[i].GetFluxul();
+			srcout << " " << exposure;
+			srcout << " " << m_fitInfo[i].counts;
+
+			srcout << " " << m_fitInfo[i].fcn0;
+			srcout << " " << m_fitInfo[i].fcn1;
+			srcout << " " << m_fitInfo[i].edm0;
+			srcout << " " << m_fitInfo[i].edm1;
+			srcout << " " << m_fitInfo[i].iter0;
+			srcout << " " << m_fitInfo[i].iter1 << endl;
+			*/
+			nlines = T->ReadFile(filenameinput, "SOURCE:L:B:TS:FLUX:INDEX:FIXFLAG:MINTS:GAL:ISO:R:CTS:CTSERR:CTSUL:TOTEXP:TOTNCOUNTS:FCN0:FCN1:EDM0:EDM1:ITER0:ITER1");
 			cout << "******************************************* " << endl;
-			cout << "SOURCE:L:B:TS:FLUX:INDEX:FIXFLAG:MINTS:R:A2:A3:A:B:C:D:E:F:G:G1:G2:G3:G4" << endl;
+			cout << "SOURCE:L:B:TS:FLUX:INDEX:FIXFLAG:MINTS:GAL:ISO:R:CTS:CTSERR:CTSUL:TOTEXP:TOTNCOUNTS:FCN0:FCN1:EDM0:EDM1:ITER0:ITER1" << endl;
+			cout << "******************************************* " << endl;
+		}
+		if(inputtype == 6) {
+			//NUMIT L B TS FLUX FLUXERR FLUXUL SPECTRAL_INDEX FIXFLAG MINTS R EXP CTS CTSERROR CTSUL TOTEXP TOTNCOUNTS FCN0 FCN1 EDM0 EDM1 ITER0 ITER1 GAL ISO
+			nlines = T->ReadFile(filenameinput, "SOURCE:L:B:TS:FLUX:FLUXERR:FLUXUL:INDEX:FIXFLAG:MINTS:R:EXP:CTS:CTSERR:CTSUL:TOTEXP:TOTNCOUNTS:FCN0:FCN1:EDM0:EDM1:ITER0:ITER1:GAL:ISO");
+			cout << "******************************************* " << endl;
+			cout << "SOURCE:L:B:TS:FLUX:FLUXERR:FLUXUL:INDEX:FIXFLAG:MINTS:R:EXP:CTS:CTSERR:CTSUL:TOTEXP:TOTNCOUNTS:FCN0:FCN1:EDM0:EDM1:ITER0:ITER1:GAL:ISO" << endl;
 			cout << "******************************************* " << endl;
 		}
 	} else {
@@ -450,8 +473,8 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 		T->SetBranchAddress("TS", &TS);
 		T->SetBranchAddress("FLUX", &FLUX);
 		T->SetBranchAddress("R", &R);
-		T->SetBranchAddress("GAL", &GAL);
-		T->SetBranchAddress("ISO", &ISO);
+		//T->SetBranchAddress("GAL", &GAL);
+		//T->SetBranchAddress("ISO", &ISO);
 	}
 	Int_t index = 0;
 	
@@ -468,8 +491,8 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 	//cout << "!GAL selection enabled" << endl;
 	long nentries = 0;
 	//nlines = 100;
-	//79.9031 0.558037
-	TH2D* hlb = new TH2D("lb", "lb", 200, 79.9031-10, 79.9031+10, 200, 0.558037-10, 0.558037+10);
+	
+	TH2D* hlb = new TH2D("lb", "lb", 200, centerl-10, centerl+10, 200, centerb-10, centerb+10);
 	hlb->GetXaxis()->SetTitle("l");
 	hlb->GetYaxis()->SetTitle("b");
 	
@@ -490,9 +513,9 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 	hl->GetXaxis()->SetTitle("b");
 	*/
 	
-	TH1D* hl = new TH1D("l", "l", 20, 79.9031-2, 79.9031+2);
+	TH1D* hl = new TH1D("l", "l", 20, centerl-2, centerl+2);
 	hl->GetXaxis()->SetTitle("l");
-	TH1D* hb = new TH1D("b", "b", 20, 0.558037-2, 0.558037+2);
+	TH1D* hb = new TH1D("b", "b", 20, centerb-2, centerb+2);
 	hl->GetXaxis()->SetTitle("b");
 	
 	TH1D* rsel = new TH1D("rsel", "rsel", 2, 0,2);
@@ -534,7 +557,7 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 				if(dist < enabledistsel) {
 					if(TS>25) {
 						//continue;
-						cout << SOURCE << " " << L << " " << B << " " << dist << " " << (FLUX / 1e-08) << " " << TS << " " << GAL << " " << ISO << endl;
+						cout << SOURCE << " " << L << " " << B << " " << dist << " " << (FLUX) << " " << TS << " " << GAL << " " << ISO << endl;
 						numHTS++;
 					}
 					h1->Fill((useTS?TS:TMath::Sqrt(TS)));
@@ -690,9 +713,6 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 		cout << hCDF->GetBinContent(jjj) <<  "\t" << hCDF->GetBinError(jjj) << endl;
 	}	
 	cout << "*************************************************" << endl;
-	
-	
-	
 	
 	cout << "MAP FITS: Number of FLUX > " << limitFLUX << "  are " << numberofFLUXgood << endl;
 	//****************
