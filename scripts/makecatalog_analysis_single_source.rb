@@ -239,11 +239,18 @@ begin
 	fout1 = File.new(ffinal, "w")
 	fout2 = File.new(ffinalfull, "w")
 	fout3 = File.new(ffmulti, "w")
+	fout1.close()
+	fout2.close()
+	fout3.close()
 	
 	#create the dir with the results
 	system(" mkdir " + diroutput);
 
 	sources2.each { |s|
+	
+		fout1 = File.new(ffinal, "a")
+		fout2 = File.new(ffinalfull, "a")
+		fout3 = File.new(ffmulti, "a")
 
 		namesource = s.name
 		puts "############## Analysis of source " + s.name
@@ -415,11 +422,12 @@ begin
 		Dir.chdir("..");
 		
 		savesourcelist(format("%s_SOURCES_%05d.multi", diroutput, index), sources2);
+		
+		fout1.close()
+		fout2.close()
+		fout3.close()
 	}
 	puts index
-	fout1.close()
-	fout2.close()
-	fout3.close()
 
 	cmd = "cp " + ffinal.to_s + " " + diroutput.to_s + "/" + diroutput.to_s + ".res"
 	datautils.execute(outlog, cmd)
