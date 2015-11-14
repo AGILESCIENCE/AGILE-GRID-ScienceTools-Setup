@@ -32,7 +32,7 @@ def savesourcelist(listfile, sources2)
 	#scrivi il file delle sorgenti
 	sources2.each { |s2|
 		out = s2.output
-		s2.print
+		#s2.print
 		fo.write(out + "\n")
 	}
 	fo.close()
@@ -332,8 +332,8 @@ begin
 		cmd = "cp " + resfilename.to_s + " " + diroutput + "/" + namesource.to_s + ".res"
 		datautils.execute(outlog, cmd)
 
-		fout1.write(format("%04d ", index) + sout.multiOutputLine + "\n")
-		fout2.write(format("%04d ", index) + sout.multiOutputLineFull4(diroutput + postfix,  ringmin, d1) + "\n")
+		fout1.write(format("%05d ", index) + sout.multiOutputLine + "\n")
+		fout2.write(format("%05d ", index) + sout.multiOutputLineFull4(diroutput + postfix,  ringmin, d1) + "\n")
 
 		#aggiorna i valori
 		if updateres.to_i == 1
@@ -341,6 +341,7 @@ begin
 			s.l = sout.l_peak
 			s.b = sout.b_peak
 			s.si = sout.sicalc
+			s.name = "_" + s.name;
 		end
 		
 		#alla fine rimettilo a 0
@@ -348,6 +349,8 @@ begin
 			s.fixflag=0
 			#s.print
 		}
+		
+		savesourcelist(format("SOURCES_%05d.multi", index), sources2);
 
 		fout3.write(sout.flux.to_s + " " + sout.l_peak.to_s + " " + sout.b_peak.to_s + " " + sout.sicalc.to_s + " " + " 0 2 " + namesource.to_s + "\n")
 		
