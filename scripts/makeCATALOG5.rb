@@ -53,7 +53,7 @@ if indexmax.to_i == 3072  then
 	#res=4
 	#nside=16
 	#npixel=3072
-	f = File.open(ENV["AGILE"] + "scripts/healpix/healpix_pixel_coords_map_ring_galactic_res4_nside16_l_b.txt")
+	f = File.open(ENV["AGILE"] + "/scripts/healpix/healpix_pixel_coords_map_ring_galactic_res4_nside16_l_b.txt")
 	ind = 0;
 	f.each_line do | line |
 		l[ind] = line.split(" ")[0].to_f; b[ind] = line.split(" ")[1].to_f;
