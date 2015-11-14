@@ -38,51 +38,100 @@ def savesourcelist(listfile, sources2)
 	fo.close()
 end
 
-def processInput(startindex, s)
-	for i in startindex...s.size
-		if s[i] == nil
-			break;
-		else
-			processLine(s[i]);
+
+
+
+class ParametersCat
+	public
+		def initialize() 
+			@distanceToFixFlag0 = 360
+			@fixflagneighbour = 0
+			@additionalcmd=nil
+			@fixisogalstep0 = 1
+			@updateres = 1
+			@galcoeff = "-1"
+			@maxdistancefromcenter = 360.0
+			@galcoeffthres_b  = 5;
 		end
-	end
-end
-
-
-
-distanceToFixFlag0 = 360
-fixflagneighbour = 0
-additionalcmd=nil
-fixisogalstep0 = 1
-updateres = 1
-galcoeff = "-1"
-maxdistancefromcenter = 360.0
-galcoeffthres_b  = 5;
-
-def processLine(argv)
-	keyw = argv.split("=")[0];
-	value = argv.split("=")[1];
-	puts keyw.to_s + " " + value.to_s
-	case keyw
-		when "updateres"
-			updateres = value;
-		when "galcoeff"
-			galcoeff = value;
-		when "galcoeffthres_b"
-			galcoeffthres_b = value;
-		when "maxdistancefromcenter"
-			maxdistancefromcenter = value;
-		when "additionalcmd"
-			additionalcmd = value;
-		when "fixisogalstep0"
-			fixisogalstep0 = value;
-		when "distanceToFixFlag0"
-			distanceToFixFlag0 = value;
-		when "fixflagneighbour"
-			fixflagneighbour = value;
-		else
-			puts "Keyword " + argv.to_s + " error."
-	end
+		
+		def distanceToFixFlag0
+            @distanceToFixFlag0
+        end
+		
+		def fixflagneighbour
+            @fixflagneighbour
+        end
+        
+        def additionalcmd
+            @additionalcmd
+        end
+        
+        def fixisogalstep0
+            @fixisogalstep0
+        end
+        
+        def updateres
+            @updateres
+        end
+        
+        def galcoeff
+            @galcoeff
+        end
+        
+        def maxdistancefromcenter
+            @maxdistancefromcenter
+        end
+        
+        def galcoeffthres_b
+            @galcoeffthres_b
+        end
+        
+		def processLine(argv)
+			keyw = argv.split("=")[0];
+			value = argv.split("=")[1];
+			puts keyw.to_s + " " + value.to_s
+			case keyw
+				when "updateres"
+					@updateres = value;
+				when "galcoeff"
+					@galcoeff = value;
+				when "galcoeffthres_b"
+					@galcoeffthres_b = value;
+				when "maxdistancefromcenter"
+					@maxdistancefromcenter = value;
+				when "additionalcmd"
+					@additionalcmd = value;
+				when "fixisogalstep0"
+					@fixisogalstep0 = value;
+				when "distanceToFixFlag0"
+					@distanceToFixFlag0 = value;
+				when "fixflagneighbour"
+					@fixflagneighbour = value;
+				else
+					puts "Keyword " + argv.to_s + " error."
+			end
+		end
+		
+		def processInput(startindex, s)
+			for i in startindex...s.size
+				if s[i] == nil
+					break;
+				else
+					processLine(s[i]);
+				end
+			end
+		end
+		
+		def print()
+			puts "fixisogalstep0=" + @fixisogalstep0.to_s
+			puts "updateres=" + @updateres.to_s
+			puts "galcoeff=" + @galcoeff.to_s
+			puts "galcoeffthres_b=" + @galcoeffthres_b.to_s
+			puts "additionalcmd=" + @additionalcmd.to_s
+			puts "distanceToFixFlag0=" + @distanceToFixFlag0.to_s
+			puts "fixflagneighbour=" + @fixflagneighbour.to_s
+		end
+		
 end
 
 class Source < 
@@ -129,6 +178,7 @@ begin
 	end
 
 	datautils = DataUtils.new
+	parameters = ParametersCat.new
 
 	sourcelist = ARGV[0]
 	maplist = ARGV[1]
@@ -140,11 +190,8 @@ begin
 	fixflaganalysis=ARGV[4]
 
 	
-	processInput(5, ARGV);
-	
-	puts "fixisogalstep0=" + fixisogalstep0.to_s
-	puts "updateres=" + updateres.to_s
-	puts "maxdistancefromcenter=" + maxdistancefromcenter.to_s
+	parameters.processInput(5, ARGV);
+	parameters.print();
 
 	
 	outlog = diroutput + ".log"
@@ -209,13 +256,13 @@ begin
 		puts namesource
 	
 		#change fixflag for sources too near
-		if distanceToFixFlag0.to_f > 0
+		if parameters.distanceToFixFlag0.to_f > 0
 			sources2.each { |s1|
 				d = datautils.distance(s1.l, s1.b, s.l, s.b)
-				if d.to_f > distanceToFixFlag0.to_f
+				if d.to_f > parameters.distanceToFixFlag0.to_f
 					s1.fixflag=0
 				else
-					s1.fixflag=fixflagneighbour
+					s1.fixflag=parameters.fixflagneighbour
 				end
 			}
 		end
@@ -229,20 +276,20 @@ begin
 	
 		#prepare additional commands for multi5.rb
 		addcmd = ""
-		if additionalcmd != nil
-			addcmd = additionalcmd
+		if parameters.additionalcmd != nil
+			addcmd = parameters.additionalcmd
 		end
 	
-		if fixisogalstep0.to_i == 1
+		if parameters.fixisogalstep0.to_i == 1
 			addcmd = addcmd + " fixisogalstep0=" + namesource.to_s + " "
 		end
 	
-		if s.b >= galcoeffthres_b.to_f or s.b <= -galcoeffthres_b.to_f
+		if s.b >= parameters.galcoeffthres_b.to_f or s.b <= -parameters.galcoeffthres_b.to_f
 			addcmd += " galcoeff=";
-			addcmd += galcoeff.to_s;
+			addcmd += parameters.galcoeff.to_s;
 			addcmd += " "
 		else
-			ss = galcoeff.split(",").size
+			ss = parameters.galcoeff.split(",").size
 			addcmd += " galcoeff=";
 			for i in 0...ss.to_i-1
 				addcmd += "-1,"
@@ -315,7 +362,7 @@ begin
 		
 		#verifica la distanza della sorgente calcolata
 		d1 =  datautils.distance(sout.l_peak, sout.b_peak, fits.lcenter, fits.bcenter)
-		if d1.to_f > maxdistancefromcenter.to_f
+		if d1.to_f > parameters.maxdistancefromcenter.to_f
 			s.fixflag = 1;
 		
 			#----------
@@ -343,7 +390,7 @@ begin
 		fout2.write(format("%05d ", index) + sout.multiOutputLineFull4(diroutput + postfix,  ringmin, d1) + "\n")
 
 		#aggiorna i valori
-		if updateres.to_i == 1
+		if parameters.updateres.to_i == 1
 			s.flux = sout.flux
 			s.l = sout.l_peak
 			s.b = sout.b_peak
