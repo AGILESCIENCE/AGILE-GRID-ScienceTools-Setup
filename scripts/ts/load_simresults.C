@@ -78,10 +78,13 @@ void load_simresults(TString filenameinput, int inputtype=5, double enabledistse
 		//FCN0 = 2 ln L0
 		//TS = TS = -2(ln L0 - ln L1) = 2 ln L1 - 2 ln L0 = FCN1 - FCN0
 		
+		TH2D* h_tsdist = new TH2D("h_tsdist", "h_tsdist", 400, 0, 400, 100, 0, 10);
+		
 		TH1D* h_fcn0 = new TH1D("h_fcn0", "h_fcn0", 40000, 0, 40000);
 		TH1D* h_fcn1 = new TH1D("h_fcn1", "h_fcn1", 40000, 0, 40000);
 		TH1D* h_fcndiff = new TH1D("h_fcndiff", "h_fcndiff", 400, 0, 400);
 		TH1D* h_ts = new TH1D("h_ts", "h_ts", 400, 0, 400);
+		TH1D* h_ts_thr = new TH1D("h_ts_thr", "h_ts_thr", 400, 0, 400);
 		TH1D* h_fcn0_thr = new TH1D("h_fcn0_thr", "h_fcn0_thr", 40000, 0, 40000);
 		TH1D* h_fcn0_thr = new TH1D("h_fcn1_thr", "h_fcn1_thr", 40000, 0, 40000);
 		TH1D* h_fcndiff_thr = new TH1D("h_fcndiff_thr", "h_fcndiff_thr", 400, 0, 400);
@@ -103,6 +106,7 @@ void load_simresults(TString filenameinput, int inputtype=5, double enabledistse
 			T->GetEntry(j);
 			double dist = distance(L, B, centerl, centerb);
 
+			h_tsdist->Fill(TS, dist);
 			h_fcn0->Fill(FCN0);
 			h_fcn1->Fill(FCN1);
 			h_fcndiff->Fill(2*(FCN0-FCN1));
@@ -111,7 +115,7 @@ void load_simresults(TString filenameinput, int inputtype=5, double enabledistse
 			h_edm1->Fill(EDM1);
 			h_iter0->Fill(ITER0);
 			h_iter1->Fill(ITER1);
-			if(TS > 9) {
+			if(dist > 1) {
 				h_fcn0_thr->Fill(FCN0);
 				h_fcn1_thr->Fill(FCN1);
 				h_fcndiff_thr->Fill(2*(FCN0-FCN1));
@@ -120,6 +124,7 @@ void load_simresults(TString filenameinput, int inputtype=5, double enabledistse
 				h_edm1_thr->Fill(EDM1);
 				h_iter0_thr->Fill(ITER0);
 				h_iter1_thr->Fill(ITER1);
+				h_ts->Fill(TS);
 			}
 			
 		}
@@ -152,39 +157,51 @@ void load_simresults(TString filenameinput, int inputtype=5, double enabledistse
 		h_iter1_thr->Scale(1.0/scf);
 		
 		c1->cd(1);
-		
+		gPad->SetLogy();
 		h_fcn0->Draw();
 		h_fcn0_thr->SetLineColor(kRed);
 		h_fcn0_thr->Draw("SAME");
 		c1->cd(2);
+		gPad->SetLogy();
 		h_fcn1->Draw();
 		h_fcn1_thr->SetLineColor(kRed);
 		h_fcn1_thr->Draw("SAME");
 		c1->cd(3);
+		gPad->SetLogy();
 		h_fcndiff->Draw();
 		h_ts->SetLineColor(kRed);
 		h_ts->Draw("SAME");
 		c1->cd(4);
+		gPad->SetLogy();
 		T->Draw("EDM0");
 		h_edm0->Draw();
 		h_edm0_thr->SetLineColor(kRed);
 		h_edm0_thr->Draw("SAME");
 		
 		c1->cd(5);
+		gPad->SetLogy();
 		T->Draw("EDM1");
 		h_edm1->Draw();
 		h_edm1_thr->SetLineColor(kRed);
 		h_edm1_thr->Draw("SAME");
 		c1->cd(6);
+		gPad->SetLogy();
 		h_iter0->Draw();
 		h_iter0_thr->SetLineColor(kRed);
 		h_iter0_thr->Draw("SAME");
 		c1->cd(7);
+		gPad->SetLogy();
 		h_iter1->Draw();
 		h_iter1_thr->SetLineColor(kRed);
 		h_iter1_thr->Draw("SAME");
 		c1->cd(8);
+		gPad->SetLogy();
 		T->Draw("FCN1", "TS>9");
+		
+		c1->cd(9);
+		gPad->SetLogy();
+		gPad->SetLogx();
+		h_tsdist->Draw("BOXCOL");
 		
 		
 }
