@@ -102,8 +102,15 @@ void load_simresults(TString filenameinput, int inputtype=5, double enabledistse
 		TH1D* h_iter1 = new TH1D("h_iter1", "h_iter1", 10000, 0, 10000);
 		TH1D* h_iter1_thr = new TH1D("h_iter1_thr", "h_iter1_thr", 10000, 0, 10000);
 		
+		int discarded = 0;
 		for(Long64_t j = 0; j<nlines; j++) {
 			T->GetEntry(j);
+			
+			if(EDM0 != 0.5) {
+				discarded++;
+				continue;
+			}
+				
 			double dist = distance(L, B, centerl, centerb);
 
 			h_tsdist->Fill(TS, dist);
@@ -128,6 +135,8 @@ void load_simresults(TString filenameinput, int inputtype=5, double enabledistse
 			}
 			
 		}
+		
+		cout << "discarded: " << discarded << endl;
 		
 		double scf = h_fcn0->Integral();
 		h_fcn0->Scale(1.0/scf);

@@ -414,7 +414,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 		if File.exists?("MAP.cts.gz") and ds94 != "none"
 			fname = file.split(".cts.gz")[0]
 			if ds94 == "default"
-				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb M" + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
+				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
 			else
 				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + ds94.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
 			end
