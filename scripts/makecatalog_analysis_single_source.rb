@@ -123,6 +123,11 @@ class ParametersCat
 		end
 		
 		def print()
+			puts "sourcelist: " + @sourcelist
+			puts "maplist: " + @maplist
+			puts "filter: " + @filter
+			puts "diroutput: " + @diroutput
+			puts "fixflaganalysis: " + @fixflaganalysis	
 			puts "fixisogalstep0=" + @fixisogalstep0.to_s
 			puts "updateres=" + @updateres.to_s
 			puts "galcoeff=" + @galcoeff.to_s
@@ -132,6 +137,40 @@ class ParametersCat
 			puts "fixflagneighbour=" + @fixflagneighbour.to_s
 		end
 		
+		def sourcelist
+			@sourcelist
+		end
+		def sourcelist=(value)
+			@sourcelist=value
+		end
+		
+		def maplist
+			@maplist
+		end
+		def maplist=(value)
+			@maplist=value
+		end
+		
+		def filter
+			@filter
+		end
+		def filter=(value)
+			@filter=value
+		end
+		
+		def diroutput
+			@diroutput
+		end
+		def diroutput=(value)
+			@diroutput=value
+		end
+		
+		def fixflaganalysis
+			@fixflaganalysis
+		end
+		def fixflaganalysis=(value)
+			@fixflaganalysis=value
+		end
 end
 
 class Source < 
@@ -180,30 +219,27 @@ begin
 	datautils = DataUtils.new
 	parameters = ParametersCat.new
 
-	sourcelist = ARGV[0]
-	maplist = ARGV[1]
-	puts "maplist="+maplist
-	filter = ARGV[2]
-	puts "filter=" + filter
-	diroutput = ARGV[3]
-	multilist = diroutput
-	fixflaganalysis=ARGV[4]
-
+	parameters.sourcelist = ARGV[0]
+	parameters.maplist = ARGV[1]
+	parameters.filter = ARGV[2]
+	parameters.diroutput = ARGV[3]
+	parameters.fixflaganalysis=ARGV[4]
+	
+	multilist = parameters.diroutput
 	
 	parameters.processInput(5, ARGV);
 	parameters.print();
 
-	
-	outlog = diroutput + ".log"
+	outlog = parameters.diroutput + ".log"
 
-	cmd = "mkdir " + diroutput
+	cmd = "mkdir " + parameters.diroutput
 	datautils.execute(outlog, cmd)
 
-	resfilename = diroutput.to_s + ".res"
+	resfilename = parameters.diroutput.to_s + ".res"
 
 	sources = Array.new
 
-	fsourcesinput = File.open(sourcelist, "r")
+	fsourcesinput = File.open(parameters.sourcelist, "r")
 
 	fsourcesinput.each_line do | line |
 		 words = line.split(" ")
@@ -232,9 +268,9 @@ begin
 	}
 
 	index = 0
-	ffinal = diroutput.to_s + ".resfinal"
-	ffinalfull = diroutput.to_s + ".resfinalfull"
-	ffmulti = diroutput.to_s + ".res.multi"
+	ffinal = parameters.diroutput.to_s + ".resfinal"
+	ffinalfull = parameters.diroutput.to_s + ".resfinalfull"
+	ffmulti = parameters.diroutput.to_s + ".res.multi"
 
 	fout1 = File.new(ffinal, "w")
 	fout2 = File.new(ffinalfull, "w")
@@ -244,7 +280,7 @@ begin
 	fout3.close()
 	
 	#create the dir with the results
-	system(" mkdir " + diroutput);
+	system(" mkdir " + parameters.diroutput);
 
 	sources2.each { |s|
 	
@@ -275,7 +311,7 @@ begin
 		end
 	
 		#metti la sorgente da analizzare con fixflag passato da input
-		s.fixflag = fixflaganalysis
+		s.fixflag = parameters.fixflaganalysis
 		#se le sorgenti iniziano con # mett fixflag=3
 		if (namesource[0] == "#" or namesource[0] == 35) and s.fixflag.to_i == 7
 			s.fixflag = 3;
@@ -319,10 +355,10 @@ begin
 			end
 		end
 		Dir.chdir(ringmin);
-		system(" mkdir " + diroutput);
+		system(" mkdir " + parameters.diroutput);
 		
 		cts=""
-		File.open(maplist).each_line do | line |
+		File.open(parameters.maplist).each_line do | line |
 			cts = line.split(" ")[0]
 		end
 		fits = Fits.new
@@ -336,10 +372,10 @@ begin
 		#-------------------------------------------------------------------------------
 		#Analysis ----------------------------------------------------------------------
 		#----------
-		resfilename = diroutput.to_s + "_" + format("%03d", index) + ".res"
+		resfilename = parameters.diroutput.to_s + "_" + format("%03d", index) + ".res"
 		listfile = multilist.to_s + "_" + format("%03d", index) + ".multi"
 		extract_catalog(sources2, fits.lcenter, fits.bcenter, listfile, extractradius)
-		cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
+		cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + parameters.maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + parameters.filter  + " " + addcmd.to_s
 		datautils.execute(outlog, cmd)
 		#--------
 	
@@ -355,11 +391,11 @@ begin
 			s.fixflag = 3;
 		
 			#----------
-			resfilename = diroutput.to_s + "_" + format("%03d", index) + ".ff3.res"
+			resfilename = parameters.diroutput.to_s + "_" + format("%03d", index) + ".ff3.res"
 			listfile = multilist.to_s + "_" + format("%03d", index) + ".ff3.multi"
 			postfix += "_ff3"
 			extract_catalog(sources2, fits.lcenter, fits.bcenter, listfile, extractradius)
-			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
+			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + parameters.maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + parameters.filter  + " " + addcmd.to_s
 			datautils.execute(outlog, cmd)
 			#----------
 		
@@ -373,11 +409,11 @@ begin
 			s.fixflag = 1;
 		
 			#----------
-			resfilename = diroutput.to_s + "_" + format("%03d", index) + ".ff1.res"
+			resfilename = parameters.diroutput.to_s + "_" + format("%03d", index) + ".ff1.res"
 			listfile = multilist.to_s + "_" + format("%03d", index) + ".ff1.multi"
 			postfix += "_ff1"
 			extract_catalog(sources2, fits.lcenter, fits.bcenter, listfile, extractradius)
-			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
+			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + parameters.maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + parameters.filter  + " " + addcmd.to_s
 			datautils.execute(outlog, cmd)
 			#----------
 		
@@ -388,13 +424,13 @@ begin
 		d1 =  datautils.distance(sout.l_peak, sout.b_peak, fits.lcenter, fits.bcenter)
 		
 		#eseguita la alike, copio i risulati
-		cmd = "cp " + resfilename.to_s + "_" + namesource.to_s + "* " + diroutput
+		cmd = "cp " + resfilename.to_s + "_" + namesource.to_s + "* " + parameters.diroutput
 		datautils.execute(outlog, cmd)
-		cmd = "cp " + resfilename.to_s + " " + diroutput + "/" + namesource.to_s + ".res"
+		cmd = "cp " + resfilename.to_s + " " + parameters.diroutput + "/" + namesource.to_s + ".res"
 		datautils.execute(outlog, cmd)
 
 		fout1.write(format("%05d ", index) + sout.multiOutputLine + "\n")
-		fout2.write(format("%05d ", index) + sout.multiOutputLineFull4(diroutput + postfix,  ringmin, d1) + "\n")
+		fout2.write(format("%05d ", index) + sout.multiOutputLineFull4(parameters.diroutput + postfix,  ringmin, d1) + "\n")
 
 		#aggiorna i valori
 		if parameters.updateres.to_i == 1
@@ -417,11 +453,11 @@ begin
 		
 		index = index + 1
 		
-		system("cp " + diroutput + "/* " + " ../" + diroutput);
+		system("cp " + parameters.diroutput + "/* " + " ../" + parameters.diroutput);
 		
 		Dir.chdir("..");
 		
-		savesourcelist(format("%s_SOURCES_%05d.multi", diroutput, index), sources2);
+		savesourcelist(format("%s_SOURCES_%05d.multi", parameters.diroutput, index), sources2);
 		
 		fout1.close()
 		fout2.close()
@@ -429,13 +465,13 @@ begin
 	}
 	puts index
 
-	cmd = "cp " + ffinal.to_s + " " + diroutput.to_s + "/" + diroutput.to_s + ".res"
+	cmd = "cp " + ffinal.to_s + " " + parameters.diroutput.to_s + "/" + parameters.diroutput.to_s + ".res"
 	datautils.execute(outlog, cmd)
 
-	cmd = "cp " + ffinalfull.to_s + " " + diroutput.to_s
+	cmd = "cp " + ffinalfull.to_s + " " + parameters.diroutput.to_s
 	datautils.execute(outlog, cmd)
 
-	cmd = "cp " + ffmulti.to_s + " " + diroutput.to_s
+	cmd = "cp " + ffmulti.to_s + " " + parameters.diroutput.to_s
 	datautils.execute(outlog, cmd)
 
 end

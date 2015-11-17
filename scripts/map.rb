@@ -28,6 +28,7 @@
 #	=7 activate [00050-00100], [00100-00200], [00200-00400], [00400-01000], [01000-03000], [03000, 500000])
 #	=8 activate [00050-00100], [00100-00400], [00400-01000], [01000-03000], [03000-50000])
 #	=9 activate [00050-00100], [00100-00400], [00400-01000], [01000-03000], [03000, 100000], [10000, 50000])
+#	=10 activate [00100-00400], [00400-01000], [01000-03000], [03000, 100000], [10000, 50000])
 #17) phasecode: optional, default 2. If -1 => automatic determination ==>  if (time end  > 182692800.0 (MJD 55119.5, UTC 2009-10-15T12:00:00, fine pointing) && phasecode == -1) then phasecode = 2 (SPIN) else phasecode = 18 (POIN)
 #18) timelist: a file with a list of tstart/stop
 #19) timebinsize: optional, default 999999999
@@ -146,8 +147,15 @@ end
 if parameters.energybin.to_i == 9
 	eminarr = [50,  100, 400,  1000, 3000,  10000]
 	emaxarr = [100, 400, 1000, 3000, 10000, 50000]
-	energybinnumber = 8
+	energybinnumber = 6
 end
+
+if parameters.energybin.to_i == 10
+	eminarr = [100,  400, 1000, 3000, 10000]
+	emaxarr = [400, 1000, 3000, 10000, 50000]
+	energybinnumber = 5
+end
+
 
 
 

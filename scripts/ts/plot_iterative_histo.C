@@ -241,7 +241,7 @@ Double_t sumchi2N1N2N3deltafuncV2(Double_t *x, Double_t *par)
 }
 
 //inputtype=5 output restituito da AG_multisim4
-void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabledistsel = 0, Double_t eta = 0.5, Double_t limitFLUX = 0, Bool_t useTS = true,  TString titleExternal = "", TString outfileprefix = "") {
+TTree* plot_iterative_histo(TString filenameinput, int inputtype=1, double enabledistsel = 0, Double_t eta = 0.5, Double_t limitFLUX = 0, Bool_t useTS = true,  TString titleExternal = "", TString outfileprefix = "") {
 	
 	//parametri di analisi da modificare
 	//centro della mappa (caso empty field)
@@ -263,7 +263,9 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 	Bool_t saveRootFile = false;
 // 	Double_t limitTS = 10e-3; //10e-4 - limite con cui definire lo 0
 		
-	gStyle->SetPalette(1);gStyle->SetPadColor(0);gStyle->SetFrameFillColor(0);gStyle->SetCanvasColor(0);gStyle->SetFrameBorderMode(0);gStyle->SetOptStat(0000000);gStyle->SetOptFit(0000);gStyle->SetPalette(1);gStyle->SetLabelFont(42, "xyz");gStyle->SetTitleFont(42, "xyz");
+	//gStyle->SetPalette(1);gStyle->SetPadColor(0);gStyle->SetFrameFillColor(0);gStyle->SetCanvasColor(0);gStyle->SetFrameBorderMode(0);gStyle->SetOptStat(0000000);gStyle->SetOptFit(0000);gStyle->SetPalette(1);gStyle->SetLabelFont(42, "xyz");gStyle->SetTitleFont(42, "xyz");
+	
+	gStyle->SetPalette(1);gStyle->SetOptStat(0000000);gStyle->SetOptFit(0000);
 	
 	Double_t dimWindowX = 1400;
 	Double_t dimWindowY = 900;
@@ -473,6 +475,15 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 		T->SetBranchAddress("TS", &TS);
 		T->SetBranchAddress("FLUX", &FLUX);
 		T->SetBranchAddress("R", &R);
+		T->SetBranchAddress("CTS", &CTS);
+		T->SetBranchAddress("TOTNCOUNTS", &TOTNCOUNTS);
+		T->SetBranchAddress("FCN0", &FCN0);
+		T->SetBranchAddress("FCN1", &FCN1);
+		T->SetBranchAddress("EDM0", &EDM0);
+		T->SetBranchAddress("EDM1", &EDM1);
+		T->SetBranchAddress("ITER0", &ITER0);
+		T->SetBranchAddress("ITER1", &ITER1);
+		
 		//T->SetBranchAddress("GAL", &GAL);
 		//T->SetBranchAddress("ISO", &ISO);
 	}
@@ -481,6 +492,16 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 	hh_FLUX = new TH1D("H_FLUX", "H_FLUX", 100, 0, 1000 );
 	hh_ISO = new TH1D("H_ISO", "H_ISO", 200, 0, 50 );
 	hh_GAL = new TH1D("H_GAL", "H_GAL", 200, 0, 5 );
+	
+	//hh_FCN0_L = new TH1D("FCN0_L", "FCN0_L");
+	//hh_FCN0_H = new TH1D("FCN0_H", "FCN0_H");
+	/*TCanvas* cc = new TCanvas("Fit parameters");
+	gPad->Divide(2,2);
+	gPad->cd(1);
+	T->Draw("FCN0 >> hfcn");
+	gPad->cd(2);
+	T->Draw("FCN0 >> hfcn20", "TS>20");
+	*/
 	
 	TH2D* hhISOGAL = new TH2D("HGALISO", "HGALISO",160, 0, 20, 400, 0, 50);
 	hhISOGAL->GetXaxis()->SetTitle("GAL");
@@ -560,7 +581,8 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 						cout << SOURCE << " " << L << " " << B << " " << dist << " " << (FLUX) << " " << TS << " " << GAL << " " << ISO << endl;
 						numHTS++;
 					}
-					h1->Fill((useTS?TS:TMath::Sqrt(TS)));
+					//h1->Fill((useTS?TS:TMath::Sqrt(TS)));
+					h1->Fill(FCN0-FCN1);
 					
 					hh_FLUX->Fill(FLUX / 1e-08);
 					hh_GAL->Fill(GAL);
@@ -1531,5 +1553,7 @@ void plot_iterative_histo(TString filenameinput, int inputtype=1, double enabled
 	}
 	
 	if(fout) fout->Close();
+	
+	return T;
 
 }
