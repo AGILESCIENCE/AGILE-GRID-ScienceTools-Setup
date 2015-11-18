@@ -318,6 +318,9 @@ class MultiOutput
 		@srcconflevel
 	end
 	def sqrtTS
+		if @sqrtTS == "-nan"
+			@sqrtTS = 0;
+		end
 		@sqrtTS
 	end
 	def l_peak
