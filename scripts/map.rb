@@ -295,7 +295,7 @@ while time.to_f < tstop.to_f
 				fovmin = parameters.fovradmin
 				fovmax = parameters.fovradmax
 				bincenter = 30
-				if parameters.lpointing.to_i != -1
+				if parameters.lpointing.to_i != -1 or parameters.lpointing.to_i != -999
 					bincenter = datautils.distance(l, b, parameters.lpointing, parameters.bpointing);
 				end
 			else
