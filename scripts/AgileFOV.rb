@@ -57,7 +57,7 @@ class AgileFOV
 			ss = rand(10000000)
 			fileout = "/tmp/coordinates." + ss.to_s + ".out"
 
-			cmd = "~/grid_scripts3/lb_log   " + BASEDIR_ARCHIVE + "/DATA/INDEX/LOG.log.index " + tstart.to_s + " " + tend.to_s + " > " + fileout.to_s
+			cmd = ENV["AGILE"]+"/scripts/lb_log   " + BASEDIR_ARCHIVE + "/DATA/INDEX/LOG.log.index " + tstart.to_s + " " + tend.to_s + " > " + fileout.to_s
 			puts cmd
 			system(cmd);
 
@@ -79,7 +79,7 @@ class AgileFOV
 			ss = rand(10000000)
 			fileout = "/tmp/coordinates." + ss.to_s + ".out"
 
-			cmd = "~/grid_scripts3/lb_log   /AGILE_DATA/INDEX/LOG.log.index " + tstart.to_s + " " + tend.to_s + " > " + fileout.to_s
+			cmd = ENV["AGILE"]+"/scripts/lb_log   /AGILE_DATA/INDEX/LOG.log.index " + tstart.to_s + " " + tend.to_s + " > " + fileout.to_s
 			system(cmd);
 
 			lat = 0;
@@ -97,7 +97,7 @@ class AgileFOV
 		def longitudeFromPeriod2(tstart, tend)
 			begin
 				timef = 0
-				File.open(ENV["HOME"]+"/grid_scripts3/AGILEPOINTING").each_line do | line |
+				File.open(ENV["AGILE"]+"/scripts/AGILEPOINTING").each_line do | line |
 					time = line.split(" ");
 					@longitudeFromPeriod2 = -999
 					if tstart.to_f >= time[0].to_f && tstart.to_f <= time[1].to_f
@@ -114,7 +114,7 @@ class AgileFOV
 		def latitudeFromPeriod2(tstart, tend)
 			begin
 				timef = 0
-				File.open(ENV["HOME"]+"/grid_scripts3/AGILEPOINTING").each_line do | line |
+				File.open(ENV["AGILE"]+"/scripts/AGILEPOINTING").each_line do | line |
 					time = line.split(" ");
 					@latitudeFromPeriod2 = -999
 					if tstart.to_f >= time[0].to_f && tstart.to_f <= time[1].to_f
