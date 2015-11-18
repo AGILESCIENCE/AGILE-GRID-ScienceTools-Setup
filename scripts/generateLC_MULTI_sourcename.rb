@@ -259,6 +259,7 @@ a.each do | xx |
 			startmjd = timestartmjd;
 		end
 		endmjd = timestopmjd;
+		puts mo.sqrtTS;
 		outlc = outlc + format("%.2f", timestartmjd) + "\t" + format("%.2f", timestopmjd-timestartmjd) + "\t" + format("%.2f",distfov) + "\t" + obname.to_s + "\t" + format("%.2f",mo.sqrtTS) + "\t" + exp.to_s + "\t" +  format("%.2f", gascoeff.to_f) + "\t" + format("%.2f", isocoeff.to_f) + "\t" + format("%3.2f", d3.to_f) + "\t" + "( " + dimr.chomp.to_s + " ) \t" + scindex.to_s + "\t" + scerror.to_s + "\n";
 	else
 		outlc = outlc + "_\t" + format("%.2f",distfov) + "\t" + obname.to_s + "\n";
