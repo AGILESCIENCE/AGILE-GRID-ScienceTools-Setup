@@ -293,6 +293,7 @@ begin
 		
 		#salta quelle che iniziano con _
 		if namesource[0] == "_" or namesource[0] == 95
+			index = index.to_i + 1
 			next
 		end
 		

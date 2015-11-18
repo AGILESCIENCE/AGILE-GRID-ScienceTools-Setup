@@ -107,6 +107,7 @@ void load_simresults(TString filenameinput, int inputtype=5, double enabledistse
 			T->GetEntry(j);
 			
 			if(EDM0 != 0.5) {
+				cout << "* " << SOURCE << " " << L << " " << B  << " " << (FLUX) << " " << TS << " " << EDM0 << " " << EDM1 << endl;
 				discarded++;
 				continue;
 			}

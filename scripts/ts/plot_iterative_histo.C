@@ -550,8 +550,17 @@ TTree* plot_iterative_histo(TString filenameinput, int inputtype=1, double enabl
 	int countsremove[10]; 
 	for(int cri=0; cri<10; cri++) countsremove[cri]=0;
 	
+	int discarded = 0;
 	for(Long64_t j = 0; j<nlines; j++) {
 		T->GetEntry(j);
+		
+		
+		if(EDM0 != 0.5) {
+			discarded++;
+			cout << "* " << SOURCE << " " << L << " " << B  << " " << (FLUX) << " " << TS << " " << EDM0 << " " << EDM1 << endl;
+			continue;
+		}
+		
 		
 		if(inputtype == 2) {
 			TS = TS * TS; //BE CAREFULL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -582,7 +591,7 @@ TTree* plot_iterative_histo(TString filenameinput, int inputtype=1, double enabl
 						numHTS++;
 					}
 					//h1->Fill((useTS?TS:TMath::Sqrt(TS)));
-					h1->Fill(FCN0-FCN1);
+					h1->Fill(2*(FCN0-FCN1));
 					
 					hh_FLUX->Fill(FLUX / 1e-08);
 					hh_GAL->Fill(GAL);
@@ -1196,8 +1205,8 @@ TTree* plot_iterative_histo(TString filenameinput, int inputtype=1, double enabl
 	//bestfit = f4sfv2;
 	
 	cout << "####################### sumchi2(1)deltaV2 " << endl;
-	h1->Fit("sumchi2(1)deltaV2", "+");
-	bestfit = f4sf1v2;
+	//h1->Fit("sumchi2(1)deltaV2", "+");
+	//bestfit = f4sf1v2;
 	
 	cout << "####################### sumchi2(2)deltaV2 " << endl;
 	//h1->Fit("sumchi2(2)deltaV2", "+");
@@ -1225,8 +1234,8 @@ TTree* plot_iterative_histo(TString filenameinput, int inputtype=1, double enabl
 	
 	//loccl=95
 	cout << "####################### traslchi2N1N2deltafuncV2 " << endl;
-	//h1->Fit("traslchi2N1N2deltafuncV2", "+");
-	//bestfit = f4sf_trasl_N1N2v2;
+	h1->Fit("traslchi2N1N2deltafuncV2", "+");
+	bestfit = f4sf_trasl_N1N2v2;
 	
 	cout << "####################### traslchi2N1N2deltafuncV2_ALLFREE " << endl;
 	//h1->Fit("traslchi2N1N2deltafuncV2_ALLFREE", "+");
