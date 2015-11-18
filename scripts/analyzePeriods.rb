@@ -101,7 +101,7 @@ for i in 0..startt.size()-1
 		outputres = name + ".res"
 		
 		if cluster.to_i >= 1
-			system("cut run.ll > " + prefix.to_s + ".run")
+			system("cat run.ll > " + prefix.to_s + ".run")
 		end
 
 		if analysistype.to_i ==1 || analysistype.to_i == 3
