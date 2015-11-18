@@ -11,6 +11,7 @@
 #2) filter
 #3) dir output
 #4) fixflag of analysis of the main source
+#5) sort starting list (by flux)
 #5) (optional) distanceToFixFlag0 - for analysis of neighbors. Defaul 360. See next parameters
 #6) (optional) fixflagneighbour - if the source of the list is < distanceToFixFlag0 put its fixflag=fixflagneighbour. Default 1
 #7) (optional) additionalcmd - additional commands to multi5.rb (optional), e.g. " param=value "
@@ -52,6 +53,7 @@ class ParametersCat
 			@galcoeff = "-1"
 			@maxdistancefromcenter = 360.0
 			@galcoeffthres_b  = 5;
+			@sortlist = 1
 		end
 		
 		def distanceToFixFlag0
@@ -127,6 +129,7 @@ class ParametersCat
 			puts "maplist: " + @maplist
 			puts "filter: " + @filter
 			puts "diroutput: " + @diroutput
+			puts "sortlist: " + @sortlist
 			puts "fixflaganalysis: " + @fixflaganalysis	
 			puts "fixisogalstep0=" + @fixisogalstep0.to_s
 			puts "updateres=" + @updateres.to_s
@@ -170,6 +173,13 @@ class ParametersCat
 		end
 		def fixflaganalysis=(value)
 			@fixflaganalysis=value
+		end
+		
+		def sortlist
+			@sortlist
+		end
+		def sortlist=(value)
+			@sortlist=value
 		end
 end
 
@@ -224,10 +234,11 @@ begin
 	parameters.filter = ARGV[2]
 	parameters.diroutput = ARGV[3]
 	parameters.fixflaganalysis=ARGV[4]
+	parameters.sortlist = ARGV[5]
 	
 	multilist = parameters.diroutput
 	
-	parameters.processInput(5, ARGV);
+	parameters.processInput(6, ARGV);
 	parameters.print();
 
 	outlog = parameters.diroutput + ".log"
@@ -258,8 +269,12 @@ begin
 	
 	fsourcesinput.close();
 
-	sources2 = sources.sort_by { |a| [ -a.flux ] }
-
+	if parameters.sortlist.to_i == 1
+		sources2 = sources.sort_by { |a| [ -a.flux ] }
+	else
+		sources2 = sources;
+	end
+	
 	sources2.each { |s|
 		#s.print
 		s.fixflag=0
@@ -281,6 +296,15 @@ begin
 	
 	#create the dir with the results
 	system(" mkdir " + parameters.diroutput);
+	
+	cmd = "cp " + ffinal.to_s + " " + parameters.diroutput.to_s + "/" + parameters.diroutput.to_s + ".res"
+	datautils.execute(outlog, cmd)
+
+	cmd = "cp " + ffinalfull.to_s + " " + parameters.diroutput.to_s
+	datautils.execute(outlog, cmd)
+
+	cmd = "cp " + ffmulti.to_s + " " + parameters.diroutput.to_s
+	datautils.execute(outlog, cmd)
 
 	sources2.each { |s|
 	
@@ -289,7 +313,7 @@ begin
 		fout3 = File.new(ffmulti, "a")
 
 		namesource = s.name
-		puts "############## Analysis of source " + s.name
+		puts "############## Analysis of source " + index.to_s + " " + s.name
 		
 		#salta quelle che iniziano con _
 		if namesource[0] == "_" or namesource[0] == 95
