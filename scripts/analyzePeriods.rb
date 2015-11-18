@@ -99,6 +99,10 @@ for i in 0..startt.size()-1
 
 	if analysistype.to_i >= 1 
 		outputres = name + ".res"
+		
+		if cluster.to_i >= 1
+			system("cut run.ll > " + prefix.to_s + ".run")
+		end
 
 		if analysistype.to_i ==1 || analysistype.to_i == 3
 			cmd = "ruby " + ENV["AGILE"] + "/scripts/map.rb " + filter.to_s + " " + name + " " + startt[i].to_s + " " + endt[i].to_s + " " + l.to_s + " " + b.to_s + " timetype=TT " 
@@ -123,6 +127,6 @@ for i in 0..startt.size()-1
 	end
 	
 	if cluster.to_i >= 1
-		system("ruby ~/runcluster.rb " + prefix.to_s + ".run")
+		system("llsubmit " + prefix.to_s + ".run")
 	end
 end
