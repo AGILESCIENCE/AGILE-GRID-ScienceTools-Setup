@@ -380,6 +380,7 @@ begin
 			end
 		end
 		Dir.chdir(ringmin);
+		puts "### " + ringmin;
 		system(" mkdir " + parameters.diroutput);
 		
 		cts=""
