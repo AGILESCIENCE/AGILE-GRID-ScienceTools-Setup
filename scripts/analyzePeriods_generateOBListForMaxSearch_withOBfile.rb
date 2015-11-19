@@ -66,7 +66,7 @@ File.open(galisofile).each_line do | line |
 		end
 
 		if iso.to_f == 0
-			iso=-999
+			iso=-1
 		end
 		cm =  t1.to_s + "\t" + t2.to_s + "\t" + prefix.to_s + format("%05d", index) + "\t" + gal.to_s + "\t" + iso.to_s + "\t" + lobs.to_s + "\t" + bobs.to_s + "\n"
 		#cm = cm + "\n"		
