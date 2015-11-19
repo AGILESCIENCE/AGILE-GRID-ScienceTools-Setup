@@ -4,6 +4,7 @@
 #2) .ob file with gal e iso (generated with readOB.rb)
 #3) output file name
 #4) prefix (OP, OS, OB)
+#5) endattend: end the period of analysis at tend of the ob file, otherwise close the period of analysis using tbinsize 
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
@@ -20,7 +21,8 @@ tbinsize = ARGV[1]
 galisofile = ARGV[2]
 out = ARGV[3]
 prefix=ARGV[4]
-
+endattend=ARGV[5]
+ 
 fout = File.open(out, "w")
 index = 0
 File.open(galisofile).each_line do | line |
@@ -62,9 +64,14 @@ File.open(galisofile).each_line do | line |
 			
 		end
 		if t2.to_f > tend.to_f
-			t2 = tend
+			if endattend.to_i == 1
+				t2 = tend
+			end
 		end
 
+		if gal.to_f == 0
+			gal=-1
+		end
 		if iso.to_f == 0
 			iso=-1
 		end

@@ -71,8 +71,8 @@ for i in 1..n.to_i
 	lobs = agilefov.longitudeFromPeriod2(t1, t2);
  	bobs = agilefov.latitudeFromPeriod2(t1, t2);
 
-	gal = -999
-	iso = -999
+	gal = -1
+	iso = -1
 	if obfile != nil
 		File.open(obfile).each_line do | line |
 			t = line.split(" ")
@@ -103,8 +103,8 @@ for i in 1..n.to_i
 	lobs = agilefov.longitudeFromPeriod2(t1, t2);
  	bobs = agilefov.latitudeFromPeriod2(t1, t2);
 
-	gal = -999
-	iso = -999
+	gal = -1
+	iso = -1
 	if obfile != nil
 		File.open(obfile).each_line do | line |
 			t = line.split(" ")
@@ -134,8 +134,8 @@ for i in 1..n.to_i
 	lobs = agilefov.longitudeFromPeriod2(t1, t2);
  	bobs = agilefov.latitudeFromPeriod2(t1, t2);
 
-	gal = -999
-	iso = -999
+	gal = -1
+	iso = -1
 	if obfile != nil
 		File.open(obfile).each_line do | line |
 			t = line.split(" ")
