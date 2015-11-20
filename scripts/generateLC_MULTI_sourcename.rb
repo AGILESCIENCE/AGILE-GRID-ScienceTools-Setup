@@ -74,6 +74,8 @@ out3file = output.to_s + ".ob"
 out4 = File.new(out3file, "w");
 out5file = output.to_s + ".tlist"
 out5 = File.new(out5file, "w");
+out6file = output.to_s + ".resfinalfull"
+out6 = File.new(out6file, "w");
 
 startmjd = -1
 endmjd = -1
@@ -152,9 +154,9 @@ a.each do | xx |
 	end
 	
 	#identificazione dell'off-axis
-	timestartobs = datautils.time_utc_to_tt(tstart);
+	timestartobs = datautils.time_utc_to_tt(mo.tstart);
 
-	timestopobs = datautils.time_utc_to_tt(tstop);
+	timestopobs = datautils.time_utc_to_tt(mo.tstop);
 
 	lobs = agilefov.longitudeFromPeriod2(timestartobs, timestopobs);
 	bobs = agilefov.latitudeFromPeriod2(timestartobs, timestopobs);
@@ -272,12 +274,19 @@ a.each do | xx |
 	outlcob = format("%.6f", timestartobs.to_f) + "\t" + format("%.6f", timestopobs.to_f) + "\t" + obname.to_s + "\t" + format("%.2f", gascoeff.to_f) + "\t" + format("%.2f", isocoeff.to_f) + "\t" + lobs.to_s + "\t" + bobs.to_s + "\t" + exp.to_s + "\n";
 	if mo.sqrtTS.to_f >= minsqrtTS.to_f && ul.to_f != 0.0  
 		out4.write(outlcob);
-	end		
+	end	
+	
+	outrff = "";
+	if mo.sqrtTS.to_f >= minsqrtTS.to_f && ul.to_f != 0.0  
+		out6.write(outrff);
+		out6.write(format("%05d ", index) + sout.multiOutputLineFull4("-1",  "-1", "-1") + "\n")
+	end	
 	
 end
 out.close();
 out2.close();
 out5.close();
+out6.close();
 
 cmd = "mv " + out1file.to_s + " " + out1file.to_s + ".tmp"
 puts cmd
