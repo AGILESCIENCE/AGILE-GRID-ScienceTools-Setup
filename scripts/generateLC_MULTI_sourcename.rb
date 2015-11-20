@@ -279,7 +279,7 @@ a.each do | xx |
 	outrff = "";
 	if mo.sqrtTS.to_f >= minsqrtTS.to_f && ul.to_f != 0.0  
 		out6.write(outrff);
-		out6.write(format("%05d ", index) + sout.multiOutputLineFull4("-1",  "-1", "-1") + "\n")
+		out6.write(format("%05d ", index) + mo.multiOutputLineFull4("-1",  "-1", "-1") + "\n")
 	end	
 	
 end
