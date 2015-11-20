@@ -3,7 +3,7 @@ load ENV["AGILE"] + "/scripts/DataUtils.rb"
 class MultiOutput
 	def readDataSingleSource2(res, sourcename)
 		puts res.to_s + "_" + sourcename
-		readDataSingleSource(res.to_s + "_" + sourcename);
+		readDataSingleSource(res.to_s + "_" + sourcename + ".src");
 	end
 	
 	#nameout = nome del file che contiene i dati	

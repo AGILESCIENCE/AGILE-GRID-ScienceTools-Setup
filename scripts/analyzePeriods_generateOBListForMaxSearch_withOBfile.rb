@@ -4,7 +4,7 @@
 #2) .ob file with gal e iso (generated with readOB.rb)
 #3) output file name
 #4) prefix (OP, OS, OB)
-#5) endattend: end the period of analysis at tend of the ob file, otherwise close the period of analysis using tbinsize 
+#5) endattend: end the period of analysis at tend of the ob file (1), otherwise close the period of analysis using tbinsize 
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
