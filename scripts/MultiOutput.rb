@@ -131,8 +131,8 @@ class MultiOutput
 					@timestop_utc = @tstop
 					@timestart_tt = datautils.time_utc_to_tt(@tstart);
 					@timestop_tt = datautils.time_utc_to_tt(@tstop);
-					@timestart_mjd = datautils.time_tt_to_mjd(@timestarttt);
-					@timestop_mjd = datautils.time_tt_to_mjd(@timestoptt);
+					@timestart_mjd = datautils.time_tt_to_mjd(@timestart_tt);
+					@timestop_mjd = datautils.time_tt_to_mjd(@timestop_tt);
 					
 					#calcolo fase orbitale
 					@orbitalphase = -1;
@@ -279,7 +279,7 @@ class MultiOutput
 		@dist
 	end
 	
-	def galcoeff
+	def galcoeff 
 		@galcoeff
 	end
 	

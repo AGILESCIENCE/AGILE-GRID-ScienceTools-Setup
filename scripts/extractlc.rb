@@ -163,7 +163,7 @@ a.each do | xx |
 		outlc = mo.flux.to_s + "\t" + mo.flux_error.to_s + "\t0\t";
 	end
 
-	outlc = outlc + format("%.2f", mo.timestart_mjd) + "\t" + format("%.2f", mo.timestop_mjd-mo.timestart_mjd) + "\t" + format("%.2f",distfov) + "\t" + obname.to_s + "\t" + format("%.2f",mo.sqrtTS) + "\t" + mo.exposure.to_s + "\t" +  mo.galcoeff.to_s + "\t" + mo.isocoeff.to_s + "\t" + format("%3.2f", mo.dist.to_f) + "\t" + "( " + ellipseres.chomp.to_s + " ) \t" + mo.sicalc.to_s + "\t" + mo.sicalc_error.to_s + "\n";
+	outlc = outlc + format("%.2f", mo.timestart_mjd) + "\t" + format("%.2f", mo.timestop_mjd.to_f-mo.timestart_mjd.to_f) + "\t" + format("%.2f",distfov) + "\t" + obname.to_s + "\t" + format("%.2f",mo.sqrtTS) + "\t" + mo.exposure.to_s + "\t" +  mo.galcoeff.to_s + "\t" + mo.isocoeff.to_s + "\t" + format("%3.2f", mo.dist.to_f) + "\t" + "( " + ellipseres.chomp.to_s + " ) \t" + mo.sicalc.to_s + "\t" + mo.sicalc_error.to_s + "\n";
  
 	outlcfile.write(outlc);
 	
