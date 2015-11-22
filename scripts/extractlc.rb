@@ -148,7 +148,7 @@ a.each do | xx |
 	outrfffile.write(mo.multiOutputLineFull4(format("%05d ", index),  obname, format("%.2f ", distfov)) + "\n")
 
 	#scrittura res
-	outresfile.write(mo.multiOutputLineRes4(format("%05d ", index),  obname, format("%.2f ", distfov)) + "\n")
+	outresfile.write(mo.multiOutputLineShort4(format("%05d ", index),  obname, format("%.2f ", distfov)) + "\n")
 
 	#.lc
 	outlc = ""
