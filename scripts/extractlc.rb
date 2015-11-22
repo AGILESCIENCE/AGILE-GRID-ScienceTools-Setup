@@ -8,7 +8,7 @@
 #7) maxR: remove source if outside contour level (optional, default -999 none) - only if calculated - if >= 0 enable this option and use this number as systematic error
 #9) t0: for calc phase (in MJD)
 #10) period: for calc phase
-#11) minexp: remove source if exposure < minexp, default -999
+#11) minexp: remove source if exposure < minexp, default -1
 
 #generate a LC list reading the files with the pattern contained in prefix
 
@@ -37,7 +37,7 @@ radius = -999;
 maxR = -999;
 t0 = 0;
 period = 0;
-minexp = -999;
+minexp = -1;
 
 clean=0
 for i in 4...ARGV.size
@@ -104,6 +104,7 @@ a.each do | xx |
 	
 	#remove source if exposure < minexp
 	if minexp.to_f >= 0
+		puts m.exposure.to_f 
 		if m.exposure.to_f < minexp.to_f
 			next
 		end
