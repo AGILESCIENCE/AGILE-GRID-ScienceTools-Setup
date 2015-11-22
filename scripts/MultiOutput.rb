@@ -1,6 +1,12 @@
 load ENV["AGILE"] + "/scripts/DataUtils.rb"
 
 class MultiOutput
+
+	def setCalcPhase(t0, period)
+		@calcorbitalphase_t0 = t0;
+		@calcorbitalphase_period = period;
+	end
+
 	def readDataSingleSource2(res, sourcename)
 		puts res.to_s + "_" + sourcename  + ".src"
 		readDataSingleSource(res.to_s + "_" + sourcename + ".src");
@@ -8,7 +14,8 @@ class MultiOutput
 	
 	#nameout = nome del file che contiene i dati	
 	def readDataSingleSource(nameout)
-			puts "nameout: " +  nameout;
+			datautils = DataUtils.new
+			#puts "nameout: " +  nameout;
 			@l = -1;
 			@b = -1;
 			@r = -1;
@@ -64,6 +71,7 @@ class MultiOutput
 					@ell_a = lll[4];
 					@ell_b = lll[5];
 					@ell_phi = lll[6];
+					@fullellipseline = format("%.2f %.2f %.2f %.2f %.2f %.2f %.2f", @l, @b, @distellipse, @r, @ell_a, @ell_b, @ell_phi)
 				end
 				if index2.to_i == 19
 					@counts = lll[0]
@@ -118,6 +126,22 @@ class MultiOutput
 				if index2.to_i == 27
 					@tstart = lll[0]
 					@tstop = lll[1]
+					
+					@timestart_utc = @tstart
+					@timestop_utc = @tstop
+					@timestart_tt = datautils.time_utc_to_tt(@tstart);
+					@timestop_tt = datautils.time_utc_to_tt(@tstop);
+					@timestart_mjd = datautils.time_tt_to_mjd(@timestarttt);
+					@timestop_mjd = datautils.time_tt_to_mjd(@timestoptt);
+					
+					#calcolo fase orbitale
+					@orbitalphase = -1;
+					if(@calcorbitalphase_period.to_f != 0)
+						timemjd = @timestart_mjd.to_f + (@timestop_mjd.to_f-@timestart_mjd.to_f)
+						@orbitalphase = (timemjd.to_f - @calcorbitalphase_t0.to_f) / @calcorbitalphase_period.to_f;
+						@orbitalphase = @orbitalphase.to_f - @orbitalphase.to_i;
+					end
+					
 				end
 				
 				if index2.to_i == 28
@@ -146,18 +170,25 @@ class MultiOutput
 	end
 	
 	def multiOutputLineFull3(flag)
-		d = DataUtils.new
-		mjdstart = d.time_utc_to_mjd(tstart);
-		mjdstop = d.time_utc_to_mjd(tstop);
-		ttstart = d.time_utc_to_tt(tstart);
-		ttstop = d.time_utc_to_tt(tstop);
-		@multiOutputLineFull3 = flag + " " + @label.to_s + " " + format("%.2f", @sqrtTS) + " POS " + @l_peak.to_s + " " + @b_peak.to_s + " " + @dist.to_s + " " + @l.to_s + " " + @b.to_s + " " + @distellipse.to_s + " " + @r.to_s + " " + @ell_a.to_s +  " " + @ell_b.to_s + " " + @ell_phi.to_s + " CTS " + @counts.to_s + " " + @counts_error.to_s + " " + @counts_error_p.to_s + " " + @counts_error_m.to_s + " " + @counts_ul.to_s + " FL " + @flux.to_s + " " + @flux_error.to_s + " " + @flux_error_p.to_s + " " + @flux_error_m.to_s + " " + @flux_ul.to_s + " EXP " + @exposure.to_s + " SI " + @sicalc.to_s + " " + @sicalc_error.to_s + " TI " + tstart.to_s + " " + tstop.to_s + " " + mjdstart.to_s + " " + mjdstop.to_s + " " + ttstart.to_s + " " + ttstop.to_s + " GI " + @galcoeff + " " + @galcoeff_err + " " + @galcoeffzero + " " + @galcoeffzero_err + " "  + @isocoeff + " " + @isocoeff_err + " "  + @isocoeffzero + " " + @isocoeffzero_err + " FIT " + @fit_cts + " "  + @fit_fcn0 + " " + @fit_fcn1 + " " + @fit_edm0 + " " + @fit_edm1 + " " + @fit_iter0 + " " + @fit_iter1  + " ANA " + @fix.to_s + " " + @si_start.to_s + " " + @ulconflevel.to_s + " " + @srcconflevel.to_s + " " + @startL.to_s + " " + @startB.to_s + " " + @startFlux.to_s + " [ " + @lmin.to_s + " , " + @lmax.to_s + " ] [ " + @bmin.to_s + " , " + @bmax.to_s + " ] " + " " + @energyrange + " " + @fovrange + " " + @albedo + " " + @binsize + " " + @expstep + " " + @phasecode;
+		@multiOutputLineFull3 = flag + " " + @label.to_s + " " + format("%.2f", @sqrtTS) + " POS " + @l_peak.to_s + " " + @b_peak.to_s + " " + @dist.to_s + " " + @l.to_s + " " + @b.to_s + " " + @distellipse.to_s + " " + @r.to_s + " " + @ell_a.to_s +  " " + @ell_b.to_s + " " + @ell_phi.to_s + " CTS " + @counts.to_s + " " + @counts_error.to_s + " " + @counts_error_p.to_s + " " + @counts_error_m.to_s + " " + @counts_ul.to_s + " FL " + @flux.to_s + " " + @flux_error.to_s + " " + @flux_error_p.to_s + " " + @flux_error_m.to_s + " " + @flux_ul.to_s + " EXP " + @exposure.to_s + " SI " + @sicalc.to_s + " " + @sicalc_error.to_s + " TI " + @timestart_utc.to_s + " " + @timestop_utc.to_s + " " + @timestart_mjd.to_s + " " + @timestop_mjd.to_s + " " + @timestart_tt.to_s + " " + @timestop_tt.to_s + " GI " + @galcoeffzero + " " + @galcoeffzero_err + " " + @galcoeff + " " + @galcoeff_err + " "  + @isocoeffzero + " " + @isocoeffzero_err + " "  + @isocoeff + " " + @isocoeff_err + " FIT " + @fit_cts + " "  + @fit_fcn0 + " " + @fit_fcn1 + " " + @fit_edm0 + " " + @fit_edm1 + " " + @fit_iter0 + " " + @fit_iter1  + " ANA " + @fix.to_s + " " + @si_start.to_s + " " + @ulconflevel.to_s + " " + @srcconflevel.to_s + " " + @startL.to_s + " " + @startB.to_s + " " + @startFlux.to_s + " [ " + @lmin.to_s + " , " + @lmax.to_s + " ] [ " + @bmin.to_s + " , " + @bmax.to_s + " ] " + " " + @energyrange + " " + @fovrange + " " + @albedo + " " + @binsize + " " + @expstep + " " + @phasecode + " ORBPH " + format("%.3f", @orbitalphase);
 		
 	end
 	
 	def multiOutputLineFull4(flag, ring, dist)
 		multiOutputLineFull3(flag)
 		@multiOutputLineFull4 = @multiOutputLineFull3 + " RING " + ring.to_s + " " + dist.to_s;
+	end
+	
+	def calcorbitalphase_period
+		@calcorbitalphase_period
+	end
+	
+	def calcorbitalphase_t0
+		@calcorbitalphase_t0
+	end
+	
+	def orbitalphase
+		@orbitalphase
 	end
 	
 	def	phasecode
@@ -207,6 +238,31 @@ class MultiOutput
 	def tstop
 		@tstop
 	end
+	
+	def	timestart_utc
+		@timestart_utc
+	end
+	
+	def	timestop_utc
+		@timestop_utc
+	end
+	
+	def	timestart_tt
+		@timestart_tt
+	end
+	
+	def	timestop_tt
+		@timestop_tt
+	end
+	
+	def	timestart_mjd
+		@timestart_mjd
+	end
+	
+	def	timestop_mjd
+		@timestop_mjd
+	end
+	
 	def	startL
 		@startL
 	end
