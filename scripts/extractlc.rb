@@ -71,9 +71,8 @@ out3file = output.to_s + ".ob"
 outobfile = File.new(out3file, "w");
 out5file = output.to_s + ".tlist"
 outtlistfile = File.new(out5file, "w");
-
-
-
+outafile = output.to_s + ".res"
+outresfile = File.new(outafile, "w");
 
 startmjd = -1;
 endmjd = -1;
@@ -147,6 +146,9 @@ a.each do | xx |
 	
 	#scrittura resfinalfull
 	outrfffile.write(mo.multiOutputLineFull4(format("%05d ", index),  obname, format("%.2f ", distfov)) + "\n")
+
+	#scrittura res
+	outresfile.write(mo.multiOutputLineRes4(format("%05d ", index),  obname, format("%.2f ", distfov)) + "\n")
 
 	#.lc
 	outlc = ""
