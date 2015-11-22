@@ -104,8 +104,8 @@ a.each do | xx |
 	
 	#remove source if exposure < minexp
 	if minexp.to_f >= 0
-		puts m.exposure.to_f 
-		if m.exposure.to_f < minexp.to_f
+		puts mo.exposure.to_f 
+		if mo.exposure.to_f < minexp.to_f
 			next
 		end
 	end
