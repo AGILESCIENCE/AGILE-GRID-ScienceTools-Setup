@@ -179,7 +179,9 @@ for i in 1..stepi
 		inputfilemaps = outfile.to_s + prefixi.to_s + ".maplist4"
 		#if p.findermultimode != nil
 		if maplist != inputfilemaps
-			datautils.execute(outfile2, "cp " + maplist.to_s + " " + inputfilemaps.to_s)
+			if File.exists?(inputfilemaps) == false
+				datautils.execute(outfile2, "cp " + maplist.to_s + " " + inputfilemaps.to_s)
+			end
 		end
 		maplist = inputfilemaps
 	end
@@ -189,7 +191,9 @@ for i in 1..stepi
 	#list source
 	newlistsource = outfile.to_s + prefixi.to_s + ".multi" 
 	#if p.findermultimode != nil && i.to_i == 1
-		datautils.execute(outfile2, "cp " + listsource.to_s + " " + newlistsource.to_s)
+		if File.exists?(newlistsource) == false
+			datautils.execute(outfile2, "cp " + listsource.to_s + " " + newlistsource.to_s)
+		end
 	#end
 	if p.findermultimode != nil && i.to_i == 2
 		#rewrite newlistsource

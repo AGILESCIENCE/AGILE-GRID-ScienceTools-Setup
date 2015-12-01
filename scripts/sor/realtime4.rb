@@ -74,7 +74,7 @@ begin
         		puts "lastcontacttime " + lastcontacttime.to_s
         		
         		#run02
-        		runait(lastcontacttime, 2, 2);
+        		runait(lastcontacttime, 2, 1);
         		
         		#run04
         		runait(lastcontacttime, 4, 8);

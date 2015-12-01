@@ -71,7 +71,7 @@ filter = ARGV[0];
 name = ARGV[1];
 contact0 = ARGV[2];
 contact1 = ARGV[3];
-l = ARGV[4];
+l = ARGV[4].to_f + 0.000001;
 b = ARGV[5];
 
 datautils.extractFilterDir(filter)
