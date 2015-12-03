@@ -497,8 +497,8 @@ if timetype == "TT"
 	tstoptt = tstop
 	tstartutc = datautils.time_tt_to_utc(tstart)
 	tstoputc = datautils.time_tt_to_utc(tstop)
-	tstartmjd = datautils.time_utc_to_mjd(tstartutc)
-	tstopmjd = datautils.time_utc_to_mjd(tstoputc)
+	tstartmjd = datautils.time_tt_to_mjd(tstart)
+	tstopmjd = datautils.time_tt_to_mjd(tstop)
 end
 if timetype == "UTC"
 	tstarttt = datautils.time_utc_to_tt(tstart)
