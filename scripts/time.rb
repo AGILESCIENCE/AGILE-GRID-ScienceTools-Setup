@@ -30,7 +30,7 @@ datautils = DataUtils.new
 if type.to_i == 0
 	tt1_A = time
 	utc1_A = datautils.time_tt_to_utc(time)
-	mjd1_A = datautils.time_utc_to_mjd(utc1_A)
+	mjd1_A = datautils.time_tt_to_mjd(time)
 end
 if type.to_i == 1
 	tt1_A = datautils.time_utc_to_tt(time)
