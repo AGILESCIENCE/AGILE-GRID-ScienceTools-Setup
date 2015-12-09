@@ -1,15 +1,29 @@
-### check DPS environmental variables ###
-if [ -z "$AGILE" ] || [ -z $(env | grep AGILE) ]; then
-  	echo "AGILE environmental variable not set. Abort."
-	exit
+#!/usr/bin/env bash
+
+### check environment variables
+if [ -z "$AGILE" ] || [ -z $(env | grep AGILE) ] ; then
+    echo "AGILE environment variable not set. Abort."
+    exit
 fi
-if [ -z "$CFITSIO" ] || [ -z $(env | grep CFITSIO) ]; then
-        echo "CFITSIO environmental variable not set. Abort."
-	exit
+if [ -z "$CFITSIO" ] || [ -z $(env | grep CFITSIO) ] ; then
+    echo "CFITSIO environment variable not set. Abort."
+    exit
 fi
-if [ -z "$ROOTSYS" ] || [ -z $(env | grep ROOTSYS) ]; then
-        echo "ROOTSYS environmental variable not set. Abort."
-	exit
+if [ -z "$ROOTSYS" ] || [ -z $(env | grep ROOTSYS) ] ; then
+    echo "ROOTSYS environment variable not set. Abort."
+    exit
+fi
+
+if [ $1 == "clean" ] ; then
+    cd libagilepil
+    make clean
+    cd ../libagilewcs
+    make clean
+    cd ../libagilesci
+    make clean
+    cd ../agilesci1
+    make clean
+    exit
 fi
 
 cd libagilepil
