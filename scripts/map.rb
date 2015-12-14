@@ -44,7 +44,7 @@
 #25) spectralindex: spectral index of exp map, default 2.1
 #26) timestep: LOG file step size, default 160
 ### GAS MAP
-#27) (SEL) skytype: 0 standard hires diffuse maps, 1 gc_allsky maps, default 0
+#27) (SEL) skytype: 0 SKY000-1 + SKY000-5, 1 gc_allsky maps + SKY000-5, 2 SKY000-5, 3 SKY001 (old galcenter, binsize 0.1, full sky), 4 SKY002 (new galcenter, binsize 0.1, full sky)
 #28) skymapL: sky map low resolution
 #29) skymapH: sky map high resolution
 

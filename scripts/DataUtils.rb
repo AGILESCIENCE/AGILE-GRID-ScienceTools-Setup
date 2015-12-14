@@ -564,8 +564,18 @@ class DataUtils
 				binsizeH = "gc_allsky"
 			end
 			if skytype.to_i == 2
+				binsizeL = 0.5
 				binsizeH = 0.5
 			end
+			if skytype.to_i == 3
+				binsizeL = "SKY001"
+				binsizeH = "SKY001"
+			end
+			if skytype.to_i == 4
+				binsizeL = "SKY002"
+				binsizeH = "SKY002"
+			end
+			
 			if filterbase == "FT3ab"  
 					@skymatrix = PATHMODEL + format("%01d_%01d", emin, emax) + "." + binsize.to_s + ".SFT3abG_" + version.to_s + ext.to_s + "sky.gz "
 					@skymatrixL = PATHMODEL + format("%01d_%01d", emin, emax) + "." + binsizeL.to_s + ".SFT3abG_" + version.to_s + ext.to_s + "sky.gz "
@@ -583,7 +593,7 @@ class DataUtils
 					@skymatrixH = PATHMODEL + format("%01d_%01d", emin, emax) + "." + binsizeH.to_s + ".SFMG_" + version.to_s + ext.to_s + "sky.gz "
 			end
 				
-				
+			
 			
 		end
 		
