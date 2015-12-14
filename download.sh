@@ -1,4 +1,9 @@
-export TAG=BUILD22
+#!/usr/bin/env bash
+
+trap exit ERR
+
+#TAG=master
+TAG=BUILD22
 
 git clone git@github.com:AGILESCIENCE/libagilepil.git 
 cd libagilepil
@@ -19,4 +24,3 @@ git clone git@github.com:AGILESCIENCE/agilesci1.git
 cd agilesci1
 git checkout $TAG
 cd ..
-
