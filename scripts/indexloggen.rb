@@ -2,7 +2,7 @@ load ENV["AGILE"] + "/scripts/conf.rb"
 
 fits = Fits.new
 
-dir = "/ASDC_PROC3/DATA_ASDC2/"
+dir = "/ASDC_PROC2/DATA_2/"
 
 fout = File.new(dir + "INDEX/LOG.log.index", "w")
 
@@ -13,7 +13,7 @@ Dir[dir + "/LOG/*.gz"].each do | file |
 end
 fout.close()
 
-dir = "/ASDC_PROC3/FM3.119_ASDC2/"
+dir = "/ASDC_PROC2/FM3.119_2/"
 
 fout = File.new(dir + "INDEX/EVT.index", "w")
 
