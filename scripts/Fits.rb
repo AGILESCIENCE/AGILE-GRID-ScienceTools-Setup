@@ -54,6 +54,10 @@ class Fits
 			
 			@utc_end = @header["DATE-END"];
 			
+			@tt_start = @header["TSTART"];
+			
+			@tt_end = @header["TSTOP"];
+			
 		end	
 		
 		def header
@@ -82,6 +86,14 @@ class Fits
 		
 		def utc_end
 			@utc_end
+		end	
+		
+		def tt_start
+			@tt_start
+		end	
+		
+		def tt_end
+			@tt_end
 		end	
 		
 		def minenergy
