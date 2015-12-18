@@ -85,23 +85,23 @@ begin
                 
                 begin
 					abspath=PATH_RES + "/aitoff_rt/"
-					system("mkdir -rf /tmp/app");
+					system("mkdir /tmp/app");
 					system("chmod -R g+w /tmp/app");
 					b02=Dir[abspath + "*RT02*/orbit"].sort()
 					last02 = b02[b02.size() - 1].split("orbit")[0]
-					system("cp " + last02 + "/MLE000.ctsall.jpg /tmp/app/lastait2.jpg")
+					system("cp " + last02 + "/MLE000*.ctsall.jpg /tmp/app/lastait2.jpg")
 					system("cp " + last02 + "/orbit /tmp/app/lastait2.orb")
-					system("cp " + last02 + "/MLE000.ctsall.jpg /tmp/app/public.jpg")
+					system("cp " + last02 + "/MLE000*.ctsall.jpg /tmp/app/public.jpg")
 					system("cp " + last02 + "/orbit /tmp/app/public.orb")
 				
 					b04=Dir[abspath + "*RT04*/orbit"].sort()
 					last04 = b04[b04.size() - 1].split("orbit")[0]
-					system("cp " + last04 + "/MLE000.ctsall.jpg /tmp/app/lastait4.jpg")
+					system("cp " + last04 + "/MLE000*.ctsall.jpg /tmp/app/lastait4.jpg")
 					system("cp " + last04 + "/orbit /tmp/app/lastait4.orb")
 				
 					b07=Dir[abspath + "*RT07*/orbit"].sort()
 					last07 = b07[b07.size() - 1].split("orbit")[0]
-					system("cp " + last07 + "/MLE000.ctsall.jpg /tmp/app/lastait7.jpg")
+					system("cp " + last07 + "/MLE000*.ctsall.jpg /tmp/app/lastait7.jpg")
 					system("cp " + last07 + "/orbit /tmp/app/lastait7.orb")
                 rescue
                 	puts "error in file system"
