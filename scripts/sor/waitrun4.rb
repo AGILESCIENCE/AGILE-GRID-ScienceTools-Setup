@@ -2,11 +2,12 @@
 #0) command to execute periodically
 #1) time of sleep in seconds
 
+load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
 
 begin
         b=1
         while b == 1
-        		a = Dir["/ANALYSIS3/commands/*.conf"]
+        		a = Dir[PATH_RES + "/commands/*.conf"]
         		if a.size() > 0 
         			a.each do | line |
         				puts line

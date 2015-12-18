@@ -1,6 +1,8 @@
 #! /usr/bin/ruby
 
-abspath="/ANALYSIS3/"
+load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
+
+abspath=PATH_RES
 
 def runait(lastcontacttime, day, hours_shift)
 
@@ -61,12 +63,12 @@ begin
         
         while b == 1
         		
-        		cmd = "sort --key=3 /AGILE_PROC3/FM3.119_2/INDEX/EVT.index | tail -1 > " + abspath + "/commands/lastorbit "
+        		cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_2/INDEX/EVT.index | tail -1 > " + abspath + "/commands/lastorbit "
         		puts cmd
         		system(cmd)
         		lastcontacttime = 0
         		
-        		cmd = "cp /AGILE_PROC3/FM3.119_2/INDEX/EVT.index " + abspath + "/commands/"
+        		cmd = "cp " + PATH_DATA + "/FM3.119_2/INDEX/EVT.index " + abspath + "/commands/"
         		system(cmd)
         		
         		

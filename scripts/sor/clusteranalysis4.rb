@@ -1,8 +1,10 @@
 #! /usr/bin/ruby
 #0) config file name (V2)
 
+load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
+
 filenameconf = ARGV[0];
-root = "/ANALYSIS3/"
+root = PATH_RES
 
 index = 0;
 typeanalysis = ""
