@@ -2,13 +2,13 @@
 
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
 
-abspath=PATH_RES
+
 
 def runait(lastcontacttime, day, hours_shift)
 
         		tstart = 0
         		tstop = 0
-        		
+        		abspath = PATH_RES
         		lastprocessing2 = 0
         		if File.exists?(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"")
         			File.open(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"", "r").each_line do | line |
@@ -60,9 +60,9 @@ end
 
 begin
         b=1
-        
+   		
         while b == 1
-        		
+        		abspath = PATH_RES
         		cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_2/INDEX/EVT.index | tail -1 > " + abspath + "/commands/lastorbit "
         		puts cmd
         		system(cmd)
