@@ -25,9 +25,9 @@ def runait(lastcontacttime, day, hours_shift)
         		
         		if tstop.to_i <= lastcontacttime.to_i
         			#change and copy the card
-        			fo = File.new("/home/bulgarelli/sor/aitoff_rt"+format("%02i", day)+".conf", "w")
+        			fo = File.new("/tmp/aitoff_rt"+format("%02i", day)+".conf", "w")
         			index = 0
-        			File.open("/home/bulgarelli/sor/cards/ait_rt/aitoff_rt"+format("%02i", day)+".conf").each_line do | line |
+        			File.open(ENV["AGILE"] + "/scripts/sor/cards/ait_rt/aitoff_rt"+format("%02i", day)+".conf").each_line do | line |
         				out = line
         				if index.to_i == 2
         					out = tstart.to_i.to_s + "\n"
@@ -36,8 +36,8 @@ def runait(lastcontacttime, day, hours_shift)
         					out = tstop.to_i.to_s + "\n"
         				end
         				if index.to_i == 23
-        					abspath += line.chomp
-        					abspath += "/AIT_"
+        					#abspath += line.chomp
+        					#abspath += "/AIT_"
         				end
         				if index.to_i == 25
         					out = line.chomp + "_" + tstart.to_i.to_s + "_" +  tstop.to_i.to_s + "\n"
@@ -51,7 +51,7 @@ def runait(lastcontacttime, day, hours_shift)
         			f = File.new(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day), "w")
         			f.write(lastprocessing2);
         			f.close();
-        			system("cp /home/bulgarelli/sor/aitoff_rt"+format("%02i", day)+".conf  commands/");
+        			system("cp /tmp/aitoff_rt"+format("%02i", day)+".conf " + abspath + "/commands/");
         		end
 end
 
