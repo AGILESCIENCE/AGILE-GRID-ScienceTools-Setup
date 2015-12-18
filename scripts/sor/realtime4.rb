@@ -51,6 +51,7 @@ def runait(lastcontacttime, day, hours_shift)
         			f = File.new(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day), "w")
         			f.write(lastprocessing2);
         			f.close();
+        			puts "New run: " + "cp /tmp/aitoff_rt"+format("%02i", day)+".conf " + abspath + "/commands/";
         			system("cp /tmp/aitoff_rt"+format("%02i", day)+".conf " + abspath + "/commands/");
         		end
 end
