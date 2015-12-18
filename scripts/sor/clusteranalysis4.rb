@@ -2,6 +2,7 @@
 #0) config file name (V2)
 
 filenameconf = ARGV[0];
+root = "/ANALYSIS3/"
 
 index = 0;
 typeanalysis = ""
@@ -132,7 +133,7 @@ File.open(filenameconf).each_line do | line |
 end
 
 
-root = "/AGILE_PROC3/ANALYSIS3/"
+
 rootbase = root
 
 basedir = root + "/" + user + "/" + analysisname
@@ -170,7 +171,7 @@ system(cmd)
 
 newcmd = basedir + "/" + mle + ".ll"
 
-cmd = "cp ~/sor/run5.ll " + newcmd
+cmd = "cp " + ENV["AGILE"] + "/scripts/sor/run5.ll " + newcmd
 puts cmd
 system(cmd)
 

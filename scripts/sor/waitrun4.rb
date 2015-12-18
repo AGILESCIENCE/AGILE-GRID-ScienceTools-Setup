@@ -6,15 +6,15 @@
 begin
         b=1
         while b == 1
-        		a = Dir["/AGILE_PROC3/ANALYSIS3/commands/*.conf"]
+        		a = Dir["/ANALYSIS3/commands/*.conf"]
         		if a.size() > 0 
         			a.each do | line |
-        			puts line
-                		cmd = "mv " + line + " ~/sor/ ";
+        				puts line
+                		cmd = "mv " + line + " /tmp/ ";
                	 		puts cmd
                 		system(cmd);
                 		file = line.split("/")[line.split("/").size-1]
-               			cmd = "cd ~/sor; clusteranalysis4.rb " + file
+               			cmd = "cd /tmp; clusteranalysis4.rb " + file
                			puts cmd;
                			system(cmd)
                		end

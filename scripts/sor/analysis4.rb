@@ -376,9 +376,9 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 		if ds91 != "none"
 			fname = file.split(".cts.gz")[0]
 			if ds91 == "default"
-				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall 1 -1 " + smooth.to_s + " B all jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
+				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall 1 -1 " + smooth.to_s + " B all jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
 			else
-				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall " + ds91.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
+				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall " + ds91.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
 			end
 			puts cmd
 			system(cmd)
@@ -389,9 +389,9 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 		if ds92 != "none"
 			fname = file.split(".int.gz")[0]
 			if ds92 == "default"
-				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall 1 -1 " + smooth.to_s + " B all jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
+				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall 1 -1 " + smooth.to_s + " B all jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
 			else
-				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall " + ds92.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
+				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall " + ds92.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
 			end
 			puts cmd
 			system(cmd)
@@ -402,9 +402,9 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 		if ds93 != "none"
 			fname = file.split(".exp.gz")[0]
 			if ds93 == "default"
-				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall 1 -1 1 B all jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
+				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall 1 -1 1 B all jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
 			else
-				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall " + ds93.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
+				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall " + ds93.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
 			end
 			puts cmd
 			system(cmd)
@@ -414,9 +414,9 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 		if File.exists?("MAP.cts.gz") and ds94 != "none"
 			fname = file.split(".cts.gz")[0]
 			if ds94 == "default"
-				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
+				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
 			else
-				cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + ds94.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
+				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + ds94.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
 			end
 			puts cmd
 			system(cmd)
@@ -443,9 +443,9 @@ if proj.to_s == "AIT"
 	#cmd = "export DISPLAY=localhost:3.0; ds9.rb MAP.cts.gz " + mle  + ".ctsall 2 -1 " + smooth.to_s + " B 2 jpg 1500x1000 " +  regcat.to_s;
 	if File.exists?("MAP.cts.gz") and ds91 != "none"
 		if ds91 == "default"
-			cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb MAP.cts.gz " + mle  + ".ctsall 1 -1 " + smooth.to_s + " B 2 jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.cts.gz " + mle  + ".ctsall 1 -1 " + smooth.to_s + " B 2 jpg 1400x1000 ";
 		else
-			cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb MAP.cts.gz " + mle  + ".ctsall " + ds91.to_s + " jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.cts.gz " + mle  + ".ctsall " + ds91.to_s + " jpg 1400x1000 ";
 		end
 		if reg == "yes"
 			cmd += " "
@@ -456,9 +456,9 @@ if proj.to_s == "AIT"
 	end
 	if File.exists?("MAP.int.gz") and ds92 != "none"
 		if ds92 == "default"
-			cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb MAP.int.gz " + mle  + ".intall 0 0.0010 " + smooth.to_s + " B 2 jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.int.gz " + mle  + ".intall 0 0.0010 " + smooth.to_s + " B 2 jpg 1400x1000 ";
 		else
-			cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb MAP.int.gz " + mle  + ".intall " + ds92.to_s + " jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.int.gz " + mle  + ".intall " + ds92.to_s + " jpg 1400x1000 ";
 		end
 		if reg == "yes"
 			cmd += " "
@@ -469,9 +469,9 @@ if proj.to_s == "AIT"
 	end
 	if File.exists?("MAP.exp.gz") and ds93 != "none"
 		if ds93 == "default"
-			cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb MAP.exp.gz " + mle  + ".expall 1 -1 1 B 2 jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.exp.gz " + mle  + ".expall 1 -1 1 B 2 jpg 1400x1000 ";
 		else
-			cmd = "export DISPLAY=localhost:3.0; ~/sor/ds9.rb MAP.exp.gz " + mle  + ".expall " + ds93.to_s +  " jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.exp.gz " + mle  + ".expall " + ds93.to_s +  " jpg 1400x1000 ";
 		end
 		if reg == "yes"
 			cmd += " "
