@@ -2,13 +2,11 @@
 
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
 
-
-
 def runait(lastcontacttime, day, hours_shift)
 
         		tstart = 0
         		tstop = 0
-        		abspath = PATH_RES
+        		abspath=PATH_RES
         		lastprocessing2 = 0
         		if File.exists?(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"")
         			File.open(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"", "r").each_line do | line |
@@ -60,25 +58,21 @@ end
 
 begin
         b=1
-   		
+        
         while b == 1
-        		abspath = PATH_RES
-        		cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_2/INDEX/EVT.index | tail -1 > " + abspath + "/commands/lastorbit "
+        		
+        		cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_2/INDEX/EVT.index | tail -1 > /AGILE_PROC3/ANALYSIS3/commands/lastorbit "
         		puts cmd
         		system(cmd)
         		lastcontacttime = 0
         		
-        		cmd = "cp " + PATH_DATA + "/FM3.119_2/INDEX/EVT.index " + abspath + "/commands/"
-        		system(cmd)
-        		
-        		
-        		File.open(abspath + "/commands/lastorbit", "r").each_line do | line |
+        		File.open(PATH_RES + "/commands/lastorbit", "r").each_line do | line |
         			lastcontacttime = line.split(" ")[2].to_i
         		end
         		puts "lastcontacttime " + lastcontacttime.to_s
         		
         		#run02
-        		runait(lastcontacttime, 2, 1);
+        		runait(lastcontacttime, 2, 2);
         		
         		#run04
         		runait(lastcontacttime, 4, 8);
@@ -86,25 +80,25 @@ begin
         		#run07
         		runait(lastcontacttime, 7, 12);
         		
-                sleep (100);
+                sleep (10);
                 
                 begin
-					pathrt=abspath+"/aitoff_rt/"
-					b02=Dir[pathrt + "*RT02*/orbit"].sort()
+					abspath=PATH_RES + "/aitoff_rt/"
+					b02=Dir[abspath + "*RT02*/orbit"].sort()
 					last02 = b02[b02.size() - 1].split("orbit")[0]
-					system("cp " + last02 + "/MLE0000.ctsall.jpg /home/bulgarelli/sor/app/lastait2.jpg")
+					system("cp " + last02 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/lastait2.jpg")
 					system("cp " + last02 + "/orbit /home/bulgarelli/sor/app/lastait2.orb")
-					system("cp " + last02 + "/MLE0000.ctsall.jpg /home/bulgarelli/sor/app/public.jpg")
+					system("cp " + last02 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/public.jpg")
 					system("cp " + last02 + "/orbit /home/bulgarelli/sor/app/public.orb")
 				
-					b04=Dir[pathrt + "*RT04*/orbit"].sort()
+					b04=Dir[abspath + "*RT04*/orbit"].sort()
 					last04 = b04[b04.size() - 1].split("orbit")[0]
-					system("cp " + last04 + "/MLE0000.ctsall.jpg /home/bulgarelli/sor/app/lastait4.jpg")
+					system("cp " + last04 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/lastait4.jpg")
 					system("cp " + last04 + "/orbit /home/bulgarelli/sor/app/lastait4.orb")
 				
-					b07=Dir[pathrt + "*RT07*/orbit"].sort()
+					b07=Dir[abspath + "*RT07*/orbit"].sort()
 					last07 = b07[b07.size() - 1].split("orbit")[0]
-					system("cp " + last07 + "/MLE0000.ctsall.jpg /home/bulgarelli/sor/app/lastait7.jpg")
+					system("cp " + last07 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/lastait7.jpg")
 					system("cp " + last07 + "/orbit /home/bulgarelli/sor/app/lastait7.orb")
                 rescue
                 	puts "error in file system"
