@@ -6,20 +6,21 @@ fits = Fits.new
 
 dir = basepath + "/DATA_2/"
 
-fout = File.new(dir + "INDEX/LOG.log.index", "w")
+fout = File.new(dir + "INDEX/LOG.log.index2", "w")
 
-Dir[dir + "/LOG/*.gz"].each do | file |
+Dir[dir + "/LOG/*.gz"].sort.each do | file |
         puts file
         fits.readFitsHeader(file);
         fout.write(file + " " + fits.tt_start + " " + fits.tt_end + " LOG\n");
 end
 fout.close()
+system("mv " + dir + "INDEX/LOG.log.index2 " + dir + "INDEX/LOG.log.index");
 
 dir = basepath + "/FM3.119_2/"
 
-fout = File.new(dir + "INDEX/EVT.index", "w")
+fout = File.new(dir + "INDEX/EVT.index2", "w")
 
-Dir[dir + "/EVT/*.gz"].each do | file |
+Dir[dir + "/EVT/*.gz"].sort.each do | file |
         puts file
 	if File.size(file).to_i != 0
         	fits.readFitsHeader(file);
@@ -27,3 +28,4 @@ Dir[dir + "/EVT/*.gz"].each do | file |
 	end
 end
 fout.close()
+system("mv " + dir + "INDEX/EVT.index2 " + dir + "INDEX/EVT.index")
