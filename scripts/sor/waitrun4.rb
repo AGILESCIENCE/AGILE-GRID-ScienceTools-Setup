@@ -5,8 +5,8 @@
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
 
 begin
-        b=1
-        while b == 1
+        #b=1
+        #while b == 1
         		a = Dir[PATH_RES + "/commands/*.conf"]
         		if a.size() > 0 
         			a.each do | line |
@@ -20,6 +20,6 @@ begin
                			system(cmd)
                		end
                	end
-                sleep (10);
-        end
+        #        sleep (10);
+        #end
 end

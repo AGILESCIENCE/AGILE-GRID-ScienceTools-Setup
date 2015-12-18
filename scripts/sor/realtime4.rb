@@ -58,9 +58,9 @@ end
 
 
 begin
-        b=1
+        #b=1
         
-        while b == 1
+        #while b == 1
         		
         		cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_2/INDEX/EVT.index | tail -1 > " + PATH_RES + "/commands/lastorbit "
         		puts cmd
@@ -81,30 +81,32 @@ begin
         		#run07
         		runait(lastcontacttime, 7, 12);
         		
-                sleep (10);
+                #sleep (10);
                 
                 begin
 					abspath=PATH_RES + "/aitoff_rt/"
+					system("mkdir -rf /tmp/app");
+					system("chmod -R g+w /tmp/app");
 					b02=Dir[abspath + "*RT02*/orbit"].sort()
 					last02 = b02[b02.size() - 1].split("orbit")[0]
-					system("cp " + last02 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/lastait2.jpg")
-					system("cp " + last02 + "/orbit /home/bulgarelli/sor/app/lastait2.orb")
-					system("cp " + last02 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/public.jpg")
-					system("cp " + last02 + "/orbit /home/bulgarelli/sor/app/public.orb")
+					system("cp " + last02 + "/MLE000.ctsall.jpg /tmp/app/lastait2.jpg")
+					system("cp " + last02 + "/orbit /tmp/app/lastait2.orb")
+					system("cp " + last02 + "/MLE000.ctsall.jpg /tmp/app/public.jpg")
+					system("cp " + last02 + "/orbit /tmp/app/public.orb")
 				
 					b04=Dir[abspath + "*RT04*/orbit"].sort()
 					last04 = b04[b04.size() - 1].split("orbit")[0]
-					system("cp " + last04 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/lastait4.jpg")
-					system("cp " + last04 + "/orbit /home/bulgarelli/sor/app/lastait4.orb")
+					system("cp " + last04 + "/MLE000.ctsall.jpg /tmp/app/lastait4.jpg")
+					system("cp " + last04 + "/orbit /tmp/app/lastait4.orb")
 				
 					b07=Dir[abspath + "*RT07*/orbit"].sort()
 					last07 = b07[b07.size() - 1].split("orbit")[0]
-					system("cp " + last07 + "/MLE000.ctsall.jpg /home/bulgarelli/sor/app/lastait7.jpg")
-					system("cp " + last07 + "/orbit /home/bulgarelli/sor/app/lastait7.orb")
+					system("cp " + last07 + "/MLE000.ctsall.jpg /tmp/app/lastait7.jpg")
+					system("cp " + last07 + "/orbit /tmp/app/lastait7.orb")
                 rescue
                 	puts "error in file system"
                 end
-                system("scp /home/bulgarelli/sor/app/* marlin:/var/www/html/AGILEApp/RT/")
+                system("scp /tmp/app/* marlin:/var/www/html/AGILEApp/RT/")
                 
-        end
+        #end
 end
