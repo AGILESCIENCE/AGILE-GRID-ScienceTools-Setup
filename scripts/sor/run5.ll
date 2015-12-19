@@ -22,9 +22,7 @@
 
   date
 
-  module load root_v5.34.24
+  module load agile-AB
 
-  rootinit
 
-  . ~/profile
 
