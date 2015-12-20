@@ -14,7 +14,6 @@ class MultiOutput
 	
 	#nameout = nome del file che contiene i dati	
 	def readDataSingleSource(nameout)
-			nameout = nameout + ".src"
 			datautils = DataUtils.new
 			#puts "nameout: " +  nameout;
 			@l = -1;
