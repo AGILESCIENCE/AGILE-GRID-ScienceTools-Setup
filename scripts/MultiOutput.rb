@@ -9,11 +9,12 @@ class MultiOutput
 
 	def readDataSingleSource2(res, sourcename)
 		puts res.to_s + "_" + sourcename  + ".src"
-		readDataSingleSource(res.to_s + "_" + sourcename + ".src");
+		readDataSingleSource(res.to_s + "_" + sourcename);
 	end
 	
 	#nameout = nome del file che contiene i dati	
 	def readDataSingleSource(nameout)
+			nameout = nameout + ".src"
 			datautils = DataUtils.new
 			#puts "nameout: " +  nameout;
 			@l = -1;

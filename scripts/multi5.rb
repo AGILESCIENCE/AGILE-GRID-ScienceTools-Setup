@@ -151,7 +151,7 @@ for i in 1..stepi
 		datautils.execute(outfile2, cmd)
 		
 		#step0b: prendi il valore di gal e iso calcolati e genera il maplist4 per le analisi successive
-		multioutput.readDataSingleSource2(outfile22 + ".src", p.fixisogalstep0);
+		multioutput.readDataSingleSource2(outfile22, p.fixisogalstep0);
 		maplist = outfile22 + ".tmpmaplist4"
 		
 		alikeutils.rewriteMaplist(inputfilemaps, maplist, multioutput.galcoeff, multioutput.isocoeff)
@@ -199,7 +199,7 @@ for i in 1..stepi
 	if p.findermultimode != nil && i.to_i == 2
 		#rewrite newlistsource
 	
-		multioutput.readDataSingleSource2(lastoutfile + ".src", p.findermultimode.split(",")[0])
+		multioutput.readDataSingleSource2(lastoutfile, p.findermultimode.split(",")[0])
 	
 		alikeutils.rewriteMultiInputWithNewCoordinatesSource(listsource, newlistsource, p.findermultimode.split(",")[0], multioutput.l_peak, multioutput.b_peak);
 	
