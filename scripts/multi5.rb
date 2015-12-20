@@ -121,14 +121,15 @@ if p.doublestep != nil
 end
 
 lastoutfile = ""
+outfile2 = baseoutfile2
 
 cmd = "cp " + PATH + "share/AG_multi5.par . "
-datautils.execute(prefix, cmd);
+datautils.execute(outfile2, cmd);
 
 for i in 1..stepi
 	#outfile
 	outfile = baseoutfile
-	outfile2 = baseoutfile2
+	
 
 	#selezione delle calibration matrix
 	filterbase = p.filter.split("_")[0];
