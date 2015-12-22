@@ -1,3 +1,124 @@
+22 Dec 2015
+TAG GIT: BUILD23
+
+.src problem
+bugs
+bugs
+module load
+bugs
+removed loop and /tmp/app path
+absolute path
+phasecode and paths
+absolute path
+mv
+file size
+basepath
+abspath
+abspath
+new sorpaths.rb file
+new /ANALYSIS3 path
+app
+paths version
+first version
+fits TSTART TSTOP
+Merge branch 'master' of github.com:AGILESCIENCE/BUILD_GRID_SCI_git
+new skytypes
+Trap on download.sh/install.sh scripts error, add .gitignore, add install.sh clean.
+Add +x to scripts.
+Remove agilesci1 from this install project.
+added time_tt_to_mjd
+added time_tt_to_mjd
+bugs on central position of the map
+spin
+pointings
+exp
+exp
+.res
+.res
+bugs on mjd
+bugs on scindex
+bugs
+new version
+ts out
+.resfinalfull
+.src
+added endattheend option
+added -1
+added -999
+lpointing -1 or -999
+lpointing -1 or -999
+run.ll
+run.ll
+pointing problems
+run.ll
+run.ll
+comments
+sort list
+index+1
+new energy range for sor
+new energy range for sor
+changes
+fout open and close
+bug on path
+ParametersCat class
+bugs
+savesourcelist
+new procedure for CAT2
+new procedure for CAT2
+new procedure for CAT2
+Merge branch 'master' of github.com:AGILESCIENCE/BUILD_GRID_SCI_git
+mapgas type 2
+Update README
+Update README
+ts map evaluation
+it bug
+first the Galactic plane
+map with maplistgen bug
+spotfinder with fits
+expmapgen maplistexp
+expmapgen maplistexp
+mapgen bug
+mapgas par
+mapgas par
+mapgas bugs
+maplistexp
+bug
+mapsize parameter
+ring 3072
+ring 3072
+bugs
+management of fixflag=7 issues V1
+makeCATALOG5.rb mode I
+simmulti5 bad interpreter
+bug on makecatalog_phase3.rb
+iterative5.rb and multi5.rb  error when pfiles are deleted
+map.rb error when pfiles are deleted
+makecatalog_phase3.rb help
+makecatalog_phase3.rb set fixflag and new prefix # = fixflag=3
+energybin=9
+map.rb energybin=9
+agilegrid4
+management of MLEXXXX.ll#6
+management of MLEXXXX.ll#5
+management of MLEXXXX.ll#4
+management of MLEXXXX.ll#3
+management of MLEXXXX.ll#2
+management of MLEXXXX.ll
+spotfinder bugs#5
+spotfinder bugs#4
+spotfinder bugs#3
+spotfinder bugs#2
+spotfinder bugs#1
+spotfinder bugs
+spotfinder
+sor and makecatalog_phase3 bugs
+bugs on scripts
+error in spectral index copy
+bug on gasmap generation with energybin > 0
+sor v4
+spotfinder
+spot6
+
 25 June 2015
 TAG GIT: BUILD22
 + new reorganization
@@ -396,3 +517,4 @@ TAG CVS: BUILD6
 ================================================================
 TAG CVS: BUILD3
 + added the scientific analysis
+
