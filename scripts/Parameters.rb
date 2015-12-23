@@ -638,6 +638,8 @@ class Parameters
 					@outputres = value;
 				when "energybin"
 					@energybin = value;
+				when "eb"
+					@energybin = value;
 				else
 					puts "Keyword " + argv.to_s + " error."
 					#exit;

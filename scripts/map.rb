@@ -18,7 +18,7 @@
 #13) proj: projection ARC or AIT, default ARC
 #14) albedorad: default 80
 #15) (SEL) fovbinnumber: number of bins between fovradmin and fovradmax. Dim = (fovradmax-fovradmin)/fovbinnumber, default 1
-#16) (SEL) energybin: default 0, 
+#16) (SEL) energybin or eb: default 0, 
 #	=1 activate [00030-00050] [00050-00100], [00100-00400], [00400-01000], [01000-03000], [03000, 10000], [10000, 50000])
 #	=2 activate [00030-00050] [00050-00100], [00100-00200], [00200-00400], [00400-01000], [01000-03000], [03000, 500000])
 #	=3 activate [00100-00200], [00200-00400], [00400-01000], [01000-03000])
