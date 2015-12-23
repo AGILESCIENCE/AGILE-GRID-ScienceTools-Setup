@@ -491,6 +491,8 @@ class Parameters
 					@opmode = value;
 				when "nruns"
 					@nruns = value;
+				when "dq"
+					@dq = value;
 				when "filter"
 					@filter = value;
 				when "useEDPmatrixforEXP"
@@ -652,6 +654,23 @@ class Parameters
 			
 			if @ITradit.to_f == 0
 				@ITradit = @mapsize.to_i / 2.0 - @ranal.to_i
+			end
+			
+			if @dq.to_i == 1
+				@albedorad = 80
+				@fovradmax = 60
+			end
+			if @dq.to_i == 2
+				@albedorad = 80
+				@fovradmax = 50
+			end
+			if @dq.to_i == 3
+				@albedorad = 90
+				@fovradmax = 60
+			end
+			if @dq.to_i == 4
+				@albedorad = 90
+				@fovradmax = 50
 			end
 			
 			if @expstep.to_f == -1

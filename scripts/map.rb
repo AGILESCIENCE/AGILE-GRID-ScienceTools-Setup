@@ -31,6 +31,8 @@
 #	=10 activate [00100-00400], [00400-01000], [01000-03000], [03000, 100000], [10000, 50000])
 #	=11 activate [00400-01000], [01000-03000], [03000, 100000], [10000, 50000])
 #	=12 activate [00400-01000], [01000-03000], [03000, 100000])
+#   =13 activate [00100-00400], [00400-01000], [01000-03000]
+#   =14 activate [00100-00400], [00400-01000]
 #17) phasecode: optional, default 2. If -1 => automatic determination ==>  if (time end  > 182692800.0 (MJD 55119.5, UTC 2009-10-15T12:00:00, fine pointing) && phasecode == -1) then phasecode = 2 (SPIN) else phasecode = 18 (POIN)
 #18) timelist: a file with a list of tstart/stop
 #19) timebinsize: optional, default 999999999
@@ -47,7 +49,7 @@
 #27) (SEL) skytype: 0 SKY000-1 + SKY000-5, 1 gc_allsky maps + SKY000-5, 2 SKY000-5, 3 SKY001 (old galcenter, binsize 0.1, full sky), 4 SKY002 (new galcenter, binsize 0.1, full sky)
 #28) skymapL: sky map low resolution
 #29) skymapH: sky map high resolution
-
+#30) dq: data quality, default 1. dq = 1 -> albedorad=80,fovradmax=60. dq = 2 -> albedorad=80,fovradmax=50. dq = 3 -> albedorad=90,fovradmax=60. dq = 4 -> albedorad=90,fovradmax=50
 
 #Lo script crea le mappe mancanti, e se ne crea almeno uno aggiunge la corrispondente riga nel .maplitsX. Attenzione quindi alle duplicazioni
 
@@ -63,7 +65,7 @@ datautils = DataUtils.new
 parameters = Parameters.new
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -59 " + $0 );
+	system("head -61 " + $0 );
 	exit;
 end
 
@@ -170,8 +172,17 @@ if parameters.energybin.to_i == 12
 	energybinnumber = 3
 end
 
+if parameters.energybin.to_i == 13
+	eminarr = [100,  400, 1000]
+	emaxarr = [400, 1000, 3000]
+	energybinnumber = 3
+end
 
-
+if parameters.energybin.to_i == 14
+	eminarr = [100,  400]
+	emaxarr = [400, 1000]
+	energybinnumber = 2
+end
 
 index_name_cor = BASEDIR_ARCHIVE.to_s + "/DATA/INDEX/3901.cor.index"
 puts "index name cor: " + index_name_cor;
