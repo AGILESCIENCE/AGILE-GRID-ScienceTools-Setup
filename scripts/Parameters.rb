@@ -40,7 +40,7 @@ class Parameters
 			@timestep = 160;
 			@fovbinnumber = 1;
 			@proj = "ARC";
-			@phasecode = 2;
+			@phasecode = -1;
 			@timebinsize = 99999999999999;
 			@makelc = nil;
 			@ulcl = 2.0;
