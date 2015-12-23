@@ -323,6 +323,8 @@ while time.to_f < tstop.to_f
 				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_ctsmapgen5 " + cts2.to_s  + " " + indexfilter.to_s + " " + parameters.timelist.to_s  + "  " + parameters.mapsize.to_s + " " + parameters.binsize.to_s + " "  + l.to_s + " " + b.to_s + " " + lonpole.to_s + " " + " " + parameters.albedorad.to_s + " " + parameters.phasecode.to_s + " " + filtercode.to_s + " "  + parameters.proj.to_s + " "+ t0.to_s + " " + t1.to_s + " " + emin.to_s + " " + emax.to_s + " " + fovmin.to_s + " " + fovmax.to_s;
 				datautils.execute(prefix, cmd);
 				createdmap = true
+				cmd = "rm ./AG_ctsmapgen5.par"
+				#datautils.execute(prefix, cmd);
 			end
 			sarmatrixfull = PATHMODEL + sarmatrix
 			edpmatrixfull = " None "
@@ -343,6 +345,9 @@ while time.to_f < tstop.to_f
 					if parameters.maplistgen != "None" 
 						createdexpmap = true
 					end
+					
+					cmd = "rm ./AG_expmapgen5.par"
+					#datautils.execute(prefix, cmd);
 				end
 			end
 		
@@ -352,6 +357,8 @@ while time.to_f < tstop.to_f
 				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_gasmapgen5 " + exp2.to_s + " " + gas2.to_s + " " + skymapL.to_s + " " + skymapH.to_s;
 				datautils.execute(prefix, cmd);
 				createdmap = true
+				cmd = "rm ./AG_gasmapgen5.par"
+				#datautils.execute(prefix, cmd);
 			end
 		
 			if File.exists?(int2) == false
@@ -359,6 +366,8 @@ while time.to_f < tstop.to_f
 				datautils.execute(prefix, cmd);
 				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_intmapgen5 " + exp2.to_s + " " + int2.to_s + " " + cts2.to_s;
 				datautils.execute(prefix, cmd);
+				cmd = "rm ./AG_intmapgen5.par"
+				#datautils.execute(prefix, cmd);
 			end
 		
 			puts "###"

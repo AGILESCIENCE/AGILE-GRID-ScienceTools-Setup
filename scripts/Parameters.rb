@@ -53,6 +53,7 @@ class Parameters
 			@blocks=0
 			@nruns=1
 			@seed=0
+			@dq = 1
 			
 			@fixisogalstep0 = nil;
 			@doublestep = nil;
@@ -73,6 +74,8 @@ class Parameters
 			@outfile = nil
 			@outfile2 = nil
 			@energybin = 0;
+			@emin_sources = 100
+			@emax_sources = 50000
 		end
 		
 		def setPhaseCode(tstop)
@@ -87,6 +90,18 @@ class Parameters
 		
 		def skytype
             @skytype
+        end
+        
+        def dq
+            @dq
+        end
+        
+        def emin_sources
+            @emin_sources
+        end
+        
+        def emax_sources
+            @emax_sources
         end
         
         def useEDPmatrixforEXP
@@ -397,6 +412,7 @@ class Parameters
 				a = a + "timetype=" + @timetype.to_s + " "
 				a = a + "flag=" + @flag.to_s + " "
 				a = a + "filter=" + @filter.to_s + " "
+				a = a + "dq=" + @dq.to_s + " "
 				a = a + "gammaextractbin=" + @gammaextractbin.to_s + " "
 				a = a + "disablespotfinder=" + @disablespotfinder.to_s + " "
 				a = a + "makealikesingle=" + @makealikesingle.to_s + " "
@@ -454,6 +470,8 @@ class Parameters
 				a = a + "blocks=" + @blocks.to_s + " "
 				a = a + "nruns=" + @nruns.to_s + " "
 				a = a + "seed=" + @seed.to_s + " "
+				a = a + "emin_sources=" + @emin_sources.to_s + " "
+				a = a + "emax_sources=" + @emax_sources.to_s + " "
 				a = a + "findermultimode=" + @findermultimode.to_s + " "
 				if @outputres != nil
 					a = a + "outputres=" + @outputres.to_s + " "
@@ -560,6 +578,10 @@ class Parameters
 					@emin = value;
 				when "emax"
 					@emax = value;
+				when "emin_sources"
+					@emin_sources = value;
+				when "emax_sources"
+					@emax_sources = value;
 				when "fovradmin"
 					@fovradmin = value;
 				when "fovradmax"

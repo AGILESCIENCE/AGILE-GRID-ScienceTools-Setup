@@ -46,6 +46,27 @@ class AlikeUtils
 		end
 		
 		def rewriteMaplist(oldmaplist, newmaplist, galcoeff, isocoeff)
+			nmaps = 0
+			File.open(oldmaplist).each_line do | line |
+				nmaps = nmaps + 1;
+			end
+			if nmaps.to_i == 0
+				puts "Error: number of maps in maplist file equal to 0"
+			end
+			gc = galcoeff.to_s.split(",");
+			if gc.size != nmaps.to_i
+				puts "Error: wrong number of gal coefficients. Must be " + nmaps.to_s + ". Additional parameters are free"
+				for i in gc.size..nmaps.to_i - 1
+					galcoeff = galcoeff + ",-1"	
+				end
+			end
+			ic = isocoeff.to_s.split(",");
+			if ic.size != nmaps.to_i
+				puts "Error: wrong number of iso coefficients. Must be " + nmaps.to_s + ". Additional parameters are free"
+				for i in ic.size..nmaps.to_i - 1
+					isocoeff = isocoeff + ",-1"	
+				end
+			end
 			ffmaps = File.new(newmaplist, "w");
 			indexmaps = 0
 			#eventualmente aggiorno il .maplist4 con p.galcoeff e p.isocoeff

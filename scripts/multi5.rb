@@ -23,6 +23,8 @@
 #16) doublestep - default none = do not perform double step, otherwise doublestep=minsqrttsthr,secondstepfixflag,secondstepmaxradius and perform analysis in two steps (spot6 mode), where secondstepmaxradius is the last column of the .multi
 #	(1) fixflag=1 for all the sources of the list
 #	(2) generate a new list selecting the sources of the first list with sqrt(TS) > minsqrttsthr. The new list has fixflag = secondstepfixflag
+#17) emin_sources, default 100: energy min of the input .multi
+#18) emax_sources, default 50000: energy min of the input .multi
 
 #MAPLIST
 #Each line contains a set of maps:
@@ -85,10 +87,50 @@ listsource = ARGV[1];
 baseoutfile = ARGV[2];
 baseoutfile2 = ARGV[2];
 
+#check energy range of input maps
+emin_sin = 50000;
+emax_sin = 0;
 File.open(inputmaplist).each_line do | line |
 	cts = line.split(" ")[0];
+	fits.readFitsHeader(cts);
+	if(emin_sin.to_f > fits.minenergy.to_f)
+		emin_sin = fits.minenergy.to_f
+	end
+	if(emax_sin.to_f < fits.maxenergy.to_f)
+		emax_sin = fits.maxenergy.to_f;
+	end
 	exp = line.split(" ")[1];
 	gas = line.split(" ")[2];
+end
+puts "MAPS: emin " + emin_sin.to_s + " emax " + emax_sin.to_s
+
+#if different from default energy range of input source list, generate a new sourcelist with the energy range of the input maps
+if(emin_sin != p.emin_sources or emax_sin != p.emax_sources)
+	puts "change the flux"
+	listsourceold = listsource
+	listsource = format("en_%05d_%05d_", emin_sin, emax_sin) + listsource 
+	fouts = File.new(listsource, "w")
+	File.open(listsourceold).each_line do | line |
+        l = line.split(" ")
+        gamma = l[3].to_f
+        fl = l[0].to_f
+		
+		c = p.emin_sources
+		d = p.emax_sources
+		a = emin_sin
+		b = emax_sin
+        
+        p1 = fl * (gamma-1) / ( c ** (1-gamma) - d ** (1-gamma) )
+        
+        f1 = (p1 / (gamma-1)) * ( a ** (1-gamma) - b ** (1-gamma) )
+        
+        fouts.write(f1.to_s)
+        for ii in 1..l.size()
+        	fouts.write(" " + l[ii].to_s)
+        end
+        fouts.write("\n")
+	end
+	fouts.close()
 end
 
 stepi=1
@@ -290,3 +332,6 @@ for i in 1..stepi
 	lastoutfile = newoutfile
 
 end
+
+cmd = "rm ./AG_multi5.par"
+#datautils.execute(outfile2, cmd);
