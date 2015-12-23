@@ -81,7 +81,7 @@ class Parameters
 		def setPhaseCode(tstop)
 			if @phasecode == -1
 				if tstop.to_f >= 182692800.0 
-					@phasecode = 2 #SPIN
+					@phasecode = 6 #SPIN
 				else
 					@phasecode = 18 #POIN
 				end
