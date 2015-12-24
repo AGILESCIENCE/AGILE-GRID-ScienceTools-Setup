@@ -62,7 +62,7 @@ begin
         
         #while b == 1
         		
-        		cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_2/INDEX/EVT.index | tail -1 > " + PATH_RES + "/commands/lastorbit "
+        		cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_" + ARCHIVE + "/INDEX/EVT.index | tail -1 > " + PATH_RES + "/commands/lastorbit "
         		puts cmd
         		system(cmd)
         		lastcontacttime = 0
