@@ -714,6 +714,21 @@ class Parameters
 			end
 
 			
+			#check only available combination of IRF matrices and SKY maps
+			fconf = @filter.split("_");
+			#skytype: 0 SKY000-1 + SKY000-5, 1 gc_allsky maps + SKY000-5, 2 SKY000-5, 3 SKY001 (old galcenter, binsize 0.1, full sky), 4 SKY002 (new galcenter, binsize 0.1, full sky)
+			
+			#I0023: skytype=0, skytype=1, skytype=2, skytype=4
+			if @skytype.to_i == 3
+				puts "Error: skytype=3 not available. Set skytype=4"
+				@skytype = 4
+			end
+			
+			#I0025: skyteype=4
+			if fconf[2] == "I0025" and @skytype.to_i != 4
+				puts "Error: only skytype=4 with IRF=I0025 is available. Set skytype=4"
+				@skytype = 4
+			end
 		end
 end
 
