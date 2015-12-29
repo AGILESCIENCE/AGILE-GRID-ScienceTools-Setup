@@ -309,13 +309,13 @@ for i in 1..stepi
 
 	
 	fits.readFitsHeader(cts.to_s);
-	cmd = "echo \"" + fits.utc_start + "\" >> " + newoutfile.to_s;
+	cmd = "echo \"" + fits.utc_start + "\" >> " + newoutfile.to_s + ".sources";
 	datautils.execute(outfile2, cmd)
 
-	cmd = "echo \"" + fits.utc_end + "\" >> " + newoutfile.to_s;
+	cmd = "echo \"" + fits.utc_end + "\" >> " + newoutfile.to_s + ".sources";
 	datautils.execute(outfile2, cmd)
 	
-	cmd = "ruby " + ENV["AGILE"] + "/scripts/convertMultiResToInput.rb " + newoutfile.to_s + " " + newoutfile.to_s + ".resfull.multi";
+	cmd = "ruby " + ENV["AGILE"] + "/scripts/convertMultiResToInput.rb " + newoutfile.to_s + ".sources " + newoutfile.to_s + ".resfull.multi";
 	datautils.execute(outfile2, cmd)
 	
 	cmd = "ruby " + ENV["AGILE"] + "/scripts/extractres2.rb " + newoutfile.to_s + ".resfull " + newoutfile.to_s + ".res2 none";
@@ -329,7 +329,7 @@ for i in 1..stepi
 		#datautils.execute(outfile2, cmd)
 	end
 
-	system("cat " + newoutfile.to_s)
+	system("cat " + newoutfile.to_s + ".sources")
 
 	lastoutfile = newoutfile
 
