@@ -2,8 +2,8 @@
 
 trap exit ERR
 
-#TAG=master
-TAG=BUILD23
+TAG=master
+#TAG=BUILD23
 
 git clone git@github.com:AGILESCIENCE/libagilepil.git 
 cd libagilepil
