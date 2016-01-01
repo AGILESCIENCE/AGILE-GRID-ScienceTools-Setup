@@ -41,10 +41,11 @@
 #NB: copy the catalogs (in .multi format) in ENV["AGILE"] + "/share/catalogs/"
 
 load ENV["AGILE"] + "/scripts/conf.rb"
+load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
 
 def extractcat(hypothesisgen, l, b, outfile)
 	h = hypothesisgen.split(" ")
-	cmd = "extract_catalog.rb " + ENV["AGILE"] + "/share/catalogs/" + h[1].to_s + " " + l.to_s + " " + b.to_s + " " + outfile + " " + h[2].to_s + " " + h[3].to_s + " " + h[4].to_s + " " + h[5].to_s + " " + h[6].to_s + " " + h[7].to_s + " " + h[8].to_s
+	cmd = "extract_catalog.rb " + PATH_RES + "/catalogs/" + h[1].to_s + " " + l.to_s + " " + b.to_s + " " + outfile + " " + h[2].to_s + " " + h[3].to_s + " " + h[4].to_s + " " + h[5].to_s + " " + h[6].to_s + " " + h[7].to_s + " " + h[8].to_s
 	puts cmd
 	system cmd
 
@@ -62,6 +63,88 @@ def spotfinder(hypothesisgen, outfile, prefix, mapsize)
 	cmd = "spotfinder.rb " + outfile + " " + map + " " + h[1].to_s + " " + h[2].to_s + " " + h[3].to_s + " " + h[4].to_s + " " + h[5].to_s + " " + h[6].to_s + " " + mapsize.to_s + " " + prefix + ".exp.gz"
 	puts cmd
 	system cmd
+end
+
+def existsFile(filename)
+	if File.exists?(filename)
+		return filename
+	else
+		return ""
+	end
+end
+
+def plotjpgcts1(ds91, mle, smooth, regfile)
+	if File.exists?(mle + ".multi.reg") 
+		Dir["*.cts.gz"].each do | file |
+			if ds91 != "none"
+				fname = file.split(".cts.gz")[0]
+				if ds91 == "default"
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall 1 -1 " + smooth.to_s + " B all jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+				else
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall " + ds91.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+				end
+				puts cmd
+				system(cmd)
+			end
+		end
+	end
+end
+
+def plotjpgint(ds92, mle, smooth, regfile)
+	if File.exists?(mle + ".multi.reg") 
+		Dir["*.int.gz"].each do | file |
+			if ds92 != "none"
+				fname = file.split(".int.gz")[0]
+				if ds92 == "default"
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall 1 -1 " + smooth.to_s + " B all jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+				else
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall " + ds92.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+				end
+				puts cmd
+				system(cmd)
+			end
+		end
+	end
+end
+
+def plotjpgexp(ds93, mle, regfile)
+	if File.exists?(mle + ".multi.reg") 
+		Dir["*.exp.gz"].each do | file |
+			if ds93 != "none"
+				fname = file.split(".exp.gz")[0]
+				if ds93 == "default"
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall 1 -1 1 B all jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+				else
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall " + ds93.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+				end
+				puts cmd
+				system(cmd)
+			end
+		end
+	end
+end
+
+def plotjpgcts2(ds94, mle, smooth, regfile)
+	if File.exists?(mle + ".multi.reg") 
+		Dir["*.cts.gz"].each do | file |
+			if File.exists?("MAP.cts.gz") and ds94 != "none"
+				fname = file.split(".cts.gz")[0]
+				if ds94 == "default"
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					puts cmd
+					system(cmd)
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 png 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					puts cmd
+					system(cmd)
+				else
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + ds94.to_s +  " jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					puts cmd
+					system(cmd)
+				end
+			
+			end
+		end
+	end
 end
 
 datautils = DataUtils.new
@@ -95,7 +178,7 @@ ds91 = "" #default, none, 1 -1 3 B 2
 ds92 = "" #default, none, 1 -1 3 B 2
 ds93 = "" #default, none, 1 -1 3 B 2
 ds94 = "" #default, none, 1 -1 3 B 2
-regfile = "none"
+regfile = ""
 tbd2 = ""
 comments = ""
 reg = "" #yes/no
@@ -209,6 +292,11 @@ File.open(filenameconf).each_line do | line |
 	end
 	if index.to_i == 20
 		regfile = line
+		if regfile == "none"
+			regfile = ""
+		else
+			regfile = PATH_RES + "/regs/" + regfile
+		end
 	end
 	if index.to_i == 21
 		tbd2 = line
@@ -372,56 +460,20 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			stepsize = 3;
 	end
 	
-	Dir["*.cts.gz"].each do | file |
-		if ds91 != "none"
-			fname = file.split(".cts.gz")[0]
-			if ds91 == "default"
-				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall 1 -1 " + smooth.to_s + " B all jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
-			else
-				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall " + ds91.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
-			end
-			puts cmd
-			system(cmd)
-		end
-	end
+	plotjpgcts1(ds91, mle, smooth, regfile)
 	
-	Dir["*.int.gz"].each do | file |
-		if ds92 != "none"
-			fname = file.split(".int.gz")[0]
-			if ds92 == "default"
-				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall 1 -1 " + smooth.to_s + " B all jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
-			else
-				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall " + ds92.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
-			end
-			puts cmd
-			system(cmd)
-		end
-	end
+	plotjpgint(ds92, mle, smooth, regfile)
 	
-	Dir["*.exp.gz"].each do | file |
-		if ds93 != "none"
-			fname = file.split(".exp.gz")[0]
-			if ds93 == "default"
-				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall 1 -1 1 B all jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
-			else
-				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall " + ds93.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
-			end
-			puts cmd
-			system(cmd)
-		end
-	end
-	Dir["*.cts.gz"].each do | file |
-		if File.exists?("MAP.cts.gz") and ds94 != "none"
-			fname = file.split(".cts.gz")[0]
-			if ds94 == "default"
-				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
-			else
-				cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + ds94.to_s +  " jpg 1400x1400 " + mle + ".reg " +  mle + ".multi.reg "
-			end
-			puts cmd
-			system(cmd)
-		end
-	end
+	plotjpgexp(ds93, mle, regfile)
+	
+	plotjpgcts2(ds94, mle, smooth, regfile)
+	
+	plotjpgcts2(ds94, mle + ".step0", smooth, regfile)
+	plotjpgcts2(ds94, mle + ".step1", smooth, regfile)
+	
+	#if File.exists?(mle + ".step1.multi.reg")
+	#	plotjpgcts2(ds94, mle + ".step1", smooth, regfile)
+	#end
 end
 if proj.to_s == "AIT"
 	smooth = 7
