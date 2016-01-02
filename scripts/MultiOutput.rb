@@ -184,6 +184,25 @@ class MultiOutput
 		@multiOutputLineShort3 = flag + " " + @label.to_s + " " + format("%.2f", @sqrtTS) + " POS " + @l_peak.to_s + " " + @b_peak.to_s + " " + @dist.to_s + " " + @l.to_s + " " + @b.to_s + " " + @distellipse.to_s + " " + @r.to_s + " " + @ell_a.to_s +  " " + @ell_b.to_s + " " + @ell_phi.to_s + " FL " + @flux.to_s + " " + @flux_error.to_s + " " + @flux_ul.to_s + " EXP " + @exposure.to_s + " SI " + @sicalc.to_s + " " + @sicalc_error.to_s + " TI " + @timestart_mjd.to_s + " " + @timestop_mjd.to_s +  " CTS " + @counts.to_s + " " + @counts_error.to_s + " GI " + @galcoeff + " " + @galcoeff_err + " "  + @isocoeff + " " + @isocoeff_err + " FIT " + @fit_cts + " "  + @fit_fcn0 + " " + @fit_fcn1 + " " + @fit_edm0 + " " + @fit_edm1 + " " + @fit_iter0 + " " + @fit_iter1  + " ORBPH " + format("%.3f", @orbitalphase);
 	end
 	
+	def regline()
+		l = @l
+		b = @b
+		ell_a = @ell_a
+		ell_b = @ell_b
+		ell_phi = @ell_phi
+		check = ""
+		if @l.to_f == -1
+			l = @l_peak
+			b = @b_peak
+			ell_a = 1
+			ell_b = 1
+			ell_phi = 0
+			check = "*"
+		end
+		
+		@regline = "galactic\nellipse("+l.to_s+","+b.to_s+","+ell_a.to_s+","+ell_b.to_s+",-"+ell_phi.abs.to_s+") #color=white width=2 text={"+@label.to_s+" "+format("%.2f",@sqrtTS.to_f)+""+check+" ("+format("%2f,%2f,%2f", l, b, @sicalc)+")}\n"
+	end
+	
 	def multiOutputLineShort4(flag, ring, dist)
 		multiOutputLineShort3(flag)
 		@multiOutputLineShort4 = @multiOutputLineShort3 + " RING " + ring.to_s + " " + dist.to_s;
@@ -457,6 +476,7 @@ class MultiOutputList
 	def readSources(resname, multilist, flag)
 		f = File.new(resname + ".resfull", "w")
 		f1 = File.new(resname + ".resfullsel", "w")
+		freg = File.new(resname + ".reg", "w")
 		File.open(multilist).each_line do | line |
 			multioutput = MultiOutput.new()
 			name = line.split(" ")[6];
@@ -465,9 +485,11 @@ class MultiOutputList
 			if multioutput.fix.to_i >= 1
 				f1.write(multioutput.multiOutputLineFull3(flag) + "\n");
 			end
+			freg.write(multioutput.regline);
 		end
 		f.close();
 		f1.close();
+		freg.close();
 	end
 	
 	def sources

@@ -420,9 +420,9 @@ if not (multiparam.to_s == "nop" || proj.to_s == "AIT")
 	puts cmd
 	system(cmd)
 	
-	cmd = "convertMultiResToReg.rb " + mle + " white 0.1"
-	puts cmd
-	system(cmd)
+	#cmd = "convertMultiResToReg.rb " + mle + " white 0.1"
+	#puts cmd
+	#system(cmd)
 end
 
 #TODO TSMAP

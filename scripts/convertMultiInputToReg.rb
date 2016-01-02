@@ -47,7 +47,7 @@ end
 				dist = ee[8]
 			end
 			if ee[1] != "nan"
-				outline = "ellipse(" + ee[1].to_s + "," + ee[2].to_s + ",500\",500\",0) #color=" + color.to_s + " width=1 text={" + ee[6].to_s + " - " + ee[4].to_s + " - " + ee[0].to_s + "}";
+				outline = "ellipse(" + ee[1].to_s + "," + ee[2].to_s + ",0.5,0.5,0) #color=" + color.to_s + " width=1 text={" + ee[6].to_s + " - " + ee[4].to_s + " - " + ee[0].to_s + "}";
 				c.write(outline);
 				c.write("\n");
 				puts  ee[1].to_s + " & " + ee[2].to_s + " & " + ee[0].to_s + " & " + ee[6].to_s + "\\\\";
