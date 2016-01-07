@@ -230,6 +230,7 @@ File.open(filenameconf).each_line do | line |
 	end
 	if index.to_i == 1
 		filter = line
+		filter = line.split("_")[0] + "_" + ARCHIVE.to_s + "_" + line.split("_")[2]
 	end
 	if index.to_i == 2
 		tstart = line
