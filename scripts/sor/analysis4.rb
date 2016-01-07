@@ -22,7 +22,7 @@
 #ds9 = default, none, additional parameters (17) - ARC/AIT = int
 #ds9 = default, none, additional parameters (18) - ARC/AIT = exp
 #ds9 = default, none, additional parameters (19) - ARC = cts2
-#tbd (20) - not used, spare
+#reg file
 #tbd (21) - not used, spare
 #iddisp (22)
 #username (23)
@@ -413,7 +413,34 @@ cmd = "mv " + mle + "hypothesisM0.multi " + fnhyp
 puts cmd
 system(cmd)
 
-
+if tbd2 != "" and tbd2 != "tbd" and tbd2 != "nop"
+	if proj.to_s == "ARC"
+		if !File.exists?("GIFMAP.cts.gz")
+			cmd = "map.rb " + filter.to_s + " GIFMAP " + (tstart.to_f - 7).to_s + " " + tstart.to_s + " " + l.to_s + " " + b.to_s + " timetype=" + timetype.to_s + " " + mapparam.to_s;
+			puts cmd
+			system(cmd)
+		end
+		cmd = "multi5.rb " + " GIFMAP.maplist4 " + fnhyp + " GIF" + mle
+		if galcoeff != "-1"
+			cmd = cmd + " galcoeff=" + galcoeff
+		end
+		if isocoeff != "-1"
+			cmd = cmd + " isocoeff=" + isocoeff
+		end
+		cmd = cmd + " " + multiparam
+		puts cmd
+		system(cmd)
+		giffot = "GIF" + mle + "_" + tbd2 
+		mo = MultiOutput.new
+		mo.readDataSingleSource(giffot);
+		if galcoeff == "-1"
+			galcoeff = mo.galcoeff
+		end
+		if isocoeff == "-1"
+			isocoeff = mo.isocoeff
+		end
+	end
+end
 
 if not (multiparam.to_s == "nop" || proj.to_s == "AIT")
 	cmd = "multi5.rb " + " MAP.maplist4 " + fnhyp + " " + mle + " galcoeff=" + galcoeff + " isocoeff=" + isocoeff + " " + multiparam

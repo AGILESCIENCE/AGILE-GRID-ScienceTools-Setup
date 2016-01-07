@@ -5,7 +5,7 @@ clear all
 close all
 clc
 
-fname1   = 'cat2_res3_3.ell';
+fname1   = 'step2A.ell';
 fname2   = '3FGL_FermiLAT.ell';
 
 outfname = 'cat2_res3_3_VS_fermi.assoc';
@@ -15,6 +15,8 @@ e2 = ellload(fname2);
 
 fid = fopen(outfname, 'w');
 fid2 = fopen('notincluded', 'w')
+fid3 = fopen('includedlist', 'w')
+fid4 = fopen('errorlist', 'w')
 
 fprintf(fid, 'Match %s with %s\n', fname1, fname2)
 
@@ -23,6 +25,7 @@ for i = 1 : length(e1)
     fprintf(fid, '[%05d] %s\n', i, e1(i).name);
 
     included = 0;    
+    errmsg = 0;
     for j = 1 : length(e2)
        
         % Check if overlapping is possible using radius
@@ -54,33 +57,33 @@ for i = 1 : length(e1)
                 case 1
                     fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' tangent external\n');
-                    included = 1;
+                    included = included + 1;
    
                 case 2
                     fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' overlap\n');
-		    		included = 1;
+		    		included = included + 1;
                     
                 case 3
                     fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' equal\n');
-		    		included = 1;
+		    		included = included + 1;
 	                    
                 case 4
                     fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' tangent contained\n');
-		   		  	included = 1;
+		   		  	included = included + 1;
                 
                 case 5
                     fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' contained\n');
-		    		included = 1;
+		    		included = included + 1;
                     
                 otherwise
                     fprintf(fid, '  ## [%05d] %s', j, e2(j).name);
                     fprintf(fid, ' error\n');
-		    		included = 1;
-                    
+		    		% included = included + 1;
+                    errmsg = 1
             end
             
 	  
@@ -91,8 +94,16 @@ for i = 1 : length(e1)
     if included == 0
         fprintf(fid2, '%s\n', e1(i).name);
     end
+    if included > 0
+    	fprintf(fid3, '%s %i\n', e1(i).name, included);
+    end
+    if errmsg > 0
+    	fprintf(fid4, '%s\n', e1(i).name);
+    end
     
 end
 
 fclose(fid);
 fclose(fid2);
+fclose(fid3);
+fclose(fid4);
