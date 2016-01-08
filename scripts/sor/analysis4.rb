@@ -225,7 +225,7 @@ File.open(filenameconf).each_line do | line |
 	if index.to_i == 0
 		typeanalysis = line
 	end
-	if typeanalysis != "single"
+	if not (typeanalysis == "single" or typeanalysis == "spot6")
 		exit
 	end
 	if index.to_i == 1
@@ -498,9 +498,20 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 	plotjpgcts2(ds94, mle + ".step0", smooth, regfile)
 	plotjpgcts2(ds94, mle + ".step1", smooth, regfile)
 	
-	#if File.exists?(mle + ".step1.multi.reg")
-	#	plotjpgcts2(ds94, mle + ".step1", smooth, regfile)
-	#end
+	
+	if typeanalysis == "spot6"
+		Dir["MLE0000_*.source"].each do | file |
+			mo = MultiOutput.new
+			mo.readDataSingleSource(file)
+			if mo.sqrtTS.to_f > 4
+				#create a dir with the time
+				pathalerts = PATH_RES + "/alerts/" + tstart.to_i.to_s + "_" + tstop.to_i.to_s;   
+				system("mkdir -p " + pathalerts);
+				#copy .source in the dir, appending the name of this dir
+				system("cp " + file.to_s + " " + pathalerts + "/" + analysisname + "_" + file);
+			end
+		end
+	end
 end
 if proj.to_s == "AIT"
 	smooth = 7
