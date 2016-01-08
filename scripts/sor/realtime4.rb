@@ -115,7 +115,7 @@ def runspot6(lastcontacttime, day, hours_shift)
 						out = coords.split(" ")[1].to_f.to_s + "\n"
 					end
 					if index.to_i == 25
-						out = line.chomp + "_" + tstart.to_i.to_s + "_" +  tstop.to_i.to_s + "_" + format("%2d", indexring) + "\n"
+						out = line.chomp + "_" + tstart.to_i.to_s + "_" +  tstop.to_i.to_s + "_" + format("%02d", indexring) + "\n"
 					end
 					fo.write(out);
 					index = index + 1
