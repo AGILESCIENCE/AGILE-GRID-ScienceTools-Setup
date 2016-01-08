@@ -5,17 +5,17 @@ clear all
 close all
 clc
 
-fname1   = 'step2A.ell';
+fname1   = 'ABPH3_100_50000_FF7.ell';
 fname2   = '3FGL_FermiLAT.ell';
 
-outfname = 'cat2_res3_3_VS_fermi.assoc';
+outfname = 'ABPH3_100_50000_FF7.assoc';
 
 e1 = ellload(fname1);
 e2 = ellload(fname2);
 
 fid = fopen(outfname, 'w');
 fid2 = fopen('notincluded', 'w')
-fid3 = fopen('includedlist', 'w')
+fid3 = fopen('ABPH3_100_50000_FF7.includedlist', 'w')
 fid4 = fopen('errorlist', 'w')
 
 fprintf(fid, 'Match %s with %s\n', fname1, fname2)
@@ -94,9 +94,9 @@ for i = 1 : length(e1)
     if included == 0
         fprintf(fid2, '%s\n', e1(i).name);
     end
-    if included > 0
-    	fprintf(fid3, '%s %i\n', e1(i).name, included);
-    end
+    
+    fprintf(fid3, '%s %i\n', e1(i).name, included);
+  
     if errmsg > 0
     	fprintf(fid4, '%s\n', e1(i).name);
     end
