@@ -225,9 +225,9 @@ File.open(filenameconf).each_line do | line |
 	if index.to_i == 0
 		typeanalysis = line
 	end
-	if not (typeanalysis == "single" or typeanalysis == "spot6")
-		exit
-	end
+	#if not (typeanalysis == "single" or typeanalysis == "spot6")
+	#	exit
+	#end
 	if index.to_i == 1
 		filter = line
 	end
