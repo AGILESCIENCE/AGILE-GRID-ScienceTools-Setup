@@ -42,7 +42,7 @@ File.open(filenameconf).each_line do | line |
 		typeanalysis = line
 	end
 	if typeanalysis != "single"
-		exit
+		#exit
 	end
 	if index.to_i == 1
 		filter = line
