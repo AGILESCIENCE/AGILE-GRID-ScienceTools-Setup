@@ -21,7 +21,7 @@ def runait(lastcontacttime, day, hours_shift)
 		tstop = lastprocessing2 + 3600 * hours_shift.to_i
 		tstart = tstop.to_i - 86400 * day.to_i	
 	end
-	puts "AIT: " + lastcontacttime.to_s + " - " + lastprocessing2.to_s + " - " + tstart.to_s + " " + tstop.to_s
+	puts "TIME: " + lastcontacttime.to_s + " - " + lastprocessing2.to_s + " - " + tstart.to_s + " " + tstop.to_s
 	
 	if tstop.to_i <= lastcontacttime.to_i
 		#change and copy the card
@@ -83,7 +83,7 @@ def runspot6(lastcontacttime, day, hours_shift)
 		tstop = lastprocessing2 + 3600 * hours_shift.to_i
 		tstart = tstop.to_i - 86400 * day.to_i	
 	end
-	puts "SPOT6: " + lastcontacttime.to_s + " - " + lastprocessing2.to_s + " - " + tstart.to_s + " " + tstop.to_s
+	#puts "SPOT6: " + lastcontacttime.to_s + " - " + lastprocessing2.to_s + " - " + tstart.to_s + " " + tstop.to_s
 	
 	if tstop.to_i <= lastcontacttime.to_i
 		#change and copy the card
@@ -91,7 +91,7 @@ def runspot6(lastcontacttime, day, hours_shift)
 		Dir[ENV["AGILE"] + "/scripts/sor/cards/spot6/*.conf"].sort.each do | file |
 			indexring = 0;
 			File.open(ENV["AGILE"] + "/scripts/sor/cards/spot6/rings.coord").each_line do | coords |
-				outfileconf = "/tmp/spot6_" + format("%02i", day) + "_" + format("%2d", indexfile) + "_" + format("%2d", indexring) + ".conf";
+				outfileconf = "/tmp/spot6_" + format("%02i", day) + "_" + format("%02d", indexfile) + "_" + format("%02d", indexring) + ".conf";
 				fo = File.new(outfileconf, "w")
 				index = 0
 				File.open(file).each_line do | line |
