@@ -4,130 +4,135 @@ load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
 
 def runait(lastcontacttime, day, hours_shift)
 
-        		tstart = 0
-        		tstop = 0
-        		abspath=PATH_RES
-        		lastprocessing2 = 0
-        		if File.exists?(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"")
-        			File.open(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"", "r").each_line do | line |
-        				lastprocessing2 = line.to_i
-        			end
-        		end
-        		
-        		if lastprocessing2.to_i == 0
-        			tstart = lastcontacttime.to_i - 86400 * day.to_i
-        			tstop = lastcontacttime.to_i
-        		else
-        			tstop = lastprocessing2 + 3600 * hours_shift.to_i
-        			tstart = tstop.to_i - 86400 * day.to_i	
-        		end
-        		puts "AIT: " + lastcontacttime.to_s + " - " + lastprocessing2.to_s + " - " + tstart.to_s + " " + tstop.to_s
-        		
-        		if tstop.to_i <= lastcontacttime.to_i
-        			#change and copy the card
-        			fo = File.new("/tmp/aitoff_rt"+format("%02i", day)+".conf", "w")
-        			index = 0
-        			File.open(ENV["AGILE"] + "/scripts/sor/cards/ait_rt/aitoff_rt"+format("%02i", day)+".conf").each_line do | line |
-        				out = line
-        				if index.to_i == 1
-        					out = line.split("_")[0] + "_" + ARCHIVE.to_s + "_" + line.split("_")[2]
-        				end
-        				if index.to_i == 2
-        					out = tstart.to_i.to_s + "\n"
-        				end
-        				if index.to_i == 3
-        					out = tstop.to_i.to_s + "\n"
-        				end
-        				if index.to_i == 23
-        					#abspath += line.chomp
-        					#abspath += "/AIT_"
-        				end
-        				if index.to_i == 25
-        					out = line.chomp + "_" + tstart.to_i.to_s + "_" +  tstop.to_i.to_s + "\n"
-        					#abspath += out.chomp + "/"
-        				end
-        				fo.write(out);
-        				index = index + 1
-        			end
-        			fo.close()
-        			lastprocessing2 = tstop	
-        			f = File.new(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day), "w")
-        			f.write(lastprocessing2);
-        			f.close();
-        			puts "New run AIT: " + "cp /tmp/aitoff_rt"+format("%02i", day)+".conf " + abspath + "/commands/";
-        			system("cp /tmp/aitoff_rt"+format("%02i", day)+".conf " + abspath + "/commands/");
-        		end
+	tstart = 0
+	tstop = 0
+	abspath=PATH_RES
+	lastprocessing2 = 0
+	if File.exists?(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"")
+		File.open(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"", "r").each_line do | line |
+			lastprocessing2 = line.to_i
+		end
+	end
+	
+	if lastprocessing2.to_i == 0
+		tstart = lastcontacttime.to_i - 86400 * day.to_i
+		tstop = lastcontacttime.to_i
+	else
+		tstop = lastprocessing2 + 3600 * hours_shift.to_i
+		tstart = tstop.to_i - 86400 * day.to_i	
+	end
+	puts "AIT: " + lastcontacttime.to_s + " - " + lastprocessing2.to_s + " - " + tstart.to_s + " " + tstop.to_s
+	
+	if tstop.to_i <= lastcontacttime.to_i
+		#change and copy the card
+		fo = File.new("/tmp/aitoff_rt"+format("%02i", day)+".conf", "w")
+		index = 0
+		File.open(ENV["AGILE"] + "/scripts/sor/cards/ait_rt/aitoff_rt"+format("%02i", day)+".conf").each_line do | line |
+			out = line
+			if index.to_i == 1
+				out = line.split("_")[0] + "_" + ARCHIVE.to_s + "_" + line.split("_")[2]
+			end
+			if index.to_i == 2
+				out = tstart.to_i.to_s + "\n"
+			end
+			if index.to_i == 3
+				out = tstop.to_i.to_s + "\n"
+			end
+			if index.to_i == 23
+				#abspath += line.chomp
+				#abspath += "/AIT_"
+			end
+			if index.to_i == 25
+				out = line.chomp + "_" + tstart.to_i.to_s + "_" +  tstop.to_i.to_s + "\n"
+				#abspath += out.chomp + "/"
+			end
+			fo.write(out);
+			index = index + 1
+		end
+		fo.close()
+		lastprocessing2 = tstop	
+		
+		puts "New run AIT: " + "cp /tmp/aitoff_rt"+format("%02i", day)+".conf " + abspath + "/commands/";
+		system("cp /tmp/aitoff_rt"+format("%02i", day)+".conf " + abspath + "/commands/");
+		
+		runspot6(lastcontacttime, day, hours_shift);
+		
+		f = File.new(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day), "w")
+		f.write(lastprocessing2);
+		f.close();
+		
+	end
 end
 
 def runspot6(lastcontacttime, day, hours_shift)
 
-		tstart = 0
-		tstop = 0
-		abspath=PATH_RES
-		lastprocessing2 = 0
-		if File.exists?(abspath + "/commands/lastprocessing_spot6_rt"+format("%02i", day))
-			File.open(abspath + "/commands/lastprocessing_spot6_rt"+format("%02i", day), "r").each_line do | line |
-				lastprocessing2 = line.to_i
-			end
+	tstart = 0
+	tstop = 0
+	abspath=PATH_RES
+	lastprocessing2 = 0
+	if File.exists?(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"")
+		File.open(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"", "r").each_line do | line |
+			lastprocessing2 = line.to_i
 		end
-		
-		if lastprocessing2.to_i == 0
-			tstart = lastcontacttime.to_i - 86400 * day.to_i
-			tstop = lastcontacttime.to_i
-		else
-			tstop = lastprocessing2 + 3600 * hours_shift.to_i
-			tstart = tstop.to_i - 86400 * day.to_i	
-		end
-		puts "SPOT6: " + lastcontacttime.to_s + " - " + lastprocessing2.to_s + " - " + tstart.to_s + " " + tstop.to_s
-		
-		if tstop.to_i <= lastcontacttime.to_i
-			#change and copy the card
-			indexfile = 0;
-			Dir[ENV["AGILE"] + "/scripts/sor/cards/spot6/*.conf"].sort.each do | file |
-				indexring = 0;
-				File.open(ENV["AGILE"] + "/scripts/sor/cards/spot6/rings.coord").each_line do | coords |
-					outfileconf = "/tmp/spot6_" + format("%02i", day) + "_" + format("%2d", indexfile) + "_" + format("%2d", indexring) + ".conf";
-					fo = File.new(outfileconf, "w")
-					index = 0
-					File.open(file).each_line do | line |
-						out = line
-						if index.to_i == 1
-        					out = line.split("_")[0] + "_" + ARCHIVE.to_s + "_" + line.split("_")[2]
-        				end
-						if index.to_i == 2
-							out = tstart.to_i.to_s + "\n"
-						end
-						if index.to_i == 3
-							out = tstop.to_i.to_s + "\n"
-						end
-						if index.to_i == 4
-							out = "TT\n"
-						end
-						if index.to_i == 5
-							out = coords.split(" ")[0].to_f.to_s + "\n"
-						end
-						if index.to_i == 6
-							out = coords.split(" ")[1].to_f.to_s + "\n"
-						end
-						if index.to_i == 25
-							out = line.chomp + "_" + tstart.to_i.to_s + "_" +  tstop.to_i.to_s + "_" + format("%2d", indexring) + "\n"
-						end
-						fo.write(out);
-						index = index + 1
+	end
+	
+	if lastprocessing2.to_i == 0
+		tstart = lastcontacttime.to_i - 86400 * day.to_i
+		tstop = lastcontacttime.to_i
+	else
+		tstop = lastprocessing2 + 3600 * hours_shift.to_i
+		tstart = tstop.to_i - 86400 * day.to_i	
+	end
+	puts "SPOT6: " + lastcontacttime.to_s + " - " + lastprocessing2.to_s + " - " + tstart.to_s + " " + tstop.to_s
+	
+	if tstop.to_i <= lastcontacttime.to_i
+		#change and copy the card
+		indexfile = 0;
+		Dir[ENV["AGILE"] + "/scripts/sor/cards/spot6/*.conf"].sort.each do | file |
+			indexring = 0;
+			File.open(ENV["AGILE"] + "/scripts/sor/cards/spot6/rings.coord").each_line do | coords |
+				outfileconf = "/tmp/spot6_" + format("%02i", day) + "_" + format("%2d", indexfile) + "_" + format("%2d", indexring) + ".conf";
+				fo = File.new(outfileconf, "w")
+				index = 0
+				File.open(file).each_line do | line |
+					out = line
+					if index.to_i == 1
+						out = line.split("_")[0] + "_" + ARCHIVE.to_s + "_" + line.split("_")[2]
 					end
-					fo.close()
-					puts "New run SPOT6: " + "cp " + outfileconf + " " + abspath + "/commands/";
-					system("cp " + outfileconf + " " + abspath + "/commands/");
-					indexring = indexring.to_i + 1
+					if index.to_i == 2
+						out = tstart.to_i.to_s + "\n"
+					end
+					if index.to_i == 3
+						out = tstop.to_i.to_s + "\n"
+					end
+					if index.to_i == 4
+						out = "TT\n"
+					end
+					if index.to_i == 5
+						out = coords.split(" ")[0].to_f.to_s + "\n"
+					end
+					if index.to_i == 6
+						out = coords.split(" ")[1].to_f.to_s + "\n"
+					end
+					if index.to_i == 25
+						out = line.chomp + "_" + tstart.to_i.to_s + "_" +  tstop.to_i.to_s + "_" + format("%2d", indexring) + "\n"
+					end
+					fo.write(out);
+					index = index + 1
 				end
-				indexfile = indexfile.to_i + 1
+				fo.close()
+				puts "New run SPOT6: " + "cp " + outfileconf + " " + abspath + "/commands/";
+				system("cp " + outfileconf + " " + abspath + "/commands/");
+				indexring = indexring.to_i + 1
 			end
-			lastprocessing2 = tstop	
-			f = File.new(abspath + "/commands/lastprocessing_spot6_rt"+format("%02i", day), "w")
-			f.write(lastprocessing2);
-			f.close();
-			
+			indexfile = indexfile.to_i + 1
 		end
+		#lastprocessing2 = tstop	
+		#f = File.new(abspath + "/commands/lastprocessing_spot6_rt"+format("%02i", day), "w")
+		#f.write(lastprocessing2);
+		#f.close();
+		
+	end
 end
 
 
@@ -156,7 +161,7 @@ begin
         		#run07
         		runait(lastcontacttime, 7, 12);
         		
-              	runspot6(lastcontacttime, 2, 1);
+              	
                 
                 begin
 					abspath=PATH_RES + "/aitoff_rt/"
