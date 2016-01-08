@@ -29,6 +29,9 @@ def runait(lastcontacttime, day, hours_shift)
         			index = 0
         			File.open(ENV["AGILE"] + "/scripts/sor/cards/ait_rt/aitoff_rt"+format("%02i", day)+".conf").each_line do | line |
         				out = line
+        				if index.to_i == 1
+        					out = line.split("_")[0] + "_" + ARCHIVE.to_s + "_" + line.split("_")[2]
+        				end
         				if index.to_i == 2
         					out = tstart.to_i.to_s + "\n"
         				end
@@ -88,6 +91,9 @@ def runspot6(lastcontacttime, day, hours_shift)
 					index = 0
 					File.open(file).each_line do | line |
 						out = line
+						if index.to_i == 1
+        					out = line.split("_")[0] + "_" + ARCHIVE.to_s + "_" + line.split("_")[2]
+        				end
 						if index.to_i == 2
 							out = tstart.to_i.to_s + "\n"
 						end
