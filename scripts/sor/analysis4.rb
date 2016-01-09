@@ -501,14 +501,29 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 	
 	if typeanalysis == "spot6"
 		Dir["MLE0000_*.source"].each do | file |
-			mo = MultiOutput.new
-			mo.readDataSingleSource(file)
-			if mo.sqrtTS.to_f > 4
-				#create a dir with the time
-				pathalerts = PATH_RES + "/alerts/" + tstart.to_i.to_s + "_" + tstop.to_i.to_s;   
-				system("mkdir -p " + pathalerts);
-				#copy .source in the dir, appending the name of this dir
-				system("cp " + file.to_s + " " + pathalerts + "/" + analysisname + "_" + file);
+			begin
+				mo = MultiOutput.new
+				mo.readDataSingleSource(file)
+				if mo.sqrtTS.to_f > 4
+					#create a dir with the time
+					pathalerts = PATH_RES + "/alerts/" + tstart.to_i.to_s + "_" + tstop.to_i.to_s;   
+					system("mkdir -p " + pathalerts);
+					if Dir[pathalerts + "/*.source"].size() == 0
+						system("cp " + file.to_s + " " + pathalerts + "/" + analysisname + "_" + file);
+					else
+						Dir[pathalerts + "/*.source"].each do | fsource |
+							mo2 = MultiOutput.new
+							mo2.readDataSingleSource(fsource)
+							if datautils.distance(mo2.l_peak, mo2.b_peak, mo.l_peak, mo.b_peak).to_f < 1 and mo.sqrtTS.to_f > mo2.sqrtTS.to_f
+								#copy .source in the dir, appending the name of this dir
+								system("cp " + file.to_s + " " + pathalerts + "/" + analysisname + "_" + file);
+								system("rm " + fsource);
+							end
+						end
+					end
+				end
+			rescue
+				puts "error"
 			end
 		end
 	end
