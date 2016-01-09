@@ -494,6 +494,24 @@ class MultiOutputList
 		freg.close();
 	end
 	
+	def readSourcesInDir(dir, resname, flag)
+		f = File.new(dir + "/" + resname + ".resfull", "w")
+		f1 = File.new(dir + "/" + resname + ".resfullsel", "w")
+		freg = File.new(dir + "/" + resname + ".reg", "w")
+		Dir[dir + "/*.source"].each do | name |
+			multioutput = MultiOutput.new()
+			multioutput.readDataSingleSource(name)
+			f.write(multioutput.multiOutputLineFull3(flag) + "\n");
+			if multioutput.fix.to_i >= 1
+				f1.write(multioutput.multiOutputLineFull3(flag) + "\n");
+			end
+			freg.write(multioutput.regline);
+		end
+		f.close();
+		f1.close();
+		freg.close();
+	end
+	
 	def sources
 		@sources
 	end
