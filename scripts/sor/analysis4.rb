@@ -501,10 +501,11 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 	
 	if typeanalysis == "spot6"
 		begin
-			pathalerts = PATH_RES + "/alerts/" + tstart.to_i.to_s + "_" + tstop.to_i.to_s;
-			rttype = ""
+			
+			rttype = analysisname.split("_")[3]
+			pathalerts = PATH_RES + "/alerts/" + rttype + "_" + tstart.to_i.to_s + "_" + tstop.to_i.to_s;
 			Dir["MLE0000_*.source"].each do | file |
-				rttype = file.split("_")[3]
+				#rttype = file.split("_")[3]
 				mo = MultiOutput.new
 				mo.readDataSingleSource(file)
 				if mo.sqrtTS.to_f > 4
