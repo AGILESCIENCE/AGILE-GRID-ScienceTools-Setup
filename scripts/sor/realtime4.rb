@@ -135,6 +135,14 @@ def runspot6(lastcontacttime, day, hours_shift)
 	end
 end
 
+def existsFile(filename)
+	if File.exists?(filename)
+		return filename
+	else
+		return ""
+	end
+end
+
 def genaitoffspot6(rttype)
 	abspath=PATH_RES + "/aitoff_rt/"
 	b02=Dir[abspath + "*" + rttype + "*/orbit"].sort()
@@ -144,10 +152,11 @@ def genaitoffspot6(rttype)
 		#build path
 		aitname = last02.split("/")[last02.split("/").size - 1]
 		aitsplitname = aitname.split("_");
-		pathalerts = PATH_RES + "/alert/" + aitsplitname[1] + "_" + aitsplitname[2] + "_" + aitsplitname[3] + "/"
+		pathalerts = PATH_RES + "/alerts/" + aitsplitname[1] + "_" + aitsplitname[2] + "_" + aitsplitname[3] + "/"
 		#find the AITOFF - questo va rimosso da qui e messo in un task a parte che fa la scansione della dir alert e prende l'ultimo
 	
-		cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + pathaitoff +  " " + pathalerts + "/spot6.ctsall 1 -1 7 B 2 png 1400x1000 " + existsFile(pathalerts + "/spot6.reg ");
+		cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + pathaitoff +  " " + pathalerts + "/" + rttype + "spot6.ctsall 1 -1 7 B 2 png 1400x1000 " + existsFile(pathalerts + "/spot6.reg");
+		system("cp " + pathalerts + "/" + rttype + "spot6.ctsall.png /tmp/app/lastaitspot6_"+rttype+".png")
 		puts cmd
 		system(cmd)
 	end	

@@ -537,13 +537,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			end
 			mout = MultiOutputList.new
 			mout.readSourcesInDir(pathalerts, "spot6", "SPOT6");
-			#find the AITOFF - questo va rimosso da qui e messo in un task a parte che fa la scansione della dir alert e prende l'ultimo
-			#pathaitoff = PATH_RES + "/aitoff_rt/AIT_" + rttype.to_s + "_" + tstart.to_i.to_s + "_" + tstop.to_i.to_s + "/MAP.cts.gz"
-			#if File.exists?(pathaitoff)
-			#	cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + pathaitoff +  " " + pathalerts + "/spot6.ctsall 1 -1 7 B 2 jpg 1400x1000 " + existsFile(pathalerts + "/spot6.reg ");
-			#	puts cmd
-			#	system(cmd)
-			#end
+			
 			
 		rescue
 			puts "error SPOT6 results"
