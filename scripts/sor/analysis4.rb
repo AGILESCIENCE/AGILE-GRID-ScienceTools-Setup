@@ -535,7 +535,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 					end
 				end
 			end
-			mout = MultiOutputList
+			mout = MultiOutputList.new
 			mout.readSourcesInDir(pathalerts, "spot6", "SPOT6");
 			#find the AITOFF - questo va rimosso da qui e messo in un task a parte che fa la scansione della dir alert e prende l'ultimo
 			#pathaitoff = PATH_RES + "/aitoff_rt/AIT_" + rttype.to_s + "_" + tstart.to_i.to_s + "_" + tstop.to_i.to_s + "/MAP.cts.gz"

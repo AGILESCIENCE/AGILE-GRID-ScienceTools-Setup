@@ -135,7 +135,23 @@ def runspot6(lastcontacttime, day, hours_shift)
 	end
 end
 
-
+def genaitoffspot6(rttype)
+	abspath=PATH_RES + "/aitoff_rt/"
+	b02=Dir[abspath + "*" + rttype + "*/orbit"].sort()
+	last02 = b02[b02.size() - 1].split("orbit")[0]
+	pathaitoff = last02 + "/MAP.cts.gz";
+	if File.exists?(pathaitoff)
+		#build path
+		aitname = last02.split("/")[last02.split("/").size - 1]
+		aitsplitname = aitname.split("_");
+		pathalerts = PATH_RES + "/alert/" + aitsplitname[1] + "_" + aitsplitname[2] + "_" + aitsplitname[3] + "/"
+		#find the AITOFF - questo va rimosso da qui e messo in un task a parte che fa la scansione della dir alert e prende l'ultimo
+	
+		cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + pathaitoff +  " " + pathalerts + "/spot6.ctsall 1 -1 7 B 2 png 1400x1000 " + existsFile(pathalerts + "/spot6.reg ");
+		puts cmd
+		system(cmd)
+	end	
+end
 
 begin
         #b=1
@@ -162,7 +178,7 @@ begin
         		runait(lastcontacttime, 7, 12);
         		
               	
-                
+                #copy aitoff
                 begin
 					abspath=PATH_RES + "/aitoff_rt/"
 					system("mkdir /tmp/app");
@@ -186,6 +202,16 @@ begin
                 rescue
                 	puts "error in file system"
                 end
+                
+                begin
+                	genaitoffspot6("RT02")
+                	genaitoffspot6("RT04")
+                	genaitoffspot6("RT07")
+                rescue
+                	puts "error in file system "
+                end
+                
+                #copy images to agile.iasfbo.inaf.it
                 system("scp /tmp/app/* marlin:/var/www/html/AGILEApp/RT/")
                 
         #end
