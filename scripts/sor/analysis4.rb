@@ -508,14 +508,20 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 				#rttype = file.split("_")[3]
 				mo = MultiOutput.new
 				mo.readDataSingleSource(file)
-				if mo.sqrtTS.to_f > 4
+				pref = ""
+				if mo.sqrtTS.to_f > 3
 					#create a dir with the time
-				   
+				   	if mo.sqrtTS.to_f < 4 
+						pref = "__"
+					end
+					
 					system("mkdir -p " + pathalerts);
+					
 					if Dir[pathalerts + "/*.source"].size() == 0
-						system("cp " + file.to_s + " " + pathalerts + "/" + analysisname + "_" + file);
+						system("cp " + file.to_s + " " + pathalerts + "/" + pref + analysisname + "_" + file);
 					else
 						snear = false
+						
 						Dir[pathalerts + "/*.source"].each do | fsource |
 							mo2 = MultiOutput.new
 							mo2.readDataSingleSource(fsource)
@@ -523,14 +529,14 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 								snear = true
 								if  mo.sqrtTS.to_f > mo2.sqrtTS.to_f
 									#copy .source in the dir, appending the name of this dir
-									system("cp " + file.to_s + " " + pathalerts + "/" + analysisname + "_" + file);
+									system("cp " + file.to_s + " " + pathalerts + "/" + pref + analysisname + "_" + file);
 									system("rm " + fsource);
 									break
 								end
 							end
 						end
 						if snear == false
-							system("cp " + file.to_s + " " + pathalerts + "/" + analysisname + "_" + file);
+							system("cp " + file.to_s + " " + pathalerts + "/" + pref + analysisname + "_" + file);
 						end
 					end
 				end
