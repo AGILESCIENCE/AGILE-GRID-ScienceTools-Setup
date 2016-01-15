@@ -546,6 +546,9 @@ class DataUtils
 			emax = emax.to_i
 			filterbase = filter.split("_")[0];
 			version = filter.split("_")[2];
+			if version == "I0025"
+				skytype = 4
+			end
 			if version == nil
 				version = TYPE_MATRIX
 			end
