@@ -80,6 +80,7 @@ bcenter = -1
 ulcl = 2.0;
 loccl = 5.9914659;
 rextract = mapsize.to_i / 2.0 - ranal.to_i;
+rextract2 = mapsize.to_i / 2.0
 
 for i in 2...1000
 	if ARGV[i] == nil
@@ -209,8 +210,25 @@ if scanlist == "none"
 end
 
 
-#3) conversione della .list
-startlistmulti = startlist.to_s 
+#3) conversione della .multi
+startlistmulti = "red_" + startlist.to_s 
+
+outfile = File.new(startlistmulti, "w");
+
+File.open(startlist).each_line do |x|
+	
+	a = x.split(" ");
+
+	d = datautils.distance(a[1], a[2], lcenter, bcenter);
+	
+	if d.to_f <= rextract2.to_f
+		outfile.write(x.to_s);
+		puts x;
+	end
+end
+outfile.close();
+
+
 
 matrixconf = datautils.getResponseMatrixString(filter);
 
