@@ -101,8 +101,8 @@ system(cmd);
 
 datautils.getSkyMatrix(filter, emin1, emax1, skytype)
 skymap =  datautils.skymatrix;
-skymapL = parameters.skymapL;
-skymapH = parameters.skymapH;
+skymapL =  datautils.skymatrixL;
+skymapH = datautils.skymatrixH;
 #skymap =  format("%01d_%01d", emin1, emax1) + ".0.1.conv.sky ";
 
 cmd = "cp " + PATH + "share/AG_gasmapgen5.par . "
