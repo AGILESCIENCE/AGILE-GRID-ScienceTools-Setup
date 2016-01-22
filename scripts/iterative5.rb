@@ -213,7 +213,7 @@ end
 #3) conversione della .multi
 startlistmulti = "red_" + startlist.to_s 
 
-outfile = File.new(startlistmulti, "w");
+of = File.new(startlistmulti, "w");
 
 File.open(startlist).each_line do |x|
 	
@@ -222,11 +222,11 @@ File.open(startlist).each_line do |x|
 	d = datautils.distance(a[1], a[2], lcenter, bcenter);
 	
 	if d.to_f <= rextract2.to_f
-		outfile.write(x.to_s);
+		of.write(x.to_s);
 		puts x;
 	end
 end
-outfile.close();
+of.close();
 
 
 
