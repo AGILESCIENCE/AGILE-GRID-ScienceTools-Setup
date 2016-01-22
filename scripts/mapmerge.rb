@@ -113,7 +113,7 @@ system(cmd)
 
 cmd = "cp " + PATH + "share/AG_intmapgen5.par . "
 system(cmd)
-cmd = "export PFILES=.:$PFILES; " + PATH + "bin/bin/AG_intmapgen5 " + prefix2.to_s + ".exp.gz" + " " + prefix2.to_s + ".int.gz" + " " + prefix2.to_s + ".cts.gz";
+cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_intmapgen5 " + prefix2.to_s + ".exp.gz" + " " + prefix2.to_s + ".int.gz" + " " + prefix2.to_s + ".cts.gz";
 puts cmd
 system(cmd)
 
