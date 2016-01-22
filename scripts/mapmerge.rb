@@ -101,11 +101,13 @@ system(cmd);
 
 datautils.getSkyMatrix(filter, emin1, emax1, skytype)
 skymap =  datautils.skymatrix;
+skymapL = parameters.skymapL;
+skymapH = parameters.skymapH;
 #skymap =  format("%01d_%01d", emin1, emax1) + ".0.1.conv.sky ";
 
 cmd = "cp " + PATH + "share/AG_gasmapgen5.par . "
 system(cmd)
-cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_gasmapgen5 " + prefix2.to_s + ".exp.gz " + prefix2.to_s + ".gas.gz " + skymap.to_s;
+cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_gasmapgen5 " + prefix2.to_s + ".exp.gz " + prefix2.to_s + ".gas.gz "  + skymapL.to_s + " " + skymapH.to_s;
 puts cmd
 system(cmd)
 
