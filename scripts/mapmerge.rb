@@ -104,13 +104,13 @@ skymap =  datautils.skymatrix;
 #skymap =  format("%01d_%01d", emin1, emax1) + ".0.1.conv.sky ";
 
 cmd = "cp " + PATH + "share/AG_gasmapgen5.par . "
-datautils.execute(prefix, cmd);
+system(cmd)
 cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_gasmapgen5 " + prefix2.to_s + ".exp.gz " + prefix2.to_s + ".gas.gz " + skymap.to_s;
 puts cmd
 system(cmd)
 
 cmd = "cp " + PATH + "share/AG_intmapgen5.par . "
-datautils.execute(prefix, cmd);
+system(cmd)
 cmd = "export PFILES=.:$PFILES; " + PATH + "bin/bin/AG_intmapgen5 " + prefix2.to_s + ".exp.gz" + " " + prefix2.to_s + ".int.gz" + " " + prefix2.to_s + ".cts.gz";
 puts cmd
 system(cmd)
