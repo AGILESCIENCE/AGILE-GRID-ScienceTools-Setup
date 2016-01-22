@@ -238,7 +238,7 @@ matrixconf = datautils.getResponseMatrixString(filter);
 puts cmd
 system(cmd)
 
-cmd = "ruby " + ENV["AGILE"] + "/scripts/convertMultiToReg.rb " + outfile.to_s;
+cmd = "ruby " + ENV["AGILE"] + "/scripts/convertMultiInputToReg.rb " + outfile.to_s;
 puts cmd;
 system(cmd);
 
