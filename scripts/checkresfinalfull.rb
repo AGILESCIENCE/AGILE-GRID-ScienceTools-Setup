@@ -48,6 +48,7 @@ if ARGV[1] != nil
 	fout3 = File.new(ARGV[1] + ".ell", "w");
 	fout4 = File.new(ARGV[1] + ".res2", "w");
 	fout5 = File.new(ARGV[1] + ".res3", "w");
+	fout6 = File.new(ARGV[1] + ".res", "w");
 	File.open(ARGV[0]).each do | line1 |
 		lll1 = line1.split(" ")
 		name = lll1[1]
@@ -113,6 +114,8 @@ if ARGV[1] != nil
 			
 			fout5.write(lll1[1] + " " + lll1[2] + " " + lll1[0] + " " + lll1[82] + " " + lll1[86] + " " + lll1[87] + " " + " " + lll1[21] + " " + lll1[22] + " " + " " + lll1[4] + " " + lll1[5] + " " + lll1[6]  + " " + lll1[7] + " " + lll1[8] + " " + lll1[9] + " " + lll1[10] + " " + lll1[11] + " " + lll1[12] + " " + lll1[13] + " " + (lll1[11].to_f / lll1[12].to_f).to_s +  " " + lll1[88] + " " + lll1[29] + " " + lll1[30] + " " + lll1[27] + " " + lll1[90] + "\n")
 			
+			fout6.write(lll1[1] + " " + lll1[2] + " " + lll1[4] + " " + lll1[5] + " " + lll1[15] + " " + lll1[16] + " " + lll1[21] + " " + lll1[22] + " " + lll1[29] + " " + lll1[30] + " " + lll1[7] + " " + lll1[8] + " " + lll1[10] + " " + lll1[11] + " " + lll1[12] + " " + lll1[13] + " " + lll1[62] + " " + lll1[0] + "@" + lll1[82] + "\n")
+			
 			
 			if lll1[10].to_i != -1
 				fout2.write("galactic;ellipse(" + lll1[7].to_s + "," + lll1[8].to_s + "," + (lll1[10].to_f+systematicerror.to_f).to_s + "," + (lll1[11].to_f+systematicerror.to_f).to_s + ", " + (- lll1[12].to_f).to_s + ") # color=" + color + " text={" + name + "}")
@@ -131,5 +134,6 @@ if ARGV[1] != nil
 	fout3.close()
 	fout4.close()
 	fout5.close()
+	fout6.close()
 end
 
