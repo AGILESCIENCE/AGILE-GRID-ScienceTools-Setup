@@ -525,22 +525,22 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 				#rttype = file.split("_")[3]
 				mo = MultiOutput.new
 				mo.readDataSingleSource(file)
-				pref = ""
+				pref = "_="
 				if mo.sqrtTS.to_f > 3
 					#create a dir with the time
 				   	if mo.sqrtTS.to_f < warningthrmin.to_f 
-						pref = "__"
+						pref = "_-"
 					end
-					#if mo.b > 5 or mo.b < -5
-					#	if mo.sqrtTS.to_f > alertthrmin_egal.to_f
-					#		prefix = "_+"
-					#	end
-					#end
-					#if mo.b <= 5 and mo.b >= -5
-					#	if mo.sqrtTS.to_f > alertthrmin_gal.to_f
-					#		prefix = "_+"
-					#	end
-					#end
+					if mo.b.to_f > 5 or mo.b.to_f < -5
+						if mo.sqrtTS.to_f > alertthrmin_egal.to_f
+							prefix = "_+"
+						end
+					end
+					if mo.b.to_f <= 5 and mo.b.to_f >= -5
+						if mo.sqrtTS.to_f > alertthrmin_gal.to_f
+							prefix = "_+"
+						end
+					end
 					
 					system("mkdir -p " + pathalerts);
 					
@@ -572,8 +572,8 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			mout.readSourcesInDir(pathalerts, "spot6", "SPOT6", warningthrmin);
 			
 			
-		rescue
-			puts "error SPOT6 results"
+		#rescue
+		#	puts "error SPOT6 results"
 		end
 	end
 end
