@@ -518,6 +518,9 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			cmd = "cp MLE0000.conf " + pathalerts + "/" + analysisname + "_MLE0000.conf"
 			puts cmd
 			system cmd
+			warningthrmin = 4
+			alertthrmin_gal = 4.1
+			alertthrmin_egal = 5
 			Dir["MLE0000_*.source"].each do | file |
 				#rttype = file.split("_")[3]
 				mo = MultiOutput.new
@@ -525,9 +528,19 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 				pref = ""
 				if mo.sqrtTS.to_f > 3
 					#create a dir with the time
-				   	if mo.sqrtTS.to_f < 4 
+				   	if mo.sqrtTS.to_f < warningthrmin 
 						pref = "__"
 					end
+					#if mo.b > 5 or mo.b < -5
+					#	if mo.sqrtTS.to_f > alertthrmin_egal.to_f
+					#		prefix = "_+"
+					#	end
+					#end
+					#if mo.b <= 5 and mo.b >= -5
+					#	if mo.sqrtTS.to_f > alertthrmin_gal.to_f
+					#		prefix = "_+"
+					#	end
+					#end
 					
 					system("mkdir -p " + pathalerts);
 					
@@ -556,7 +569,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 				end
 			end
 			mout = MultiOutputList.new
-			mout.readSourcesInDir(pathalerts, "spot6", "SPOT6");
+			mout.readSourcesInDir(pathalerts, "spot6", "SPOT6", warningthrmin);
 			
 			
 		rescue

@@ -525,7 +525,7 @@ class MultiOutputList
 		freg.close();
 	end
 	
-	def readSourcesInDir(dir, resname, flag)
+	def readSourcesInDir(dir, resname, flag, thrsqrtts)
 		f = File.new(dir + "/" + resname + ".resfull", "w")
 		f1 = File.new(dir + "/" + resname + ".resfullsel", "w")
 		freg = File.new(dir + "/" + resname + ".reg", "w")
@@ -538,7 +538,7 @@ class MultiOutputList
 			if multioutput.fix.to_i >= 1
 				f1.write(multioutput.multiOutputLineFull3(flag) + "\n");
 			end
-			freg.write(multioutput.regline(4));
+			freg.write(multioutput.regline(thrsqrtts.to_f));
 			fhtml.write(multioutput.multiOutputLineFull3HTML(flag))
 		end
 		f.close();
