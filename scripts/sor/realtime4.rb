@@ -177,6 +177,9 @@ begin
         		end
         		puts "lastcontacttime " + lastcontacttime.to_s
         		
+        		#run01
+        		runait(lastcontacttime, 1, 1);
+        		
         		#run02
         		runait(lastcontacttime, 2, 1);
         		
@@ -208,11 +211,18 @@ begin
 					last07 = b07[b07.size() - 1].split("orbit")[0]
 					system("cp " + last07 + "/MLE000*.ctsall.jpg /tmp/app/lastait7.jpg")
 					system("cp " + last07 + "/orbit /tmp/app/lastait7.orb")
+					
+					b01=Dir[abspath + "*RT01*/orbit"].sort()
+					last01 = b01[b01.size() - 1].split("orbit")[0]
+					system("cp " + last01 + "/MLE000*.ctsall.jpg /tmp/app/lastait1.jpg")
+					system("cp " + last01 + "/orbit /tmp/app/lastait1.orb")
+					
                 rescue
                 	puts "error in file system"
                 end
                 
                 begin
+                	genaitoffspot6("RT01")
                 	genaitoffspot6("RT02")
                 	genaitoffspot6("RT04")
                 	genaitoffspot6("RT07")

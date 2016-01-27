@@ -6,6 +6,7 @@
 #02) outfile - output file name
 ################ Optional parameters
 #03) prefix (if specify a prefix, use only 1 map, if -999 use all the maps in the directory) - disabled with parameter maplist
+#04) filter (default FM3.119_2_I0023)
 #04) offaxis - off axix pointing (default 30) - set into .maplist4
 #05) ranal   - radius of analysis (default 10)
 #06) galcoeff     - gal coefficient (default -1) - set into .maplist4

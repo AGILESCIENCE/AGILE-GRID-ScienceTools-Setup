@@ -31,7 +31,7 @@ if File.exists?(regcat2) == false
 	fout.close()
 end
 
-
+#nohup Xvfb :1 -screen 0 2024x2024x16 &
 c="export DISPLAY=localhost:1.0; "
 cmd = "export DISPLAY=localhost:1.0; ds9 " + dirmin.to_s + "/FM3.119_ASDCe_I0023_B01.cts.gz  -zoom 8 -pan to " + l1.to_s + " " + b1.to_s + " wcs galactic -smooth radius 3 -smooth yes -cmap B -scale squared  -region " + regcat2 + " -region " + ENV["AGILE"] + "/catalogs/3FGL/3FGL_gll_psc_v14_ell.reg -region " +  ENV["AGILE"] +"catalogs/3FGL/3FGL_gll_psc_v14_assoc.reg -region " + ENV["AGILE"] + "/catalogs/cat2_res2_3_dash.reg -region " + ENV["AGILE"] + "/catalogs/phase3sel.reg -grid yes -geometry 1024x1024 -saveimage png " + ARGV[0] + "_fermiassoc.png -exit"
 
