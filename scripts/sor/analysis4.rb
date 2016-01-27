@@ -416,7 +416,17 @@ system(cmd)
 if tbd2 != "" and tbd2 != "tbd" and tbd2 != "nop"
 	if proj.to_s == "ARC"
 		if !File.exists?("GIFMAP.cts.gz")
-			cmd = "map.rb " + filter.to_s + " GIFMAP " + (tstart.to_f - 7).to_s + " " + tstart.to_s + " " + l.to_s + " " + b.to_s + " timetype=" + timetype.to_s + " " + mapparam.to_s;
+			deltatime = 0;
+			if timetype.to_s == "MJD"
+				deltatime = 7
+			end
+			if timetype.to_s == "TT"
+				deltatime = 7 * 86400.
+			end
+			if timetype.to_s == "CONTACT"
+				deltatime = 7 * 14
+			end
+			cmd = "map.rb " + filter.to_s + " GIFMAP " + (tstart.to_f - deltatime).to_s + " " + tstart.to_s + " " + l.to_s + " " + b.to_s + " timetype=" + timetype.to_s + " " + mapparam.to_s;
 			puts cmd
 			system(cmd)
 		end
