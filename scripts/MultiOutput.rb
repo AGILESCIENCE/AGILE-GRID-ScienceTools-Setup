@@ -531,6 +531,7 @@ class MultiOutputList
 		f1 = File.new(dir + "/" + resname + ".resfullsel", "w")
 		freg = File.new(dir + "/" + resname + ".reg", "w")
 		fhtml = File.new(dir + "/" + resname + ".html", "w")
+		multioutput = MultiOutput.new()
 		fhtml.write(multioutput.multiOutputLineFull3HTMLheader(flag))
 		Dir[dir + "/*.source"].each do | name |
 			multioutput = MultiOutput.new()

@@ -528,7 +528,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 				pref = ""
 				if mo.sqrtTS.to_f > 3
 					#create a dir with the time
-				   	if mo.sqrtTS.to_f < warningthrmin 
+				   	if mo.sqrtTS.to_f < warningthrmin.to_f 
 						pref = "__"
 					end
 					#if mo.b > 5 or mo.b < -5
