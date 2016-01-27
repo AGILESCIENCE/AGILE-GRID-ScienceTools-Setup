@@ -426,7 +426,7 @@ if tbd2 != "" and tbd2 != "tbd" and tbd2 != "nop"
 			if timetype.to_s == "CONTACT"
 				deltatime = 7 * 14
 			end
-			cmd = "map.rb " + filter.to_s + " GIFMAP " + (tstart.to_f - deltatime).to_s + " " + tstart.to_s + " " + l.to_s + " " + b.to_s + " timetype=" + timetype.to_s + " " + mapparam.to_s;
+			cmd = "map.rb " + filter.to_s + " GIFMAP " + (tstart.to_f - deltatime.to_f).to_s + " " + tstart.to_s + " " + l.to_s + " " + b.to_s + " timetype=" + timetype.to_s + " " + mapparam.to_s;
 			puts cmd
 			system(cmd)
 		end
