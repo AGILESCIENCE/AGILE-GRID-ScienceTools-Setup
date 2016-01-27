@@ -230,7 +230,7 @@ class MultiOutput
 			check = "*"
 		end
 		
-		if @sqrtTS.to_f > thr.to_s
+		if @sqrtTS.to_f > thr.to_f
 			@regline = "galactic\nellipse("+l.to_s+","+b.to_s+","+ell_a.to_s+","+ell_b.to_s+",-"+ell_phi.to_f.abs.to_s+") #color=white width=2 text={"+@label.to_s+" "+format("%.2f",@sqrtTS.to_f)+""+check+" ("+format("%.2f,%.2f,%.2e", l, b, @flux)+")}\n"
 		else
 			@regline = "galactic\nellipse("+l.to_s+","+b.to_s+","+ell_a.to_s+","+ell_b.to_s+",-"+ell_phi.to_f.abs.to_s+") #color=white width=1\n"
