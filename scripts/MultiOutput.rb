@@ -177,6 +177,33 @@ class MultiOutput
 		
 	end
 	
+	def multiOutputLineFull3HTML(flag)
+		datautils = DataUtils.new
+		Dir[ENV["AGILE"] + "/catalogs/*.cat"].sort.each do | cat |
+			File.open(cat).each_line do |x|
+	
+				a = x.split(" ");
+
+				d = datautils.distance(a[0], a[1], @l, @b);
+				if @r.to_f > 0
+					r = @r
+				else 
+					r = 1
+				end
+				if d.to_f < r.to_f
+					assoc = assoc + a[2] + "<br>"
+				end
+		end
+		@multiOutputLineFull3HTML = "<tr><td>" + @label.to_s + "</td><td>" + format("%.2f", @sqrtTS) + "</td><td>" + @flux.to_s + " +/- " + @flux_error.to_s + "</td><td>" + @flux_ul.to_s + "</td><td>"  + @l_peak.to_s + "</td><td>" + @b_peak.to_s + "</td><td>" + @dist.to_s + "</td><td>" + @l.to_s + "</td><td>" + @b.to_s + "</td><td>" + @distellipse.to_s + "</td><td>" + @r.to_s + "</td><td>" + @ell_a.to_s +  "</td><td>" + @ell_b.to_s + "</td><td>" + @ell_phi.to_s + "</td><td>" + @counts.to_s + " +/- " + @counts_error.to_s + "</td><td>" + @counts_ul.to_s + "</td><td>" + assoc.to_s + "</td><td>" + @exposure.to_s + "</td><td>" + @sicalc.to_s + " +/- " + @sicalc_error.to_s + "</td><td>" + @timestart_utc.to_s + "</td><td>" + @timestop_utc.to_s + "</td><td>" + @timestart_mjd.to_s + "</td><td>" + @timestop_mjd.to_s + "</td><td>" + @timestart_tt.to_s + "</td><td>" + @timestop_tt.to_s + "</td><td>" + @galcoeffzero + "</td><td>" + @galcoeffzero_err + "</td><td>" + @galcoeff + "</td><td>" + @galcoeff_err + "</td><td>"  + @isocoeffzero + "</td><td>" + @isocoeffzero_err + "</td><td>"  + @isocoeff + "</td><td>" + @isocoeff_err + "</td><td>" + @fit_cts + "</td><td>"  + @fit_fcn0 + "</td><td>" + @fit_fcn1 + "</td><td>" + @fit_edm0 + "</td><td>" + @fit_edm1 + "</td><td>" + @fit_iter0 + "</td><td>" + @fit_iter1  + "</td><td>" + @fix.to_s + "</td><td>" + @si_start.to_s + "</td><td>" + @ulconflevel.to_s + "</td><td>" + @srcconflevel.to_s + "</td><td>" + @startL.to_s + "</td><td>" + @startB.to_s + "</td><td>" + @startFlux.to_s + "</td><td>[ " + @lmin.to_s + " , " + @lmax.to_s + " ] [ " + @bmin.to_s + " , " + @bmax.to_s + " ] " + "</td><td>" + @energyrange + "</td><td>" + @fovrange + "</td><td>" + @albedo + "</td><td>" + @binsize + "</td><td>" + @expstep + "</td><td>" + @phasecode + "</td></tr>" ;
+		
+	end
+	
+	def multiOutputLineFull3HTMLheader(flag)
+		
+		@multiOutputLineFull3HTMLheader = "<table border=1><tr><th>Name</th><th>sqrt(TS)</th><th>Flux</th><th>Flux UL</th><th>l peak</td><td>b peak</th><th>dist</th><th>l</th><th>b</th><th>dist ell</th><th>R</th><th>a</th><th>b</th><th>phi</th><th>Counts</th><th>Counts UL</th><th>Assoc</th><th>Exp</th><th>SI</th><th>tstart UTC</th><th>tstop UTC</th><th>tstart MJD</th><th>tstop MJD</th><th>tstart TT</th><th>tstop TT</th><th>galcoeffzero</th><th>galcoeffzero_err</th><th>galcoeff</th><th>galcoeff_err</th><th>isocoeffzero</th><th>isocoeffzero_err</th><th>isocoeff</th><th>isocoeff_err</th><th>fit_cts</th><th>fit_fcn0</th><th>fit_fcn1</th><th>fit_edm0</th><th>fit_edm1</th><th>fit_iter0</th><th>fit_iter1</th><th>fix.to_s</th><th>si_start</th><th>ulconflevel</th><th>srcconflevel</th><th>startL</th><th>startB</th><th>startFlux</th><th>posrange</th><th>energyrange</th><th>fovrange</th><th>albedo</th><th>binsize</th><th>expstep</th><th>phasecode</th></tr>" ;
+		
+	end
+	
 	def multiOutputLineFull4(flag, ring, dist)
 		multiOutputLineFull3(flag)
 		@multiOutputLineFull4 = @multiOutputLineFull3 + " RING " + ring.to_s + " " + dist.to_s;
@@ -186,7 +213,7 @@ class MultiOutput
 		@multiOutputLineShort3 = flag + " " + @label.to_s + " " + format("%.2f", @sqrtTS) + " POS " + @l_peak.to_s + " " + @b_peak.to_s + " " + @dist.to_s + " " + @l.to_s + " " + @b.to_s + " " + @distellipse.to_s + " " + @r.to_s + " " + @ell_a.to_s +  " " + @ell_b.to_s + " " + @ell_phi.to_s + " FL " + @flux.to_s + " " + @flux_error.to_s + " " + @flux_ul.to_s + " EXP " + @exposure.to_s + " SI " + @sicalc.to_s + " " + @sicalc_error.to_s + " TI " + @timestart_mjd.to_s + " " + @timestop_mjd.to_s +  " CTS " + @counts.to_s + " " + @counts_error.to_s + " GI " + @galcoeff + " " + @galcoeff_err + " "  + @isocoeff + " " + @isocoeff_err + " FIT " + @fit_cts + " "  + @fit_fcn0 + " " + @fit_fcn1 + " " + @fit_edm0 + " " + @fit_edm1 + " " + @fit_iter0 + " " + @fit_iter1  + " ORBPH " + format("%.3f", @orbitalphase);
 	end
 	
-	def regline()
+	def regline(thr)
 		l = @l
 		b = @b
 		ell_a = @ell_a
@@ -202,7 +229,7 @@ class MultiOutput
 			check = "*"
 		end
 		
-		if @sqrtTS.to_f > 4
+		if @sqrtTS.to_f > thr.to_s
 			@regline = "galactic\nellipse("+l.to_s+","+b.to_s+","+ell_a.to_s+","+ell_b.to_s+",-"+ell_phi.to_f.abs.to_s+") #color=white width=2 text={"+@label.to_s+" "+format("%.2f",@sqrtTS.to_f)+""+check+" ("+format("%.2f,%.2f,%.2e", l, b, @flux)+")}\n"
 		else
 			@regline = "galactic\nellipse("+l.to_s+","+b.to_s+","+ell_a.to_s+","+ell_b.to_s+",-"+ell_phi.to_f.abs.to_s+") #color=white width=1\n"
@@ -491,7 +518,7 @@ class MultiOutputList
 			if multioutput.fix.to_i >= 1
 				f1.write(multioutput.multiOutputLineFull3(flag) + "\n");
 			end
-			freg.write(multioutput.regline);
+			freg.write(multioutput.regline(4));
 		end
 		f.close();
 		f1.close();
@@ -502,6 +529,8 @@ class MultiOutputList
 		f = File.new(dir + "/" + resname + ".resfull", "w")
 		f1 = File.new(dir + "/" + resname + ".resfullsel", "w")
 		freg = File.new(dir + "/" + resname + ".reg", "w")
+		fhtml = File.new(dir + "/" + resname + ".html", "w")
+		fhtml.write(multioutput.multiOutputLineFull3HTMLheader(flag))
 		Dir[dir + "/*.source"].each do | name |
 			multioutput = MultiOutput.new()
 			multioutput.readDataSingleSource(name)
@@ -509,11 +538,13 @@ class MultiOutputList
 			if multioutput.fix.to_i >= 1
 				f1.write(multioutput.multiOutputLineFull3(flag) + "\n");
 			end
-			freg.write(multioutput.regline);
+			freg.write(multioutput.regline(4));
+			fhtml.write(multioutput.multiOutputLineFull3HTML(flag))
 		end
 		f.close();
 		f1.close();
 		freg.close();
+		fhtml.close()
 	end
 	
 	def sources

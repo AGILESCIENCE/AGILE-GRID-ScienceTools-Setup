@@ -421,7 +421,7 @@ if tbd2 != "" and tbd2 != "tbd" and tbd2 != "nop"
 				deltatime = 7
 			end
 			if timetype.to_s == "TT"
-				deltatime = 7 * 86400.
+				deltatime = 7 * 86400
 			end
 			if timetype.to_s == "CONTACT"
 				deltatime = 7 * 14
@@ -514,6 +514,10 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			
 			rttype = analysisname.split("_")[3]
 			pathalerts = PATH_RES + "/alerts/" + rttype + "_" + tstart.to_i.to_s + "_" + tstop.to_i.to_s;
+			#copy .conf
+			cmd = "cp MLE0000.conf " + pathalerts + "/" + analysisname + "_MLE0000.conf"
+			puts cmd
+			system cmd
 			Dir["MLE0000_*.source"].each do | file |
 				#rttype = file.split("_")[3]
 				mo = MultiOutput.new
