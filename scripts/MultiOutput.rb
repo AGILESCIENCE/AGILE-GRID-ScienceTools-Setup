@@ -177,26 +177,39 @@ class MultiOutput
 		
 	end
 	
+	def isnil(value)
+		if value == nil
+			@isnil = " "
+		else
+			@isnil = value.to_s
+		end
+	end
+	
 	def multiOutputLineFull3HTML(flag)
 		datautils = DataUtils.new
 		assoc = ""
 		Dir[ENV["AGILE"] + "/catalogs/*.cat"].sort.each do | cat |
 			File.open(cat).each_line do |x|
 	
-				a = x.split(" ");
-
-				d = datautils.distance(a[0], a[1], @l, @b);
-				if @r.to_f > 0 or @r != nil
+				a = x.split(" ")
+				if a[2] == nil
+					next
+				end
+				d = datautils.distance(a[0], a[1], @l_peak, @b_peak);
+				
+				if @r.to_f > 0 
 					r = @r.to_f
 				else 
 					r = 1
 				end
-				if d.to_f < r.to_f
+				if d.to_f < r.to_f	
+					puts a[0] + " " +  a[1] + " " +  @l_peak.to_s + " " + @b_peak.to_s + " " + a[2] + " " + d.to_s + " " + r.to_s				
 					assoc = assoc + a[2] + "<br>"
 				end
 			end
 		end
-		@multiOutputLineFull3HTML = "<tr><td>" + @label.to_s + "</td><td>" + format("%.2f", @sqrtTS) + "</td><td>" + format("%.2E", @flux) + " +/- " + format("%.2E", @flux_error) + "</td><td>" + format("%.2E", @flux_ul) + "</td><td>"  + @l_peak.to_s + "</td><td>" + @b_peak.to_s + "</td><td>" + format("%.2f", @dist) + "</td><td>" + @l.to_s + "</td><td>" + @b.to_s + "</td><td>" + format("%.2f", @distellipse) + "</td><td>" + format("%.2f", @r) + "</td><td>" + format("%.2f", @ell_a) +  "</td><td>" + format("%.2f", @ell_b) + "</td><td>" + format("%.2f", @ell_phi) + "</td><td>" + format("%.2f", @counts) + " +/- " + format("%.2f", @counts_error) + "</td><td>" + format("%.2f", @counts_ul) + "</td><td>" + assoc.to_s + "</td><td>" + format("%.3E", @exposure) + "</td><td>" + @sicalc.to_s + " +/- " + @sicalc_error.to_s + "</td><td>" + @timestart_utc.to_s + "</td><td>" + @timestop_utc.to_s + "</td><td>" + format("%.2f", @timestart_mjd) + "</td><td>" + format("%.2f", @timestop_mjd) + "</td><td>" + @timestart_tt.to_s + "</td><td>" + @timestop_tt.to_s + "</td><td>" + @galcoeffzero.to_s + "</td><td>" + @galcoeffzero_err.to_s + "</td><td>" + @galcoeff.to_s + "</td><td>" + @galcoeff_err.to_s + "</td><td>"  + @isocoeffzero.to_s + "</td><td>" + @isocoeffzero_err.to_s + "</td><td>"  + @isocoeff.to_s + "</td><td>" + @isocoeff_err.to_s + "</td><td>" + @fit_cts.to_s + "</td><td>"  + @fit_fcn0.to_s + "</td><td>" + @fit_fcn1.to_s + "</td><td>" + @fit_edm0.to_s + "</td><td>" + @fit_edm1.to_s + "</td><td>" + @fit_iter0.to_s + "</td><td>" + @fit_iter1.to_s  + "</td><td>" + @fix.to_s + "</td><td>" + @si_start.to_s + "</td><td>" + @ulconflevel.to_s + "</td><td>" + @srcconflevel.to_s + "</td><td>" + @startL.to_s + "</td><td>" + @startB.to_s + "</td><td>" + @startFlux.to_s + "</td><td>[ " + @lmin.to_s + " , " + @lmax.to_s + " ] [ " + @bmin.to_s + " , " + @bmax.to_s + " ] " + "</td><td>" + @energyrange.to_s + "</td><td>" + @fovrange.to_s + "</td><td>" + @albedo.to_s + "</td><td>" + @binsize.to_s + "</td><td>" + @expstep.to_s + "</td><td>" + @phasecode.to_s + "</td></tr>";
+		
+		@multiOutputLineFull3HTML = "<tr><td>" + @label.to_s + "</td><td>" + format("%.2f", @sqrtTS) + "</td><td>" + format("%.2E", @flux) + " +/- " + format("%.2E", @flux_error) + "</td><td>" + format("%.2E", @flux_ul) + "</td><td>"  + @l_peak.to_s + "</td><td>" + @b_peak.to_s + "</td><td>" + format("%.2f", @dist) + "</td><td>" + isnil(@l).to_s + "</td><td>" + isnil(@b).to_s + "</td><td>" + format("%.2f", isnil(@distellipse)) + "</td><td>" + format("%.2f", isnil(@r)) + "</td><td>" + format("%.2f", isnil(@ell_a)) +  "</td><td>" + format("%.2f", isnil(@ell_b)) + "</td><td>" + format("%.2f", isnil(@ell_phi)) + "</td><td>" + format("%.2f", @counts) + " +/- " + format("%.2f", @counts_error) + "</td><td>" + format("%.2f", @counts_ul) + "</td><td>" + assoc.to_s + "</td><td>" + format("%.3E", @exposure) + "</td><td>" + @sicalc.to_s + " +/- " + @sicalc_error.to_s + "</td><td>" + @timestart_utc.to_s + "</td><td>" + @timestop_utc.to_s + "</td><td>" + format("%.2f", @timestart_mjd) + "</td><td>" + format("%.2f", @timestop_mjd) + "</td><td>" + @timestart_tt.to_s + "</td><td>" + @timestop_tt.to_s + "</td><td>" + @galcoeffzero.to_s + "</td><td>" + @galcoeffzero_err.to_s + "</td><td>" + @galcoeff.to_s + "</td><td>" + @galcoeff_err.to_s + "</td><td>"  + @isocoeffzero.to_s + "</td><td>" + @isocoeffzero_err.to_s + "</td><td>"  + @isocoeff.to_s + "</td><td>" + @isocoeff_err.to_s + "</td><td>" + @fit_cts.to_s + "</td><td>"  + @fit_fcn0.to_s + "</td><td>" + @fit_fcn1.to_s + "</td><td>" + @fit_edm0.to_s + "</td><td>" + @fit_edm1.to_s + "</td><td>" + @fit_iter0.to_s + "</td><td>" + @fit_iter1.to_s  + "</td><td>" + @fix.to_s + "</td><td>" + @si_start.to_s + "</td><td>" + @ulconflevel.to_s + "</td><td>" + @srcconflevel.to_s + "</td><td>" + @startL.to_s + "</td><td>" + @startB.to_s + "</td><td>" + @startFlux.to_s + "</td><td>[ " + @lmin.to_s + " , " + @lmax.to_s + " ] [ " + @bmin.to_s + " , " + @bmax.to_s + " ] " + "</td><td>" + @energyrange.to_s + "</td><td>" + @fovrange.to_s + "</td><td>" + @albedo.to_s + "</td><td>" + @binsize.to_s + "</td><td>" + @expstep.to_s + "</td><td>" + @phasecode.to_s + "</td></tr>";
 		
 	end
 	
@@ -534,14 +547,17 @@ class MultiOutputList
 		fhtml = File.new(dir + "/" + resname + ".html", "w")
 		multioutput = MultiOutput.new()
 		fhtml.write(multioutput.multiOutputLineFull3HTMLheader(flag))
-		puts Dir[dir + "/*.source"]	
+		#puts Dir[dir + "/*.source"]	
 		Dir[dir + "/*.source"].each do | name |
+			#puts name
 			multioutput = MultiOutput.new()
 			multioutput.readDataSingleSource(name)
 			f.write(multioutput.multiOutputLineFull3(flag) + "\n");
 			if multioutput.fix.to_i >= 1
 				f1.write(multioutput.multiOutputLineFull3(flag) + "\n");
 			end
+			
+		    puts multioutput.multiOutputLineFull3(flag)
 			freg.write(multioutput.regline(thrsqrtts.to_f));
 			fhtml.write(multioutput.multiOutputLineFull3HTML(flag))
 		end
