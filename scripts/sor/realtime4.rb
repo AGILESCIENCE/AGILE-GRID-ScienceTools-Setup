@@ -185,7 +185,7 @@ def genaitoffspot6(rttype)
 				nfile = file.sub("_+", "++")
 				system("mv " + file + " " + nfile);
 				mout = MultiOutput.new
-				mout.readDataSingleSource(name)
+				mout.readDataSingleSource(nfile)
 				mout.assoc(",")
 				subject = "ALERT LEVEL " + format("%.2f", mout.sqrtTS) + " " + format("%.1E", mout.flux) + "+/-" + format("%.1E", mout.flux_error) + " (" + format("%.2f", mout.l_peak) + "," + format("%.2f", mout.b_peak) + "," + format("%.2f", mout.b_peak) + ")" + mout.assoc
 				 
