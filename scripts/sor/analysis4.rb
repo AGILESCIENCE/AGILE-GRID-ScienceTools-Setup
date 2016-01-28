@@ -572,8 +572,8 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			mout.readSourcesInDir(pathalerts, "spot6", "SPOT6", warningthrmin);
 			
 			
-		#rescue
-		#	puts "error SPOT6 results"
+		rescue
+			puts "error SPOT6 results"
 		end
 	end
 end
