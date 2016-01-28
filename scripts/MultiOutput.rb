@@ -204,9 +204,7 @@ class MultiOutput
 				end
 				if d.to_f < r.to_f	
 					#puts a[0] + " " +  a[1] + " " +  @l_peak.to_s + " " + @b_peak.to_s + " " + a[2] + " " + d.to_s + " " + r.to_s				
-					@assoc = @assoc + a[2]
-					
-					@assoc = @assoc + endof
+					@assoc = @assoc + a[2] + endof
 				end
 			end
 		end

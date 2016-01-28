@@ -186,10 +186,10 @@ def genaitoffspot6(rttype)
 				system("mv " + file + " " + nfile);
 				mout = MultiOutput.new
 				mout.readDataSingleSource(nfile)
-				mout.assoc(",")
-				subject = "ALERT LEVEL " + format("%.2f", mout.sqrtTS) + " " + format("%.1E", mout.flux) + "+/-" + format("%.1E", mout.flux_error) + " (" + format("%.2f", mout.l_peak) + "," + format("%.2f", mout.b_peak) + "," + format("%.2f", mout.b_peak) + ")" + mout.assoc
+				
+				subject = "ALERT LEVEL " + format("%.2f", mout.sqrtTS) + " " + format("%.1E", mout.flux) + "+/-" + format("%.1E", mout.flux_error) + " (" + format("%.2f", mout.l_peak) + "," + format("%.2f", mout.b_peak) + "," + format("%.2E", mout.exposure) + ") " + mout.assoc(",").to_s
 				 
-				cmd = "mail -s " + subject + " bulgarelli@iasfbo.inaf.it < " + nfile
+				cmd = "mail -s \"" + subject + "\" bulgarelli@iasfbo.inaf.it < " + nfile
 				puts cmd
 				system(cmd)
 			end
