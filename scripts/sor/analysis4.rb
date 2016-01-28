@@ -531,12 +531,12 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 				   	if mo.sqrtTS.to_f < warningthrmin.to_f 
 						pref = "_-"
 					end
-					if mo.b.to_f > 5 or mo.b.to_f < -5
+					if mo.b_peak.to_f > 5 or mo.b_peak.to_f < -5
 						if mo.sqrtTS.to_f > alertthrmin_egal.to_f
 							prefix = "_+"
 						end
 					end
-					if mo.b.to_f <= 5 and mo.b.to_f >= -5
+					if mo.b_peak.to_f <= 5 and mo.b_peak.to_f >= -5
 						if mo.sqrtTS.to_f > alertthrmin_gal.to_f
 							prefix = "_+"
 						end
