@@ -180,6 +180,7 @@ def genaitoffspot6(rttype)
 		
 		#send alerts
 		begin
+			puts Dir[pathalerts + "/_+*"]
 			Dir[pathalerts + "/_+*"].each do | file |
 				nfile = file.sub("_+", "++")
 				system("mv " + file + " " + nfile);
