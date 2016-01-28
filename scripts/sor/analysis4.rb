@@ -549,7 +549,9 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 					else
 						snear = false
 						
+						puts "copy results"
 						Dir[pathalerts + "/*.source"].each do | fsource |
+							
 							mo2 = MultiOutput.new
 							mo2.readDataSingleSource(fsource)
 							if datautils.distance(mo2.l_peak, mo2.b_peak, mo.l_peak, mo.b_peak).to_f < 1 

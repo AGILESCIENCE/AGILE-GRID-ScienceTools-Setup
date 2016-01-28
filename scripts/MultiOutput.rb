@@ -534,6 +534,7 @@ class MultiOutputList
 		fhtml = File.new(dir + "/" + resname + ".html", "w")
 		multioutput = MultiOutput.new()
 		fhtml.write(multioutput.multiOutputLineFull3HTMLheader(flag))
+		puts Dir[dir + "/*.source"]	
 		Dir[dir + "/*.source"].each do | name |
 			multioutput = MultiOutput.new()
 			multioutput.readDataSingleSource(name)
