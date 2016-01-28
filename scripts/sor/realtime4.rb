@@ -1,6 +1,7 @@
 #! /usr/bin/ruby
 
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
+load ENV["AGILE"] + "/scripts/conf.rb"
 
 def runait(lastcontacttime, day, hours_shift)
 
@@ -154,7 +155,14 @@ def genaitoffspot6(rttype)
 		aitsplitname = aitname.split("_");
 		pathalerts = PATH_RES + "/alerts/" + aitsplitname[1] + "_" + aitsplitname[2] + "_" + aitsplitname[3] + "/"
 		#find the AITOFF - questo va rimosso da qui e messo in un task a parte che fa la scansione della dir alert e prende l'ultimo
-	
+		
+		begin
+			mout = MultiOutputList.new
+			mout.readSourcesInDir(pathalerts, "spot6", "SPOT6", 4);
+		rescue
+			puts "gen .reg and .html error"
+		end
+		
 		cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + pathaitoff +  " " + pathalerts + "/" + rttype + "spot6.ctsall 1 -1 7 B 2 png 1400x1000 " + existsFile(pathalerts + "/spot6.reg");
 		puts cmd
 		system(cmd)
