@@ -186,8 +186,8 @@ class MultiOutput
 				a = x.split(" ");
 
 				d = datautils.distance(a[0], a[1], @l, @b);
-				if @r.to_f > 0
-					r = @r
+				if @r.to_f > 0 or @r != nil
+					r = @r.to_f
 				else 
 					r = 1
 				end
