@@ -178,7 +178,7 @@ def genaitoffspot6(rttype)
 			system("cp " + pathalerts + "/" + rttype + "spot6.intall.png /tmp/app/lastaitspot6_"+rttype+".int.png")
 		end
 		
-		#send alerts
+		puts("send alerts + " + pathalerts + "/_+*")
 		begin
 			puts Dir[pathalerts + "/_+*"]
 			Dir[pathalerts + "/_+*"].each do | file |
