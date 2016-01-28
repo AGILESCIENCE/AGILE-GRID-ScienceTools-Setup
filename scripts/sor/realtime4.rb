@@ -149,6 +149,7 @@ def genaitoffspot6(rttype)
 	b02=Dir[abspath + "*" + rttype + "*/orbit"].sort()
 	last02 = b02[b02.size() - 1].split("orbit")[0]
 	pathaitoff = last02 + "/MAP.cts.gz";
+	pathaitoffint = last02 + "/MAP.int.gz";
 	if File.exists?(pathaitoff)
 		#build path
 		aitname = last02.split("/")[last02.split("/").size - 1]
@@ -167,6 +168,17 @@ def genaitoffspot6(rttype)
 		puts cmd
 		system(cmd)
 		system("cp " + pathalerts + "/" + rttype + "spot6.ctsall.png /tmp/app/lastaitspot6_"+rttype+".png")
+		
+		system("cp " + pathalerts + "/spot6.html /tmp/app/lastaitspot6_"+rttype+".html")
+		
+		if File.exists?(pathaitoffint)
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + pathaitoffint +  " " + pathalerts + "/" + rttype + "spot6.intall 0 0.0010 7 B 2 png 1400x1000 " + existsFile(pathalerts + "/spot6.reg");
+			puts cmd
+			system(cmd)
+			system("cp " + pathalerts + "/" + rttype + "spot6.intall.png /tmp/app/lastaitspot6_"+rttype+".int.png")
+		end
+		
+		
 	end	
 end
 
