@@ -570,8 +570,8 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 					end
 				end
 			end
-			mout = MultiOutputList.new
-			mout.readSourcesInDir(pathalerts, "spot6", "SPOT6", warningthrmin);
+			#mout = MultiOutputList.new
+			#mout.readSourcesInDir(pathalerts, "spot6", "SPOT6", warningthrmin);
 			
 			
 		rescue
