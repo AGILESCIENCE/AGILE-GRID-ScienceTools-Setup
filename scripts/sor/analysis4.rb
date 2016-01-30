@@ -415,7 +415,7 @@ system(cmd)
 
 if tbd2 != "" and tbd2 != "tbd" and tbd2 != "nop"
 	if proj.to_s == "ARC"
-		if !File.exists?("GIFMAP.cts.gz")
+		if Dir["*GIFMAP.cts.gz"].size() == 0
 			deltatime = 0;
 			if timetype.to_s == "MJD"
 				deltatime = 7
