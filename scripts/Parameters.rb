@@ -1,7 +1,7 @@
 class Parameters
 	public
 		def initialize() 
-			@filter = "FM3.119_ASDCe_I0023"
+			@filter = "FM3.119_ASDCe_" + TYPE_MATRIX
 			@prefix=-1
 			@timetype="TT"
 			@useEDPmatrixforEXP = 0

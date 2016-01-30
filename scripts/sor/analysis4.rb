@@ -437,6 +437,7 @@ if tbd2 != "" and tbd2 != "tbd" and tbd2 != "nop"
 		if isocoeff != "-1"
 			cmd = cmd + " isocoeff=" + isocoeff
 		end
+		cmd = cmd + " filter=" +  filter
 		cmd = cmd + " " + multiparam
 		puts cmd
 		system(cmd)
@@ -453,7 +454,7 @@ if tbd2 != "" and tbd2 != "tbd" and tbd2 != "nop"
 end
 
 if not (multiparam.to_s == "nop" || proj.to_s == "AIT")
-	cmd = "multi5.rb " + " MAP.maplist4 " + fnhyp + " " + mle + " galcoeff=" + galcoeff + " isocoeff=" + isocoeff + " " + multiparam
+	cmd = "multi5.rb " + " MAP.maplist4 " + fnhyp + " " + mle + " galcoeff=" + galcoeff + " isocoeff=" + isocoeff + " filter=" + filter + " " + multiparam
 	puts cmd
 	system(cmd)
 	

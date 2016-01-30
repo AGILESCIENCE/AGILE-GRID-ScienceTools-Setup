@@ -27,7 +27,7 @@ end
 regcat2 = ARGV[0].to_s + ".reg"
 if File.exists?(regcat2) == false
 	fout = File.new(regcat2, "w")
-	fout.write(mo.regline + "\n")
+	fout.write(mo.regline(0) + "\n")
 	fout.close()
 end
 
