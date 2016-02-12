@@ -1,0 +1,108 @@
+Procedura di generazione template convoluti e normalizzati per l'analisi multi5ext.
+
+0) Caricare l'enviroment.
+
+Sono necessari la agile BUILD23 e gli ftools.
+
+Ex. su morgana.iasfbo.inaf.it
+
+module load agile-local
+module load heasoft-6.17-prod
+heainit
+
+1) Lanciare AG_circle5 che crea una mappa con cerchio.
+
+Sintassi:
+
+    AG_circle5 <inputmap> <circlemap> <l> <b> <radius>
+
+Il cerchio e` centrato nelle coordinate galattiche (<l>, <b>) di raggio <radius>. I valori saranno 1.0 all'interno del cerchio e 0.0 all'esterno. La mappa <inputmap> serve per prendere le dimensioni della mappa da generare e per copiare le informazioni dell'header FITS. Il parametro <circlemap> e` la mappa di output.
+
+Output:
+
+- La mappa <circlemap>.
+
+Esempi:
+
+Ex. Generazione di una circlemap su cocoon di raggio 3.0:
+
+    AG_circle5 FM3.119_ASDCe_I0025_B01.cts.gz cocoon.gz 79.600721 1.396268 3.0
+
+
+2) Convolvere una mappa con la PSF.
+
+Sintassi:
+
+    convolve_template.sh <map> <spectral_index>
+
+La <map> in input puo' essere una circlemap generata o una qualsiasi altra mappa da convolvere.
+
+Di default i range energetici usati e i loro indici spettrali sono:
+
+convemin  = 100  400 1000  3000 10000
+convemax  = 400 1000 3000 10000 50000
+convindex = <spectral_index> <spectral_index> <spectral_index> <spectral_index> <spectral_index>
+
+Si possono definire dei range energetici personalizzati lanciando lo script cosi`:
+
+    convemin="<emin_values>" convemax="<emax_values>" convindex="<spectral_indexes>" convolve_template.sh <circlemap> <spectral_index>
+
+Nota 1: La lunghezza dei tre vettori convemin, convemax e convindex dev'essere la stessa.
+Nota 2: specificando i valori di covindex il parametro <spectral_index> non viene utilizzato.
+
+Output:
+
+- Le mappe conv.sky della mappa in input convolute con la PSF nelle bande energetiche definite.
+- Una mappa converted.sky --> mappa iniziale con header opportunamente modificato.
+- Una mappa rebinned.sky  --> mappa iniziale rebinnata con bin angolare 0.1°.
+- Una mappa pad.sky       --> mappa rebinnata con "padding" per accrescerne le dimensioni complessive.
+
+Esempi:
+
+Ex. Convoluzione della circlemap su cocoon con la psf di AGILE usando i bin energetici di default e spectral index a 2.1:
+
+    convolve_template.sh cocoon.gz 2.1
+
+Ex. Convoluzione della circlemap su cocoon con la psf di AGILE usando dei range energetici personalizzati:
+
+    convemin="30 50" convemax="100 50000" convindex="2.1 2.1" convolve_template.sh cocoon.gz 0
+
+
+3)  Sommare le mappe convolute e convertirle nel formato standard dei tool di analisi multi5, multi5ext, etc.
+
+Sintassi:
+
+    add_template.sh <map> <explist>
+
+Prende in input la stessa mappa <map> usata come parametro della convolve_template.sh e un file che elenca le mappe di exposure da usare.
+Lo script somma in base ai range energetici le conv.sky generate con la convolve_template.sh, quindi occorre fare attenzione ad usare gli stessi range energetici o un subset di essi. Di default sono gli stessi dello script convolve_template.sh:
+
+convemin  = 100  400 1000  3000 10000
+convemax  = 400 1000 3000 10000 50000
+
+Se sono stati definiti range energetici personalizzati bisogna lanciare di conseguenza lo script come:
+
+    convemin="<emin_values>" convemax="<emax_values>" add_template.sh <map> <explist>
+
+Il parametro <explist> e` il nome di un file testuale che la lista di exposure map, dove ogni riga e` del tipo "<expmap> <spectral_index>".
+
+Output:
+
+- Una singola mappa <map>.template.gz nel formato usabile da parte dei tools di analisi.
+
+Esempi:
+
+Per gli esempi usiamo una singola exposure map. Il file explist contiene:
+
+    FM3.119_ASDCe_I0025_B01.exp.gz -2.1
+
+Ex. Conversione a formato standard delle circlemap convolute su cocoon:
+
+    add_template.sh cocoon.gz explist
+
+Ex. Conversione a formato standard delle circlemap convolute su cocoon usando range energetici personalizzati:
+
+    convemin="30 50" convemax="100 50000" add_template.sh cocoon.gz explist
+
+Problemi con mappa in input poco estesa
+Qualora la mappa in input alla procedura di convoluzione (convolve_template.sh + add_templates.sh) avesse dimensioni troppo piccole rispetto alla mappa AGILE da analizzare, potrebbero esserci problemi nella mappa di template finale (convoluzione tagliata). In tal caso è consigliabile reiterare il processo dall'inizio utilizzando come input di convolve_template.sh la mappa pad.sky generata alla prima tornata di convolve_template.sh. Tale mappa altro non è che la mappa originale con dimensioni aumentate (grazie ad una procedura di "padding") e con lo stesso binnaggio della mappa AGILE. A quel punto si potrà far girare lo script add_templates.sh sull'output della mappa "estesa" che è stata convoluta correttamente.
