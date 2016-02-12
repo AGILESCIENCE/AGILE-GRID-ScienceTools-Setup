@@ -2,6 +2,7 @@ class Parameters
 	public
 		def initialize() 
 			@filter = "FM3.119_ASDCe_" + TYPE_MATRIX
+			@listsourceextended = ""
 			@prefix=-1
 			@timetype="TT"
 			@useEDPmatrixforEXP = 0
@@ -53,7 +54,7 @@ class Parameters
 			@blocks=0
 			@nruns=1
 			@seed=0
-			@dq = 1
+			@dq = 0
 			
 			@fixisogalstep0 = nil;
 			@doublestep = nil;
@@ -118,6 +119,10 @@ class Parameters
 		
 		def flag
 			@flag
+		end
+		
+		def listsourceextended
+			@listsourceextended
 		end
 		
 		def filter
@@ -427,6 +432,7 @@ class Parameters
 				a = a + "galmode=" + @galmode.to_s + " "
 				a = a + "isomode=" + @isomode.to_s + " "
 				a = a + "timebinsize=" + @timebinsize.to_s + " "
+				a = a + "listsourceextended=" + @listsourceextended.to_s + " "
 				if @makelc != nil
 					a = a + "makelc=" + @makelc.to_s +  " "
 				end
@@ -487,6 +493,8 @@ class Parameters
 			case keyw
 				when "outputtype"
 					@outputtype = value;
+				when "listsourceextended"
+					@listsourceextended = value;
 				when "opmode"
 					@opmode = value;
 				when "nruns"
