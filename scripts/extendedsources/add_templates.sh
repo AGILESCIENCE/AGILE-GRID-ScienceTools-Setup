@@ -21,8 +21,12 @@ base=${infile%.*}
 expmaplist=$2
 
 # Define file names of convolved maps
-convemin=( 00100 00400 01000 03000 10000 )
-convemax=( 00400 01000 03000 10000 50000 )
+convemin=( ${convemin:-00100 00400 01000 03000 10000} )
+convemax=( ${convemax:-00400 01000 03000 10000 50000} )
+echo "convemin  = ${convemin[*]}"
+echo "convemax  = ${convemax[*]}"
+echo ""
+echo "adding.."
 for i in ${!convemin[*]} ; do
     convbase[$i]=E${convemin[$i]}_${convemax[$i]}_${base}
     convfile[$i]=${convbase[$i]}.conv.sky
@@ -49,7 +53,7 @@ for i in ${!expfiles[*]} ; do
     convfilelist=${base}.convlist.in
     echo "${indices[$i]} ${#convemin[*]}" > ${convfilelist}
     for j in ${!convemin[*]} ; do
-        weight=`./specwt.py ${convemin[$j]} ${convemax[$j]} ${addemin} ${addemax} ${indices[$i]}`
+        weight=`$AGILE/scripts/extendedsources/specwt.py ${convemin[$j]} ${convemax[$j]} ${addemin} ${addemax} ${indices[$i]}`
         fextract ${convfile[$j]}+0 \!${convfile[$j]}.specwt
         fcarith ${convfile[$j]}+1 ${weight} \!${convfile[$j]}.specwttemp MUL
         fappend ${convfile[$j]}.specwttemp+0 ${convfile[$j]}.specwt
@@ -64,5 +68,5 @@ for i in ${!expfiles[*]} ; do
     fcarith ${dispfile}+1 ${dispsum} \!temp_${dispfile} DIV
     fappend temp_${dispfile}+0 norm_${dispfile}
     rm temp_${dispfile}
-    AG_gasmapgen5 expfile=${expfiles[i]} outfile=\!${base}.template.gz diffusefile=diffuse_null.fits hiresdiffusefile=norm_${dispfile} > ${base}.template.out 2>&1
+    AG_gasmapgen5 expfile=${expfiles[i]} outfile=\!${base}.template.gz diffusefile=$AGILE/scripts/extendedsources/diffuse_null.fits hiresdiffusefile=norm_${dispfile} > ${base}.template.out 2>&1
 done

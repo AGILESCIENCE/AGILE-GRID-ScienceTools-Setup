@@ -23,6 +23,15 @@ convertedfile=${base}.converted.sky
 rebinfile=${base}.rebinned.sky
 padfile=${base}.pad.sky
 
+convemin=( ${convemin:-00100 00400 01000 03000 10000} )
+convemax=( ${convemax:-00400 01000 03000 10000 50000} )
+convindex=( ${convindex:-${spectral_index} ${spectral_index} ${spectral_index} ${spectral_index} ${spectral_index}} )
+echo "convemin  = ${convemin[*]}"
+echo "convemax  = ${convemax[*]}"
+echo "convindex = ${convindex[*]}"
+echo ""
+echo "convolving.."
+
 # Rebin input file
 AG_converttoSkyMap5 $infile \!$convertedfile
 ftkeypar ${convertedfile} CDELT1
@@ -41,11 +50,6 @@ PFILES_OLD=${PFILES}
 PFILES_DIR=`echo ${PFILES} | awk -F \; '{print $1}'`
 
 # Convolve template file for different energy bins
-convemin=( 00100 00400 01000 03000 10000 )
-convemax=( 00400 01000 03000 10000 50000 )
-#convindex=( 0.504258 0.969564 1.38848 1.71788 1.78314 1.96403 1.63919 1.2535 )
-convindex=( ${spectral_index} ${spectral_index} ${spectral_index} ${spectral_index} ${spectral_index} ${spectral_index} ${spectral_index} ${spectral_index} )
-
 for i in ${!convemin[*]} ; do
     convbase[$i]=E${convemin[i]}_${convemax[i]}_${base}
     convfile[$i]=${convbase[$i]}.conv.sky
