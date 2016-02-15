@@ -88,7 +88,7 @@ Il parametro <explist> e` il nome di un file testuale che la lista di exposure m
 
 Output:
 
-- Una singola mappa <map>.template.gz nel formato usabile da parte dei tools di analisi.
+- Una serie di mappe <exposuremap_basename>.template.gz nel formato usabile dai tools di analisi.
 
 Esempi:
 

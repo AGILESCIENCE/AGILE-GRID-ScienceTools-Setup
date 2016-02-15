@@ -50,7 +50,9 @@ for i in ${!expfiles[*]} ; do
     addemax=`pget ftkeypar value`
     addemax=`echo ${addemax} | sed 's/[.].*//'`
     echo $addemin $addemax
-    convfilelist=${base}.convlist.in
+    templatebase=$(basename ${expfiles[i]} .gz)
+    templatebase=$(basename ${expfiles[i]} .exp)
+    convfilelist=${templatebase}.convlist.in
     echo "${indices[$i]} ${#convemin[*]}" > ${convfilelist}
     for j in ${!convemin[*]} ; do
         weight=`$AGILE/scripts/extendedsources/specwt.py ${convemin[$j]} ${convemax[$j]} ${addemin} ${addemax} ${indices[$i]}`
@@ -60,7 +62,7 @@ for i in ${!expfiles[*]} ; do
         rm ${convfile[$j]}.specwttemp
         echo "${convfile[$j]}.specwt" >> ${convfilelist}
     done
-    dispfile=${base}.disp.conv.sky
+    dispfile=${templatebase}.disp.conv.sky
     AG_add_diff5 diffusefilelist=${convfilelist} edpfile=${caldir}/AG_GRID_G0017_SFMG_I0025.edp.gz sarfile=${caldir}/AG_GRID_G0017_SFMG_I0025.sar.gz outfile=\!${dispfile} emin=${addemin} emax=${addemax} > ${dispfile}.out 2>&1
     ftstat ${dispfile} chatter=0
     dispsum=`pget ftstat sum`
@@ -68,5 +70,5 @@ for i in ${!expfiles[*]} ; do
     fcarith ${dispfile}+1 ${dispsum} \!temp_${dispfile} DIV
     fappend temp_${dispfile}+0 norm_${dispfile}
     rm temp_${dispfile}
-    AG_gasmapgen5 expfile=${expfiles[i]} outfile=\!${base}.template.gz diffusefile=$AGILE/scripts/extendedsources/diffuse_null.fits hiresdiffusefile=norm_${dispfile} > ${base}.template.out 2>&1
+    AG_gasmapgen5 expfile=${expfiles[i]} outfile=\!${templatebase}.template.gz diffusefile=$AGILE/scripts/extendedsources/diffuse_null.fits hiresdiffusefile=norm_${dispfile} > ${templatebase}.template.out 2>&1
 done
