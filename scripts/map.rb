@@ -33,6 +33,7 @@
 #	=12 activate [00400-01000], [01000-03000], [03000, 100000])
 #   =13 activate [00100-00400], [00400-01000], [01000-03000]
 #   =14 activate [00100-00400], [00400-01000]
+#   =15 activete [00030-00050], [00050-00100], [00100-50000]
 #17) phasecode: optional, default 2. If -1 => automatic determination ==>  if (time end  > 182692800.0 (MJD 55119.5, UTC 2009-10-15T12:00:00, fine pointing) && phasecode == -1) then phasecode = 2 (SPIN) else phasecode = 18 (POIN)
 #18) timelist: a file with a list of tstart/stop
 #19) timebinsize: optional, default 999999999
@@ -182,6 +183,12 @@ if parameters.energybin.to_i == 14
 	eminarr = [100,  400]
 	emaxarr = [400, 1000]
 	energybinnumber = 2
+end
+
+if parameters.energybin.to_i == 15
+	eminarr = [30, 50, 100]
+	emaxarr = [50, 100, 50000]
+	energybinnumber = 3
 end
 
 index_name_cor = BASEDIR_ARCHIVE.to_s + "/DATA/INDEX/3901.cor.index"

@@ -67,7 +67,7 @@ datautils = DataUtils.new
 fits = Fits.new
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
-	system("head -60 " + $0 );
+	system("head -64 " + $0 );
 	exit;
 end
 
