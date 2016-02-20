@@ -1,0 +1,38 @@
+Procedura per filtrare punti all'interno di un poligono.
+
+0) Caricare l'environment
+
+Lo script python usa numpy, quindi occorre caricare i moduli necessari.
+
+Ex. su morgana.iasfbo.inaf.it
+
+module load python2.7sci
+
+1) Definire un poligono sferico come una serie di punti in coordinate galattiche (l, b) ordinati in senso orario. L'ultimo punto e il primo vengono uniti da un arco, quindi stare attenti a non ridefinire il punto di partenza.
+
+Ex. File di esempio per un poligono quadrato, square.dat:
+
+0.0  0.0
+0.0  1.0
+1.0  1.0
+
+2) Definire una serie di punti in coordinate galattiche (l, b) da filtrare.
+
+3) Filtrare solo i punti interni al poligono con polygonfilter.sh:
+
+Sintassi:
+
+./polygonfilter.py -h
+usage: polygonfilter.py [-h] polygon points output
+
+positional arguments:
+  polygon     An input file containing the polygon as a list of points
+  points      An input file containing a list of points to test
+  output      An output file containing only the points inside the polygon
+
+optional arguments:
+  -h, --help  show this help message and exit
+
+Ex. in questa cartella ci sono dei file di esempio, potete filtare i punti healpix res4 su uno dei due poligoni "della banana":
+
+./polygonfilter.py polygon.dat healpix_res4.dat healpix_res4_filtered.dat
