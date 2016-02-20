@@ -508,15 +508,15 @@ if not (multiparam.to_s == "nop" || proj.to_s == "AIT")
 	puts cmd
 	system(cmd)
 	
-	if tsmapparam != "op"
-		cmd = "iterative5.rb " + filter + " MAP.maplist4 outfile=TSMAP_" + mle;
-		puts cmd
-		system (cmd)
-	end
-	
 	#cmd = "convertMultiResToReg.rb " + mle + " white 0.1"
 	#puts cmd
 	#system(cmd)
+end
+
+if not (tsmapparam.to_s == "nop" || proj.to_s == "AIT")
+	cmd = "iterative5.rb " + filter + " MAP.maplist4 outfile=TSMAP_" + mle;
+	puts cmd
+	system (cmd)
 end
 
 #TODO TSMAP
