@@ -74,8 +74,9 @@ Sintassi:
 
     add_template.sh <map> <explist>
 
-Prende in input la stessa mappa <map> usata come parametro della convolve_template.sh e un file che elenca le mappe di exposure da usare.
-Lo script somma in base ai range energetici le conv.sky generate con la convolve_template.sh, quindi occorre fare attenzione ad usare gli stessi range energetici o un subset di essi. Di default sono gli stessi dello script convolve_template.sh:
+Prende in input la stessa mappa <map> usata come parametro della convolve_template.sh e un file <explist> che elenca le mappe di exposure da usare.
+NOTA: Il numero di mappe di exposure deve essere uguale al numero di mappe del file multi.maplist4.
+Lo script somma in base ai range energetici le conv.sky generate con la convolve_template.sh, quindi bisogna usare gli stessi range energetici come input. Di default sono analogamente al file convolve.sh:
 
 convemin  = 100  400 1000  3000 10000
 convemax  = 400 1000 3000 10000 50000
@@ -88,21 +89,31 @@ Il parametro <explist> e` il nome di un file testuale che la lista di exposure m
 
 Output:
 
-- Una singola mappa <map>.template.gz nel formato usabile da parte dei tools di analisi.
+- Una serie di mappe <exposuremap_basename>.template.gz nel formato usabile dai tools di analisi.
+NOTA: i range energetici dell'output dipendono dai range energetici delle singole exposure map. I range delle exposure maps devono essere uguali o un subset dei range dei template generati. il subset minimo usabile per la configurazione di base e' una singola exposure map con range 100-50000.
 
 Esempi:
 
-Per gli esempi usiamo una singola exposure map. Il file explist contiene:
+Ex. Se usiamo una singola exposure map sommata (100-50000). Il file explist contiene:
 
-    FM3.119_ASDCe_I0025_B01.exp.gz -2.1
+    FM3.119_ASDCe_I0025_B01.exp.gz 2.1
 
-Ex. Conversione a formato standard delle circlemap convolute su cocoon:
+Ex. Se usiamo la lista di exposure map sui 5 range energetici di default. Il file explist contiene:
+
+    EMIN00100_EMAX00400_FM3.119_ASDCe_I0025_B01.exp.gz 2.1
+    EMIN00400_EMAX01000_FM3.119_ASDCe_I0025_B01.exp.gz 2.1
+    EMIN01000_EMAX03000_FM3.119_ASDCe_I0025_B01.exp.gz 2.1
+    EMIN03000_EMAX10000_FM3.119_ASDCe_I0025_B01.exp.gz 2.1
+    EMIN10000_EMAX50000_FM3.119_ASDCe_I0025_B01.exp.gz 2.1
+
+Ex. Conversione delle circlemap convolute su cocoon:
 
     add_template.sh cocoon.gz explist
 
-Ex. Conversione a formato standard delle circlemap convolute su cocoon usando range energetici personalizzati:
+Ex. Conversione delle circlemap convolute su cocoon usando range energetici personalizzati:
 
     convemin="30 50" convemax="100 50000" add_template.sh cocoon.gz explist
+
 
 Problemi con mappa in input poco estesa
 Qualora la mappa in input alla procedura di convoluzione (convolve_template.sh + add_templates.sh) avesse dimensioni troppo piccole rispetto alla mappa AGILE da analizzare, potrebbero esserci problemi nella mappa di template finale (convoluzione tagliata). In tal caso è consigliabile reiterare il processo dall'inizio utilizzando come input di convolve_template.sh la mappa pad.sky generata alla prima tornata di convolve_template.sh. Tale mappa altro non è che la mappa originale con dimensioni aumentate (grazie ad una procedura di "padding") e con lo stesso binnaggio della mappa AGILE. A quel punto si potrà far girare lo script add_templates.sh sull'output della mappa "estesa" che è stata convoluta correttamente.
