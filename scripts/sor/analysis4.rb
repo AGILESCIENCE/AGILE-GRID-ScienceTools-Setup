@@ -143,6 +143,10 @@ def plotjpgcts2(ds94, mle, smooth, regfile, reg, fndisplayreg)
 				fname = file.split(".cts.gz")[0]
 				if ds94 == "default"
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					if reg == "yes"
+						cmd += " "
+						cmd += existsFile(fndisplayreg)
+					end
 					puts cmd
 					system(cmd)
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 png 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
