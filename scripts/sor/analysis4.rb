@@ -36,7 +36,9 @@
 #reg section
 
 #Example
-# spotfinder 0 2 10 0.7 1 50
+# spotfinder 0 2 10 0.7 1 50 {1}
+# NB: l'ultimo parametro e' l'indice del file nel MAP.maplist4 usato per fare la ricerca degli spot.
+# Gli altri parametri sono quelli passato direttamente a spotfinder
 # cat cat2b_4.multi 15 0 20 0 30 0 0
 #NB: copy the catalogs (in .multi format) in ENV["AGILE"] + "/share/catalogs/"
 
@@ -51,8 +53,26 @@ def extractcat(hypothesisgen, l, b, outfile)
 
 end
 
-def spotfinder(hypothesisgen, outfile, prefix, mapsize)
+def spotfinder(hypothesisgen, outfile, eb, mapsize)
 	h = hypothesisgen.split(" ")
+	
+	prefix = "MAP"
+
+	if eb.to_i != 0
+		prefix = "MAP"
+		index = 1
+		if h.size() == 8
+			index = h[7].to_i
+		end
+		indexfile = 1
+		File.open("MAP.maplist4").each_line do | line |
+			if index.to_i == indexfile.to_i
+				prefix = line.split(" ")[0].split(".cts.gz")[0]
+			end
+			indexfile = indexfile.to_i + 1
+		end
+	end
+	
 	map = ""
 	if h[1].to_i == 0
 		map = prefix + ".cts.gz"
@@ -390,6 +410,12 @@ if mapparam.split("mapsize").size() > 1
 	mapsize  = mapparam.split("mapsize")[1].split("=")[1].split(" ")[0]
 end
 
+eb = parameters.energybin
+
+if mapparam.split("eb").size() > 1
+	eb  = mapparam.split("eb")[1].split("=")[1].split(" ")[0]
+end
+
 puts mleindex
  
 if(mleindex.to_i == 0)
@@ -410,7 +436,7 @@ if op != "nop"
 		extractcat(hypothesisgen1, l, b, fnh1);
 	end
 	if op == "spotfinder"
-		spotfinder(hypothesisgen1, fnh1, "MAP", mapsize);
+		spotfinder(hypothesisgen1, fnh1, eb, mapsize);
 	end
 end
 
@@ -424,7 +450,7 @@ if op != "nop"
 		extractcat(hypothesisgen2, l, b, fnh2);
 	end
 	if op == "spotfinder"
-		spotfinder(hypothesisgen2, fnh2, "MAP", mapsize);
+		spotfinder(hypothesisgen2, fnh2, eb, mapsize);
 	end
 end
 
