@@ -73,7 +73,7 @@ def existsFile(filename)
 	end
 end
 
-def plotjpgcts1(ds91, mle, smooth, regfile)
+def plotjpgcts1(ds91, mle, smooth, regfile, reg, fndisplayreg)
 	if File.exists?(mle + ".multi.reg") 
 		Dir["*.cts.gz"].each do | file |
 			if ds91 != "none"
@@ -83,6 +83,10 @@ def plotjpgcts1(ds91, mle, smooth, regfile)
 				else
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall " + ds91.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				end
+				if reg == "yes"
+					cmd += " "
+					cmd += existsFile(fndisplayreg)
+				end
 				puts cmd
 				system(cmd)
 			end
@@ -90,7 +94,7 @@ def plotjpgcts1(ds91, mle, smooth, regfile)
 	end
 end
 
-def plotjpgint(ds92, mle, smooth, regfile)
+def plotjpgint(ds92, mle, smooth, regfile, reg, fndisplayreg)
 	if File.exists?(mle + ".multi.reg") 
 		Dir["*.int.gz"].each do | file |
 			if ds92 != "none"
@@ -100,6 +104,10 @@ def plotjpgint(ds92, mle, smooth, regfile)
 				else
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall " + ds92.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				end
+				if reg == "yes"
+					cmd += " "
+					cmd += existsFile(fndisplayreg)
+				end
 				puts cmd
 				system(cmd)
 			end
@@ -107,7 +115,7 @@ def plotjpgint(ds92, mle, smooth, regfile)
 	end
 end
 
-def plotjpgexp(ds93, mle, regfile)
+def plotjpgexp(ds93, mle, regfile, reg, fndisplayreg)
 	if File.exists?(mle + ".multi.reg") 
 		Dir["*.exp.gz"].each do | file |
 			if ds93 != "none"
@@ -117,6 +125,10 @@ def plotjpgexp(ds93, mle, regfile)
 				else
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall " + ds93.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				end
+				if reg == "yes"
+					cmd += " "
+					cmd += existsFile(fndisplayreg)
+				end
 				puts cmd
 				system(cmd)
 			end
@@ -124,7 +136,7 @@ def plotjpgexp(ds93, mle, regfile)
 	end
 end
 
-def plotjpgcts2(ds94, mle, smooth, regfile)
+def plotjpgcts2(ds94, mle, smooth, regfile, reg, fndisplayreg)
 	if File.exists?(mle + ".multi.reg") 
 		Dir["*.cts.gz"].each do | file |
 			if File.exists?("MAP.cts.gz") and ds94 != "none"
@@ -134,10 +146,18 @@ def plotjpgcts2(ds94, mle, smooth, regfile)
 					puts cmd
 					system(cmd)
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 png 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					if reg == "yes"
+						cmd += " "
+						cmd += existsFile(fndisplayreg)
+					end
 					puts cmd
 					system(cmd)
 				else
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + ds94.to_s +  " jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					if reg == "yes"
+						cmd += " "
+						cmd += existsFile(fndisplayreg)
+					end
 					puts cmd
 					system(cmd)
 				end
@@ -498,16 +518,16 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			stepsize = 3;
 	end
 	
-	plotjpgcts1(ds91, mle, smooth, regfile)
+	plotjpgcts1(ds91, mle, smooth, regfile, reg, fndisplayreg)
 	
-	plotjpgint(ds92, mle, smooth, regfile)
+	plotjpgint(ds92, mle, smooth, regfile, reg, fndisplayreg)
 	
-	plotjpgexp(ds93, mle, regfile)
+	plotjpgexp(ds93, mle, regfile, reg, fndisplayreg)
 	
-	plotjpgcts2(ds94, mle, smooth, regfile)
+	plotjpgcts2(ds94, mle, smooth, regfile, reg, fndisplayreg)
 	
-	plotjpgcts2(ds94, mle + ".step0", smooth, regfile)
-	plotjpgcts2(ds94, mle + ".step1", smooth, regfile)
+	plotjpgcts2(ds94, mle + ".step0", smooth, regfile, reg, fndisplayreg)
+	plotjpgcts2(ds94, mle + ".step1", smooth, regfile, reg, fndisplayreg)
 	
 	
 	if typeanalysis == "spot6"
