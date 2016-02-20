@@ -4,7 +4,7 @@
 ######### Optional parameters
 # FILE management
 #2) startlist - file name of the starting list (in alike multi format, default none)
-#3) scanlist   - file name of the scan list (default none, if none, generate a list with spot finder)
+#3) scanlist   - file name of the scan list (default none, if none, generate a list)
 #4) outfile   - output file prefix 
 # ALIKE parameters -----------------------
 #5) ranal     - radius of analysis (default 10)
@@ -13,19 +13,19 @@
 #8) ulcl      - upper limit confidence level (default 2)
 #9) loccl     - source location contour confidence level (default 95 (%)confidence level) Vales: 99, 95, 68, 50
 # ITERATIVE parametes ---------------------
-#5) scanitmax   - scan iterations (optional, default 20)
+#5) scanitmax   - scan iterations (optional, default 1)
 #6) scantsthr   - sqrt(TS) threshold (optional, default 2) - esci dalla procedura iterativa se non hai trovato nessuna detection maggiore di questo TS
 #7) scandistthr - min dist thresholds (optional, default 0.5) - non fare alike se la nuova source e' piu' vicina
-#8) fixdistthr  - fixdistance thresholds (optional, default 2) - se le sorgenti sono più lontane di fixdistthr allora metti fixflag=0
+#8) fixdistthr  - fixdistance thresholds (optional, default 2) - se le sorgenti sono più lontane di fixdistthr gradi allora metti fixflag=0
 #9) minsourcesqrts - min sqrt(TS) to make the second loop of the DoFit (optional, default 2)
 #10) fixflagstep2 - fix flag for second step of iterative (optional, default 3)
 # SCAN LIST GENERATION (if scan list name is none)
-#12) binstep     - bin step for generation of list of points to analyze (optional, default 2) - if param 3 is != none don't use it
+#12) binstep     - bin step for generation of list of points to analyze (optional, default 1) - if param 3 is != none don't use it
 #14) rextract    - radius of scan (default mapsize.to_i / 2.0 - ranal.to_i;)
 #15) lcenter     - l center of analysis (default, the center of the map)
 #16) bcenter     - b center of analysis (default, the center of the map)
 #10) fixflagscan - fixflag of scan list (defaul 1)
-#11) scanlistdistthr - distance max (last column of the multi file
+#11) scanlistdistthr - distance max (last column of the multi file) (default 2.0)
 
 #Formato della lista (esclusi #)
 # !  flux     lii   bii  index fix minTS  label
@@ -61,11 +61,11 @@ startlist = "none"
 scanlist = "none"
 outfile = nil
 
-scanitmax = 20;
+scanitmax = 1;
 scantsthr = 2;
 scandistthr = 0.5;
 fixdistthr = 2;
-binstep = 2;
+binstep = 1;
 
 ranal = 10;
 galmode = 1;
