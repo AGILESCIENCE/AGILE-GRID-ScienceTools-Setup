@@ -1,4 +1,4 @@
-!/usr/bin/python
+#!/usr/bin/env python
 import sys, argparse, struct
 import numpy
 
@@ -129,6 +129,8 @@ def main(argv):
     parser.add_argument("polygon", help="An input file containing the polygon as a list of points")
     parser.add_argument("points", help="An input file containing a list of points to test")
     parser.add_argument("output", help="An output file containing only the points inside the polygon")
+    parser.add_argument("-l", "-lcolumn", help="l column number inside the list of points file", type=int, default=0)
+    parser.add_argument("-b", "-bcolumn", help="b column number inside the list of points file", type=int, default=1)
     args = parser.parse_args()
 
     fc = numpy.loadtxt(args.polygon)
@@ -143,8 +145,8 @@ def main(argv):
 #    numpy.savetxt(args.polygon+'.ait', numpy.c_[c_x, c_y], delimiter=' ', fmt="%f")
 
     fp = numpy.loadtxt(args.points)
-    p_gal_l = fp[:,0].astype(numpy.float)
-    p_gal_b = fp[:,1].astype(numpy.float)
+    p_gal_l = fp[:,args.l].astype(numpy.float)
+    p_gal_b = fp[:,args.b].astype(numpy.float)
     p_gal_l_conv = numpy.zeros(p_gal_l.size)
     for l in xrange(p_gal_l.size):
         p_gal_l_conv[l] = convert_l(p_gal_l[l]) 
