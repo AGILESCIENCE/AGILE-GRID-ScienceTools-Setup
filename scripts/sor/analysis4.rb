@@ -29,11 +29,11 @@
 #email or none (24)
 #dir output (25)
 #comments or none (26)
-#use reg section: yes or no (27)
+#use reg section: yes or no (27) or nop/reg/con (27)
 #----- (28)
 #multi list
 #-----
-#reg section
+#reg/con section
 
 #Example
 # spotfinder 0 2 10 0.7 1 50 {1}
@@ -103,7 +103,7 @@ def plotjpgcts1(ds91, mle, smooth, regfile, reg, fndisplayreg)
 				else
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall " + ds91.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				end
-				if reg == "yes"
+				if reg == "yes" or reg == "reg" or reg == "con"
 					cmd += " "
 					cmd += existsFile(fndisplayreg)
 				end
@@ -124,7 +124,7 @@ def plotjpgint(ds92, mle, smooth, regfile, reg, fndisplayreg)
 				else
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall " + ds92.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				end
-				if reg == "yes"
+				if reg == "yes" or reg == "reg" or reg == "con"
 					cmd += " "
 					cmd += existsFile(fndisplayreg)
 				end
@@ -145,7 +145,7 @@ def plotjpgexp(ds93, mle, regfile, reg, fndisplayreg)
 				else
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall " + ds93.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				end
-				if reg == "yes"
+				if reg == "yes" or reg == "reg" or reg == "con"
 					cmd += " "
 					cmd += existsFile(fndisplayreg)
 				end
@@ -163,14 +163,14 @@ def plotjpgcts2(ds94, mle, smooth, regfile, reg, fndisplayreg)
 				fname = file.split(".cts.gz")[0]
 				if ds94 == "default"
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-					if reg == "yes"
+					if reg == "yes" or reg == "reg" or reg == "con"
 						cmd += " "
 						cmd += existsFile(fndisplayreg)
 					end
 					puts cmd
 					system(cmd)
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 png 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-					if reg == "yes"
+					if reg == "yes" or reg == "reg" or reg == "con"
 						cmd += " "
 						cmd += existsFile(fndisplayreg)
 					end
@@ -178,7 +178,7 @@ def plotjpgcts2(ds94, mle, smooth, regfile, reg, fndisplayreg)
 					system(cmd)
 				else
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + ds94.to_s +  " jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-					if reg == "yes"
+					if reg == "yes" or reg == "reg" or reg == "con"
 						cmd += " "
 						cmd += existsFile(fndisplayreg)
 					end
@@ -225,7 +225,7 @@ ds94 = "" #default, none, 1 -1 3 B 2
 regfile = ""
 tbd2 = ""
 comments = ""
-reg = "" #yes/no
+reg = "" #yes/no or nop/con/reg
 binsize = 0.3
 
 mleindex = 0;
@@ -255,12 +255,15 @@ mle = "MLE" + format("%04d", mleindex)
 filenameconf = mle + ".conf"
 
 #estrazione lista sorgenti
-fndisplayreg = mle + "display.reg"
+fndisplayreg = mle + "display"
+
+
+
 fnhyp0 = mle+"hypothesis0.multi"
 fnhyp = mle+"hypothesis.multi"
 
 f = File.new(fnhyp0 , "w")
-fr = File.new(fndisplayreg , "w")
+fr = nil;
 
 extractmulti = true
 
@@ -368,6 +371,13 @@ File.open(filenameconf).each_line do | line |
 	end
 	if index.to_i == 27
 		reg =  line
+		if reg == "yes" or reg == "reg"
+			fndisplayreg += ".reg"
+		end
+		if reg == "con"
+			fndisplayreg += ".con"
+		end
+		fr = File.new(fndisplayreg , "w")
 	end
 	if index.to_i >= 28
 		if index.to_i > 28
@@ -599,6 +609,8 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 						end
 					end
 					
+					puts "prefix: " + prefix + " " + mo.b_peak.to_s + " " + mo.sqrtTS.to_s
+					
 					system("mkdir -p " + pathalerts);
 					
 					if Dir[pathalerts + "/*.source"].size() == 0
@@ -660,7 +672,7 @@ if proj.to_s == "AIT"
 		else
 			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.cts.gz " + mle  + ".ctsall " + ds91.to_s + " jpg 1400x1000 ";
 		end
-		if reg == "yes"
+		if reg == "yes" or reg == "reg"
 			cmd += " "
 			cmd += fndisplayreg
 		end
@@ -673,7 +685,7 @@ if proj.to_s == "AIT"
 		else
 			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.int.gz " + mle  + ".intall " + ds92.to_s + " jpg 1400x1000 ";
 		end
-		if reg == "yes"
+		if reg == "yes" or reg == "reg"
 			cmd += " "
 			cmd += fndisplayreg
 		end
@@ -686,7 +698,7 @@ if proj.to_s == "AIT"
 		else
 			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.exp.gz " + mle  + ".expall " + ds93.to_s +  " jpg 1400x1000 ";
 		end
-		if reg == "yes"
+		if reg == "yes" or reg == "reg"
 			cmd += " "
 			cmd += fndisplayreg
 		end

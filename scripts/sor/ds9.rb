@@ -121,15 +121,30 @@ command += " -wcs sky galactic -wcs skyformat degrees -grid yes -single "
 # command += " -pan to 98 131 physical"
 
 if region != ""
-	command += " -region " + region.to_s + " ";
+	if region.include?(".reg") == true
+        command += " -region " + region.to_s + " ";
+    end
+    if region.include?(".con") == true
+        command += " -contour load " + region.to_s + " wcs fk5 yellow 2 yes"
+    end
 end
 
 if addregion.to_s != ""
+	if addregion.include?(".reg") == true
         command += " -region " + addregion.to_s + " ";
+    end
+    if addregion.include?(".con") == true
+        command += " -contour load " + addregion.to_s + " wcs fk5 yellow 2 yes"
+    end
 end
 
 if addregion2.to_s != ""
+	if addregion2.include?(".reg") == true
         command += " -region " + addregion2.to_s + " ";
+    end
+    if addregion2.include?(".con") == true
+        command += " -contour load " + addregion2.to_s + " wcs fk5 yellow 2 yes"
+    end
 end
 
 
