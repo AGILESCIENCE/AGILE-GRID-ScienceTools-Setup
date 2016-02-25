@@ -184,13 +184,15 @@ puts cmd
 system(cmd)
 
 f = File.open(newcmd, "a")
-f.write("\#\@ job_name = sor4_" + analysisname + "\n")
-f.write("\#\@ notify_user = " + mail + "\n")
 if queue != nil
 	f.write("\#\@ class    = " + queue + "\n")
 else
 	f.write("\#\@ class    = large\n")
 end
+f.write("\#\@ job_name = sor4_" + analysisname + "\n")
+f.write("\#\@ notify_user = " + mail + "\n")
+
+f.write("\#\@ queue\n")
 
 f.write("date\n")
 f.write("module load agile-B23\n")
