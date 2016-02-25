@@ -19,9 +19,3 @@
 #@ output  = job1.$(jobid).out
 #@ queue
 
-  date
-
-  module load agile-B23
-
-
-
