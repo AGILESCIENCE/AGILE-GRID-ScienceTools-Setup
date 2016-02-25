@@ -7,7 +7,6 @@
 #@ shell = /bin/bash
 #@ job_type = serial
 #@ environment= COPY_ALL
-#@ class    = agilesor
 #@ wall_clock_limit = 240:00:00
 #RISORSE PER OGNI TASK
 #@ resources = ConsumableCpus(1) 

@@ -188,6 +188,8 @@ f.write("\#\@ job_name = sor4_" + analysisname + "\n")
 f.write("\#\@ notify_user = " + mail + "\n")
 if queue != nil
 	f.write("\#\@ class    = " + queue + "\n")
+else
+	f.write("\#\@ class    = large\n")
 end
 
 f.write("analysis4.rb " + mle + ".conf" + "\n")

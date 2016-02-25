@@ -17,19 +17,19 @@
 #OP: hypothesisgen_mediumpriority = spotfinder | cat | nop params (12)
 #radius selection merger or 0 (13) 
 #OP: multi params (14)
-#OP: ts map mode (15)
+#OP: ts map mode (15) - nop or op (op=execute TS map generator)
 #ds9 = default, none, additional parameters (16) - ARC/AIT = cts
 #ds9 = default, none, additional parameters (17) - ARC/AIT = int
 #ds9 = default, none, additional parameters (18) - ARC/AIT = exp
 #ds9 = default, none, additional parameters (19) - ARC = cts2
-#reg file
-#tbd (21) - not used, spare
-#iddisp (22)
-#username (23)
-#email or none (24)
-#dir output (25)
+#reg file name (to be added to ds9 map generation)
+#detGIF (21) - the name of the source used to determina gal and iso parameter fixed (use [tstart-7days, tstart]) 
+#iddisp - for push notifications (22)
+#dir_run_output,queue (23) - diroutput = where the results are saved (under (ANALYSSI3)), queue (the queue of the cluster) is optional
+#email or none (24): the send e-mails with results
+#dir_analysis_output (25) (under diroutput): the name of the analysis. The analysis is saved in /ANALYSIS3/dir_run_output/dir_analysis_output
 #comments or none (26)
-#use reg section: yes or no (27) or nop/reg/con (27)
+#use reg section: yes or no (27) or nop/reg/con (27). NB: yes=reg
 #----- (28)
 #multi list
 #-----
@@ -223,7 +223,7 @@ ds92 = "" #default, none, 1 -1 3 B 2
 ds93 = "" #default, none, 1 -1 3 B 2
 ds94 = "" #default, none, 1 -1 3 B 2
 regfile = ""
-tbd2 = ""
+detGIF = ""
 comments = ""
 reg = "" #yes/no or nop/con/reg
 binsize = 0.3
@@ -346,7 +346,7 @@ File.open(filenameconf).each_line do | line |
 		end
 	end
 	if index.to_i == 21
-		tbd2 = line
+		detGIF = line
 	end
 	if index.to_i == 22
 		iddisp = line
@@ -473,7 +473,7 @@ cmd = "mv " + mle + "hypothesisM0.multi " + fnhyp
 puts cmd
 system(cmd)
 
-if tbd2 != "" and tbd2 != "tbd" and tbd2 != "nop"
+if detGIF != "" and detGIF != "tbd" and detGIF != "nop"
 	if proj.to_s == "ARC"
 		if Dir["*GIFMAP.cts.gz"].size() == 0
 			deltatime = 0;
@@ -501,7 +501,7 @@ if tbd2 != "" and tbd2 != "tbd" and tbd2 != "nop"
 		cmd = cmd + " " + multiparam
 		puts cmd
 		system(cmd)
-		giffot = "GIF" + mle + "_" + tbd2 
+		giffot = "GIF" + mle + "_" + detGIF 
 		mo = MultiOutput.new
 		mo.readDataSingleSource(giffot);
 		if galcoeff == "-1"
