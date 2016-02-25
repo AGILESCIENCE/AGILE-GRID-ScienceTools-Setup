@@ -192,6 +192,8 @@ else
 	f.write("\#\@ class    = large\n")
 end
 
+f.write("date\n")
+f.write("module load agile-B23\n")
 f.write("analysis4.rb " + mle + ".conf" + "\n")
 f.close()
 
