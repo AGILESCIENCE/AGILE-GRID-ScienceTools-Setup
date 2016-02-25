@@ -36,6 +36,8 @@ tbd2 = ""
 comments = ""
 reg = ""
 
+queue = nil
+
 File.open(filenameconf).each_line do | line |
 	line = line.chomp
 	if index.to_i == 0
@@ -111,7 +113,11 @@ File.open(filenameconf).each_line do | line |
 		iddisp = line
 	end
 	if index.to_i == 23
-		user = line
+		user_and_queue = line
+		user = user_and_queue.split(",")[0]
+		if user_and_queue.split(",").size == 2
+			queue = user_and_queue.split(",")[1]
+		end
 	end
 	if index.to_i == 24
         mail = line
@@ -180,6 +186,10 @@ system(cmd)
 f = File.open(newcmd, "a")
 f.write("\#\@ job_name = sor4_" + analysisname + "\n")
 f.write("\#\@ notify_user = " + mail + "\n")
+if queue != nil
+	f.write("\#\@ class    = " + queue + "\n")
+end
+
 f.write("analysis4.rb " + mle + ".conf" + "\n")
 f.close()
 
