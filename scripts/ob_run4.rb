@@ -24,6 +24,7 @@ File.open(obfile).each_line do | line |
 	
 	fo = File.new(newconffilename, "w")
 	
+	index = 0
 	File.open(conffile).each_line do | line |
 			out = line
 			
@@ -40,7 +41,7 @@ File.open(obfile).each_line do | line |
 				out = isocoeff  + "\n"
 			end
 			if index.to_i == 10
-				mapparam = line
+				mapparam = line.chomp
 				mapparam = mapparam + " lpointing="+lpointing + " bpointing=" + bpointing  + "\n"
 				out = mapparam
 			end
