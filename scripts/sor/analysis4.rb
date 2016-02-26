@@ -602,7 +602,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 						system("cp " + file.to_s + " " + pathres + "/" + analysisname + "_" + file);
 					end	
 			end
-			Dir["*.cts2.png"].each do | file |
+			Dir[mle + "*.cts2.png"].each do | file |
 				system("cp " + file.to_s + " " + pathres + "/" + analysisname + "_" + file);
 			end
 			
