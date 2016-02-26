@@ -589,13 +589,13 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			#copia i risultati in result_dir
 			pathres = PATH_RES + "/" + result_dir + "/"
 			system("mkdir -p " + pathres);
-			cmd = "cp MLE0000.conf " + pathres + "/" + analysisname + "_MLE0000.conf"
+			cmd = "cp " + mle + ".conf " + pathres + "/" + analysisname + "_" + mle + ".conf"
 			puts cmd
 			system cmd
-			cmd = "cp MLE0000.ll " + pathres + "/" + analysisname + "_MLE0000.ll"
+			cmd = "cp " + mle + ".ll " + pathres + "/" + analysisname + "_" + mle + ".ll"
 			puts cmd
 			system cmd
-			Dir["MLE0000_*.source"].each do | file |
+			Dir[mle + "_*.source"].each do | file |
 					mo = MultiOutput.new
 					mo.readDataSingleSource(file)
 					if mo.sqrtTS.to_f > 0
