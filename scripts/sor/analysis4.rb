@@ -34,7 +34,6 @@
 #multi list
 #-----
 #reg/con section
-
 #Example
 # spotfinder 0 2 10 0.7 1 50 {1}
 # NB: l'ultimo parametro e' l'indice del file nel MAP.maplist4 usato per fare la ricerca degli spot.
@@ -365,7 +364,6 @@ File.open(filenameconf).each_line do | line |
 			queue = user_and_queue.split(",")[1]
 		end
 	end
-	end
 	if index.to_i == 24
         mail = line
     end
@@ -409,7 +407,6 @@ File.open(filenameconf).each_line do | line |
 			end
 		end
 	end
-
 	index = index.to_i + 1
 end
 
