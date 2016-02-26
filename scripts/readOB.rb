@@ -39,7 +39,7 @@ end
 datautils = DataUtils.new
 agilefov = AgileFOV.new
 
-File.open(ENV["AGILE"]+"/scripts/AGILEOB.list").each_line do | line |
+File.open(ENV["AGILE"]+"/scripts/AGILEOBPOINT.list").each_line do | line |
 	af = line.split(" ");
 	lc = af[1];
 	bc = af[2];

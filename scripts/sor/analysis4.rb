@@ -2,7 +2,7 @@
 #0) config file name
 
 #The config file name has the following configuration
-#single - single analysis (0)
+#single (single analysis) - spot6 - single,result_dir (0)
 #filter_archive_matrix (1)
 #tstart (2)
 #tstop (3)
@@ -159,7 +159,7 @@ end
 def plotjpgcts2(ds94, mle, smooth, regfile, reg, fndisplayreg)
 	if File.exists?(mle + ".multi.reg") 
 		Dir["*.cts.gz"].each do | file |
-			if File.exists?("MAP.cts.gz") and ds94 != "none"
+			if ds94 != "none"
 				fname = file.split(".cts.gz")[0]
 				if ds94 == "default"
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
@@ -215,7 +215,7 @@ radmerger = ""
 multiparam = ""
 tsmapparam = ""
 iddisp = ""
-user = ""
+dir_run_output = ""
 mail = ""
 analysisname = ""
 ds91 = "" #default, none, 1 -1 3 B 2
@@ -227,6 +227,9 @@ detGIF = ""
 comments = ""
 reg = "" #yes/no or nop/con/reg
 binsize = 0.3
+
+queue = nil
+result_dir = nil
 
 mleindex = 0;
 ml = Dir["MLE????"].sort
@@ -270,7 +273,11 @@ extractmulti = true
 File.open(filenameconf).each_line do | line |
 	line = line.chomp
 	if index.to_i == 0
-		typeanalysis = line
+		typeanalysis_and_result_dir = line
+		typeanalysis = typeanalysis_and_result_dir.split(",")[0]
+		if typeanalysis_and_result_dir.split(",").size == 2
+			result_dir = typeanalysis_and_result_dir.split(",")[1]
+		end
 	end
 	#if not (typeanalysis == "single" or typeanalysis == "spot6")
 	#	exit
@@ -352,7 +359,12 @@ File.open(filenameconf).each_line do | line |
 		iddisp = line
 	end
 	if index.to_i == 23
-		user = line
+		user_and_queue = line
+		dir_run_output = user_and_queue.split(",")[0]
+		if user_and_queue.split(",").size == 2
+			queue = user_and_queue.split(",")[1]
+		end
+	end
 	end
 	if index.to_i == 24
         mail = line
@@ -536,7 +548,7 @@ puts mail
 cmd = "mail -s \"end RUN\" " + mail.to_s + " < " +  mle
 puts cmd
 system(cmd)
-#cat T1.sh | mutt -a T.res.html  ${user}@iasfbo.inaf.it -s 'res'
+#cat T1.sh | mutt -a T.res.html  bulgarelli@iasfbo.inaf.it -s 'res'
 
 #TODO send notification
 
@@ -575,6 +587,31 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 	plotjpgcts2(ds94, mle + ".step0", smooth, regfile, reg, fndisplayreg)
 	plotjpgcts2(ds94, mle + ".step1", smooth, regfile, reg, fndisplayreg)
 	
+	if result_dir != nil
+		begin
+			#copia i risultati in result_dir
+			pathres = PATH_RES + "/" + result_dir + "/"
+			system("mkdir -p " + pathres);
+			cmd = "cp MLE0000.conf " + pathres + "/" + analysisname + "_MLE0000.conf"
+			puts cmd
+			system cmd
+			cmd = "cp MLE0000.ll " + pathres + "/" + analysisname + "_MLE0000.ll"
+			puts cmd
+			system cmd
+			Dir["MLE0000_*.source"].each do | file |
+					mo = MultiOutput.new
+					mo.readDataSingleSource(file)
+					if mo.sqrtTS.to_f > 0
+						system("cp " + file.to_s + " " + pathres + "/" + analysisname + "_" + file);
+					end	
+			end
+			Dir["*.cts2.png"].each do | file |
+				system("cp " + file.to_s + " " + pathres + "/" + analysisname + "_" + file);
+			end
+		rescue
+			puts "error result_dir copy results"
+		end		
+	end
 	
 	if typeanalysis == "spot6"
 		begin
@@ -582,7 +619,11 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			rttype = analysisname.split("_")[3]
 			pathalerts = PATH_RES + "/alerts/" + rttype + "_" + tstart.to_i.to_s + "_" + tstop.to_i.to_s;
 			#copy .conf
+			system("mkdir -p " + pathalerts);
 			cmd = "cp MLE0000.conf " + pathalerts + "/" + analysisname + "_MLE0000.conf"
+			puts cmd
+			system cmd
+			cmd = "cp MLE0000.ll " + pathalerts + "/" + analysisname + "_MLE0000.ll"
 			puts cmd
 			system cmd
 			warningthrmin = 4
@@ -611,7 +652,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 					
 					puts "prefix: " + prefix + " " + mo.b_peak.to_s + " " + mo.sqrtTS.to_s
 					
-					system("mkdir -p " + pathalerts);
+					#system("mkdir -p " + pathalerts);
 					
 					if Dir[pathalerts + "/*.source"].size() == 0
 						system("cp " + file.to_s + " " + pathalerts + "/" + pref + analysisname + "_" + file);
@@ -638,16 +679,15 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 						end
 					end
 				end
-			end
-			#mout = MultiOutputList.new
-			#mout.readSourcesInDir(pathalerts, "spot6", "SPOT6", warningthrmin);
-			
+			end			
 			
 		rescue
 			puts "error SPOT6 results"
 		end
 	end
 end
+
+
 if proj.to_s == "AIT"
 	smooth = 7
 	if binsize.to_f == 1

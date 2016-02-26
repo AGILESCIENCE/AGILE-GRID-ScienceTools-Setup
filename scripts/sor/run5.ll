@@ -17,5 +17,3 @@
 ##@ total_tasks = 4
 #@ error   = job1.$(jobid).err
 #@ output  = job1.$(jobid).out
-#@ queue
-
