@@ -207,14 +207,35 @@ begin
         
         #while b == 1
         	
-        		#crea le dir necessarie se non esistono TODO
+        		#crea le dir necessarie se non esistono
+        		
         		#alerts
+        		alertspath=PATH_RES + "/alerts/"
+        		if File.exists?(alertspath) == false
+        			system("mkdir " + alertspath);
+					system("chmod -R g+w " + alertspath);
+        		end
+        		
         		#spot6
+        		spot6path=PATH_RES + "/spot6/"
+        		if File.exists?(spot6path) == false
+        			system("mkdir " + spot6path);
+					system("chmod -R g+w " + spot6path);
+        		end
+        		
         		#aitoff_rt
+        		abspath=PATH_RES + "/aitoff_rt/"
+        		if File.exists?(abspath) == false
+        			system("mkdir " + abspath);
+					system("chmod -R g+w " + abspath);
+        		end
+        		
         		#app
         		apppath=PATH_RES + "/app/"
-        		system("mkdir " + apppath);
-				system("chmod -R g+w " + apppath);
+        		if File.exists?(apppath) == false
+        			system("mkdir " + apppath);
+					system("chmod -R g+w " + apppath);
+        		end
         		
         		cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_" + ARCHIVE + "/INDEX/EVT.index | tail -1 > " + PATH_RES + "/commands/lastorbit "
         		puts cmd
@@ -241,7 +262,7 @@ begin
               	
                 #copy aitoff
                 begin
-					abspath=PATH_RES + "/aitoff_rt/"
+					
 					
 					
 
