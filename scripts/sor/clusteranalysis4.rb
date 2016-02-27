@@ -202,6 +202,6 @@ f.close()
 puts basedir
 
 Dir.chdir(basedir)
-cmd = "cd " + basedir + "; llsubmit " + newcmd;
+cmd = "cd " + basedir + "; " + EXECCOM + " " + newcmd;
 puts cmd
 system(cmd)
