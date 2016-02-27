@@ -146,6 +146,7 @@ end
 
 def genaitoffspot6(rttype)
 	abspath=PATH_RES + "/aitoff_rt/"
+	apppath=PATH_RES + "/app/"
 	b02=Dir[abspath + "*" + rttype + "*/orbit"].sort()
 	last02 = b02[b02.size() - 1].split("orbit")[0]
 	pathaitoff = last02 + "/MAP.cts.gz";
@@ -167,15 +168,15 @@ def genaitoffspot6(rttype)
 		cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + pathaitoff +  " " + pathalerts + "/" + rttype + "spot6.ctsall 1 -1 7 B 2 png 1400x1000 " + existsFile(pathalerts + "/spot6.reg");
 		puts cmd
 		system(cmd)
-		system("cp " + pathalerts + "/" + rttype + "spot6.ctsall.png /tmp/app/lastaitspot6_"+rttype+".png")
+		system("cp " + pathalerts + "/" + rttype + "spot6.ctsall.png " + apppath + "lastaitspot6_"+rttype+".png")
 		
-		system("cp " + pathalerts + "/spot6.html /tmp/app/lastaitspot6_"+rttype+".html")
+		system("cp " + pathalerts + "/spot6.html " + apppath + "lastaitspot6_"+rttype+".html")
 		
 		if File.exists?(pathaitoffint)
 			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + pathaitoffint +  " " + pathalerts + "/" + rttype + "spot6.intall 0 0.0010 7 B 2 png 1400x1000 " + existsFile(pathalerts + "/spot6.reg");
 			puts cmd
 			system(cmd)
-			system("cp " + pathalerts + "/" + rttype + "spot6.intall.png /tmp/app/lastaitspot6_"+rttype+".int.png")
+			system("cp " + pathalerts + "/" + rttype + "spot6.intall.png " + apppath + "lastaitspot6_"+rttype+".int.png")
 		end
 		
 		puts("send alerts + " + pathalerts + "/_+*")
@@ -205,6 +206,15 @@ begin
         #b=1
         
         #while b == 1
+        	
+        		#crea le dir necessarie se non esistono TODO
+        		#alerts
+        		#spot6
+        		#aitoff_rt
+        		#app
+        		apppath=PATH_RES + "/app/"
+        		system("mkdir " + apppath);
+				system("chmod -R g+w " + apppath);
         		
         		cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_" + ARCHIVE + "/INDEX/EVT.index | tail -1 > " + PATH_RES + "/commands/lastorbit "
         		puts cmd
@@ -232,29 +242,39 @@ begin
                 #copy aitoff
                 begin
 					abspath=PATH_RES + "/aitoff_rt/"
-					system("mkdir /tmp/app");
-					system("chmod -R g+w /tmp/app");
+					
+					
+
+					
 					b02=Dir[abspath + "*RT02*/orbit"].sort()
-					last02 = b02[b02.size() - 1].split("orbit")[0]
-					system("cp " + last02 + "/MLE000*.ctsall.jpg /tmp/app/lastait2.jpg")
-					system("cp " + last02 + "/orbit /tmp/app/lastait2.orb")
-					system("cp " + last02 + "/MLE000*.ctsall.jpg /tmp/app/public.jpg")
-					system("cp " + last02 + "/orbit /tmp/app/public.orb")
-				
+					if b02.size() > 1 
+						last02 = b02[b02.size() - 1].split("orbit")[0]
+						system("cp " + last02 + "/MLE000*.ctsall.jpg " + apppath + "lastait2.jpg")
+						system("cp " + last02 + "/orbit " + apppath + "lastait2.orb")
+						system("cp " + last02 + "/MLE000*.ctsall.jpg " + apppath + "public.jpg")
+						system("cp " + last02 + "/orbit " + apppath + "public.orb")
+					end
+					
 					b04=Dir[abspath + "*RT04*/orbit"].sort()
-					last04 = b04[b04.size() - 1].split("orbit")[0]
-					system("cp " + last04 + "/MLE000*.ctsall.jpg /tmp/app/lastait4.jpg")
-					system("cp " + last04 + "/orbit /tmp/app/lastait4.orb")
-				
+					if b04.size() > 1 
+						last04 = b04[b04.size() - 1].split("orbit")[0]
+						system("cp " + last04 + "/MLE000*.ctsall.jpg " + apppath + "lastait4.jpg")
+						system("cp " + last04 + "/orbit " + apppath + "lastait4.orb")
+					end
+					
 					b07=Dir[abspath + "*RT07*/orbit"].sort()
-					last07 = b07[b07.size() - 1].split("orbit")[0]
-					system("cp " + last07 + "/MLE000*.ctsall.jpg /tmp/app/lastait7.jpg")
-					system("cp " + last07 + "/orbit /tmp/app/lastait7.orb")
+					if b07.size() > 1 
+						last07 = b07[b07.size() - 1].split("orbit")[0]
+						system("cp " + last07 + "/MLE000*.ctsall.jpg " + apppath + "lastait7.jpg")
+						system("cp " + last07 + "/orbit " + apppath + "lastait7.orb")
+					end
 					
 					b01=Dir[abspath + "*RT01*/orbit"].sort()
-					last01 = b01[b01.size() - 1].split("orbit")[0]
-					system("cp " + last01 + "/MLE000*.ctsall.jpg /tmp/app/lastait1.jpg")
-					system("cp " + last01 + "/orbit /tmp/app/lastait1.orb")
+					if b01.size() > 1 
+						last01 = b01[b01.size() - 1].split("orbit")[0]
+						system("cp " + last01 + "/MLE000*.ctsall.jpg " + apppath + "lastait1.jpg")
+						system("cp " + last01 + "/orbit " + apppath + "lastait1.orb")
+					end
 					
                 rescue
                 	puts "error in file system"
@@ -270,7 +290,7 @@ begin
                 end
                 
                 #copy images to agile.iasfbo.inaf.it
-                system("scp /tmp/app/* marlin:/var/www/html/AGILEApp/RT/")
+                system("scp " + apppath + "* marlin:/var/www/html/AGILEApp/RT/")
                 
         #end
 end

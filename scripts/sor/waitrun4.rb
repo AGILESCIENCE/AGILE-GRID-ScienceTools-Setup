@@ -9,7 +9,7 @@ begin
         #while b == 1
         		a = Dir[PATH_RES + "/commands/*.conf"]
         		if a.size() > 0 
-        			a.each do | line |
+        			a.sort.each do | line |
         				puts line
                 		cmd = "mv " + line + " /tmp/ ";
                	 		puts cmd
@@ -18,6 +18,7 @@ begin
                			cmd = "cd /tmp; clusteranalysis4.rb " + file
                			puts cmd;
                			system(cmd)
+               			sleep(1)
                		end
                	end
         #        sleep (10);
