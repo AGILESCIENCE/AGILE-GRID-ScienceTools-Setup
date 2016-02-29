@@ -8,20 +8,39 @@ def runait(lastcontacttime, day, hours_shift)
 	tstart = 0
 	tstop = 0
 	abspath=PATH_RES
+	
+	#read last processed time
 	lastprocessing2 = 0
 	if File.exists?(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"")
 		File.open(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"", "r").each_line do | line |
 			lastprocessing2 = line.to_i
 		end
+	else
+		fout = File.new(bspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"", "w")
+		fout.write(lastcontacttime.to_s + "\n")
+		fout.close();
 	end
 	
 	if lastprocessing2.to_i == 0
 		tstart = lastcontacttime.to_i - 86400 * day.to_i
 		tstop = lastcontacttime.to_i
+		lastprocessing2 = tstop	
+	end
+	
+	if REALTIMEMODE.to_i == 1
+		tstop = lastprocessing2 + 3600 * hours_shift.to_i
+		tstart = tstop.to_i - 86400 * day.to_i	
+		while (lastprocessing2.to_i + 3600 * hours_shift.to_i).to_i <= lastcontacttime.to_i
+			tstop = lastprocessing2 + 3600 * hours_shift.to_i
+			tstart = tstop.to_i - 86400 * day.to_i	
+			lastprocessing2 = tstop	
+		end
 	else
 		tstop = lastprocessing2 + 3600 * hours_shift.to_i
 		tstart = tstop.to_i - 86400 * day.to_i	
+		lastprocessing2 = tstop	
 	end
+	
 	puts "TIME: " + lastcontacttime.to_s + " - " + lastprocessing2.to_s + " - " + tstart.to_s + " " + tstop.to_s
 	
 	if tstop.to_i <= lastcontacttime.to_i
@@ -54,9 +73,9 @@ def runait(lastcontacttime, day, hours_shift)
 		lastprocessing2 = tstop	
 		
 		puts "New run AIT: " + "cp /tmp/aitoff_rt"+format("%02i", day)+".conf " + abspath + "/commands/";
-		system("cp /tmp/aitoff_rt"+format("%02i", day)+".conf " + abspath + "/commands/");
+		system("mv /tmp/aitoff_rt"+format("%02i", day)+".conf " + abspath + "/commands/");
 		
-		runspot6(lastcontacttime, day, hours_shift);
+		runspot6(lastcontacttime, day, hours_shift, tstart, tstop);
 		
 		f = File.new(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day), "w")
 		f.write(lastprocessing2);
@@ -65,28 +84,9 @@ def runait(lastcontacttime, day, hours_shift)
 	end
 end
 
-def runspot6(lastcontacttime, day, hours_shift)
+def runspot6(lastcontacttime, day, hours_shift, tstart, tstop)
 
-	tstart = 0
-	tstop = 0
-	abspath=PATH_RES
-	lastprocessing2 = 0
-	if File.exists?(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"")
-		File.open(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"", "r").each_line do | line |
-			lastprocessing2 = line.to_i
-		end
-	end
 	
-	if lastprocessing2.to_i == 0
-		tstart = lastcontacttime.to_i - 86400 * day.to_i
-		tstop = lastcontacttime.to_i
-	else
-		tstop = lastprocessing2 + 3600 * hours_shift.to_i
-		tstart = tstop.to_i - 86400 * day.to_i	
-	end
-	#puts "SPOT6: " + lastcontacttime.to_s + " - " + lastprocessing2.to_s + " - " + tstart.to_s + " " + tstop.to_s
-	
-	if tstop.to_i <= lastcontacttime.to_i
 		#change and copy the card
 		indexfile = 0;
 		Dir[ENV["AGILE"] + "/scripts/sor/cards/spot6/*.conf"].sort.each do | file |
@@ -123,17 +123,14 @@ def runspot6(lastcontacttime, day, hours_shift)
 				end
 				fo.close()
 				puts "New run SPOT6: " + "cp " + outfileconf + " " + abspath + "/commands/";
-				system("cp " + outfileconf + " " + abspath + "/commands/");
+				system("mv " + outfileconf + " " + abspath + "/commands/");
 				indexring = indexring.to_i + 1
 			end
 			indexfile = indexfile.to_i + 1
 		end
-		#lastprocessing2 = tstop	
-		#f = File.new(abspath + "/commands/lastprocessing_spot6_rt"+format("%02i", day), "w")
-		#f.write(lastprocessing2);
-		#f.close();
 		
-	end
+		
+	
 end
 
 def existsFile(filename)
@@ -262,10 +259,6 @@ begin
               	
                 #copy aitoff
                 begin
-					
-					
-					
-
 					
 					b02=Dir[abspath + "*RT02*/orbit"].sort()
 					if b02.size() > 1 
