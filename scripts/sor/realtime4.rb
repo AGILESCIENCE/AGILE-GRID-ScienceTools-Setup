@@ -86,7 +86,8 @@ end
 
 def runspot6(lastcontacttime, day, hours_shift, tstart, tstop)
 
-	
+		abspath=PATH_RES
+		
 		#change and copy the card
 		indexfile = 0;
 		Dir[ENV["AGILE"] + "/scripts/sor/cards/spot6/*.conf"].sort.each do | file |
@@ -244,11 +245,11 @@ begin
         		end
         		puts "lastcontacttime " + lastcontacttime.to_s
         		
-        		#run01
-        		runait(lastcontacttime, 1, 1);
-        		
         		#run02
         		runait(lastcontacttime, 2, 1);
+        		
+        		#run01
+        		runait(lastcontacttime, 1, 1);
         		
         		#run04
         		runait(lastcontacttime, 4, 8);
@@ -269,6 +270,13 @@ begin
 						system("cp " + last02 + "/orbit " + apppath + "public.orb")
 					end
 					
+					b01=Dir[abspath + "*RT01*/orbit"].sort()
+					if b01.size() > 1 
+						last01 = b01[b01.size() - 1].split("orbit")[0]
+						system("cp " + last01 + "/MLE000*.ctsall.jpg " + apppath + "lastait1.jpg")
+						system("cp " + last01 + "/orbit " + apppath + "lastait1.orb")
+					end
+					
 					b04=Dir[abspath + "*RT04*/orbit"].sort()
 					if b04.size() > 1 
 						last04 = b04[b04.size() - 1].split("orbit")[0]
@@ -283,20 +291,15 @@ begin
 						system("cp " + last07 + "/orbit " + apppath + "lastait7.orb")
 					end
 					
-					b01=Dir[abspath + "*RT01*/orbit"].sort()
-					if b01.size() > 1 
-						last01 = b01[b01.size() - 1].split("orbit")[0]
-						system("cp " + last01 + "/MLE000*.ctsall.jpg " + apppath + "lastait1.jpg")
-						system("cp " + last01 + "/orbit " + apppath + "lastait1.orb")
-					end
+					
 					
                 rescue
                 	puts "error in file system"
                 end
                 
                 begin
-                	genaitoffspot6("RT01")
                 	genaitoffspot6("RT02")
+                	genaitoffspot6("RT01")
                 	genaitoffspot6("RT04")
                 	genaitoffspot6("RT07")
                 rescue

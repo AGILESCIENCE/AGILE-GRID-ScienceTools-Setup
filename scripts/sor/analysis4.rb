@@ -98,9 +98,9 @@ def plotjpgcts1(ds91, mle, smooth, regfile, reg, fndisplayreg)
 			if ds91 != "none"
 				fname = file.split(".cts.gz")[0]
 				if ds91 == "default"
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall 1 -1 " + smooth.to_s + " B all jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall 1 -1 " + smooth.to_s + " B all png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				else
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall " + ds91.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall " + ds91.to_s +  " png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				end
 				if reg == "yes" or reg == "reg" or reg == "con"
 					cmd += " "
@@ -119,9 +119,9 @@ def plotjpgint(ds92, mle, smooth, regfile, reg, fndisplayreg)
 			if ds92 != "none"
 				fname = file.split(".int.gz")[0]
 				if ds92 == "default"
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall 1 -1 " + smooth.to_s + " B all jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall 1 -1 " + smooth.to_s + " B all png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				else
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall " + ds92.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall " + ds92.to_s +  " png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				end
 				if reg == "yes" or reg == "reg" or reg == "con"
 					cmd += " "
@@ -140,9 +140,9 @@ def plotjpgexp(ds93, mle, regfile, reg, fndisplayreg)
 			if ds93 != "none"
 				fname = file.split(".exp.gz")[0]
 				if ds93 == "default"
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall 1 -1 1 B all jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall 1 -1 1 B all png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				else
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall " + ds93.to_s +  " jpg 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall " + ds93.to_s +  " png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 				end
 				if reg == "yes" or reg == "reg" or reg == "con"
 					cmd += " "
@@ -161,13 +161,13 @@ def plotjpgcts2(ds94, mle, smooth, regfile, reg, fndisplayreg)
 			if ds94 != "none"
 				fname = file.split(".cts.gz")[0]
 				if ds94 == "default"
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-					if reg == "yes" or reg == "reg" or reg == "con"
-						cmd += " "
-						cmd += existsFile(fndisplayreg)
-					end
-					puts cmd
-					system(cmd)
+					#cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					#if reg == "yes" or reg == "reg" or reg == "con"
+					#	cmd += " "
+					#	cmd += existsFile(fndisplayreg)
+					#end
+					#puts cmd
+					#system(cmd)
 					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 png 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 					if reg == "yes" or reg == "reg" or reg == "con"
 						cmd += " "
@@ -176,7 +176,7 @@ def plotjpgcts2(ds94, mle, smooth, regfile, reg, fndisplayreg)
 					puts cmd
 					system(cmd)
 				else
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + ds94.to_s +  " jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
+					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + ds94.to_s +  " png 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 					if reg == "yes" or reg == "reg" or reg == "con"
 						cmd += " "
 						cmd += existsFile(fndisplayreg)
@@ -605,6 +605,9 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			Dir[mle + "*.cts2.png"].each do | file |
 				system("cp " + file.to_s + " " + pathres + "/" + analysisname + "_" + file);
 			end
+			Dir[mle + "*.ctsall.png"].each do | file |
+				system("cp " + file.to_s + " " + pathres + "/" + analysisname + "_" + file);
+			end
 			
 		rescue
 			puts "error result_dir copy results"
@@ -706,9 +709,9 @@ if proj.to_s == "AIT"
 	#cmd = "export DISPLAY=localhost:3.0; ds9.rb MAP.cts.gz " + mle  + ".ctsall 2 -1 " + smooth.to_s + " B 2 jpg 1500x1000 " +  regcat.to_s;
 	if File.exists?("MAP.cts.gz") and ds91 != "none"
 		if ds91 == "default"
-			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.cts.gz " + mle  + ".ctsall 1 -1 " + smooth.to_s + " B 2 jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.cts.gz " + mle  + ".ctsall 1 -1 " + smooth.to_s + " B 2 png 1400x1000 ";
 		else
-			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.cts.gz " + mle  + ".ctsall " + ds91.to_s + " jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.cts.gz " + mle  + ".ctsall " + ds91.to_s + " png 1400x1000 ";
 		end
 		if reg == "yes" or reg == "reg"
 			cmd += " "
@@ -719,9 +722,9 @@ if proj.to_s == "AIT"
 	end
 	if File.exists?("MAP.int.gz") and ds92 != "none"
 		if ds92 == "default"
-			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.int.gz " + mle  + ".intall 0 0.0010 " + smooth.to_s + " B 2 jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.int.gz " + mle  + ".intall 0 0.0010 " + smooth.to_s + " B 2 png 1400x1000 ";
 		else
-			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.int.gz " + mle  + ".intall " + ds92.to_s + " jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.int.gz " + mle  + ".intall " + ds92.to_s + " png 1400x1000 ";
 		end
 		if reg == "yes" or reg == "reg"
 			cmd += " "
@@ -732,9 +735,9 @@ if proj.to_s == "AIT"
 	end
 	if File.exists?("MAP.exp.gz") and ds93 != "none"
 		if ds93 == "default"
-			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.exp.gz " + mle  + ".expall 1 -1 1 B 2 jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.exp.gz " + mle  + ".expall 1 -1 1 B 2 png 1400x1000 ";
 		else
-			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.exp.gz " + mle  + ".expall " + ds93.to_s +  " jpg 1400x1000 ";
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb MAP.exp.gz " + mle  + ".expall " + ds93.to_s +  " png 1400x1000 ";
 		end
 		if reg == "yes" or reg == "reg"
 			cmd += " "
