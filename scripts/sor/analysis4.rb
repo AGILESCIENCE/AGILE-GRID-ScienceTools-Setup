@@ -250,16 +250,17 @@ end
 
 mle = "MLE" + format("%04d", mleindex)
 
-#cmd = "cp " + filenameconf  + " " + mle + ".conf "
-#puts cmd
-#system(cmd)
-
+filenameconfext = filenameconf
 filenameconf = mle + ".conf"
+
+if File.exists?(filenameconf) == false
+	cmd = "cp " + filenameconfext  + " " + mle + ".conf "
+	puts cmd
+	system(cmd)
+end
 
 #estrazione lista sorgenti
 fndisplayreg = mle + "display"
-
-
 
 fnhyp0 = mle+"hypothesis0.multi"
 fnhyp = mle+"hypothesis.multi"
@@ -642,16 +643,16 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 					end
 					if mo.b_peak.to_f > 5 or mo.b_peak.to_f < -5
 						if mo.sqrtTS.to_f > alertthrmin_egal.to_f
-							prefix = "_+"
+							pref = "_+"
 						end
 					end
 					if mo.b_peak.to_f <= 5 and mo.b_peak.to_f >= -5
 						if mo.sqrtTS.to_f > alertthrmin_gal.to_f
-							prefix = "_+"
+							pref = "_+"
 						end
 					end
 					
-					puts "prefix: " + prefix + " " + mo.b_peak.to_s + " " + mo.sqrtTS.to_s
+					puts "prefix: " + pref + " " + mo.b_peak.to_s + " " + mo.sqrtTS.to_s
 					
 					#system("mkdir -p " + pathalerts);
 					

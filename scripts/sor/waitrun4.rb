@@ -19,6 +19,7 @@ begin
                			puts cmd;
                			system(cmd)
                			sleep(1)
+               			system("rm /tmp/" + line);
                		end
                	end
         #        sleep (10);
