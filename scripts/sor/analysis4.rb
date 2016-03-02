@@ -2,14 +2,14 @@
 #0) config file name
 
 #The config file name has the following configuration
-#single (single analysis) - spot6 - single,result_dir (0)
+#single (single analysis) - spot6 - single,result_dir,minSqrt(TS),sourcename (0)
 #filter_archive_matrix (1)
 #tstart (2)
 #tstop (3)
 #UTC, MJD, TT, CONTACT (4)
 #l (5)
 #b (6)
-#AIT, ARC (7)
+#proj: AIT, ARC (7)
 #gal or -1 (8)
 #iso or -1 (9)
 #OP: map params (10)
@@ -27,19 +27,23 @@
 #iddisp - for push notifications (22)
 #dir_run_output,queue (23) - diroutput = where the results are saved (under (ANALYSSI3)), queue (the queue of the cluster) is optional
 #email or none (24): the send e-mails with results
-#dir_analysis_output (25) (under diroutput): the name of the analysis. The analysis is saved in /ANALYSIS3/dir_run_output/dir_analysis_output
+#dir_analysis_output (25) (under diroutput): the name of the analysis. The analysis is saved in /ANALYSIS3/dir_run_output/proj_dir_analysis_output
 #comments or none (26)
-#use reg section: yes or no (27) or nop/reg/con (27). NB: yes=reg
+#use reg/con section: yes or no (27) or nop/reg/con (27). NB: yes=reg
 #----- (28)
-#multi list
+#multi list to be analyzed
 #-----
 #reg/con section
+#
 #Example
 # spotfinder 0 2 10 0.7 1 50 {1}
 # NB: l'ultimo parametro e' l'indice del file nel MAP.maplist4 usato per fare la ricerca degli spot.
 # Gli altri parametri sono quelli passato direttamente a spotfinder
 # cat cat2b_4.multi 15 0 20 0 30 0 0
 #NB: copy the catalogs (in .multi format) in ENV["AGILE"] + "/share/catalogs/"
+#
+#Save results
+#result_dir,minSqrt(TS),sourcename --> save results in result_dir (.source) with sqrt(TS) >= minSqrt(TS) and of a source named 'sourcename' or 'all'
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
@@ -229,6 +233,8 @@ binsize = 0.3
 
 queue = nil
 result_dir = nil
+result_dir_minSqrtTS = 0
+result_dir_sourcename = "all"
 
 mleindex = 0;
 ml = Dir["MLE????"].sort
@@ -275,8 +281,14 @@ File.open(filenameconf).each_line do | line |
 	if index.to_i == 0
 		typeanalysis_and_result_dir = line
 		typeanalysis = typeanalysis_and_result_dir.split(",")[0]
-		if typeanalysis_and_result_dir.split(",").size == 2
+		if typeanalysis_and_result_dir.split(",").size >= 2
 			result_dir = typeanalysis_and_result_dir.split(",")[1]
+		end
+		if typeanalysis_and_result_dir.split(",").size >= 3
+			result_dir_minSqrtTS = typeanalysis_and_result_dir.split(",")[2]
+		end
+		if typeanalysis_and_result_dir.split(",").size >= 4
+			result_dir_sourcename = typeanalysis_and_result_dir.split(",")[3]
 		end
 	end
 	#if not (typeanalysis == "single" or typeanalysis == "spot6")
@@ -596,10 +608,18 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			cmd = "cp " + mle + ".ll " + pathres + "/" + analysisname + "_" + mle + ".ll"
 			puts cmd
 			system cmd
-			Dir[mle + "_*.source"].each do | file |
+			#copy the results of .source
+			
+			if result_dir_sourcename == "all"
+				sourceexpr = mle + "_*.source"
+			else
+				sourceexpr = mle + "_" + result_dir_sourcename + ".source"
+			end
+					
+			Dir[sourceexpr].each do | file |
 					mo = MultiOutput.new
 					mo.readDataSingleSource(file)
-					if mo.sqrtTS.to_f > 0
+					if mo.sqrtTS.to_f >= result_dir_minSqrtTS
 						system("cp " + file.to_s + " " + pathres + "/" + analysisname + "_" + file);
 					end	
 			end
