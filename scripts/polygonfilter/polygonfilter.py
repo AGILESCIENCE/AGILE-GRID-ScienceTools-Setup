@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import sys, argparse, struct
 import numpy
+from astropy import units as u
+from astropy.coordinates import SkyCoord
 
 # this is an hammer function normalized
 def aitoff(l, b):
@@ -116,46 +118,46 @@ def inverseAitoff(x, y):
   else:
     return l, b, indi
 
-# converting latitude to be plotted in the 180, 90, 0, 270, 180 axis
-def convert_l(l_in):
-    if ((l_in >= 0.) & (l_in <= 180.)):
-        l_in = l_in*(-1.) 
-    if (l_in > 180.):
-        l_in = 360. - l_in
-    return l_in
-
 def main(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument("polygon", help="An input file containing the polygon as a list of points")
     parser.add_argument("points", help="An input file containing a list of points to test")
     parser.add_argument("output", help="An output file containing only the points inside the polygon")
-    parser.add_argument("-l", "-lcolumn", help="l column number inside the list of points file", type=int, default=0)
-    parser.add_argument("-b", "-bcolumn", help="b column number inside the list of points file", type=int, default=1)
+    parser.add_argument("-l", "-lcolumn", help="l column number inside the list of points file (default 0)", type=int, default=0)
+    parser.add_argument("-b", "-bcolumn", help="b column number inside the list of points file (default 1)", type=int, default=1)
+    parser.add_argument("-g", "-galactic", help="the contour is already in galactic coordinates (default radec)", action='store_true')
     args = parser.parse_args()
 
     fc = numpy.loadtxt(args.polygon)
     c_gal_l = fc[:,0].astype(numpy.float)
     c_gal_b = fc[:,1].astype(numpy.float)
-    c_gal_l_conv = numpy.zeros(c_gal_l.size)
-    for l in xrange(c_gal_l.size):
-        c_gal_l_conv[l] = convert_l(c_gal_l[l]) 
-    c_x, c_y = aitoff(c_gal_l_conv, c_gal_b)
+    if not args.g:
+        print "Converting contour from radec to galactic.."
+        for i in xrange(c_gal_l.size):
+            tmp_radec = SkyCoord(ra=c_gal_l[i]*u.degree, dec=c_gal_b[i]*u.degree, frame='fk5')
+            tmp_gal = tmp_radec.transform_to('galactic')
+            c_gal_l[i] = tmp_gal.l.value
+            c_gal_b[i] = tmp_gal.b.value
+        numpy.savetxt(args.polygon+'.galactic', numpy.c_[c_gal_l, c_gal_b], delimiter=' ', fmt="%f")
+    c_x, c_y = aitoff(c_gal_l, c_gal_b)
     nv = c_gal_l.shape[0]
-
 #    numpy.savetxt(args.polygon+'.ait', numpy.c_[c_x, c_y], delimiter=' ', fmt="%f")
+
+    lines=[]
+    with open(args.points, 'r') as fl:
+        for line in fl.readlines():
+            lines.append(line.rstrip())
 
     fp = numpy.loadtxt(args.points)
     p_gal_l = fp[:,args.l].astype(numpy.float)
     p_gal_b = fp[:,args.b].astype(numpy.float)
-    p_gal_l_conv = numpy.zeros(p_gal_l.size)
-    for l in xrange(p_gal_l.size):
-        p_gal_l_conv[l] = convert_l(p_gal_l[l]) 
-    p_x, p_y = aitoff(p_gal_l_conv, p_gal_b)
+    p_x, p_y = aitoff(p_gal_l, p_gal_b)
 
 #    numpy.savetxt(args.points+'.ait', numpy.c_[p_x, p_y], delimiter=' ', fmt="%f")
 
     fo = open(args.output, 'w')
 
+    print "Filtering.."
     for p in xrange(p_x.shape[0]):
         testx = p_x[p];
         testy = p_y[p];
@@ -168,14 +170,14 @@ def main(argv):
             j = i
 #        print (p_x[p], p_y[p]),
         if c:
-            fo.write("%.6f" % p_gal_l[p])
-            fo.write(" %.6f" % p_gal_b[p])
+            fo.write(lines[p])
             fo.write('\n')
 #            print "inside!"
 #        else:
 #            print "outside!"
 
     fo.close()
+    print "Done."
 
 if __name__ == "__main__":
    main(sys.argv[1:])
