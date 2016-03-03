@@ -128,6 +128,7 @@ def main(argv):
     parser.add_argument("-g", "-galactic", help="the contour is already in galactic coordinates (default radec)", action='store_true')
     args = parser.parse_args()
 
+    print "Parsing contour file.."
     fc = numpy.loadtxt(args.polygon)
     c_gal_l = fc[:,0].astype(numpy.float)
     c_gal_b = fc[:,1].astype(numpy.float)
@@ -143,14 +144,18 @@ def main(argv):
     nv = c_gal_l.shape[0]
 #    numpy.savetxt(args.polygon+'.ait', numpy.c_[c_x, c_y], delimiter=' ', fmt="%f")
 
+    print "Parsing points file.."
     lines=[]
     with open(args.points, 'r') as fl:
         for line in fl.readlines():
             lines.append(line.rstrip())
 
-    fp = numpy.loadtxt(args.points)
-    p_gal_l = fp[:,args.l].astype(numpy.float)
-    p_gal_b = fp[:,args.b].astype(numpy.float)
+    fp = numpy.genfromtxt(args.points, delimiter=' ', dtype=None)
+    p_gal_l=numpy.array([])
+    p_gal_b=numpy.array([])
+    for i in xrange(len(fp)):
+        p_gal_l = numpy.append(p_gal_l, fp[i][args.l].astype(numpy.float))
+        p_gal_b = numpy.append(p_gal_b, fp[i][args.b].astype(numpy.float))
     p_x, p_y = aitoff(p_gal_l, p_gal_b)
 
 #    numpy.savetxt(args.points+'.ait', numpy.c_[p_x, p_y], delimiter=' ', fmt="%f")
