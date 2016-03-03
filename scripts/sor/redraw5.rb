@@ -21,23 +21,25 @@ fndisplayreg = mle + "display"
 fnhyp0 = mle+"hypothesis0.multi"
 fnhyp = mle+"hypothesis.multi"
 
-conffile = Conf.new
+conf = Conf.new
 
-conffile.process(filenameconf, fnhyp0, fndisplayreg);
+conf.process(filenameconf, fnhyp0, fndisplayreg);
 
 conf.detsmooth()
 	
-conf.plotjpgcts1(mle, conf.smooth, fndisplayreg)
+conf.plotjpgcts1(mle, conf.smooth)
 
-conf.plotjpgint(mle, conf.smooth, fndisplayreg)
+conf.plotjpgint(mle, conf.smooth)
 
-conf.plotjpgexp(mle, fndisplayreg)
+conf.plotjpgexp(mle)
 
-conf.plotjpgcts2(mle, conf.smooth, fndisplayreg)
+conf.plotjpgcts2(mle, conf.smooth)
 
-conf.plotjpgcts2(mle + ".step0", conf.smooth, fndisplayreg)
+conf.plotjpgcts2(mle + ".step0", conf.smooth)
 
-conf.plotjpgcts2(mle + ".step1", conf.smooth, fndisplayreg)
+conf.plotjpgcts2(mle + ".step1", conf.smooth)
+
+conf.copyresults(mle)
 
 
 

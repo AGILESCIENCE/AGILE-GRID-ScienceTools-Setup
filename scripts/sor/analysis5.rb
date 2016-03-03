@@ -319,17 +319,17 @@ system(cmd)
 if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".multi.reg")
 	conf.detsmooth()
 	
-	conf.plotjpgcts1(mle, conf.smooth, fndisplayreg)
+	conf.plotjpgcts1(mle, conf.smooth)
 	
-	conf.plotjpgint(mle, conf.smooth, fndisplayreg)
+	conf.plotjpgint(mle, conf.smooth)
 	
-	conf.plotjpgexp(mle, fndisplayreg)
+	conf.plotjpgexp(mle)
 	
-	conf.plotjpgcts2(mle, conf.smooth, fndisplayreg)
+	conf.plotjpgcts2(mle, conf.smooth)
 	
-	conf.plotjpgcts2(mle + ".step0", conf.smooth, fndisplayreg)
+	conf.plotjpgcts2(mle + ".step0", conf.smooth)
 	
-	conf.plotjpgcts2(mle + ".step1", conf.smooth, fndisplayreg)
+	conf.plotjpgcts2(mle + ".step1", conf.smooth)
 	
 	conf.copyresults()
 	
@@ -435,6 +435,7 @@ if proj.to_s == "AIT"
 		if reg == "yes" or reg == "reg"
 			cmd += " "
 			cmd += fndisplayreg
+			cmd += ".reg"
 		end
 		puts cmd
 		system(cmd)
@@ -448,6 +449,7 @@ if proj.to_s == "AIT"
 		if reg == "yes" or reg == "reg"
 			cmd += " "
 			cmd += fndisplayreg
+			cmd += ".reg"
 		end
         puts cmd
         system(cmd)
@@ -461,6 +463,7 @@ if proj.to_s == "AIT"
 		if reg == "yes" or reg == "reg"
 			cmd += " "
 			cmd += fndisplayreg
+			cmd += ".reg"
 		end
 		puts cmd
 		system(cmd)

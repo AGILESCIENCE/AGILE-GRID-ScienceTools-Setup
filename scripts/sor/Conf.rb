@@ -6,7 +6,7 @@ class Conf
 	end
 	
 	def process(filenameconf, fnhyp0, fndisplayreg)
-		
+		@fndisplayreg = fndisplayreg
 		@typeanalysis = ""
 		@filter = ""
 		@tstart = ""
@@ -164,12 +164,12 @@ class Conf
 			if index.to_i == 27
 				@reg =  line
 				if @reg == "yes" or @reg == "reg"
-					fndisplayreg += ".reg"
+					@fndisplayreg += ".reg"
 				end
 				if @reg == "con"
-					fndisplayreg += ".con"
+					@fndisplayreg += ".con"
 				end
-				fr = File.new(fndisplayreg , "w")
+				fr = File.new(@fndisplayreg , "w")
 			end
 			if index.to_i >= 28
 				if index.to_i > 28
@@ -205,7 +205,7 @@ class Conf
 		end
 	end
 	
-	def plotjpgcts1(mle, smooth, fndisplayreg)
+	def plotjpgcts1(mle, smooth)
 		if File.exists?(mle + ".multi.reg") 
 			Dir["*.cts.gz"].each do | file |
 				if @ds91 != "none"
@@ -217,7 +217,7 @@ class Conf
 					end
 					if @reg == "yes" or @reg == "reg" or @reg == "con"
 						cmd += " "
-						cmd += existsFile(fndisplayreg)
+						cmd += existsFile(@fndisplayreg)
 					end
 					puts cmd
 					system(cmd)
@@ -226,7 +226,7 @@ class Conf
 		end
 	end
 
-	def plotjpgint(mle, smooth, fndisplayreg)
+	def plotjpgint(mle, smooth)
 		if File.exists?(mle + ".multi.reg") 
 			Dir["*.int.gz"].each do | file |
 				if @ds92 != "none"
@@ -238,7 +238,7 @@ class Conf
 					end
 					if @reg == "yes" or @reg == "reg" or @reg == "con"
 						cmd += " "
-						cmd += existsFile(fndisplayreg)
+						cmd += existsFile(@fndisplayreg)
 					end
 					puts cmd
 					system(cmd)
@@ -247,7 +247,7 @@ class Conf
 		end
 	end
 
-	def plotjpgexp(mle, fndisplayreg)
+	def plotjpgexp(mle)
 		if File.exists?(mle + ".multi.reg") 
 			Dir["*.exp.gz"].each do | file |
 				if @ds93 != "none"
@@ -259,7 +259,7 @@ class Conf
 					end
 					if @reg == "yes" or @reg == "reg" or @reg == "con"
 						cmd += " "
-						cmd += existsFile(fndisplayreg)
+						cmd += existsFile(@fndisplayreg)
 					end
 					puts cmd
 					system(cmd)
@@ -268,7 +268,7 @@ class Conf
 		end
 	end
 
-	def plotjpgcts2(mle, smooth, fndisplayreg)
+	def plotjpgcts2(mle, smooth)
 		if File.exists?(mle + ".multi.reg") 
 			Dir["*.cts.gz"].each do | file |
 				if @ds94 != "none"
@@ -277,14 +277,14 @@ class Conf
 						#cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
 						#if reg == "yes" or reg == "reg" or reg == "con"
 						#	cmd += " "
-						#	cmd += existsFile(fndisplayreg)
+						#	cmd += existsFile(@fndisplayreg)
 						#end
 						#puts cmd
 						#system(cmd)
 						cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 png 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(@regfile)
 						if @reg == "yes" or @reg == "reg" or @reg == "con"
 							cmd += " "
-							cmd += existsFile(fndisplayreg)
+							cmd += existsFile(@fndisplayreg)
 						end
 						puts cmd
 						system(cmd)
@@ -292,7 +292,7 @@ class Conf
 						cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + @ds94.to_s +  " png 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(@regfile)
 						if @reg == "yes" or @reg == "reg" or @reg == "con"
 							cmd += " "
-							cmd += existsFile(fndisplayreg)
+							cmd += existsFile(@fndisplayreg)
 						end
 						puts cmd
 						system(cmd)
@@ -351,6 +351,7 @@ class Conf
 					mo = MultiOutput.new
 					mo.readDataSingleSource(file)
 					if mo.sqrtTS.to_f >= @result_dir_minSqrtTS
+						puts file
 						system("cp " + file.to_s + " " + pathres + "/" + @analysisname + "_" + file);
 					end	
 			end
