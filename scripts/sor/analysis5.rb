@@ -47,6 +47,7 @@
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
+load ENV["AGILE"] + "/scripts/sor/Conf.rb"
 
 def extractcat(hypothesisgen, l, b, outfile)
 	h = hypothesisgen.split(" ")
@@ -96,103 +97,6 @@ def existsFile(filename)
 	end
 end
 
-def plotjpgcts1(ds91, mle, smooth, regfile, reg, fndisplayreg)
-	if File.exists?(mle + ".multi.reg") 
-		Dir["*.cts.gz"].each do | file |
-			if ds91 != "none"
-				fname = file.split(".cts.gz")[0]
-				if ds91 == "default"
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall 1 -1 " + smooth.to_s + " B all png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-				else
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".ctsall " + ds91.to_s +  " png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-				end
-				if reg == "yes" or reg == "reg" or reg == "con"
-					cmd += " "
-					cmd += existsFile(fndisplayreg)
-				end
-				puts cmd
-				system(cmd)
-			end
-		end
-	end
-end
-
-def plotjpgint(ds92, mle, smooth, regfile, reg, fndisplayreg)
-	if File.exists?(mle + ".multi.reg") 
-		Dir["*.int.gz"].each do | file |
-			if ds92 != "none"
-				fname = file.split(".int.gz")[0]
-				if ds92 == "default"
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall 1 -1 " + smooth.to_s + " B all png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-				else
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".intall " + ds92.to_s +  " png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-				end
-				if reg == "yes" or reg == "reg" or reg == "con"
-					cmd += " "
-					cmd += existsFile(fndisplayreg)
-				end
-				puts cmd
-				system(cmd)
-			end
-		end
-	end
-end
-
-def plotjpgexp(ds93, mle, regfile, reg, fndisplayreg)
-	if File.exists?(mle + ".multi.reg") 
-		Dir["*.exp.gz"].each do | file |
-			if ds93 != "none"
-				fname = file.split(".exp.gz")[0]
-				if ds93 == "default"
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall 1 -1 1 B all png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-				else
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".expall " + ds93.to_s +  " png 1400x1400 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-				end
-				if reg == "yes" or reg == "reg" or reg == "con"
-					cmd += " "
-					cmd += existsFile(fndisplayreg)
-				end
-				puts cmd
-				system(cmd)
-			end
-		end
-	end
-end
-
-def plotjpgcts2(ds94, mle, smooth, regfile, reg, fndisplayreg)
-	if File.exists?(mle + ".multi.reg") 
-		Dir["*.cts.gz"].each do | file |
-			if ds94 != "none"
-				fname = file.split(".cts.gz")[0]
-				if ds94 == "default"
-					#cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 jpg 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-					#if reg == "yes" or reg == "reg" or reg == "con"
-					#	cmd += " "
-					#	cmd += existsFile(fndisplayreg)
-					#end
-					#puts cmd
-					#system(cmd)
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   2 -1 " + smooth.to_s + " B 16 png 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-					if reg == "yes" or reg == "reg" or reg == "con"
-						cmd += " "
-						cmd += existsFile(fndisplayreg)
-					end
-					puts cmd
-					system(cmd)
-				else
-					cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + file + " " + mle  + "_" + fname + ".cts2   " + ds94.to_s +  " png 1800x1800 " + existsFile(mle + ".reg") + " " +  existsFile(mle + ".multi.reg") + " " + existsFile(regfile)
-					if reg == "yes" or reg == "reg" or reg == "con"
-						cmd += " "
-						cmd += existsFile(fndisplayreg)
-					end
-					puts cmd
-					system(cmd)
-				end
-			
-			end
-		end
-	end
-end
 
 datautils = DataUtils.new
 alikeutils = AlikeUtils.new
@@ -200,41 +104,7 @@ parameters = Parameters.new
 
 filenameconf = ARGV[0];
 
-index = 0;
-typeanalysis = ""
-filter = ""
-tstart = ""
-tstop = ""
-timetype = ""
-l = ""
-b = ""
-proj = ""
-galcoeff = ""
-isocoeff = ""
-mapparam = ""
-hypothesisgen1 = ""
-hypothesisgen2 = ""
-radmerger = ""
-multiparam = ""
-tsmapparam = ""
-iddisp = ""
-dir_run_output = ""
-mail = ""
-analysisname = ""
-ds91 = "" #default, none, 1 -1 3 B 2
-ds92 = "" #default, none, 1 -1 3 B 2
-ds93 = "" #default, none, 1 -1 3 B 2
-ds94 = "" #default, none, 1 -1 3 B 2
-regfile = ""
-detGIF = ""
-comments = ""
-reg = "" #yes/no or nop/con/reg
-binsize = 0.3
 
-queue = nil
-result_dir = nil
-result_dir_minSqrtTS = 0
-result_dir_sourcename = "all"
 
 mleindex = 0;
 ml = Dir["MLE????"].sort
@@ -271,161 +141,42 @@ fndisplayreg = mle + "display"
 fnhyp0 = mle+"hypothesis0.multi"
 fnhyp = mle+"hypothesis.multi"
 
-f = File.new(fnhyp0 , "w")
-fr = nil;
+conffile = Conf.new
 
-extractmulti = true
-
-File.open(filenameconf).each_line do | line |
-	line = line.chomp
-	if index.to_i == 0
-		typeanalysis_and_result_dir = line
-		typeanalysis = typeanalysis_and_result_dir.split(",")[0]
-		if typeanalysis_and_result_dir.split(",").size >= 2
-			result_dir = typeanalysis_and_result_dir.split(",")[1]
-		end
-		if typeanalysis_and_result_dir.split(",").size >= 3
-			result_dir_minSqrtTS = typeanalysis_and_result_dir.split(",")[2]
-		end
-		if typeanalysis_and_result_dir.split(",").size >= 4
-			result_dir_sourcename = typeanalysis_and_result_dir.split(",")[3]
-		end
-	end
-	#if not (typeanalysis == "single" or typeanalysis == "spot6")
-	#	exit
-	#end
-	if index.to_i == 1
-		filter = line
-	end
-	if index.to_i == 2
-		tstart = line
-	end
-	if index.to_i == 3
-		tstop = line
-	end
-	if index.to_i == 4
-		timetype = line
-	end
-	if index.to_i == 5
-		l = line
-	end
-	if index.to_i == 6
-		b = line
-	end
-	if index.to_i == 7
-		proj = line
-	end
-	if index.to_i == 8
-		galcoeff = line
-	end
-	if index.to_i == 9
-		isocoeff = line
-	end
-	if index.to_i == 10
-		mapparam = line
-		if mapparam.split("binsize").size() > 1
-			binsize  = mapparam.split("binsize")[1].split("=")[1].split(" ")[0]
-		else
-			binsize = 0.3
-		end
-	end
-	if index.to_i == 11
-        hypothesisgen1 = line
-    end
-    if index.to_i == 12
-        hypothesisgen2 = line
-    end
-    if index.to_i == 13
-        radmerger = line
-    end
-	if index.to_i == 14
-		multiparam = line
-	end
-	if index.to_i == 15
-		tsmapparam = line
-	end
-	if index.to_i == 16
-		ds91 = line
-	end
-	if index.to_i == 17
-		ds92 = line
-	end
-	if index.to_i == 18
-		ds93 = line
-	end
-	if index.to_i == 19
-		ds94 = line
-	end
-	if index.to_i == 20
-		regfile = line
-		if regfile == "none"
-			regfile = ""
-		else
-			regfile = PATH_RES + "/regs/" + regfile
-		end
-	end
-	if index.to_i == 21
-		detGIF = line
-	end
-	if index.to_i == 22
-		iddisp = line
-	end
-	if index.to_i == 23
-		user_and_queue = line
-		dir_run_output = user_and_queue.split(",")[0]
-		if user_and_queue.split(",").size == 2
-			queue = user_and_queue.split(",")[1]
-		end
-	end
-	if index.to_i == 24
-        mail = line
-    end
-	if index.to_i == 25
-		analysisname =  line
-		if proj.to_s == "AIT"
-			analysisname = "AIT_" + analysisname.to_s;
-		end
-		if proj.to_s == "ARC"
-			analysisname = "ARC_" + analysisname.to_s
-		end
-	end
-	if index.to_i == 26
-		comments =  line
-	end
-	if index.to_i == 27
-		reg =  line
-		if reg == "yes" or reg == "reg"
-			fndisplayreg += ".reg"
-		end
-		if reg == "con"
-			fndisplayreg += ".con"
-		end
-		fr = File.new(fndisplayreg , "w")
-	end
-	if index.to_i >= 28
-		if index.to_i > 28
-			if line.to_s == "-----"
-				extractmulti = false
-				next
-			end
-			
-			if extractmulti == true
-				if line.size() > 2
-					f.write(line + "\n")
-				end
-			else
-				if line.size() > 2
-					fr.write(line + "\n")
-				end
-			end
-		end
-	end
-	index = index.to_i + 1
-end
-
-f.close()
-fr.close()
-
+conffile.process(filenameconf, fnhyp0, fndisplayreg)
+typeanalysis = conffile.typeanalysis
+filter = conffile.filter
+tstart = conffile.tstart
+tstop = conffile.tstop
+timetype = conffile.timetype
+l = conffile.l
+b = conffile.b
+proj = conffile.proj
+galcoeff = conffile.galcoeff
+isocoeff = conffile.isocoeff
+mapparam = conffile.mapparam
+hypothesisgen1 = conffile.hypothesisgen1
+hypothesisgen2 = conffile.hypothesisgen2
+radmerger = conffile.radmerger
+multiparam = conffile.multiparam
+tsmapparam = conffile.tsmapparam
+iddisp = conffile.iddisp
+dir_run_output = conffile.dir_run_output
+mail = conffile.mail
+analysisname = conffile.analysisname
+ds91 = conffile.ds91
+ds92 = conffile.ds92
+ds93 = conffile.ds93
+ds94 = conffile.ds94
+regfile = conffile.regfile
+detGIF = conffile.detGIF
+comments = conffile.comments
+reg = conffile.reg
+binsize = conffile.binsize
+queue = conffile.queue
+result_dir = conffile.result_dir
+result_dir_minSqrtTS = conffile.result_dir_minSqrtTS
+result_dir_sourcename = conffile.result_dir_sourcename
 
 l = l.to_f + 0.0001
 l = l.to_s
@@ -566,74 +317,21 @@ system(cmd)
 #generate .jpg
 
 if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".multi.reg")
-	smooth = 3	
-	if binsize.to_f == 0.05
-			smooth = 20;
-	end
-	if binsize.to_f == 0.1
-			smooth = 10;
-	end
-	if binsize.to_f == 0.2
-			smooth = 5;
-	end
-	if binsize.to_f == 0.25
-			smooth = 4;
-	end
-	if binsize.to_f == 0.3
-			smooth = 3;
-	end
-	if binsize.to_f == 0.5
-			smooth = 3;
-	end
+	conf.detsmooth()
 	
-	plotjpgcts1(ds91, mle, smooth, regfile, reg, fndisplayreg)
+	conf.plotjpgcts1(mle, conf.smooth, fndisplayreg)
 	
-	plotjpgint(ds92, mle, smooth, regfile, reg, fndisplayreg)
+	conf.plotjpgint(mle, conf.smooth, fndisplayreg)
 	
-	plotjpgexp(ds93, mle, regfile, reg, fndisplayreg)
+	conf.plotjpgexp(mle, fndisplayreg)
 	
-	plotjpgcts2(ds94, mle, smooth, regfile, reg, fndisplayreg)
+	conf.plotjpgcts2(mle, conf.smooth, fndisplayreg)
 	
-	plotjpgcts2(ds94, mle + ".step0", smooth, regfile, reg, fndisplayreg)
-	plotjpgcts2(ds94, mle + ".step1", smooth, regfile, reg, fndisplayreg)
+	conf.plotjpgcts2(mle + ".step0", conf.smooth, fndisplayreg)
 	
-	if result_dir != nil
-		begin
-			#copia i risultati in result_dir
-			pathres = PATH_RES + "/" + result_dir + "/"
-			system("mkdir -p " + pathres);
-			cmd = "cp " + mle + ".conf " + pathres + "/" + analysisname + "_" + mle + ".conf"
-			puts cmd
-			system cmd
-			cmd = "cp " + mle + ".ll " + pathres + "/" + analysisname + "_" + mle + ".ll"
-			puts cmd
-			system cmd
-			#copy the results of .source
-			
-			if result_dir_sourcename == "all"
-				sourceexpr = mle + "_*.source"
-			else
-				sourceexpr = mle + "_" + result_dir_sourcename + ".source"
-			end
-					
-			Dir[sourceexpr].each do | file |
-					mo = MultiOutput.new
-					mo.readDataSingleSource(file)
-					if mo.sqrtTS.to_f >= result_dir_minSqrtTS
-						system("cp " + file.to_s + " " + pathres + "/" + analysisname + "_" + file);
-					end	
-			end
-			Dir[mle + "*.cts2.png"].each do | file |
-				system("cp " + file.to_s + " " + pathres + "/" + analysisname + "_" + file);
-			end
-			Dir[mle + "*.ctsall.png"].each do | file |
-				system("cp " + file.to_s + " " + pathres + "/" + analysisname + "_" + file);
-			end
-			
-		rescue
-			puts "error result_dir copy results"
-		end		
-	end
+	conf.plotjpgcts2(mle + ".step1", conf.smooth, fndisplayreg)
+	
+	conf.copyresults()
 	
 	if typeanalysis == "spot6"
 		begin

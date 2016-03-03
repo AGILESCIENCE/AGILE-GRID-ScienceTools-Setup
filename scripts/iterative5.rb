@@ -180,9 +180,9 @@ if outfile == nil
 	outfile += ".res";
 end
 
-if File.exists?(scanlist) == true
-	system("rm " + scanlist.to_s);
-end
+#if File.exists?(scanlist) == true
+#	system("rm " + scanlist.to_s);
+#end
 
 #selezione della matrix
 filterdir = filter;
