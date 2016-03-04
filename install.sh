@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+trap exit ERR
+
 ### check environment variables
 if [ -z "$AGILE" ] || [ -z $(env | grep AGILE) ] ; then
     echo "AGILE environment variable not set. Abort."
