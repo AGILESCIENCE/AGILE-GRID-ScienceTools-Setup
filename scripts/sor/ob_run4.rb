@@ -11,6 +11,9 @@ obfile = ARGV[1]
 abspath=PATH_RES
 
 File.open(obfile).each_line do | line |
+	if line[0] == 35 
+		next
+	end
 	ob = line.split(" ")
 	tstart = ob[0]
 	tstop = ob[1]

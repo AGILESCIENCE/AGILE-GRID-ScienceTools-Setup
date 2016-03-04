@@ -45,6 +45,9 @@
 #Save results
 #result_dir,minSqrt(TS),sourcename --> save results in result_dir (.source) with sqrt(TS) >= minSqrt(TS) and of a source named 'sourcename' or 'all'
 
+#TODO
+#/scratch/prod/agile-B23/scripts/polygonfilter/polygonfilter_2.py -l 1 -b 2 -g MLE0000display.con.galactic TSMAPMLE0001.scanlist TSMAPMLE0001_filtered.scanlist
+
 load ENV["AGILE"] + "/scripts/conf.rb"
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
 load ENV["AGILE"] + "/scripts/sor/Conf.rb"
