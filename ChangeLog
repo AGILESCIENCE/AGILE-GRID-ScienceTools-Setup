@@ -1,35 +1,7 @@
 22 Dec 2015
 TAG GIT: BUILD23
 
-.src problem
-bugs
-bugs
-module load
-bugs
-removed loop and /tmp/app path
-absolute path
-phasecode and paths
-absolute path
-mv
-file size
-basepath
-abspath
-abspath
-new sorpaths.rb file
-new /ANALYSIS3 path
-app
-paths version
-first version
-fits TSTART TSTOP
-Merge branch 'master' of github.com:AGILESCIENCE/BUILD_GRID_SCI_git
-new skytypes
-Trap on download.sh/install.sh scripts error, add .gitignore, add install.sh clean.
-Add +x to scripts.
-Remove agilesci1 from this install project.
-added time_tt_to_mjd
-added time_tt_to_mjd
-bugs on central position of the map
-spin
+.
 pointings
 exp
 exp
