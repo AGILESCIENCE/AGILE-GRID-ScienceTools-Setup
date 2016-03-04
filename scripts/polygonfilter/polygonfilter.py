@@ -120,12 +120,12 @@ def inverseAitoff(x, y):
 
 def main(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument("polygon", help="An input file containing the polygon as a list of points")
-    parser.add_argument("points", help="An input file containing a list of points to test")
+    parser.add_argument("polygon", help="An input file containing the polygon as a list of vertices (default radec, see -g)")
+    parser.add_argument("points", help="An input file containing a list of points to test (galactic coords only)")
     parser.add_argument("output", help="An output file containing only the points inside the polygon")
+    parser.add_argument("-g", "-galactic", help="The input contour unit is galactic coordinates", action='store_true')
     parser.add_argument("-l", "-lcolumn", help="l column number inside the list of points file (default 0)", type=int, default=0)
     parser.add_argument("-b", "-bcolumn", help="b column number inside the list of points file (default 1)", type=int, default=1)
-    parser.add_argument("-g", "-galactic", help="the contour is already in galactic coordinates (default radec)", action='store_true')
     args = parser.parse_args()
 
     print "Parsing contour file.."
