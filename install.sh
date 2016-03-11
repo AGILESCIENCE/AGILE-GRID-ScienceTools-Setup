@@ -2,6 +2,10 @@
 
 trap exit ERR
 
+if [ $1 == "-j" ] ; then
+    parallel=$1
+fi
+
 ### check environment variables
 if [ -z "$AGILE" ] || [ -z $(env | grep AGILE) ] ; then
     echo "AGILE environment variable not set. Abort."
@@ -29,19 +33,19 @@ if [ $1 == "clean" ] ; then
 fi
 
 cd libagilepil
-make install prefix=$AGILE
+make ${parallel} install prefix=$AGILE
 cd ..
 
 cd libagilewcs
-make install prefix=$AGILE
+make ${parallel} install prefix=$AGILE
 cd ..
 
 cd libagilesci
-make install prefix=$AGILE
+make ${parallel} install prefix=$AGILE
 cd ..
 
 cd agilesci1
-make install prefix=$AGILE
+make ${parallel} install prefix=$AGILE
 cd ..
 
 cp profile $AGILE
