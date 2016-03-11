@@ -7,15 +7,15 @@ if [ $1 == "-j" ] ; then
 fi
 
 ### check environment variables
-if [ -z "$AGILE" ] || [ -z $(env | grep AGILE) ] ; then
+if [ -z "$AGILE" ] || [ -z $(env | grep "AGILE=") ] ; then
     echo "AGILE environment variable not set. Abort."
     exit
 fi
-if [ -z "$CFITSIO" ] || [ -z $(env | grep CFITSIO) ] ; then
+if [ -z "$CFITSIO" ] || [ -z $(env | grep "CFITSIO=") ] ; then
     echo "CFITSIO environment variable not set. Abort."
     exit
 fi
-if [ -z "$ROOTSYS" ] || [ -z $(env | grep ROOTSYS) ] ; then
+if [ -z "$ROOTSYS" ] || [ -z $(env | grep "ROOTSYS=") ] ; then
     echo "ROOTSYS environment variable not set. Abort."
     exit
 fi
