@@ -2,7 +2,7 @@
 
 trap exit ERR
 
-if [ $1 == "-j" ] ; then
+if [ "$1" == "-j" ] ; then
     parallel=$1
 fi
 
@@ -20,7 +20,7 @@ if [ -z "$ROOTSYS" ] || [ -z $(env | grep "ROOTSYS=") ] ; then
     exit
 fi
 
-if [ $1 == "clean" ] ; then
+if [ "$1" == "clean" ] ; then
     cd libagilepil
     make clean
     cd ../libagilewcs
