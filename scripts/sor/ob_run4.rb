@@ -1,12 +1,20 @@
 #! /usr/bin/ruby
+#1) .conffile
+#2) .ob
+# where .ob contains
+#tstart tstop obname galcoeff (-1) isocoeff (-1) lpoiting (-1) bpointing (-1)
 
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
 load ENV["AGILE"] + "/scripts/conf.rb"
 
+if ARGV[0].to_s == "help" || ARGV[0] == nil
+	system("head -6 " + $0 );
+	exit;
+end
 
 conffile = ARGV[0]
 obfile = ARGV[1]
-#tstart tstop obname galcoeff (-1) isocoeff (-1) lpoiting (-1) bpointing (-1)
+
 
 abspath=PATH_RES
 
