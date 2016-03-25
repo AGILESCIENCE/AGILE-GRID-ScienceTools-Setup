@@ -115,7 +115,7 @@ for i in 0..startt.size()-1
 			datautils.executecluster(prefix, cmd.to_s, cluster)
 		end
 		if analysistype.to_i ==2 || analysistype.to_i == 3
-			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + name + ".maplist4 " + sourcelist.to_s + " " + name.to_s + ".res "
+			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + filter.to_s + " " + name + ".maplist4 " + sourcelist.to_s + " " + name.to_s + ".res "
 			if fixisogal.to_i == 1
 				cmd += " galcoeff=" + galtmp.to_s + " isocoeff=" + isotmp.to_s + " "
 			end

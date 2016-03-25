@@ -1,34 +1,34 @@
 #! /usr/bin/ruby
-#script for BUILD22
+#script for BUILD24
 ################ Mandatory and ordered parameters:
-#00) maplist - Note that the extension .maplist4 is mandatory. See below for more details.
-#01) listsource - extension .multi - file name of the list (in alike multi format - example 73.0e-08 80.27227 0.73223 2.1 1 2 3EGJ2033+4118). See below for more details.
-#02) outfile - output file name
+#00) filter (default FM3.119_2_I0025)
+#01) maplist - Note that the extension .maplist4 is mandatory. See below for more details.
+#02) listsource - extension .multi - file name of the list (in alike multi format - example 73.0e-08 80.27227 0.73223 2.1 1 2 3EGJ2033+4118). See below for more details.
+#03) outfile - output file name
 ################ Optional parameters
-#03) prefix (if specify a prefix, use only 1 map, if -999 use all the maps in the directory) - disabled with parameter maplist
-#04) filter (default FM3.119_2_I0025)
-#04) offaxis - off axix pointing (default 30) - set into .maplist4
-#05) ranal   - radius of analysis (default 10)
-#06) galcoeff     - gal coefficient (default -1) - set into .maplist4
-#07) isocoeff     - iso coefficient (default -1) - set into .maplist4
-#08) galmode     - gal mode, default 1 - See below for more details.
-#09) isomode     - iso mode, default 1 - See below for more details.
-#10) ulcl    - upper limit confidence level (default 2),  espressed as sqrt(TS)
-#11) loccl   - source location contour confidence level (default 95 (%)confidence level) Vales: 99, 95, 68, 50
-#12) flag    - a flag of the analysis (that is written in the final file)
-#13) token (enabled if host,token with token >= 1)
-#14) fixisogalstep0 - default 0 = do not calculate, otherwise specify the name of the source to calculate the gal and iso (if not specified by galcoeff or isocoeff parameters, otherwise use these values also in this step): calculate gal and iso setting fixflag=1 for the source under analysis
-#15) findermultimode - default 0 = do not use, or the name of the source to be found. Analysis in 2 steps:
+#04) prefix (if specify a prefix, use only 1 map, if -999 use all the maps in the directory) - disabled with parameter maplist
+#05) offaxis - off axix pointing (default 30) - set into .maplist4
+#06) ranal   - radius of analysis (default 10)
+#07) galcoeff     - gal coefficient (default -1) - set into .maplist4
+#08) isocoeff     - iso coefficient (default -1) - set into .maplist4
+#09) galmode     - gal mode, default 1 - See below for more details.
+#10) isomode     - iso mode, default 1 - See below for more details.
+#11) ulcl    - upper limit confidence level (default 2),  espressed as sqrt(TS)
+#12) loccl   - source location contour confidence level (default 95 (%)confidence level) Vales: 99, 95, 68, 50
+#13) flag    - a flag of the analysis (that is written in the final file)
+#14) token (enabled if host,token with token >= 1)
+#15) fixisogalstep0 - default 0 = do not calculate, otherwise specify the name of the source to calculate the gal and iso (if not specified by galcoeff or isocoeff parameters, otherwise use these values also in this step): calculate gal and iso setting fixflag=1 for the source under analysis
+#16) findermultimode - default 0 = do not use, or the name of the source to be found. Analysis in 2 steps:
 #	(1) ulcl=0, loccl=0, fixflag=3 to perform the first search
 #	(2) use standard ulcl and loccl but with the new position of the source found in step (1)
-#16) doublestep - default none = do not perform double step, otherwise doublestep=minsqrttsthr,secondstepfixflag,secondstepmaxradius (e.g. 3,3,0) and perform analysis in two steps (spot6 mode), where secondstepmaxradius is the last column of the .multi
+#17) doublestep - default none = do not perform double step, otherwise doublestep=minsqrttsthr,secondstepfixflag,secondstepmaxradius (e.g. 3,3,0) and perform analysis in two steps (spot6 mode), where secondstepmaxradius is the last column of the .multi
 #	(1) fixflag=1 for all the sources of the list
 #	(2) generate a new list selecting the sources of the first list with sqrt(TS) > minsqrttsthr. The new list has fixflag = secondstepfixflag
-#17) emin_sources, default 100: energy min of the input .multi
-#18) emax_sources, default 50000: energy min of the input .multi
-#19) listsourceextended
+#18) emin_sources, default 100: energy min of the input .multi
+#19) emax_sources, default 50000: energy min of the input .multi
+#20) listsourceextended
 
-#MAPLIST
+# MAPLIST
 #Each line contains a set of maps:
 #	<countsMap> <exposureMap> <gasMap> <offAxisAngle> <galCoeff> <isoCoeff>
 #	where:
@@ -37,7 +37,7 @@
 #	If positive they will be considered fixed (but see galmode and isomode below).
 #	The file names are separated by a space, so their name should not contain one.
 
-#SOURCE LIST
+# SOURCE LIST
 #Each source is described by a line containing space separated values, in the following order:
 # <flux> <l> <b> <spectral index> <fixFlag> <minSqrt(TS)> <name> [location limitation]
 # The first 4 values, flux in cm^-2 s^-1, galactic longitude and latitude in degrees, and spectral index of each source, represent the initial estimates of the values for that source. According to the fixflag some or all of those values will be optimized by being allowed to vary.
@@ -84,10 +84,11 @@ if prefix != -1 then
 	gas = prefix.to_s + ".gas.gz";
 end
 
-inputmaplist = ARGV[0];
-listsource = ARGV[1];
-baseoutfile = ARGV[2];
-baseoutfile2 = ARGV[2];
+filter = ARGV[0]
+inputmaplist = ARGV[1];
+listsource = ARGV[2];
+baseoutfile = ARGV[3];
+baseoutfile2 = ARGV[3];
 
 #check energy range of input maps
 emin_sin = 50000;
@@ -178,9 +179,9 @@ for i in 1..stepi
 	
 
 	#selezione delle calibration matrix
-	filterbase = p.filter.split("_")[0];
-	datautils.getResponseMatrix(p.filter);
-	matrixconf = datautils.getResponseMatrixString(p.filter);
+	filterbase = filter.split("_")[0];
+	datautils.getResponseMatrix(filter);
+	matrixconf = datautils.getResponseMatrixString(filter);
 	
 	#per prima cosa, se richiesto, si cerca il valore di gal e iso
 	inputfilemaps = inputmaplist

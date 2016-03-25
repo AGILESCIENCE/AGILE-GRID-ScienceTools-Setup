@@ -512,14 +512,13 @@ if detGIF != "" and detGIF != "tbd" and detGIF != "nop"
 			puts cmd
 			system(cmd)
 		end
-		cmd = "multi5.rb " + " GIFMAP.maplist4 " + fnhyp + " GIF" + mle
+		cmd = "multi5.rb " + filter + " GIFMAP.maplist4 " + fnhyp + " GIF" + mle
 		if galcoeff != "-1"
 			cmd = cmd + " galcoeff=" + galcoeff
 		end
 		if isocoeff != "-1"
 			cmd = cmd + " isocoeff=" + isocoeff
 		end
-		cmd = cmd + " filter=" +  filter
 		cmd = cmd + " " + multiparam
 		puts cmd
 		system(cmd)
@@ -536,7 +535,7 @@ if detGIF != "" and detGIF != "tbd" and detGIF != "nop"
 end
 
 if not (multiparam.to_s == "nop" || proj.to_s == "AIT")
-	cmd = "multi5.rb " + " MAP.maplist4 " + fnhyp + " " + mle + " galcoeff=" + galcoeff + " isocoeff=" + isocoeff + " filter=" + filter + " " + multiparam
+	cmd = "multi5.rb " + filter + " MAP.maplist4 " + fnhyp + " " + mle + " galcoeff=" + galcoeff + " isocoeff=" + isocoeff  + " " + multiparam
 	puts cmd
 	system(cmd)
 	

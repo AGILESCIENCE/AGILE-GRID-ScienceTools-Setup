@@ -401,7 +401,7 @@ begin
 		resfilename = parameters.diroutput.to_s + "_" + format("%03d", index) + ".res"
 		listfile = multilist.to_s + "_" + format("%03d", index) + ".multi"
 		extract_catalog(sources2, fits.lcenter, fits.bcenter, listfile, extractradius)
-		cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + parameters.maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + parameters.filter  + " " + addcmd.to_s
+		cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + parameters.filter  + " " + parameters.maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " " + addcmd.to_s
 		datautils.execute(outlog, cmd)
 		#--------
 	
@@ -421,7 +421,7 @@ begin
 			listfile = multilist.to_s + "_" + format("%03d", index) + ".ff3.multi"
 			postfix += "_ff3"
 			extract_catalog(sources2, fits.lcenter, fits.bcenter, listfile, extractradius)
-			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + parameters.maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + parameters.filter  + " " + addcmd.to_s
+			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + parameters.filter  + " " + parameters.maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " " + addcmd.to_s
 			datautils.execute(outlog, cmd)
 			#----------
 		
@@ -439,7 +439,7 @@ begin
 			listfile = multilist.to_s + "_" + format("%03d", index) + ".ff1.multi"
 			postfix += "_ff1"
 			extract_catalog(sources2, fits.lcenter, fits.bcenter, listfile, extractradius)
-			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + parameters.maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + parameters.filter  + " " + addcmd.to_s
+			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + parameters.filter  + " " + parameters.maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " " + addcmd.to_s
 			datautils.execute(outlog, cmd)
 			#----------
 		

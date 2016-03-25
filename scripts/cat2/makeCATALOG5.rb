@@ -728,7 +728,7 @@ while index.to_i < indexmax.to_i
 						puts cmd
 						system(cmd)
 
-						cmd = "cd " + dir2.to_s + "; multi5.rb " + prefix.to_s + ".maplist4 " + filemultibase.to_s + ".multi " + filemultibase.to_s + " flag=" + filemultibase.to_s
+						cmd = "cd " + dir2.to_s + "; multi5.rb " + filter + " " + prefix.to_s + ".maplist4 " + filemultibase.to_s + ".multi " + filemultibase.to_s + " flag=" + filemultibase.to_s
 						puts cmd
 						system(cmd)
 

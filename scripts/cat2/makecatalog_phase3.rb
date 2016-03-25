@@ -184,7 +184,7 @@ begin
 		resfilename = diroutput.to_s + "_" + format("%03d", index) + ".res"
 		listfile = multilist.to_s + "_" + format("%03d", index) + ".multi"
 		savesourcelist(listfile, sources2)
-		cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
+		cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + filter + " " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " " + addcmd.to_s
 		datautils.execute(outlog, cmd)
 		#--------
 	
@@ -203,7 +203,7 @@ begin
 			listfile = multilist.to_s + "_" + format("%03d", index) + ".ff3.multi"
 			postfix += "_ff3"
 			savesourcelist(listfile, sources2)
-			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
+			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + filter + " " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " " + addcmd.to_s
 			datautils.execute(outlog, cmd)
 		
 			sout.readDataSingleSource(resfilename.to_s + "_" + namesource.to_s);
@@ -219,7 +219,7 @@ begin
 			listfile = multilist.to_s + "_" + format("%03d", index) + ".ff1.multi"
 			postfix += "_ff1"
 			savesourcelist(listfile, sources2)
-			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " filter=" + filter  + " " + addcmd.to_s
+			cmd = "ruby " + ENV["AGILE"] + "/scripts/multi5.rb " + filter + " " + maplist.to_s + " " + listfile.to_s + " " + resfilename.to_s + " " + addcmd.to_s
 			datautils.execute(outlog, cmd)
 		
 			sout.readDataSingleSource(resfilename.to_s + "_" + namesource.to_s);
