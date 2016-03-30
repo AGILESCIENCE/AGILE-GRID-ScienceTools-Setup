@@ -48,9 +48,9 @@
 #TODO
 #/scratch/prod/agile-B23/scripts/polygonfilter/polygonfilter_2.py -l 1 -b 2 -g MLE0000display.con.galactic TSMAPMLE0001.scanlist TSMAPMLE0001_filtered.scanlist
 
-load ENV["AGILE"] + "/scripts/conf.rb"
+load ENV["AGILE"] + "/scripts/conffile.rb"
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
-load ENV["AGILE"] + "/scripts/sor/Conf.rb"
+load ENV["AGILE"] + "/scripts/sor/conffile.rb"
 
 def extractcat(hypothesisgen, l, b, outfile)
 	h = hypothesisgen.split(" ")
@@ -144,7 +144,7 @@ fndisplayreg = mle + "display"
 fnhyp0 = mle+"hypothesis0.multi"
 fnhyp = mle+"hypothesis.multi"
 
-conffile = Conf.new
+conffile = conffile.new
 
 conffile.process(filenameconf, fnhyp0, fndisplayreg)
 typeanalysis = conffile.typeanalysis
@@ -323,21 +323,21 @@ end
 #generate .jpg
 
 if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".multi.reg")
-	conf.detsmooth()
+	conffile.detsmooth()
 	
-	conf.plotjpgcts1(mle, conf.smooth)
+	conffile.plotjpgcts1(mle, conffile.smooth)
 	
-	conf.plotjpgint(mle, conf.smooth)
+	conffile.plotjpgint(mle, conffile.smooth)
 	
-	conf.plotjpgexp(mle)
+	conffile.plotjpgexp(mle)
 	
-	conf.plotjpgcts2(mle, conf.smooth)
+	conffile.plotjpgcts2(mle, conffile.smooth)
 	
-	conf.plotjpgcts2(mle + ".step0", conf.smooth)
+	conffile.plotjpgcts2(mle + ".step0", conffile.smooth)
 	
-	conf.plotjpgcts2(mle + ".step1", conf.smooth)
+	conffile.plotjpgcts2(mle + ".step1", conffile.smooth)
 	
-	conf.copyresults()
+	conffile.copyresults()
 	
 	if typeanalysis == "spot6"
 		begin
