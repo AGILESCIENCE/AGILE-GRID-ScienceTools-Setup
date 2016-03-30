@@ -23,7 +23,7 @@ fnhyp = mle+"hypothesis.multi"
 
 conf = Conf.new
 
-conf.process(filenameconf, fnhyp0, fndisplayreg);
+conf.process(filenameconf, nil, nil);
 
 conf.detsmooth()
 	

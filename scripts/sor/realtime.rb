@@ -135,6 +135,9 @@ def runspot6(lastcontacttime, day, hours_shift, tstart, tstop)
 end
 
 def existsFile(filename)
+	if filename == nil
+		return ""
+	end
 	if File.exists?(filename)
 		return filename
 	else
