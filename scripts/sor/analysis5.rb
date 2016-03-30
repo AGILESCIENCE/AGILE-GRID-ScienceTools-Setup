@@ -337,7 +337,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 	
 	conffile.plotjpgcts2(mle + ".step1", conffile.smooth)
 	
-	conffile.copyresults()
+	conffile.copyresults(mle)
 	
 	if typeanalysis == "spot6"
 		begin

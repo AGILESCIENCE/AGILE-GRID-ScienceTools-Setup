@@ -12,46 +12,9 @@ index = 0;
 conffile = Conf.new
 
 conffile.process(filenameconf, nil, nil)
-
-typeanalysis = conffile.typeanalysis
-filter = conffile.filter
-tstart = conffile.tstart
-tstop = conffile.tstop
-timetype = conffile.timetype
-l = conffile.l
-b = conffile.b
-proj = conffile.proj
-galcoeff = conffile.galcoeff
-isocoeff = conffile.isocoeff
-mapparam = conffile.mapparam
-hypothesisgen1 = conffile.hypothesisgen1
-hypothesisgen2 = conffile.hypothesisgen2
-radmerger = conffile.radmerger
-multiparam = conffile.multiparam
-tsmapparam = conffile.tsmapparam
-iddisp = conffile.iddisp
-dir_run_output = conffile.dir_run_output
-mail = conffile.mail
-analysisname = conffile.analysisname
-ds91 = conffile.ds91
-ds92 = conffile.ds92
-ds93 = conffile.ds93
-ds94 = conffile.ds94
-regfile = conffile.regfile
-detGIF = conffile.detGIF
-comments = conffile.comments
-reg = conffile.reg
-binsize = conffile.binsize
-queue = conffile.queue
-result_dir = conffile.result_dir
-result_dir_minSqrtTS = conffile.result_dir_minSqrtTS
-result_dir_sourcename = conffile.result_dir_sourcename
-
-
-
 rootbase = root
 
-basedir = root + "/" + user + "/" + analysisname
+basedir = root + "/" + conffile.dir_run_output + "/" + conffile.analysisname
 
 if basedir == rootbase + "//"
 	puts "error in config file name"
@@ -91,15 +54,15 @@ puts cmd
 system(cmd)
 
 f = File.open(newcmd, "a")
-if queue != nil
-	f.write("\#\@ class    = " + queue + "\n")
+if conffile.queue != nil
+	f.write("\#\@ class    = " + conffile.queue + "\n")
 else
 	f.write("\#\@ class    = large\n")
 end
-f.write("\#\@ job_name = sor4_" + analysisname + "\n")
+f.write("\#\@ job_name = sor4_" + conffile.analysisname + "\n")
 
 #enable/disable send mail when the task is finished
-#f.write("\#\@ notify_user = " + mail + "\n")
+#f.write("\#\@ notify_user = " + conffile.mail + "\n")
 
 f.write("\#\@ queue\n")
 
