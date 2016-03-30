@@ -42,7 +42,12 @@ class Conf
 		@result_dir_minSqrtTS = 0
 		@result_dir_sourcename = "all"
 		
-		f = File.new(fnhyp0 , "w")
+		if fnhyp0 != nil
+			f = File.new(fnhyp0 , "w")
+		else
+			f = nil
+		end
+		
 		fr = nil;
 
 		extractmulti = true
@@ -164,12 +169,20 @@ class Conf
 			if index.to_i == 27
 				@reg =  line
 				if @reg == "yes" or @reg == "reg"
-					@fndisplayreg += ".reg"
+					if @fndisplayreg != nil
+						@fndisplayreg += ".reg"
+					end
 				end
 				if @reg == "con"
-					@fndisplayreg += ".con"
+					if @fndisplayreg != nil
+						@fndisplayreg += ".con"
+					end
 				end
-				fr = File.new(@fndisplayreg , "w")
+				if @fndisplayreg != nil
+					fr = File.new(@fndisplayreg , "w")
+				else
+					fr = nil
+				end
 			end
 			if index.to_i >= 28
 				if index.to_i > 28
@@ -180,11 +193,15 @@ class Conf
 			
 					if extractmulti == true
 						if line.size() > 2
-							f.write(line + "\n")
+							if f != nil
+								f.write(line + "\n")
+							end
 						end
 					else
 						if line.size() > 2
-							fr.write(line + "\n")
+							if fr != nil
+								fr.write(line + "\n")
+							end
 						end
 					end
 				end
@@ -192,12 +209,19 @@ class Conf
 			index = index.to_i + 1
 		end
 
-		f.close()
-		fr.close()
+		if f != nil
+			f.close()
+		end
+		if fr != nil
+			fr.close()
+		end
 
 	end
 	
 	def existsFile(filename)
+		if filename == nil
+			return ""
+		end
 		if File.exists?(filename)
 			return filename
 		else

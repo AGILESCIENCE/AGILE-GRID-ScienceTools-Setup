@@ -144,7 +144,7 @@ fndisplayreg = mle + "display"
 fnhyp0 = mle+"hypothesis0.multi"
 fnhyp = mle+"hypothesis.multi"
 
-conffile = conffile.new
+conffile = Conf.new
 
 conffile.process(filenameconf, fnhyp0, fndisplayreg)
 typeanalysis = conffile.typeanalysis
