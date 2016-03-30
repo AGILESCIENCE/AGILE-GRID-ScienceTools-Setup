@@ -48,9 +48,9 @@
 #TODO
 #/scratch/prod/agile-B23/scripts/polygonfilter/polygonfilter_2.py -l 1 -b 2 -g MLE0000display.con.galactic TSMAPMLE0001.scanlist TSMAPMLE0001_filtered.scanlist
 
-load ENV["AGILE"] + "/scripts/conffile.rb"
+load ENV["AGILE"] + "/scripts/conf.rb"
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
-load ENV["AGILE"] + "/scripts/sor/conffile.rb"
+load ENV["AGILE"] + "/scripts/sor/Conf.rb"
 
 def extractcat(hypothesisgen, l, b, outfile)
 	h = hypothesisgen.split(" ")
