@@ -189,9 +189,15 @@ def genaitoffspot6(rttype)
 				mout = MultiOutput.new
 				mout.readDataSingleSource(nfile)
 				mout.assoccat(",");
-				subject = "ALERT LEVEL " + format("%.2f", mout.sqrtTS) + " " + format("%.1E", mout.flux) + "+/-" + format("%.1E", mout.flux_error) + " (" + format("%.2f", mout.l_peak) + "," + format("%.2f", mout.b_peak) + "," + format("%.2E", mout.exposure) + ") " + mout.assoc.to_s
+				subject = "ALERT " + nfile.split(" ")[3] + " " + format("%.2f", mout.sqrtTS) + " (" + format("%.2f", mout.l_peak) + "," + format("%.2f", mout.b_peak) + "," + format("%.2E", mout.exposure) + ") " + format("[%.2f-%.2f]", mout.timestart_mjd, mout.timestop_mjd) + " " + format("%.1E", mout.flux) + "+/-" + format("%.1E", mout.flux_error) + " " + mout.assoc.to_s
+				
+				system("cat " + nfile + " > alert")
+				falert = File.new("alert", "a")
+				falert.write("\n")
+				falert.write("SIMBAD: http://simbad.u-strasbg.fr/simbad/sim-coo?CooDefinedFrames=none&CooEpoch=2000&Coord=82.24-1.63&submit=submit%20query&Radius.unit=arcmin&CooEqui=2000&CooFrame=Gal&Radius=60 \n")
+				falert.close()
 				 
-				cmd = "mail -s \"" + subject + "\" agilegrid4@iasfbo.inaf.it < " + nfile
+				cmd = "mail -s \"" + subject + "\" -c andrea.bulgarelli@gmail.com agilegrid4@iasfbo.inaf.it < alert"
 				puts cmd
 				system(cmd)
 			end
