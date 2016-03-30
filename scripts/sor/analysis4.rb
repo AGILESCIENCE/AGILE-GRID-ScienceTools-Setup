@@ -553,12 +553,15 @@ end
 #TODO TSMAP
 
 #send mail
-puts mail
-cmd = "mail -s \"end RUN\" " + mail.to_s + " < " +  mle
-puts cmd
-system(cmd)
-#cat T1.sh | mutt -a T.res.html  bulgarelli@iasfbo.inaf.it -s 'res'
-
+if mail.to_s != "" or mail != nil
+	puts mail
+	cmd = "mail -s \"end RUN\" " + mail.to_s + " < " +  mle
+	puts cmd
+	if mail.to_s != "nop"
+        system(cmd)
+    end
+	#cat T1.sh | mutt -a T.res.html  bulgarelli@iasfbo.inaf.it -s 'res'
+end
 #TODO send notification
 
 

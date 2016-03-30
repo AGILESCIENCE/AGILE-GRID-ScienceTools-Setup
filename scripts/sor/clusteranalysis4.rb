@@ -190,7 +190,9 @@ else
 	f.write("\#\@ class    = large\n")
 end
 f.write("\#\@ job_name = sor4_" + analysisname + "\n")
-f.write("\#\@ notify_user = " + mail + "\n")
+
+#enable/disable send mail when the task is finished
+#f.write("\#\@ notify_user = " + mail + "\n")
 
 f.write("\#\@ queue\n")
 
