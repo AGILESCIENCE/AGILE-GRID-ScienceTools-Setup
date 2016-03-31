@@ -386,7 +386,7 @@ class Parameters
 			@energybin
 		end
 		
-		def processInput(startindex, s)
+		def processInput(startindex, s, filter)
 			for i in startindex...s.size
 				if s[i] == nil
 					break;
@@ -394,6 +394,11 @@ class Parameters
 					processLine(s[i]);
 				end
 			end
+			
+			if filter != nil
+				@filter = filter
+			end
+			
 			initparam();
 		end
 		

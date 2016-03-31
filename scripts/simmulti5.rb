@@ -67,7 +67,7 @@ maplistana = ARGV[3]
 listsourceana = ARGV[4];
 outfile = ARGV[5]
 p = Parameters.new
-p.processInput(6, ARGV)
+p.processInput(6, ARGV, filter)
 
 #selezione della matrix
 filterbase = filter.split("_")[0];

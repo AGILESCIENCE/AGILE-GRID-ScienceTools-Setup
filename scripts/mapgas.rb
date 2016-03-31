@@ -34,7 +34,7 @@ filterall = filterdir;
 
 filterbase2 = filter.split("_")[0] + "_" + filter.split("_")[1];
 
-parameters.processInput(4, ARGV)
+parameters.processInput(4, ARGV, filter)
 
 emin1 = fits.minenergy;
 emax1 = fits.maxenergy;

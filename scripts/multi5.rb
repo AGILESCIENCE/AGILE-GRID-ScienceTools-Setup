@@ -72,7 +72,7 @@ if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
 end
 
 p = Parameters.new
-p.processInput(3, ARGV)
+p.processInput(3, ARGV, filter)
 alikeutils = AlikeUtils.new
 multioutput = MultiOutput.new
 

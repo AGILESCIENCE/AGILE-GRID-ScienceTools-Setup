@@ -71,7 +71,7 @@ filterbase2 = filter.split("_")[0] + "_" + filter.split("_")[1];
 
 
 
-parameters.processInput(6, ARGV)
+parameters.processInput(6, ARGV, filter)
 
 emin1 = parameters.emin;
 emax1 = parameters.emax;
