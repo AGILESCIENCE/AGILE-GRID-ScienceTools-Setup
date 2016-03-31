@@ -187,16 +187,19 @@ def genaitoffspot6(rttype)
 				nfile = file.sub("_+", "++")
 				system("mv " + file + " " + nfile);
 				
-				basedirres="http://agile.iasfbo.inaf.it/analysis/spot6/" + nfile.split("_MLE0000")[0].split("++")[1] + "/"
+				basefile = nfile.split("_MLE0000")[0].split("++")[1]
+				basedirres="http://agile.iasfbo.inaf.it/analysis/spot6/" + basefile + "/"
 				
 				mout = MultiOutput.new
 				mout.readDataSingleSource(nfile)
 				mout.assoccat(",");
-				subject = "S6" + nfile.split(" ")[3] + " " + format("%.2f", mout.sqrtTS) + " (" + format("%.2f", mout.l_peak) + "," + format("%.2f", mout.b_peak) + "," + format("%.2E", mout.exposure) + ") " + format("[%.2f-%.2f]", mout.timestart_mjd, mout.timestop_mjd) + " " + format("%.1E", mout.flux) + "+/-" + format("%.1E", mout.flux_error) + " " + mout.assoc.to_s
+				puts basefile
+				subject = "S6" + basefile.split("_")[3] + " " + format("%.2f", mout.sqrtTS) + " (" + format("%.2f", mout.l_peak) + "," + format("%.2f", mout.b_peak) + "," + format("%.2E", mout.exposure) + ") " + format("[%.2f-%.2f]", mout.timestart_mjd, mout.timestop_mjd) + " " + format("%.1E", mout.flux) + "+/-" + format("%.1E", mout.flux_error) + " " + mout.assoc.to_s
 				
 				system("cat " + nfile + " > alert")
 				system("echo \" \" >> alert")	
-				system("cat " + basedirres + "/MLE0000 >> alert")
+				puts "cat /ANALYSIS3/spot6/" + basefile + "/MLE0000 >> alert"
+				system("cat /ANALYSIS3/spot6/" + basefile + "/MLE0000 >> alert")
 				falert = File.open("alert", "a")
 				falert.write("\n")
 				
@@ -212,6 +215,9 @@ def genaitoffspot6(rttype)
 				stringoutput = "Img S2: " + basedirres + "MLE0000_MAP.intall.jpg \n" 
 				falert.write(stringoutput);
 				
+				falert.write("\n")
+				falert.write(mout.assoc.to_s)
+				falert.write("\n")
 				
 				stringoutput = "\nSIMBAD: "
                 stringoutput += "http://simbad.u-strasbg.fr/simbad/sim-coo?CooDefinedFrames=none&CooEpoch=2000&Coord=";
@@ -223,7 +229,7 @@ def genaitoffspot6(rttype)
 				stringoutput += "&submit=submit%20query&Radius.unit=arcmin&CooEqui=2000&CooFrame=Gal&Radius=60"
                 falert.write(stringoutput);
                                                 
-                stringoutput = "\nNED";
+                stringoutput = "\nNED: ";
                 stringoutput += "http://nedwww.ipac.caltech.edu/cgi-bin/nph-objsearch?in_csys=Galactic&in_equinox=J2000.0&lon=" +   format("%.2f", mout.l_peak) + "&lat=" + format("%.2f", mout.b_peak) + "&radius=60&search_type=Near+Position+Search&out_csys=Equatorial&out_equinox=J2000.0&obj_sort=Distance+to+search+center&of=pre_text&zv_breaker=30000.0&list_limit=5&img_stamp=YES&z_constraint=Unconstrained&z_value1=&z_value2=&z_unit=z&ot_include=ANY&nmp_op=ANY"
                 stringoutput += "\n";
                 falert.write(stringoutput);
