@@ -193,7 +193,7 @@ def genaitoffspot6(rttype)
 				mout = MultiOutput.new
 				mout.readDataSingleSource(nfile)
 				mout.assoccat(",");
-				puts basefile
+				
 				subject = "S6" + basefile.split("_")[3] + " " + format("%.2f", mout.sqrtTS) + " (" + format("%.2f", mout.l_peak) + "," + format("%.2f", mout.b_peak) + "," + format("%.2E", mout.exposure) + ") " + format("[%.2f-%.2f]", mout.timestart_mjd, mout.timestop_mjd) + " " + format("%.1E", mout.flux) + "+/-" + format("%.1E", mout.flux_error) + " " + mout.assoc.to_s
 				
 				system("cat " + nfile + " > alert")
