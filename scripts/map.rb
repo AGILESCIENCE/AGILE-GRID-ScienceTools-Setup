@@ -161,6 +161,12 @@ if parameters.energybin.to_i == 10
 	energybinnumber = 5
 end
 
+if parameters.energybin.to_i == 100
+	eminarr = [100,  300, 1000, 3000, 10000]
+	emaxarr = [300, 1000, 3000, 10000, 50000]
+	energybinnumber = 5
+end
+
 if parameters.energybin.to_i == 11
 	eminarr = [400, 1000, 3000, 10000]
 	emaxarr = [1000, 3000, 10000, 50000]
