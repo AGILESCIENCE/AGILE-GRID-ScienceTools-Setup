@@ -71,6 +71,12 @@ if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
 	exit;
 end
 
+filter = ARGV[0]
+inputmaplist = ARGV[1];
+listsource = ARGV[2];
+baseoutfile = ARGV[3];
+baseoutfile2 = ARGV[3];
+
 p = Parameters.new
 p.processInput(3, ARGV, filter)
 alikeutils = AlikeUtils.new
@@ -84,11 +90,7 @@ if prefix != -1 then
 	gas = prefix.to_s + ".gas.gz";
 end
 
-filter = ARGV[0]
-inputmaplist = ARGV[1];
-listsource = ARGV[2];
-baseoutfile = ARGV[3];
-baseoutfile2 = ARGV[3];
+
 
 #check energy range of input maps
 emin_sin = 50000;
