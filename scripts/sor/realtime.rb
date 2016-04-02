@@ -237,10 +237,14 @@ def genaitoffspot6(rttype)
 				falert.write("\nAGILE SPOT6 alert system for gamma-ray transients developed by Andrea Bulgarelli (INAF)\n")
 				
 				falert.close()
-				 
-				cmd = "mail -s \"" + subject + "\" agilealert@iasfbo.inaf.it < alert"
-				puts cmd
-				system(cmd)
+				
+				datautils = DataUtils.new
+				#distance from Vela e Geminga
+				if datautils.distance(mout.l_peak, mout.b_peak, 263.5, -2.8) > 1 and datautils.distance(mout.l_peak, mout.b_peak, 195.13, 4.26) > 1 
+					cmd = "mail -s \"" + subject + "\" agilealert@iasfbo.inaf.it < alert"
+					puts cmd
+					system(cmd)
+				end
 			end
 		rescue
 			puts "mail problem"
