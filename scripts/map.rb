@@ -100,94 +100,89 @@ puts "parameters.energybin " + parameters.energybin.to_s
 if parameters.energybin.to_i == 0
 	energybinnumber = 1;
 end
+puts "parameters.eboundaryIF " + parameters.eboundaryIF.to_s
 
 if parameters.energybin.to_i == 1
-	eminarr = [30, 50, 100, 400, 1000, 3000, 10000]
-	emaxarr = [50, 100, 400, 1000, 3000, 10000, 50000]
+	eminarr = [30, 50, 100, parameters.eboundaryIF, 1000, 3000, 10000]
+	emaxarr = [50, 100, parameters.eboundaryIF, 1000, 3000, 10000, 50000]
 	energybinnumber = 7
 end
 
 if parameters.energybin.to_i == 2
-	eminarr = [30,  50, 100, 200,  400, 1000,  3000, 10000]
-	emaxarr = [50, 100, 200, 400, 1000, 3000, 10000, 50000]
+	eminarr = [30,  50, 100, 200,  parameters.eboundaryIF, 1000,  3000, 10000]
+	emaxarr = [50, 100, 200, parameters.eboundaryIF, 1000, 3000, 10000, 50000]
 	energybinnumber = 8
 end
 
 if parameters.energybin.to_i == 3
-	eminarr = [100, 200,  400, 1000]
-	emaxarr = [200, 400, 1000, 3000]
+	eminarr = [100, 200,  parameters.eboundaryIF, 1000]
+	emaxarr = [200, parameters.eboundaryIF, 1000, 3000]
 	energybinnumber = 4
 end
 
 if parameters.energybin.to_i == 4
-	eminarr = [100, 200,  400]
-	emaxarr = [200, 400, 1000]
+	eminarr = [100, 200,  parameters.eboundaryIF]
+	emaxarr = [200, parameters.eboundaryIF, 1000]
 	energybinnumber = 3
 end
 
 if parameters.energybin.to_i == 5
-	eminarr = [50,  100, 200,  400, 1000,  3000]
-	emaxarr = [100, 200, 400, 1000, 3000, 10000]
+	eminarr = [50,  100, 200,  parameters.eboundaryIF, 1000,  3000]
+	emaxarr = [100, 200, parameters.eboundaryIF, 1000, 3000, 10000]
 	energybinnumber = 6
 end
 
 if parameters.energybin.to_i == 6
-	eminarr = [100, 200,  400, 1000,  3000, 10000]
-	emaxarr = [200, 400, 1000, 3000, 10000, 50000]
+	eminarr = [100, 200,  parameters.eboundaryIF, 1000,  3000, 10000]
+	emaxarr = [200, parameters.eboundaryIF, 1000, 3000, 10000, 50000]
 	energybinnumber = 6
 end
 
 if parameters.energybin.to_i == 7
-	eminarr = [50,  100, 200,  400, 1000,  3000, 10000]
-	emaxarr = [100, 200, 400, 1000, 3000, 10000, 50000]
+	eminarr = [50,  100, 200,  parameters.eboundaryIF, 1000,  3000, 10000]
+	emaxarr = [100, 200, parameters.eboundaryIF, 1000, 3000, 10000, 50000]
 	energybinnumber = 7
 end
 
 if parameters.energybin.to_i == 8
-        eminarr = [50,  100, 400,  1000, 3000]
-        emaxarr = [100, 400, 1000, 3000, 50000]
+        eminarr = [50,  100, parameters.eboundaryIF,  1000, 3000]
+        emaxarr = [100, parameters.eboundaryIF, 1000, 3000, 50000]
         energybinnumber = 5
 end
 
 if parameters.energybin.to_i == 9
-	eminarr = [50,  100, 400,  1000, 3000,  10000]
-	emaxarr = [100, 400, 1000, 3000, 10000, 50000]
+	eminarr = [50,  100, parameters.eboundaryIF,  1000, 3000,  10000]
+	emaxarr = [100, parameters.eboundaryIF, 1000, 3000, 10000, 50000]
 	energybinnumber = 6
 end
 
 if parameters.energybin.to_i == 10
-	eminarr = [100,  400, 1000, 3000, 10000]
-	emaxarr = [400, 1000, 3000, 10000, 50000]
-	energybinnumber = 5
-end
-
-if parameters.energybin.to_i == 100
-	eminarr = [100,  300, 1000, 3000, 10000]
-	emaxarr = [300, 1000, 3000, 10000, 50000]
+	eminarr = [100,  parameters.eboundaryIF, 1000, 3000, 10000]
+	emaxarr = [parameters.eboundaryIF, 1000, 3000, 10000, 50000]
 	energybinnumber = 5
 end
 
 if parameters.energybin.to_i == 11
-	eminarr = [400, 1000, 3000, 10000]
+	eminarr = [parameters.eboundaryIF, 1000, 3000, 10000]
 	emaxarr = [1000, 3000, 10000, 50000]
 	energybinnumber = 4
 end
 
 if parameters.energybin.to_i == 12
-	eminarr = [400, 1000, 3000]
+	eminarr = [parameters.eboundaryIF, 1000, 3000]
 	emaxarr = [1000, 3000, 10000]
 	energybinnumber = 3
 end
 
 if parameters.energybin.to_i == 13
-	eminarr = [100,  400, 1000]
-	emaxarr = [400, 1000, 3000]
+	eminarr = [100,  parameters.eboundaryIF, 1000]
+	emaxarr = [parameters.eboundaryIF, 1000, 3000]
 	energybinnumber = 3
 end
 
 if parameters.energybin.to_i == 14
-	eminarr = [100,  400]
-	emaxarr = [400, 1000]
+	eminarr = [100,  parameters.eboundaryIF]
+	emaxarr = [parameters.eboundaryIF, 1000]
 	energybinnumber = 2
 end
 

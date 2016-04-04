@@ -15,6 +15,7 @@ class Parameters
 			@binsize = 0.3;
 			@fixisogal = 0;
 			@skytype = 4;
+			@eboundaryIF = 400;
 			@list = "none";
 			@mapsize = 40;
 			@skymapH = "";
@@ -91,6 +92,10 @@ class Parameters
 		
 		def skytype
             @skytype
+        end
+        
+        def eboundaryIF
+        	@eboundaryIF
         end
         
         def dq
@@ -741,10 +746,13 @@ class Parameters
 			if fconf[2] == "I0025" and @skytype.to_i != 4
 				puts "Error: only skytype=4 with IRF=I0025 is available. Set skytype=4"
 				@skytype = 4
+				@eboundaryIF = 400
 			end
 			
-			if fconf[2] == "H0025"
-				
+			if fconf[2] == "H0025" and @skytype.to_i != 4
+				puts "Error: only skytype=4 with IRF=H0025 is available. Set skytype=4"
+				@skytype = 4
+				@eboundaryIF = 300
 			end
 			
 		end
