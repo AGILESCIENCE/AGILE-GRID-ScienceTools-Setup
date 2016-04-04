@@ -14,7 +14,7 @@ class Parameters
 			@makealikesingle = 0;
 			@binsize = 0.3;
 			@fixisogal = 0;
-			@skytype = 0;
+			@skytype = 4;
 			@list = "none";
 			@mapsize = 40;
 			@skymapH = "";
@@ -742,6 +742,11 @@ class Parameters
 				puts "Error: only skytype=4 with IRF=I0025 is available. Set skytype=4"
 				@skytype = 4
 			end
+			
+			if fconf[2] == "H0025"
+				
+			end
+			
 		end
 end
 
