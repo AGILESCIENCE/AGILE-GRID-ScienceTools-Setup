@@ -44,7 +44,7 @@ class MultiOutput
 			File.open(nameout).each_line do | line |
 				index2 = index2 + 1;
 				lll = line.split(" ")
-				if index2.to_i == 15
+				if index2.to_i == 17
 					@label =lll[0];
 					@fix =lll[1];
 					@si_start = lll[2];
@@ -58,15 +58,15 @@ class MultiOutput
 					@bmin = lll[14];
 					@bmax = lll[16];
 				end
-				if index2.to_i == 16
+				if index2.to_i == 18
 					@sqrtTS =lll[0];
 				end
-				if index2.to_i == 17
+				if index2.to_i == 19
 					@l_peak = lll[0];
 					@b_peak = lll[1];
 					@dist = lll[2];
 				end
-				if index2.to_i == 18
+				if index2.to_i == 20
 					@l = lll[0]
 					@b = lll[1]
 					@distellipse = lll[2];
@@ -76,14 +76,14 @@ class MultiOutput
 					@ell_phi = lll[6];
 					@fullellipseline = format("%.2f %.2f %.2f %.2f %.2f %.2f %.2f", @l, @b, @distellipse, @r, @ell_a, @ell_b, @ell_phi)
 				end
-				if index2.to_i == 19
+				if index2.to_i == 21
 					@counts = lll[0]
 					@counts_error = lll[1]
 					@counts_error_p = lll[2]
 					@counts_error_m = lll[3]
 					@counts_ul = lll[4];
 				end
-				if index2.to_i == 20
+				if index2.to_i == 22
 					@flux = lll[0]
 					@flux_error = lll[1]
 					@flux_error_p = lll[2]
@@ -91,12 +91,12 @@ class MultiOutput
 					@flux_ul = lll[4];
 					@exposure = lll[5]
 				end
-				if index2.to_i == 21
+				if index2.to_i == 23
 					@sicalc = lll[0]
 					@sicalc_error = lll[1]
 				end
 				
-				if index2.to_i == 22
+				if index2.to_i == 24
 					@fit_cts = lll[0]
 					@fit_fcn0 = lll[1]
 					@fit_fcn1 = lll[2]
@@ -106,27 +106,27 @@ class MultiOutput
 					@fit_iter1 = lll[6]
 				end
 				
-				if index2.to_i == 23
+				if index2.to_i == 25
 					@galcoeff = lll[0]
 					@galcoeff_err = lll[1]
 				end
 				
-				if index2.to_i == 24
+				if index2.to_i == 26
 					@galcoeffzero = lll[0]
 					@galcoeffzero_err = lll[1]
 				end
 				
-				if index2.to_i == 25
+				if index2.to_i == 27
 					@isocoeff = lll[0]
 					@isocoeff_err = lll[1]
 				end
 				
-				if index2.to_i == 26
+				if index2.to_i == 28
 					@isocoeffzero = lll[0]
 					@isocoeffzero_err = lll[1]
 				end
 				
-				if index2.to_i == 27
+				if index2.to_i == 29
 					@tstart = lll[0]
 					@tstop = lll[1]
 					
@@ -147,7 +147,7 @@ class MultiOutput
 					
 				end
 				
-				if index2.to_i == 28
+				if index2.to_i == 30
 					@energyrange = lll[0]
 					@fovrange = lll[1]
 					@albedo = lll[2]
