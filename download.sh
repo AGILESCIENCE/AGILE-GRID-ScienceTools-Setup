@@ -2,11 +2,11 @@
 
 trap exit ERR
 
-## BUILD23 ##
-TAG_PIL=v1.0.1
-TAG_WCS=v1.0.1
-TAG_LIBSCI=v1.2.0
-TAG_SCI1=v1.1.0
+## preBUILD24_1 ##
+TAG_PIL=v1.0.2
+TAG_WCS=v1.0.2
+TAG_LIBSCI=v1.3.0
+TAG_SCI1=v1.2.0
 
 git clone git@github.com:AGILESCIENCE/libagilepil.git 
 cd libagilepil

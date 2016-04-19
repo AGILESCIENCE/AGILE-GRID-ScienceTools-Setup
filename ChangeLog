@@ -1,3 +1,21 @@
+19 Apr 2016
+TAG GIT: preBUILD24_1
+
++ libagilesci: SphDistDeg function reworked using another more compact math solution.
++ libagilesci: GetRowCol function reworked to avoid infinite loop outside the map border.
++ libagilesci: Generate the contour fixing the gal and iso parameters before making the contour.
++ libagilesci: Report the fitting status and cts counts used.
++ libagilesci: Report the limits of flux, index, gal and iso parameters.
++ libagilesci: Report TT and MJD.
++ libagilesci: Fixed warnings and memory leaks.
++ agilesci1: Fix wrong buffers sizes, warnings and memory leaks.
++ agilesci1: Removed AG_expmapgenT5.
++ agilesci1: Use pid as identifier fo temporary filenames.
++ AG_expmapgen5: Use static buffers.
++ AG_expmapgen5: Do not use psi, it is uninitialized.
++ AG_multiterative5: Generates the fluxul map.
++ AG_multiterative5: Renamed GAL in GAS.
+
 22 Dec 2015
 TAG GIT: BUILD23
 
