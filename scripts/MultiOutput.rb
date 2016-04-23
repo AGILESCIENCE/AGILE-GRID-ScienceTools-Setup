@@ -663,8 +663,10 @@ class MultiOutputList
 		f1 = File.new(dir + "/" + resname + ".resfullsel", "w")
 		freg = File.new(dir + "/" + resname + ".reg", "w")
 		fhtml = File.new(dir + "/" + resname + ".html", "w")
+		fhtmlsel = File.new(dir + "/" + resname + ".sel.html", "w")
 		multioutput = MultiOutput.new()
 		fhtml.write(multioutput.multiOutputLineFull3HTMLheader(flag))
+		fhtmlsel.write(multioutput.multiOutputLineFull3HTMLheader(flag))
 		#puts Dir[dir + "/*.source"]	
 		Dir[dir + "/*.source"].sort.each do | name |
 			#puts name
@@ -678,11 +680,15 @@ class MultiOutputList
 		    puts multioutput.multiOutputLineFull3(flag)
 			freg.write(multioutput.regline(thrsqrtts.to_f));
 			fhtml.write(multioutput.multiOutputLineFull3HTML(name, flag))
+			if multioutput.sqrtTS.to_f > 4.0
+				fhtmlsel.write(multioutput.multiOutputLineFull3HTML(name, flag))
+			end
 		end
 		f.close();
 		f1.close();
 		freg.close();
 		fhtml.close();
+		fhtmlsel.close();
 	end
 	
 	def sources
