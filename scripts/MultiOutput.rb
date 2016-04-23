@@ -17,6 +17,7 @@ class MultiOutput
 			if nameout.include?(".source") == false
 				nameout = nameout + ".source"
 			end
+			
 			datautils = DataUtils.new
 			#puts "nameout: " +  nameout;
 			@l = -1;
@@ -41,10 +42,31 @@ class MultiOutput
 			@isocoeffzero = "-1"
 			@isocoeffzero_err = "-1"	
 			@fitdata = "-1, -1, -1, -1, -1, -1, -1"
+			@mlestep_1_ext1_res = -1
+			@mlestep_2_step1_res = -1
+			@mlestep_3_ext2_res = -1
+			@mlestep_4_step2_res = -1
+			@mlestep_5_contour_res = -1
+			@mlestep_6_index_res = -1
+			@mlestep_7_ul_res = -1
+			@mlestep_1_ext1_cts = -1
+			@mlestep_2_step1_cts = -1
+			@mlestep_3_ext2_cts = -1
+			@mlestep_4_step2_cts = -1
+			@mlestep_5_contour_cts = -1
+			@mlestep_6_index_cts = -1
+			@mlestep_7_ul_cts = -1
+			indexstart = 0
 			File.open(nameout).each_line do | line |
 				index2 = index2 + 1;
+				if line[0] == "!" or line[0] == 33
+					indexstart = index2
+					next
+				end
+				
 				lll = line.split(" ")
-				if index2.to_i == 17
+				
+				if index2.to_i == indexstart + 1
 					@label =lll[0];
 					@fix =lll[1];
 					@si_start = lll[2];
@@ -58,15 +80,15 @@ class MultiOutput
 					@bmin = lll[14];
 					@bmax = lll[16];
 				end
-				if index2.to_i == 18
+				if index2.to_i == indexstart + 2
 					@sqrtTS =lll[0];
 				end
-				if index2.to_i == 19
+				if index2.to_i == indexstart + 3
 					@l_peak = lll[0];
 					@b_peak = lll[1];
 					@dist = lll[2];
 				end
-				if index2.to_i == 20
+				if index2.to_i == indexstart + 4
 					@l = lll[0]
 					@b = lll[1]
 					@distellipse = lll[2];
@@ -76,14 +98,14 @@ class MultiOutput
 					@ell_phi = lll[6];
 					@fullellipseline = format("%.2f %.2f %.2f %.2f %.2f %.2f %.2f", @l, @b, @distellipse, @r, @ell_a, @ell_b, @ell_phi)
 				end
-				if index2.to_i == 21
+				if index2.to_i == indexstart + 5
 					@counts = lll[0]
 					@counts_error = lll[1]
 					@counts_error_p = lll[2]
 					@counts_error_m = lll[3]
 					@counts_ul = lll[4];
 				end
-				if index2.to_i == 22
+				if index2.to_i == indexstart + 6
 					@flux = lll[0]
 					@flux_error = lll[1]
 					@flux_error_p = lll[2]
@@ -91,12 +113,12 @@ class MultiOutput
 					@flux_ul = lll[4];
 					@exposure = lll[5]
 				end
-				if index2.to_i == 23
+				if index2.to_i == indexstart + 7
 					@sicalc = lll[0]
 					@sicalc_error = lll[1]
 				end
 				
-				if index2.to_i == 24
+				if index2.to_i == indexstart + 8
 					@fit_cts = lll[0]
 					@fit_fcn0 = lll[1]
 					@fit_fcn1 = lll[2]
@@ -106,36 +128,43 @@ class MultiOutput
 					@fit_iter1 = lll[6]
 				end
 				
-				if index2.to_i == 25
+				if index2.to_i == indexstart + 9
 					@galcoeff = lll[0]
 					@galcoeff_err = lll[1]
 				end
 				
-				if index2.to_i == 26
+				if index2.to_i == indexstart + 10
 					@galcoeffzero = lll[0]
 					@galcoeffzero_err = lll[1]
 				end
 				
-				if index2.to_i == 27
+				if index2.to_i == indexstart + 11
 					@isocoeff = lll[0]
 					@isocoeff_err = lll[1]
 				end
 				
-				if index2.to_i == 28
+				if index2.to_i == indexstart + 12
 					@isocoeffzero = lll[0]
 					@isocoeffzero_err = lll[1]
 				end
 				
-				if index2.to_i == 29
+				if index2.to_i == indexstart + 13
 					@tstart = lll[0]
 					@tstop = lll[1]
 					
 					@timestart_utc = @tstart
 					@timestop_utc = @tstop
-					@timestart_tt = datautils.time_utc_to_tt(@tstart);
-					@timestop_tt = datautils.time_utc_to_tt(@tstop);
-					@timestart_mjd = datautils.time_tt_to_mjd(@timestart_tt);
-					@timestop_mjd = datautils.time_tt_to_mjd(@timestop_tt);
+					if indexstart.to_i >= 16
+						@timestart_tt = lll[2]
+						@timestop_tt = lll[3]
+						@timestart_mjd = lll[4]
+						@timestop_mjd = lll[5]
+					else
+						@timestart_tt = datautils.time_utc_to_tt(@tstart);
+						@timestop_tt = datautils.time_utc_to_tt(@tstop);
+						@timestart_mjd = datautils.time_tt_to_mjd(@timestart_tt);
+						@timestop_mjd = datautils.time_tt_to_mjd(@timestop_tt);
+					end
 					
 					#calcolo fase orbitale
 					@orbitalphase = -1;
@@ -147,13 +176,34 @@ class MultiOutput
 					
 				end
 				
-				if index2.to_i == 30
+				if index2.to_i == indexstart + 14
 					@energyrange = lll[0]
 					@fovrange = lll[1]
 					@albedo = lll[2]
 					@binsize  = lll[3] 
 					@expstep  = lll[4]  
 					@phasecode = lll[5]  
+				end
+				
+				if index2.to_i == indexstart + 15
+					#[-1 step skipped, 0 ok, 1 errors]
+					@mlestep_1_ext1_res = lll[0].to_i
+					@mlestep_2_step1_res = lll[1].to_i
+					@mlestep_3_ext2_res = lll[2].to_i
+					@mlestep_4_step2_res = lll[3].to_i
+					@mlestep_5_contour_res = lll[4].to_i
+					@mlestep_6_index_res = lll[5].to_i
+					@mlestep_7_ul_res = lll[6].to_i
+				end
+				
+				if index2.to_i == indexstart + 16
+					@mlestep_1_ext1_cts = lll[0].to_i
+					@mlestep_2_step1_cts = lll[1].to_i
+					@mlestep_3_ext2_cts = lll[2].to_i
+					@mlestep_4_step2_cts = lll[3].to_i
+					@mlestep_5_contour_cts = lll[4].to_i
+					@mlestep_6_index_cts = lll[5].to_i
+					@mlestep_7_ul_cts = lll[6].to_i
 				end
 			end
 
@@ -266,6 +316,62 @@ class MultiOutput
 	def multiOutputLineShort4(flag, ring, dist)
 		multiOutputLineShort3(flag)
 		@multiOutputLineShort4 = @multiOutputLineShort3 + " RING " + ring.to_s + " " + dist.to_s;
+	end
+	
+	def mlestep_1_ext1_res
+		@mlestep_1_ext1_res
+	end
+	
+	def mlestep_2_step1_res
+		@mlestep_2_step1_res
+	end
+	
+	def mlestep_3_ext2_res
+		@mlestep_3_ext2_res
+	end
+	
+	def mlestep_4_step2_res
+		@mlestep_4_step2_res
+	end
+	
+	def mlestep_5_contour_res
+		@mlestep_5_contour_res
+	end
+	
+	def mlestep_6_index_res
+		@mlestep_6_index_res
+	end
+	
+	def mlestep_7_ul_res
+		@mlestep_7_ul_res
+	end
+	
+	def mlestep_1_ext1_cts
+		@mlestep_1_ext1_cts
+	end
+	
+	def mlestep_2_step1_cts
+		@mlestep_2_step1_cts
+	end
+	
+	def mlestep_3_ext2_cts
+		@mlestep_3_ext2_cts
+	end
+	
+	def mlestep_4_step2_cts
+		@mlestep_4_step2_cts
+	end
+	
+	def mlestep_5_contour_cts
+		@mlestep_5_contour_cts
+	end
+	
+	def mlestep_6_index_cts
+		@mlestep_6_index_cts
+	end
+	
+	def mlestep_7_ul_cts
+		@mlestep_7_ul_cts
 	end
 	
 	def calcorbitalphase_period

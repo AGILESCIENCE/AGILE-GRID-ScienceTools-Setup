@@ -406,6 +406,7 @@ TTree* plot_iterative_histo(TString filenameinput, int inputtype=1, double enabl
 		if(inputtype == 6) {
 			//NUMIT L B TS FLUX FLUXERR FLUXUL SPECTRAL_INDEX FIXFLAG MINTS R EXP CTS CTSERROR CTSUL TOTEXP TOTNCOUNTS FCN0 FCN1 EDM0 EDM1 ITER0 ITER1 GAL ISO
 			nlines = T->ReadFile(filenameinput, "SOURCE:L:B:TS:FLUX:FLUXERR:FLUXUL:INDEX:FIXFLAG:MINTS:R:EXP:CTS:CTSERR:CTSUL:TOTEXP:TOTNCOUNTS:FCN0:FCN1:EDM0:EDM1:ITER0:ITER1:GAL:ISO");
+			nlines = T->ReadFile(filenameinput, "SOURCE:L:B:TS:FLUX:FLUXERR:FLUXUL:INDEX:FIXFLAG:MINTS:R:EXP:CTS:CTSERR:CTSUL:TOTEXP:TOTNCOUNTS:FCN0:FCN1:EDM0:EDM1:ITER0:ITER1");
 			cout << "******************************************* " << endl;
 			cout << "SOURCE:L:B:TS:FLUX:FLUXERR:FLUXUL:INDEX:FIXFLAG:MINTS:R:EXP:CTS:CTSERR:CTSUL:TOTEXP:TOTNCOUNTS:FCN0:FCN1:EDM0:EDM1:ITER0:ITER1:GAL:ISO" << endl;
 			cout << "******************************************* " << endl;
@@ -468,7 +469,7 @@ TTree* plot_iterative_histo(TString filenameinput, int inputtype=1, double enabl
 		T->SetBranchAddress("ISO", &ISO);
 		T->SetBranchAddress("R", &R);
 	}
-	if(inputtype == 5) {
+	if(inputtype == 5 || inputtype == 6) {
 		T->SetBranchAddress("SOURCE", &SOURCE);
 		T->SetBranchAddress("L", &L);
 		T->SetBranchAddress("B", &B);
