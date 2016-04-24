@@ -298,13 +298,14 @@ if not (multiparam.to_s == "nop" || proj.to_s == "AIT")
 	#system(cmd)
 end
 
-if not (tsmapparam.to_s == "nop" || proj.to_s == "AIT")
+if not (tsmapparam.to_s == "nop")
+# || proj.to_s == "AIT"
 	cmd = "iterative5.rb " + filter + " MAP.maplist4 outfile=TSMAP_" + mle;
 	puts cmd
 	system (cmd)
 end
 
-#TODO TSMAP
+
 
 #send mail
 if mail.to_s != "" or mail != nil
@@ -350,6 +351,9 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 			puts cmd
 			system cmd
 			cmd = "cp MLE0000.ll " + pathalerts + "/" + analysisname + "_MLE0000.ll"
+			puts cmd
+			system cmd
+			cmd = "cp MLE0000.multi " + pathalerts + "/" + analysisname + "_MLE0000.multi"
 			puts cmd
 			system cmd
 			warningthrmin = 4
