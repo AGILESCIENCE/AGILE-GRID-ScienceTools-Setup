@@ -24,7 +24,7 @@ class Conf
 		@multiparam = ""
 		@tsmapparam = ""
 		@iddisp = ""
-		@dir_run_output = ""
+		@dir_analysis_output = ""
 		@mail = ""
 		@analysisname = ""
 		@ds91 = "" #default, none, 1 -1 3 B 2
@@ -38,9 +38,10 @@ class Conf
 		@binsize = 0.3
 
 		@queue = nil
-		@result_dir = nil
-		@result_dir_minSqrtTS = 0
-		@result_dir_sourcename = "all"
+		@load_build_command = "agile-B23"
+		@dir_analysis_result = nil
+		@dir_analysis_result_minSqrtTS = 0
+		@dir_analysis_result_sourcename = "all"
 		
 		if fnhyp0 != nil
 			f = File.new(fnhyp0 , "w")
@@ -55,16 +56,16 @@ class Conf
 		File.open(filenameconf).each_line do | line |
 			line = line.chomp
 			if index.to_i == 0
-				typeanalysis_and_result_dir = line
-				@typeanalysis = typeanalysis_and_result_dir.split(",")[0]
-				if typeanalysis_and_result_dir.split(",").size >= 2
-					@result_dir = typeanalysis_and_result_dir.split(",")[1]
+				typeanalysis_and_dir_analysis_result = line
+				@typeanalysis = typeanalysis_and_dir_analysis_result.split(",")[0]
+				if typeanalysis_and_dir_analysis_result.split(",").size >= 2
+					@dir_analysis_result = typeanalysis_and_dir_analysis_result.split(",")[1]
 				end
-				if typeanalysis_and_result_dir.split(",").size >= 3
-					@result_dir_minSqrtTS = typeanalysis_and_result_dir.split(",")[2]
+				if typeanalysis_and_dir_analysis_result.split(",").size >= 3
+					@dir_analysis_result_minSqrtTS = typeanalysis_and_dir_analysis_result.split(",")[2]
 				end
-				if typeanalysis_and_result_dir.split(",").size >= 4
-					@result_dir_sourcename = typeanalysis_and_result_dir.split(",")[3]
+				if typeanalysis_and_dir_analysis_result.split(",").size >= 4
+					@dir_analysis_result_sourcename = typeanalysis_and_dir_analysis_result.split(",")[3]
 				end
 			end
 
@@ -146,9 +147,12 @@ class Conf
 			end
 			if index.to_i == 23
 				user_and_queue = line
-				@dir_run_output = user_and_queue.split(",")[0]
-				if user_and_queue.split(",").size == 2
+				@dir_analysis_output = user_and_queue.split(",")[0]
+				if user_and_queue.split(",").size >= 2
 					@queue = user_and_queue.split(",")[1]
+				end
+				if user_and_queue.split(",").size >= 3
+					@load_build_command = user_and_queue.split(",")[2]
 				end
 			end
 			if index.to_i == 24
@@ -370,10 +374,10 @@ class Conf
 	
 	def copyresults(mle)
 		sourceexpr = ""
-		if @result_dir != nil
+		if @dir_analysis_result != nil
 		begin
-			#copia i risultati in result_dir
-			pathres = PATH_RES + "/" + @result_dir + "/"
+			#copia i risultati in dir_analysis_result
+			pathres = PATH_RES + "/" + @dir_analysis_result + "/"
 			system("mkdir -p " + pathres);
 			cmd = "cp " + mle + ".conf " + pathres + "/" + @analysisname + "_" + mle + ".conf"
 			puts cmd
@@ -383,16 +387,16 @@ class Conf
 			system cmd
 			#copy the results of .source
 			
-			if @result_dir_sourcename == "all"
+			if @dir_analysis_result_sourcename == "all"
 				sourceexpr = mle + "_*.source"
 			else
-				sourceexpr = mle + "_" + @result_dir_sourcename + ".source"
+				sourceexpr = mle + "_" + @dir_analysis_result_sourcename + ".source"
 			end
 					
 			Dir[sourceexpr].each do | file |
 					mo = MultiOutput.new
 					mo.readDataSingleSource(file)
-					if mo.sqrtTS.to_f >= @result_dir_minSqrtTS
+					if mo.sqrtTS.to_f >= @dir_analysis_result_minSqrtTS
 						puts file
 						system("cp " + file.to_s + " " + pathres + "/" + @analysisname + "_" + file);
 					end	
@@ -405,7 +409,7 @@ class Conf
 			end
 			
 		rescue
-			puts "error result_dir copy results"
+			puts "error dir_analysis_result copy results"
 		end		
 	end
 	end
@@ -483,8 +487,8 @@ class Conf
 		@iddisp
 	end
 	
-	def dir_run_output
-		@dir_run_output
+	def dir_analysis_output
+		@dir_analysis_output
 	end
 	
 	def mail
@@ -535,15 +539,19 @@ class Conf
 		@queue
 	end
 	
-	def result_dir
-		@result_dir
+	def load_build_command
+		@load_build_command
 	end
 	
-	def result_dir_minSqrtTS
-		@result_dir_minSqrtTS
+	def dir_analysis_result
+		@dir_analysis_result
 	end
 	
-	def result_dir_sourcename
-		@result_dir_sourcename
+	def dir_analysis_result_minSqrtTS
+		@dir_analysis_result_minSqrtTS
+	end
+	
+	def dir_analysis_result_sourcename
+		@dir_analysis_result_sourcename
 	end
 end

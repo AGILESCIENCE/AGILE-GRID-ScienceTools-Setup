@@ -2,7 +2,7 @@
 #0) config file name
 
 #The config file name has the following configuration
-#single (single analysis) - spot6 - single,result_dir,minSqrt(TS),sourcename (0)
+#single (single analysis) - spot6,dir_analysis_result,dir_analysis_result_minSqrtTS,dir_analysis_result_sourcename
 #filter_archive_matrix (1)
 #tstart (2)
 #tstop (3)
@@ -12,7 +12,7 @@
 #proj: AIT, ARC (7)
 #gal or -1 (8)
 #iso or -1 (9)
-#OP: map params (10)
+#OP: map params (10) skytype=X mapsize=Y binsize=Z eb=K1 dq=K2 ulcl loccl
 #OP: hypothesisgen_lowpriority = spotfinder | cat | nop params (11)
 #OP: hypothesisgen_mediumpriority = spotfinder | cat | nop params (12)
 #radius selection merger or 0 (13) 
@@ -25,9 +25,9 @@
 #reg file name (to be added to ds9 map generation)
 #detGIF (21) - the name of the source used to determina gal and iso parameter fixed (use [tstart-7days, tstart]) 
 #iddisp - for push notifications (22)
-#dir_run_output,queue (23) - diroutput = where the results are saved (under (ANALYSSI3)), queue (the queue of the cluster) is optional
+#dir_analysis_output,queue,load_build_command (23) - dir_analysis_output = where the results are saved (under (ANALYSSI3)), queue (the queue of the cluster, optional), load_build_command the command to load the environment (e.g. agile-B23-r5, optional)
 #email or none (24): the send e-mails with results
-#dir_analysis_output (25) (under diroutput): the name of the analysis. The analysis is saved in /ANALYSIS3/dir_run_output/proj_dir_analysis_output
+#dir_run_output (25) (under dir_analysis_output): the name of the analysis. 
 #comments or none (26)
 #use reg/con section: yes or no (27) or nop/reg/con (27). NB: yes=reg
 #----- (28)
@@ -43,7 +43,9 @@
 #NB: copy the catalogs (in .multi format) in ENV["AGILE"] + "/share/catalogs/"
 #
 #Save results
-#result_dir,minSqrt(TS),sourcename --> save results in result_dir (.source) with sqrt(TS) >= minSqrt(TS) and of a source named 'sourcename' or 'all'
+#The analysis is saved in /ANALYSIS3/dir_analysis_output/proj_dir_run_output
+#A selection of the analysis is saved using dir_analysis_result,dir_analysis_result_minSqrtTS,dir_analysis_result_sourcename --> save results in /ANALYSIS3/dir_analysis_result (save .source) with sqrt(TS) >= dir_analysis_result_minSqrtTS and of a source named 'sourcename' or 'all' (dir_analysis_result_sourcename)
+#For cluster: use queue
 
 #TODO
 #/scratch/prod/agile-B23/scripts/polygonfilter/polygonfilter_2.py -l 1 -b 2 -g MLE0000display.con.galactic TSMAPMLE0001.scanlist TSMAPMLE0001_filtered.scanlist
@@ -164,7 +166,7 @@ radmerger = conffile.radmerger
 multiparam = conffile.multiparam
 tsmapparam = conffile.tsmapparam
 iddisp = conffile.iddisp
-dir_run_output = conffile.dir_run_output
+dir_analysis_output = conffile.dir_analysis_output
 mail = conffile.mail
 analysisname = conffile.analysisname
 ds91 = conffile.ds91
@@ -177,9 +179,9 @@ comments = conffile.comments
 reg = conffile.reg
 binsize = conffile.binsize
 queue = conffile.queue
-result_dir = conffile.result_dir
-result_dir_minSqrtTS = conffile.result_dir_minSqrtTS
-result_dir_sourcename = conffile.result_dir_sourcename
+dir_analysis_result = conffile.dir_analysis_result
+dir_analysis_result_minSqrtTS = conffile.dir_analysis_result_minSqrtTS
+dir_analysis_result_sourcename = conffile.dir_analysis_result_sourcename
 
 l = l.to_f + 0.0001
 l = l.to_s
