@@ -1,5 +1,5 @@
 #! /usr/bin/ruby
-#0) file name input
+#0) file name input (.resfull)
 #1) file name output (optional): if specified, generate a multi file
 #2) min sqrt(ts)
 #3) color

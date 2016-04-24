@@ -303,6 +303,24 @@ if not (tsmapparam.to_s == "nop")
 	cmd = "iterative5.rb " + filter + " MAP.maplist4 outfile=TSMAP_" + mle;
 	puts cmd
 	system (cmd)
+	
+	if proj.to_s == "ARC"
+		conffile.plotjpgmap_arc("TSMAP_" + mle + ".lst_00.TS.fits.gz")
+		conffile.plotjpgmap_arc("TSMAP_" + mle + ".lst_00.flux.fits.gz")
+		conffile.plotjpgmap_arc("TSMAP_" + mle + ".lst_00.fluxul.fits.gz")
+		conffile.plotjpgmap_arc("TSMAP_" + mle + ".lst_00.ISO.fits.gz")
+		conffile.plotjpgmap_arc("TSMAP_" + mle + ".lst_00.GAL.fits.gz")
+		conffile.plotjpgmap_arc("TSMAP_" + mle + ".lst_00.GAS.fits.gz")
+	end
+	
+	if proj.to_s == "AIT"
+		conffile.plotjpgmap_ait("TSMAP_" + mle + ".lst_00.TS.fits.gz")
+		conffile.plotjpgmap_ait("TSMAP_" + mle + ".lst_00.flux.fits.gz")
+		conffile.plotjpgmap_ait("TSMAP_" + mle + ".lst_00.fluxul.fits.gz")
+		conffile.plotjpgmap_ait("TSMAP_" + mle + ".lst_00.ISO.fits.gz")
+		conffile.plotjpgmap_ait("TSMAP_" + mle + ".lst_00.GAL.fits.gz")
+		conffile.plotjpgmap_ait("TSMAP_" + mle + ".lst_00.GAS.fits.gz")
+	end
 end
 
 

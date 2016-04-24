@@ -229,6 +229,22 @@ class Conf
 		end
 	end
 	
+	def plotjpgmap_arc(map)
+		if File.exists?(map)
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + map + " " + map.split(".gz")[0] + " 1 -1 1 B all png 1400x1400 "
+			puts cmd
+			system(cmd)		
+		end	
+	end
+	
+	def plotjpgmap_ait(map)
+		if File.exists?(map)
+			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + map + " " + map.split(".gz")[0] + " 1 -1 1 B 2 png 1400x1000 ";
+			puts cmd
+			system(cmd)	
+		end
+	end
+	
 	def plotjpgcts1(mle, smooth)
 		if File.exists?(mle + ".multi.reg") 
 			Dir["*.cts.gz"].each do | file |
@@ -291,6 +307,8 @@ class Conf
 			end
 		end
 	end
+	
+	
 
 	def plotjpgcts2(mle, smooth)
 		if File.exists?(mle + ".multi.reg") 

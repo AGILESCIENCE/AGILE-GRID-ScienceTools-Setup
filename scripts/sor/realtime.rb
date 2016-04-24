@@ -321,6 +321,7 @@ begin
 						system("cp " + last02 + "/MLE000*.ctsall.png " + apppath + "lastait2.png")
 						system("cp " + last02 + "/orbit " + apppath + "lastait2.orb")
 						system("cp " + last02 + "/MLE000*.ctsall.png " + apppath + "public.png")
+						system("cp " + last02 + "/MLE000*.ctsall.png " + apppath + "public.jpg")
 						system("cp " + last02 + "/orbit " + apppath + "public.orb")
 					end
 					
