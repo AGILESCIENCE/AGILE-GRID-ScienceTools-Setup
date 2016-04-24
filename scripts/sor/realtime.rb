@@ -210,9 +210,9 @@ def genaitoffspot6(rttype)
 				falert.write(stringoutput);
 				stringoutput = "Img S2: " + basedirres + "MLE0000_MAP.cts2.png \n" 
 				falert.write(stringoutput);
-				stringoutput = "Img S2: " + basedirres + "MLE0000_MAP.ctsall.jpg \n" 
+				stringoutput = "Img S2: " + basedirres + "MLE0000_MAP.ctsall.png \n" 
 				falert.write(stringoutput);
-				stringoutput = "Img S2: " + basedirres + "MLE0000_MAP.intall.jpg \n" 
+				stringoutput = "Img S2: " + basedirres + "MLE0000_MAP.intall.png \n" 
 				falert.write(stringoutput);
 				
 				falert.write("\n")
@@ -318,30 +318,30 @@ begin
 					b02=Dir[abspath + "*RT02*/orbit"].sort()
 					if b02.size() > 1 
 						last02 = b02[b02.size() - 1].split("orbit")[0]
-						system("cp " + last02 + "/MLE000*.ctsall.jpg " + apppath + "lastait2.jpg")
+						system("cp " + last02 + "/MLE000*.ctsall.png " + apppath + "lastait2.png")
 						system("cp " + last02 + "/orbit " + apppath + "lastait2.orb")
-						system("cp " + last02 + "/MLE000*.ctsall.jpg " + apppath + "public.jpg")
+						system("cp " + last02 + "/MLE000*.ctsall.png " + apppath + "public.png")
 						system("cp " + last02 + "/orbit " + apppath + "public.orb")
 					end
 					
 					b01=Dir[abspath + "*RT01*/orbit"].sort()
 					if b01.size() > 1 
 						last01 = b01[b01.size() - 1].split("orbit")[0]
-						system("cp " + last01 + "/MLE000*.ctsall.jpg " + apppath + "lastait1.jpg")
+						system("cp " + last01 + "/MLE000*.ctsall.png " + apppath + "lastait1.png")
 						system("cp " + last01 + "/orbit " + apppath + "lastait1.orb")
 					end
 					
 					b04=Dir[abspath + "*RT04*/orbit"].sort()
 					if b04.size() > 1 
 						last04 = b04[b04.size() - 1].split("orbit")[0]
-						system("cp " + last04 + "/MLE000*.ctsall.jpg " + apppath + "lastait4.jpg")
+						system("cp " + last04 + "/MLE000*.ctsall.png " + apppath + "lastait4.png")
 						system("cp " + last04 + "/orbit " + apppath + "lastait4.orb")
 					end
 					
 					b07=Dir[abspath + "*RT07*/orbit"].sort()
 					if b07.size() > 1 
 						last07 = b07[b07.size() - 1].split("orbit")[0]
-						system("cp " + last07 + "/MLE000*.ctsall.jpg " + apppath + "lastait7.jpg")
+						system("cp " + last07 + "/MLE000*.ctsall.png " + apppath + "lastait7.png")
 						system("cp " + last07 + "/orbit " + apppath + "lastait7.orb")
 					end
 					
