@@ -2,8 +2,8 @@
 #0) config file name
 
 #The config file name has the following configuration
-#single (single analysis) - spot6,dir_analysis_result,dir_analysis_result_minSqrtTS,dir_analysis_result_sourcename
-#filter_archive_matrix (1)
+#single (single analysis) - spot6,dir_analysis_result,dir_analysis_result_minSqrtTS,dir_analysis_result_sourcename (0)
+#filter_archive_matrix, template_ID (1)
 #tstart (2)
 #tstop (3)
 #UTC, MJD, TT, CONTACT (4)

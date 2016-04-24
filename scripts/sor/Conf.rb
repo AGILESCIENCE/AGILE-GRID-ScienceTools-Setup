@@ -9,6 +9,7 @@ class Conf
 		@fndisplayreg = fndisplayreg
 		@typeanalysis = ""
 		@filter = ""
+		@template_id = nil
 		@tstart = ""
 		@tstop = ""
 		@timetype = ""
@@ -70,7 +71,11 @@ class Conf
 			end
 
 			if index.to_i == 1
-				@filter = line
+				filterstart = line
+				@filter = filterstart.split(",")[0]
+				if filterstart.split(",").size >= 2
+					@template_id = filterstart.split(",")[1]
+				end
 			end
 			if index.to_i == 2
 				@tstart = line
@@ -421,6 +426,10 @@ class Conf
 	
 	def filter
 		@filter
+	end
+	
+	def template_id
+		@template_id
 	end
 	
 	def smooth
