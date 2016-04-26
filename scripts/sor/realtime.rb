@@ -140,7 +140,7 @@ def runspot6(lastcontacttime, day, hours_shift, tstart, tstop)
 						out = coords.split(" ")[2].to_f.to_s + "\n"
 					end
 					if index.to_i == 7
-						out = coords.split(" ")[5].to_f.to_s + "\n"
+						out = coords.split(" ")[5].to_s + "\n"
 					end
 					if index.to_i == 10
 						out = line.chomp + " mapsize=" + coords.split(" ")[3].chomp + " binsize=" + coords.split(" ")[4].chomp + "\n"
