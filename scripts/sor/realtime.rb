@@ -50,7 +50,15 @@ def runait(lastcontacttime, day, hours_shift)
 		File.open(ENV["AGILE"] + "/scripts/sor/cards/ait_rt/aitoff_rt"+format("%02i", day)+".conf").each_line do | line |
 			out = line
 			if index.to_i == 1
-				out = line.split("_")[0] + "_" + ARCHIVE.to_s + "_" + line.split("_")[2]
+						out1 = line.split(",")[0]
+						
+						out = out1.split("_")[0] + "_" + ARCHIVE.to_s + "_" + out1.split("_")[2].chomp
+						if out1.size >= 2
+							out += ","
+							out += line.split(",")[1].chomp
+							
+						end
+						out += "\n"
 			end
 			if index.to_i == 2
 				out = tstart.to_i.to_s + "\n"
@@ -99,7 +107,15 @@ def runspot6(lastcontacttime, day, hours_shift, tstart, tstop)
 				File.open(file).each_line do | line |
 					out = line
 					if index.to_i == 1
-						out = line.split("_")[0] + "_" + ARCHIVE.to_s + "_" + line.split("_")[2]
+						out1 = line.split(",")[0]
+						
+						out = out1.split("_")[0] + "_" + ARCHIVE.to_s + "_" + out1.split("_")[2].chomp
+						if out1.size >= 2
+							out += ","
+							out += line.split(",")[1].chomp
+							
+						end
+						out += "\n"
 					end
 					if index.to_i == 2
 						out = tstart.to_i.to_s + "\n"
