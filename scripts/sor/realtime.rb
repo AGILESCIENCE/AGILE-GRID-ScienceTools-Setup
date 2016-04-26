@@ -53,11 +53,15 @@ def runait(lastcontacttime, day, hours_shift)
 						out1 = line.split(",")[0]
 						
 						out = out1.split("_")[0] + "_" + ARCHIVE.to_s + "_" + out1.split("_")[2].chomp
+						out += ","
 						if out1.size >= 2
-							out += ","
+							
 							out += line.split(",")[1].chomp
 							
+						else
+							out += "none"
 						end
+						out += ",ALLSKY"
 						out += "\n"
 			end
 			if index.to_i == 2
@@ -101,7 +105,7 @@ def runspot6(lastcontacttime, day, hours_shift, tstart, tstop)
 		Dir[ENV["AGILE"] + "/scripts/sor/cards/spot6/*.conf"].sort.each do | file |
 			indexring = 0;
 			File.open(ENV["AGILE"] + "/scripts/sor/cards/spot6/rings.coord").each_line do | coords |
-				outfileconf = "/tmp/spot6_" + format("%02i", day) + "_" + format("%02d", indexfile) + "_" + format("%02d", indexring) + ".conf";
+				outfileconf = "/tmp/spot6_" + format("%02i", day) + "_" + format("%02d", indexfile) + "_" + coords.split(" ")[0].chomp + ".conf";
 				fo = File.new(outfileconf, "w")
 				index = 0
 				File.open(file).each_line do | line |
@@ -110,11 +114,14 @@ def runspot6(lastcontacttime, day, hours_shift, tstart, tstop)
 						out1 = line.split(",")[0]
 						
 						out = out1.split("_")[0] + "_" + ARCHIVE.to_s + "_" + out1.split("_")[2].chomp
+						out += ","
 						if out1.size >= 2
-							out += ","
 							out += line.split(",")[1].chomp
-							
+						else
+							out += "none"
 						end
+						out += ","
+						out += coords.split(" ")[0].chomp
 						out += "\n"
 					end
 					if index.to_i == 2
@@ -127,10 +134,16 @@ def runspot6(lastcontacttime, day, hours_shift, tstart, tstop)
 						out = "TT\n"
 					end
 					if index.to_i == 5
-						out = coords.split(" ")[0].to_f.to_s + "\n"
+						out = coords.split(" ")[1].to_f.to_s + "\n"
 					end
 					if index.to_i == 6
-						out = coords.split(" ")[1].to_f.to_s + "\n"
+						out = coords.split(" ")[2].to_f.to_s + "\n"
+					end
+					if index.to_i == 7
+						out = coords.split(" ")[5].to_f.to_s + "\n"
+					end
+					if index.to_i == 10
+						out = line.chomp + " mapsize=" + coords.split(" ")[3].chomp + " binsize=" + coords.split(" ")[4].chomp + "\n"
 					end
 					if index.to_i == 25
 						out = line.chomp + format("%02i", day) + "_" + tstart.to_i.to_s + "_" +  tstop.to_i.to_s + "_" + format("RING%02d", indexring) + "\n"
