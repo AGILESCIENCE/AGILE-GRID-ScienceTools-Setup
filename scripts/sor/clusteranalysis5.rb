@@ -14,7 +14,7 @@ conffile = Conf.new
 conffile.process(filenameconf, nil, nil)
 rootbase = root
 
-basedir = root + "/" + conffile.dir_run_output + "/" + conffile.analysisname
+basedir = root + "/" + conffile.dir_analysis_output + "/" + conffile.analysisname
 
 if basedir == rootbase + "//"
 	puts "error in config file name"
