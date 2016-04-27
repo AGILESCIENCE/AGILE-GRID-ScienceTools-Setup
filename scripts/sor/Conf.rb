@@ -10,6 +10,7 @@ class Conf
 		@typeanalysis = ""
 		@filter = ""
 		@template_id = nil
+		@skyregion_id = nil
 		@tstart = ""
 		@tstop = ""
 		@timetype = ""
@@ -75,6 +76,9 @@ class Conf
 				@filter = filterstart.split(",")[0]
 				if filterstart.split(",").size >= 2
 					@template_id = filterstart.split(",")[1]
+				end
+				if filterstart.split(",").size >= 3
+					@skyregion_id = filterstart.split(",")[2]
 				end
 			end
 			if index.to_i == 2
@@ -430,6 +434,10 @@ class Conf
 	
 	def template_id
 		@template_id
+	end
+	
+	def skyregion_id
+		@skyregion_id
 	end
 	
 	def smooth
