@@ -105,6 +105,9 @@ def runspot6(lastcontacttime, day, hours_shift, tstart, tstop)
 		Dir[ENV["AGILE"] + "/scripts/sor/cards/spot6/*.conf"].sort.each do | file |
 			indexring = 0;
 			File.open(ENV["AGILE"] + "/scripts/sor/cards/spot6/rings.coord").each_line do | coords |
+				if coords.split(" ").size < 6
+                    next
+                end
 				outfileconf = "/tmp/spot6_" + format("%02i", day) + "_" + format("%02d", indexfile) + "_" + coords.split(" ")[0].chomp + ".conf";
 				fo = File.new(outfileconf, "w")
 				index = 0
