@@ -743,15 +743,19 @@ class Parameters
 			end
 			
 			#I0025: skyteype=4
-			if fconf[2] == "I0025" and @skytype.to_i != 4
-				puts "Error: only skytype=4 with IRF=I0025 is available. Set skytype=4"
-				@skytype = 4
+			if fconf[2] == "I0025" 
+				if @skytype.to_i != 4
+					puts "Error: only skytype=4 with IRF=I0025 is available. Set skytype=4"
+					@skytype = 4
+				end
 				@eboundaryIF = 400
 			end
 			
-			if fconf[2] == "H0025" and @skytype.to_i != 4
-				puts "Error: only skytype=4 with IRF=H0025 is available. Set skytype=4"
-				@skytype = 4
+			if fconf[2] == "H0025" 
+				if @skytype.to_i != 4
+					puts "Error: only skytype=4 with IRF=H0025 is available. Set skytype=4"
+					@skytype = 4
+				end
 				@eboundaryIF = 300
 			end
 			
