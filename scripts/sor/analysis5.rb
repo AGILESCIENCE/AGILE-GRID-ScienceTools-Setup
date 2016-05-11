@@ -25,9 +25,9 @@
 #reg file name (to be added to ds9 map generation)
 #detGIF (21) - the name of the source used to determina gal and iso parameter fixed (use [tstart-7days, tstart]) 
 #iddisp - for push notifications (22)
-#dir_analysis_output,queue,load_build_command (23) - dir_analysis_output = where the results are saved (under (ANALYSSI3)), queue (the queue of the cluster, optional), load_build_command the command to load the environment (e.g. agile-B23-r5, optional)
+#dir_run_output,queue,load_build_command (23) - dir_run_output = where the results are saved (under (ANALYSSI3)), queue (the queue of the cluster, optional), load_build_command the command to load the environment (e.g. agile-B23-r5, optional)
 #email or none (24): the send e-mails with results
-#dir_run_output (25) (under dir_analysis_output): the name of the analysis. 
+#dir_run_output (25) (under dir_run_output): the name of the analysis. 
 #comments or none (26)
 #use reg/con section: yes or no (27) or nop/reg/con (27). NB: yes=reg
 #----- (28)
@@ -43,7 +43,7 @@
 #NB: copy the catalogs (in .multi format) in ENV["AGILE"] + "/share/catalogs/"
 #
 #Save results
-#The analysis is saved in /ANALYSIS3/dir_analysis_output/proj_dir_run_output
+#The analysis is saved in /ANALYSIS3/dir_run_output/proj_dir_run_output
 #A selection of the analysis is saved using dir_analysis_result,dir_analysis_result_minSqrtTS,dir_analysis_result_sourcename --> save results in /ANALYSIS3/dir_analysis_result (save .source) with sqrt(TS) >= dir_analysis_result_minSqrtTS and of a source named 'sourcename' or 'all' (dir_analysis_result_sourcename)
 #For cluster: use queue
 
@@ -166,9 +166,9 @@ radmerger = conffile.radmerger
 multiparam = conffile.multiparam
 tsmapparam = conffile.tsmapparam
 iddisp = conffile.iddisp
-dir_analysis_output = conffile.dir_analysis_output
+dir_run_output = conffile.dir_run_output
 mail = conffile.mail
-analysisname = conffile.analysisname
+run_name = conffile.run_name
 ds91 = conffile.ds91
 ds92 = conffile.ds92
 ds93 = conffile.ds93
@@ -363,17 +363,17 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 	if typeanalysis == "spot6"
 		begin
 			
-			rttype = analysisname.split("_")[3]
+			rttype = run_name.split("_")[3]
 			pathalerts = PATH_RES + "/alerts/" + rttype + "_" + tstart.to_i.to_s + "_" + tstop.to_i.to_s;
 			#copy .conf
 			system("mkdir -p " + pathalerts);
-			cmd = "cp MLE0000.conf " + pathalerts + "/" + analysisname + "_MLE0000.conf"
+			cmd = "cp MLE0000.conf " + pathalerts + "/" + run_name + "_MLE0000.conf"
 			puts cmd
 			system cmd
-			cmd = "cp MLE0000.ll " + pathalerts + "/" + analysisname + "_MLE0000.ll"
+			cmd = "cp MLE0000.ll " + pathalerts + "/" + run_name + "_MLE0000.ll"
 			puts cmd
 			system cmd
-			cmd = "cp MLE0000.multi " + pathalerts + "/" + analysisname + "_MLE0000.multi"
+			cmd = "cp MLE0000.multi " + pathalerts + "/" + run_name + "_MLE0000.multi"
 			puts cmd
 			system cmd
 			warningthrmin = 4
@@ -405,7 +405,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 					#system("mkdir -p " + pathalerts);
 					
 					if Dir[pathalerts + "/*.source"].size() == 0
-						system("cp " + file.to_s + " " + pathalerts + "/" + pref + analysisname + "_" + file);
+						system("cp " + file.to_s + " " + pathalerts + "/" + pref + run_name + "_" + file);
 					else
 						snear = false
 						
@@ -418,14 +418,14 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 								snear = true
 								if  mo.sqrtTS.to_f > mo2.sqrtTS.to_f
 									#copy .source in the dir, appending the name of this dir
-									system("cp " + file.to_s + " " + pathalerts + "/" + pref + analysisname + "_" + file);
+									system("cp " + file.to_s + " " + pathalerts + "/" + pref + run_name + "_" + file);
 									system("rm " + fsource);
 									break
 								end
 							end
 						end
 						if snear == false
-							system("cp " + file.to_s + " " + pathalerts + "/" + pref + analysisname + "_" + file);
+							system("cp " + file.to_s + " " + pathalerts + "/" + pref + run_name + "_" + file);
 						end
 					end
 				end

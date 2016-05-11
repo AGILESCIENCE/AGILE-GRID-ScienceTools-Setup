@@ -231,6 +231,13 @@ class MultiOutput
 		
 	end
 	
+	def multiOutputLineFull4(flag)
+		multiOutputLineFull3(flag);
+		@multiOutputLineFull4 = @multiOutputLineFull3.chomp
+		@multiOutputLineFull4 = @multiOutputLineFull4 + @mlestep_res.chomp + " " + @mlestep_cts.chomp
+		
+	end
+	
 	def isnil(value)
 		if value == nil
 			@isnil = " "
@@ -684,12 +691,12 @@ class MultiOutputList
 			#puts name
 			multioutput = MultiOutput.new()
 			multioutput.readDataSingleSource(name)
-			f.write(multioutput.multiOutputLineFull3(flag) + "\n");
+			f.write(multioutput.multiOutputLineFull4(flag) + "\n"); #3 old, 4 new
 			if multioutput.fix.to_i >= 1
-				f1.write(multioutput.multiOutputLineFull3(flag) + "\n");
+				f1.write(multioutput.multiOutputLineFull4(flag) + "\n"); #3 old, 4 new
 			end
 			
-		    puts multioutput.multiOutputLineFull3(flag)
+		    #puts multioutput.multiOutputLineFull3(flag)
 			freg.write(multioutput.regline(thrsqrtts.to_f));
 			fhtml.write(multioutput.multiOutputLineFull3HTML(name, flag))
 			if multioutput.sqrtTS.to_f > 4.0

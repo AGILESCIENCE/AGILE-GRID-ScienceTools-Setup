@@ -26,9 +26,9 @@ class Conf
 		@multiparam = ""
 		@tsmapparam = ""
 		@iddisp = ""
-		@dir_analysis_output = ""
+		@dir_run_output = ""
 		@mail = ""
-		@analysisname = ""
+		@run_name = ""
 		@ds91 = "" #default, none, 1 -1 3 B 2
 		@ds92 = "" #default, none, 1 -1 3 B 2
 		@ds93 = "" #default, none, 1 -1 3 B 2
@@ -156,7 +156,7 @@ class Conf
 			end
 			if index.to_i == 23
 				user_and_queue = line
-				@dir_analysis_output = user_and_queue.split(",")[0]
+				@dir_run_output = user_and_queue.split(",")[0]
 				if user_and_queue.split(",").size >= 2
 					@queue = user_and_queue.split(",")[1]
 				end
@@ -168,12 +168,12 @@ class Conf
 				@mail = line
 			end
 			if index.to_i == 25
-				@analysisname =  line
+				@run_name =  line
 				if @proj.to_s == "AIT"
-					@analysisname = "AIT_" + @analysisname.to_s;
+					@run_name = "AIT_" + @run_name.to_s;
 				end
 				if @proj.to_s == "ARC"
-					@analysisname = "ARC_" + @analysisname.to_s
+					@run_name = "ARC_" + @run_name.to_s
 				end
 			end
 			if index.to_i == 26
@@ -388,10 +388,10 @@ class Conf
 			#copia i risultati in dir_analysis_result
 			pathres = PATH_RES + "/" + @dir_analysis_result + "/"
 			system("mkdir -p " + pathres);
-			cmd = "cp " + mle + ".conf " + pathres + "/" + @analysisname + "_" + mle + ".conf"
+			cmd = "cp " + mle + ".conf " + pathres + "/" + @run_name + "_" + mle + ".conf"
 			puts cmd
 			system cmd
-			cmd = "cp " + mle + ".ll " + pathres + "/" + @analysisname + "_" + mle + ".ll"
+			cmd = "cp " + mle + ".ll " + pathres + "/" + @run_name + "_" + mle + ".ll"
 			puts cmd
 			system cmd
 			#copy the results of .source
@@ -407,14 +407,14 @@ class Conf
 					mo.readDataSingleSource(file)
 					if mo.sqrtTS.to_f >= @dir_analysis_result_minSqrtTS
 						puts file
-						system("cp " + file.to_s + " " + pathres + "/" + @analysisname + "_" + file);
+						system("cp " + file.to_s + " " + pathres + "/" + @run_name + "_" + file);
 					end	
 			end
 			Dir[mle + "*.cts2.png"].each do | file |
-				system("cp " + file.to_s + " " + pathres + "/" + @analysisname + "_" + file);
+				system("cp " + file.to_s + " " + pathres + "/" + @run_name + "_" + file);
 			end
 			Dir[mle + "*.ctsall.png"].each do | file |
-				system("cp " + file.to_s + " " + pathres + "/" + @analysisname + "_" + file);
+				system("cp " + file.to_s + " " + pathres + "/" + @run_name + "_" + file);
 			end
 			
 		rescue
@@ -504,16 +504,16 @@ class Conf
 		@iddisp
 	end
 	
-	def dir_analysis_output
-		@dir_analysis_output
+	def dir_run_output
+		@dir_run_output
 	end
 	
 	def mail
 		@mail
 	end
 	
-	def analysisname
-		@analysisname
+	def run_name
+		@run_name
 	end
 	
 	def ds91

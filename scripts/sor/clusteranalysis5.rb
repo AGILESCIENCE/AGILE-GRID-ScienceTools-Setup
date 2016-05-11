@@ -14,7 +14,7 @@ conffile = Conf.new
 conffile.process(filenameconf, nil, nil)
 rootbase = root
 
-basedir = root + "/" + conffile.dir_analysis_output + "/" + conffile.analysisname
+basedir = root + "/" + conffile.dir_run_output + "/" + conffile.run_name
 
 if basedir == rootbase + "//"
 	puts "error in config file name"
@@ -59,7 +59,7 @@ if conffile.queue != nil
 else
 	f.write("\#\@ class    = large\n")
 end
-f.write("\#\@ job_name = sor4_" + conffile.analysisname + "\n")
+f.write("\#\@ job_name = sor4_" + conffile.run_name + "\n")
 
 #enable/disable send mail when the task is finished
 #f.write("\#\@ notify_user = " + conffile.mail + "\n")
