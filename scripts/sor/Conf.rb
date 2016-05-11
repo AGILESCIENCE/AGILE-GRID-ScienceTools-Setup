@@ -169,12 +169,12 @@ class Conf
 			end
 			if index.to_i == 25
 				@run_name =  line
-				if @proj.to_s == "AIT"
-					@run_name = "AIT_" + @run_name.to_s;
-				end
-				if @proj.to_s == "ARC"
-					@run_name = "ARC_" + @run_name.to_s
-				end
+				#if @proj.to_s == "AIT"
+				#	@run_name = "AIT_" + @run_name.to_s;
+				#end
+				#if @proj.to_s == "ARC"
+				#	@run_name = "ARC_" + @run_name.to_s
+				#end
 			end
 			if index.to_i == 26
 				@comments =  line
