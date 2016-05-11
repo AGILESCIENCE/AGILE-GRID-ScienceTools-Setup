@@ -364,81 +364,141 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 	conffile.plotjpgcts2(mle + ".step1", conffile.smooth)
 	
 	conffile.copyresults(mle)
-	
-	if analysis_name == "spot6"
-		begin
-			
-			rttype = run_name.split("_")[3]
-			pathalerts = PATH_RES + "/alerts/" + rttype + "_" + tstart.to_i.to_s + "_" + tstop.to_i.to_s;
-			#copy .conf
-			system("mkdir -p " + pathalerts);
-			cmd = "cp MLE0000.conf " + pathalerts + "/" + run_name + "_MLE0000.conf"
-			puts cmd
-			system cmd
-			cmd = "cp MLE0000.ll " + pathalerts + "/" + run_name + "_MLE0000.ll"
-			puts cmd
-			system cmd
-			cmd = "cp MLE0000.multi " + pathalerts + "/" + run_name + "_MLE0000.multi"
-			puts cmd
-			system cmd
-			warningthrmin = 4
-			alertthrmin_gal = 4.1
-			alertthrmin_egal = 5
-			Dir["MLE0000_*.source"].each do | file |
-				#rttype = file.split("_")[3]
-				mo = MultiOutput.new
-				mo.readDataSingleSource(file)
-				pref = "_="
-				if mo.sqrtTS.to_f > 3
-					#create a dir with the time
-				   	if mo.sqrtTS.to_f < warningthrmin.to_f 
-						pref = "_-"
-					end
-					if mo.b_peak.to_f > 5 or mo.b_peak.to_f < -5
-						if mo.sqrtTS.to_f > alertthrmin_egal.to_f
-							pref = "_+"
-						end
-					end
-					if mo.b_peak.to_f <= 5 and mo.b_peak.to_f >= -5
-						if mo.sqrtTS.to_f > alertthrmin_gal.to_f
-							pref = "_+"
-						end
-					end
-					
-					puts "prefix: " + pref + " " + mo.b_peak.to_s + " " + mo.sqrtTS.to_s
-					
-					#system("mkdir -p " + pathalerts);
-					
-					if Dir[pathalerts + "/*.source"].size() == 0
-						system("cp " + file.to_s + " " + pathalerts + "/" + pref + run_name + "_" + file);
-					else
-						snear = false
-						
-						puts "copy results"
-						Dir[pathalerts + "/*.source"].each do | fsource |
-							
-							mo2 = MultiOutput.new
-							mo2.readDataSingleSource(fsource)
-							if datautils.distance(mo2.l_peak, mo2.b_peak, mo.l_peak, mo.b_peak).to_f < 1 
-								snear = true
-								if  mo.sqrtTS.to_f > mo2.sqrtTS.to_f
-									#copy .source in the dir, appending the name of this dir
-									system("cp " + file.to_s + " " + pathalerts + "/" + pref + run_name + "_" + file);
-									system("rm " + fsource);
-									break
-								end
-							end
-						end
-						if snear == false
-							system("cp " + file.to_s + " " + pathalerts + "/" + pref + run_name + "_" + file);
-						end
+end
+
+if analysis_name == "spot6"
+	begin
+		rttype = run_name.split("_")[3]
+		pathalerts = PATH_RES + "/alerts/" + rttype + "_" + tstart.to_i.to_s + "_" + tstop.to_i.to_s;
+		#copy .conf
+		system("mkdir -p " + pathalerts);
+		cmd = "cp MLE0000.conf " + pathalerts + "/" + run_name + "_MLE0000.conf"
+		puts cmd
+		system cmd
+		cmd = "cp MLE0000.ll " + pathalerts + "/" + run_name + "_MLE0000.ll"
+		puts cmd
+		system cmd
+		cmd = "cp MLE0000.multi " + pathalerts + "/" + run_name + "_MLE0000.multi"
+		puts cmd
+		system cmd
+		warningthrmin = 4
+		alertthrmin_gal = 4.1
+		alertthrmin_egal = 5
+		Dir["MLE0000_*.source"].each do | file |
+			#rttype = file.split("_")[3]
+			mo = MultiOutput.new
+			mo.readDataSingleSource(file)
+			pref = "_="
+			if mo.sqrtTS.to_f > 3
+				#create a dir with the time
+				if mo.sqrtTS.to_f < warningthrmin.to_f 
+					pref = "_-"
+				end
+				if mo.b_peak.to_f > 5 or mo.b_peak.to_f < -5
+					if mo.sqrtTS.to_f > alertthrmin_egal.to_f
+						pref = "_+"
 					end
 				end
-			end			
-			
-		rescue
-			puts "error SPOT6 results"
-		end
+				if mo.b_peak.to_f <= 5 and mo.b_peak.to_f >= -5
+					if mo.sqrtTS.to_f > alertthrmin_gal.to_f
+						pref = "_+"
+					end
+				end
+				
+				puts "prefix: " + pref + " " + mo.b_peak.to_s + " " + mo.sqrtTS.to_s
+				
+				#system("mkdir -p " + pathalerts);
+				
+				if Dir[pathalerts + "/*.source"].size() == 0
+					system("cp " + file.to_s + " " + pathalerts + "/" + pref + run_name + "_" + file);
+				else
+					snear = false
+					
+					puts "copy results"
+					Dir[pathalerts + "/*.source"].each do | fsource |
+						
+						mo2 = MultiOutput.new
+						mo2.readDataSingleSource(fsource)
+						if datautils.distance(mo2.l_peak, mo2.b_peak, mo.l_peak, mo.b_peak).to_f < 1 
+							snear = true
+							if  mo.sqrtTS.to_f > mo2.sqrtTS.to_f
+								#copy .source in the dir, appending the name of this dir
+								system("cp " + file.to_s + " " + pathalerts + "/" + pref + run_name + "_" + file);
+								system("rm " + fsource);
+								break
+							end
+						end
+					end
+					if snear == false
+						system("cp " + file.to_s + " " + pathalerts + "/" + pref + run_name + "_" + file);
+					end
+				end
+			end
+		end			
+		
+	rescue
+		puts "error SPOT6 results"
+	end
+end
+
+if analysis_name != "single" and analysis_name != "spot6"
+	begin
+		pathanalysis = PATH_RES + "/" + conffile.dir_analysis_result + "/" + analysis_name;
+		#copy
+		system("mkdir -p " + pathalerts);
+		cmd = "cp MLE0000.conf " + pathanalysis + "/" + run_name + "_MLE0000.conf"
+		puts cmd
+		system cmd
+		cmd = "cp MLE0000.ll " + pathanalysis + "/" + run_name + "_MLE0000.ll"
+		puts cmd
+		system cmd
+		cmd = "cp MLE0000.multi " + pathanalysis + "/" + run_name + "_MLE0000.multi"
+		puts cmd
+		system cmd
+		cmd = "cp MLE0000_MAP.cts2.png " + pathanalysis + "/" + run_name + "_MLE0000.cts2.png"
+		puts cmd
+		system cmd
+		cmd = "cp MLE0000_MAP.ctsall.png " + pathanalysis + "/" + run_name + "_MLE0000.ctsall.png"
+		puts cmd
+		system cmd
+		cmd = "cp MLE0000_MAP.expall.png " + pathanalysis + "/" + run_name + "_MLE0000.expall.png"
+		puts cmd
+		system cmd
+		cmd = "cp MLE0000_MAP.intall.png " + pathanalysis + "/" + run_name + "_MLE0000.intall.png"
+		puts cmd
+		system cmd
+
+		if conf.analysis_result_sourcename != "nop"
+			cmd = "cp MLE0000_" + conf.analysis_result_sourcename + ".source " + pathanalysis + "/" + run_name + "_MLE0000_" + conf.analysis_result_sourcename + ".source"
+			puts cmd
+			system cmd
+			cmd = "cp MLE0000_" + conf.analysis_result_sourcename + ".source.reg " + pathanalysis + "/" + run_name + "_MLE0000_" + conf.analysis_result_sourcename + ".source.reg"
+			puts cmd
+			system cmd
+			cmd = "cp MLE0000_" + conf.analysis_result_sourcename + ".source.con " + pathanalysis + "/" + run_name + "_MLE0000_" + conf.analysis_result_sourcename + ".source.con"
+			puts cmd
+			system cmd
+		else
+			if conf.analysis_result_minSqrtTS.to_f > 0
+				Dir["MLE0000_*.source"].each do | file |
+					mo = MultiOutput.new
+					mo.readDataSingleSource(file)
+					if mo.sqrtTS.to_f > conf.analysis_result_minSqrtTS.to_f
+						cmd = "cp " + file + " " + pathanalysis + "/" + run_name + "_" + file
+						puts cmd
+						system cmd
+						cmd = "cp " + file + ".reg " + pathanalysis + "/" + run_name + "_" + file
+						puts cmd
+						system cmd
+						cmd = "cp " + file + ".con " + pathanalysis + "/" + run_name + "_" + file
+						puts cmd
+						system cmd
+					end
+				end
+			end	
+		end	
+	rescue
+		puts "error analysis results"
 	end
 end
 
