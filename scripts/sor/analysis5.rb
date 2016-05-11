@@ -1,8 +1,13 @@
 #! /usr/bin/ruby
 #0) config file name
 
+#/ANALYSIS3/dir_run_output/run_name/runid(.conf)
+#/ANALYSIS3/dir_analysis_result/analysis_name
+#FILTER_ARCHIVE_IRF
+#template_ID, skyregion_id
+
 #The config file name has the following configuration
-#single (single analysis) - spot6,dir_analysis_result,dir_analysis_result_minSqrtTS,dir_analysis_result_sourcename (0)
+#single (single analysis) - spot6 - analysis_name,dir_analysis_result,analysis_result_minSqrtTS,analysis_result_sourcename (0)
 #filter_archive_matrix, template_ID, skyregion_id (1)
 #tstart (2)
 #tstop (3)
@@ -25,9 +30,9 @@
 #reg file name (to be added to ds9 map generation)
 #detGIF (21) - the name of the source used to determina gal and iso parameter fixed (use [tstart-7days, tstart]) 
 #iddisp - for push notifications (22)
-#dir_run_output,queue,load_build_command (23) - dir_run_output = where the results are saved (under (ANALYSSI3)), queue (the queue of the cluster, optional), load_build_command the command to load the environment (e.g. agile-B23-r5, optional)
+#dir_run_output,queue,load_build_command (23) - dir_run_output = where the files of the run are saved (under (ANALYSSI3)), queue (the queue of the cluster, optional), load_build_command the command to load the environment (e.g. agile-B23-r5, optional)
 #email or none (24): the send e-mails with results
-#dir_run_output (25) (under dir_run_output): the name of the analysis. 
+#dir_run_output (25) (under dir_run_output): the name of the run. 
 #comments or none (26)
 #use reg/con section: yes or no (27) or nop/reg/con (27). NB: yes=reg
 #----- (28)
@@ -44,7 +49,7 @@
 #
 #Save results
 #The analysis is saved in /ANALYSIS3/dir_run_output/proj_dir_run_output
-#A selection of the analysis is saved using dir_analysis_result,dir_analysis_result_minSqrtTS,dir_analysis_result_sourcename --> save results in /ANALYSIS3/dir_analysis_result (save .source) with sqrt(TS) >= dir_analysis_result_minSqrtTS and of a source named 'sourcename' or 'all' (dir_analysis_result_sourcename)
+#A selection of the analysis is saved using dir_analysis_result,analysis_result_minSqrtTS,analysis_result_sourcename --> save results in /ANALYSIS3/dir_analysis_result (save .source) with sqrt(TS) >= analysis_result_minSqrtTS and of a source named 'sourcename' or 'all' (analysis_result_sourcename)
 #For cluster: use queue
 
 #TODO
@@ -149,7 +154,7 @@ fnhyp = mle+"hypothesis.multi"
 conffile = Conf.new
 
 conffile.process(filenameconf, fnhyp0, fndisplayreg)
-typeanalysis = conffile.typeanalysis
+analysis_name = conffile.analysis_name
 filter = conffile.filter
 tstart = conffile.tstart
 tstop = conffile.tstop
@@ -180,8 +185,8 @@ reg = conffile.reg
 binsize = conffile.binsize
 queue = conffile.queue
 dir_analysis_result = conffile.dir_analysis_result
-dir_analysis_result_minSqrtTS = conffile.dir_analysis_result_minSqrtTS
-dir_analysis_result_sourcename = conffile.dir_analysis_result_sourcename
+analysis_result_minSqrtTS = conffile.analysis_result_minSqrtTS
+analysis_result_sourcename = conffile.analysis_result_sourcename
 
 l = l.to_f + 0.0001
 l = l.to_s
@@ -360,7 +365,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 	
 	conffile.copyresults(mle)
 	
-	if typeanalysis == "spot6"
+	if analysis_name == "spot6"
 		begin
 			
 			rttype = run_name.split("_")[3]

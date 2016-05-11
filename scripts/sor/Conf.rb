@@ -7,7 +7,7 @@ class Conf
 	
 	def process(filenameconf, fnhyp0, fndisplayreg)
 		@fndisplayreg = fndisplayreg
-		@typeanalysis = ""
+		@analysis_name = ""
 		@filter = ""
 		@template_id = nil
 		@skyregion_id = nil
@@ -42,8 +42,8 @@ class Conf
 		@queue = nil
 		@load_build_command = "agile-B23"
 		@dir_analysis_result = nil
-		@dir_analysis_result_minSqrtTS = 0
-		@dir_analysis_result_sourcename = "all"
+		@analysis_result_minSqrtTS = 0
+		@analysis_result_sourcename = "all"
 		
 		if fnhyp0 != nil
 			f = File.new(fnhyp0 , "w")
@@ -58,16 +58,16 @@ class Conf
 		File.open(filenameconf).each_line do | line |
 			line = line.chomp
 			if index.to_i == 0
-				typeanalysis_and_dir_analysis_result = line
-				@typeanalysis = typeanalysis_and_dir_analysis_result.split(",")[0]
-				if typeanalysis_and_dir_analysis_result.split(",").size >= 2
-					@dir_analysis_result = typeanalysis_and_dir_analysis_result.split(",")[1]
+				analysis_name_and_dir_analysis_result = line
+				@analysis_name = analysis_name_and_dir_analysis_result.split(",")[0]
+				if analysis_name_and_dir_analysis_result.split(",").size >= 2
+					@dir_analysis_result = analysis_name_and_dir_analysis_result.split(",")[1]
 				end
-				if typeanalysis_and_dir_analysis_result.split(",").size >= 3
-					@dir_analysis_result_minSqrtTS = typeanalysis_and_dir_analysis_result.split(",")[2]
+				if analysis_name_and_dir_analysis_result.split(",").size >= 3
+					@analysis_result_minSqrtTS = analysis_name_and_dir_analysis_result.split(",")[2]
 				end
-				if typeanalysis_and_dir_analysis_result.split(",").size >= 4
-					@dir_analysis_result_sourcename = typeanalysis_and_dir_analysis_result.split(",")[3]
+				if analysis_name_and_dir_analysis_result.split(",").size >= 4
+					@analysis_result_sourcename = analysis_name_and_dir_analysis_result.split(",")[3]
 				end
 			end
 
@@ -396,16 +396,16 @@ class Conf
 			system cmd
 			#copy the results of .source
 			
-			if @dir_analysis_result_sourcename == "all"
+			if @analysis_result_sourcename == "all"
 				sourceexpr = mle + "_*.source"
 			else
-				sourceexpr = mle + "_" + @dir_analysis_result_sourcename + ".source"
+				sourceexpr = mle + "_" + @analysis_result_sourcename + ".source"
 			end
 					
 			Dir[sourceexpr].each do | file |
 					mo = MultiOutput.new
 					mo.readDataSingleSource(file)
-					if mo.sqrtTS.to_f >= @dir_analysis_result_minSqrtTS
+					if mo.sqrtTS.to_f >= @analysis_result_minSqrtTS
 						puts file
 						system("cp " + file.to_s + " " + pathres + "/" + @run_name + "_" + file);
 					end	
@@ -424,8 +424,8 @@ class Conf
 	end
 
 		
-	def typeanalysis
-		@typeanalysis
+	def analysis_name
+		@analysis_name
 	end
 	
 	def filter
@@ -564,11 +564,11 @@ class Conf
 		@dir_analysis_result
 	end
 	
-	def dir_analysis_result_minSqrtTS
-		@dir_analysis_result_minSqrtTS
+	def analysis_result_minSqrtTS
+		@analysis_result_minSqrtTS
 	end
 	
-	def dir_analysis_result_sourcename
-		@dir_analysis_result_sourcename
+	def analysis_result_sourcename
+		@analysis_result_sourcename
 	end
 end
