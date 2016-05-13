@@ -211,7 +211,7 @@ def genaitoffspot6(rttype)
 			cmd = "export DISPLAY=localhost:3.0; " + ENV["AGILE"] + "/scripts/sor/ds9.rb " + pathaitoffint +  " " + pathalerts + "/" + rttype + "spot6.intall 0 0.0010 7 B 2 png 1400x1000 " + existsFile(pathalerts + "/spot6.reg");
 			puts cmd
 			system(cmd)
-			system("cp " + pathalerts + "/" + rttype + "spot6.intall.png " + apppath + "lastaitspot6_"+rttype+".int.jpg")
+			system("cp " + pathalerts + "/" + rttype + "spot6.intall.png " + apppath + "lastaitspot6_"+rttype+".int.png")
 		end
 		
 		puts("send alerts + " + pathalerts + "/_+*")

@@ -43,7 +43,7 @@ class Conf
 		@load_build_command = "agile-B23"
 		@dir_analysis_result = nil
 		@analysis_result_minSqrtTS = 0
-		@analysis_result_sourcename = "all"
+		@analysis_result_sourcename = "nop"
 		
 		if fnhyp0 != nil
 			f = File.new(fnhyp0 , "w")
@@ -382,44 +382,71 @@ class Conf
 	end
 	
 	def copyresults(mle)
-		sourceexpr = ""
-		if @dir_analysis_result != nil
-		begin
-			#copia i risultati in dir_analysis_result
-			pathres = PATH_RES + "/" + @dir_analysis_result + "/"
-			system("mkdir -p " + pathres);
-			cmd = "cp " + mle + ".conf " + pathres + "/" + @run_name + "_" + mle + ".conf"
-			puts cmd
-			system cmd
-			cmd = "cp " + mle + ".ll " + pathres + "/" + @run_name + "_" + mle + ".ll"
-			puts cmd
-			system cmd
-			#copy the results of .source
-			
+	begin
+		pathanalysis = PATH_RES + "/" + @dir_analysis_result + "/" + @analysis_name;
+		#copy
+		system("mkdir -p " + pathalerts);
+		cmd = "cp " + mle + ".conf " + pathanalysis + "/" + @run_name + "_" + mle + ".conf"
+		puts cmd
+		system cmd
+		cmd = "cp " + mle + ".ll " + pathanalysis + "/" + @run_name + "_" + mle + ".ll"
+		puts cmd
+		system cmd
+		cmd = "cp " + mle + ".multi " + pathanalysis + "/" + @run_name + "_" + mle + ".multi"
+		puts cmd
+		system cmd
+		cmd = "cp " + mle + "_MAP.cts2.png " + pathanalysis + "/" + @run_name + "_" + mle + ".cts2.png"
+		puts cmd
+		system cmd
+		cmd = "cp " + mle + "_MAP.ctsall.png " + pathanalysis + "/" + @run_name + "_" + mle + ".ctsall.png"
+		puts cmd
+		system cmd
+		cmd = "cp " + mle + "_MAP.expall.png " + pathanalysis + "/" + @run_name + "_" + mle + ".expall.png"
+		puts cmd
+		system cmd
+		cmd = "cp " + mle + "_MAP.intall.png " + pathanalysis + "/" + @run_name + "_" + mle + ".intall.png"
+		puts cmd
+		system cmd
+
+		if @analysis_result_sourcename != "nop"
+		
+			sourceexpr = ""
 			if @analysis_result_sourcename == "all"
 				sourceexpr = mle + "_*.source"
 			else
 				sourceexpr = mle + "_" + @analysis_result_sourcename + ".source"
 			end
-					
-			Dir[sourceexpr].each do | file |
+		
+			cmd = "cp " + sourceexpr + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source"
+			puts cmd
+			system cmd
+			cmd = "cp " + sourceexpr + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source.reg"
+			puts cmd
+			system cmd
+			cmd = "cp " + sourceexpr + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source.con"
+			puts cmd
+			system cmd
+		else
+			if @analysis_result_minSqrtTS.to_f > 0
+				Dir[mle+"_*.source"].each do | file |
 					mo = MultiOutput.new
 					mo.readDataSingleSource(file)
-					if mo.sqrtTS.to_f >= @analysis_result_minSqrtTS
-						puts file
-						system("cp " + file.to_s + " " + pathres + "/" + @run_name + "_" + file);
-					end	
-			end
-			Dir[mle + "*.cts2.png"].each do | file |
-				system("cp " + file.to_s + " " + pathres + "/" + @run_name + "_" + file);
-			end
-			Dir[mle + "*.ctsall.png"].each do | file |
-				system("cp " + file.to_s + " " + pathres + "/" + @run_name + "_" + file);
-			end
-			
-		rescue
-			puts "error dir_analysis_result copy results"
-		end		
+					if mo.sqrtTS.to_f > @analysis_result_minSqrtTS.to_f
+						cmd = "cp " + file + " " + pathanalysis + "/" + @run_name + "_" + file
+						puts cmd
+						system cmd
+						cmd = "cp " + file + ".reg " + pathanalysis + "/" + @run_name + "_" + file
+						puts cmd
+						system cmd
+						cmd = "cp " + file + ".con " + pathanalysis + "/" + @run_name + "_" + file
+						puts cmd
+						system cmd
+					end
+				end
+			end	
+		end	
+	rescue
+		puts "error analysis results"
 	end
 	end
 

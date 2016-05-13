@@ -7,7 +7,7 @@
 #template_ID, skyregion_id
 
 #The config file name has the following configuration
-#single (single analysis) - spot6 - analysis_name,dir_analysis_result,analysis_result_minSqrtTS,analysis_result_sourcename (0)
+#single (single analysis) - spot6 - analysis_name,dir_analysis_result,analysis_result_minSqrtTS (default 0),analysis_result_sourcename (default nop) (0)
 #filter_archive_matrix, template_ID, skyregion_id (1)
 #tstart (2)
 #tstop (3)
@@ -32,7 +32,7 @@
 #iddisp - for push notifications (22)
 #dir_run_output,queue,load_build_command (23) - dir_run_output = where the files of the run are saved (under (ANALYSSI3)), queue (the queue of the cluster, optional), load_build_command the command to load the environment (e.g. agile-B23-r5, optional)
 #email or none (24): the send e-mails with results
-#dir_run_output (25) (under dir_run_output): the name of the run. 
+#run_name (25) (under dir_run_output): the name of the run. 
 #comments or none (26)
 #use reg/con section: yes or no (27) or nop/reg/con (27). NB: yes=reg
 #----- (28)
@@ -363,7 +363,7 @@ if proj.to_s == "ARC" and File.exists?(mle + ".reg") and File.exists?(mle + ".mu
 	
 	conffile.plotjpgcts2(mle + ".step1", conffile.smooth)
 	
-	conffile.copyresults(mle)
+	
 end
 
 if analysis_name == "spot6"
@@ -442,64 +442,7 @@ if analysis_name == "spot6"
 end
 
 if analysis_name != "single" and analysis_name != "spot6"
-	begin
-		pathanalysis = PATH_RES + "/" + conffile.dir_analysis_result + "/" + analysis_name;
-		#copy
-		system("mkdir -p " + pathalerts);
-		cmd = "cp MLE0000.conf " + pathanalysis + "/" + run_name + "_MLE0000.conf"
-		puts cmd
-		system cmd
-		cmd = "cp MLE0000.ll " + pathanalysis + "/" + run_name + "_MLE0000.ll"
-		puts cmd
-		system cmd
-		cmd = "cp MLE0000.multi " + pathanalysis + "/" + run_name + "_MLE0000.multi"
-		puts cmd
-		system cmd
-		cmd = "cp MLE0000_MAP.cts2.png " + pathanalysis + "/" + run_name + "_MLE0000.cts2.png"
-		puts cmd
-		system cmd
-		cmd = "cp MLE0000_MAP.ctsall.png " + pathanalysis + "/" + run_name + "_MLE0000.ctsall.png"
-		puts cmd
-		system cmd
-		cmd = "cp MLE0000_MAP.expall.png " + pathanalysis + "/" + run_name + "_MLE0000.expall.png"
-		puts cmd
-		system cmd
-		cmd = "cp MLE0000_MAP.intall.png " + pathanalysis + "/" + run_name + "_MLE0000.intall.png"
-		puts cmd
-		system cmd
-
-		if conf.analysis_result_sourcename != "nop"
-			cmd = "cp MLE0000_" + conf.analysis_result_sourcename + ".source " + pathanalysis + "/" + run_name + "_MLE0000_" + conf.analysis_result_sourcename + ".source"
-			puts cmd
-			system cmd
-			cmd = "cp MLE0000_" + conf.analysis_result_sourcename + ".source.reg " + pathanalysis + "/" + run_name + "_MLE0000_" + conf.analysis_result_sourcename + ".source.reg"
-			puts cmd
-			system cmd
-			cmd = "cp MLE0000_" + conf.analysis_result_sourcename + ".source.con " + pathanalysis + "/" + run_name + "_MLE0000_" + conf.analysis_result_sourcename + ".source.con"
-			puts cmd
-			system cmd
-		else
-			if conf.analysis_result_minSqrtTS.to_f > 0
-				Dir["MLE0000_*.source"].each do | file |
-					mo = MultiOutput.new
-					mo.readDataSingleSource(file)
-					if mo.sqrtTS.to_f > conf.analysis_result_minSqrtTS.to_f
-						cmd = "cp " + file + " " + pathanalysis + "/" + run_name + "_" + file
-						puts cmd
-						system cmd
-						cmd = "cp " + file + ".reg " + pathanalysis + "/" + run_name + "_" + file
-						puts cmd
-						system cmd
-						cmd = "cp " + file + ".con " + pathanalysis + "/" + run_name + "_" + file
-						puts cmd
-						system cmd
-					end
-				end
-			end	
-		end	
-	rescue
-		puts "error analysis results"
-	end
+	conffile.copyresults(mle)
 end
 
 
