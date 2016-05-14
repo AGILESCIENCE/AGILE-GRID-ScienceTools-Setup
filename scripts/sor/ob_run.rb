@@ -7,7 +7,7 @@
 load ENV["AGILE"] + "/scripts/sor/sorpaths.rb"
 load ENV["AGILE"] + "/scripts/conf.rb"
 
-if ARGV[0].to_s == "help" || ARGV[0] == nil
+if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
 	system("head -6 " + $0 );
 	exit;
 end

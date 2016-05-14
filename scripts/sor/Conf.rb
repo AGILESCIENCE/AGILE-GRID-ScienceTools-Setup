@@ -385,7 +385,7 @@ class Conf
 	begin
 		pathanalysis = PATH_RES + "/" + @dir_analysis_result + "/" + @analysis_name;
 		#copy
-		system("mkdir -p " + pathalerts);
+		system("mkdir -p " + pathanalysis);
 		cmd = "cp " + mle + ".conf " + pathanalysis + "/" + @run_name + "_" + mle + ".conf"
 		puts cmd
 		system cmd

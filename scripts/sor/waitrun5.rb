@@ -19,7 +19,8 @@ begin
                			puts cmd;
                			system(cmd)
                			sleep(1)
-               			system("rm /tmp/" + line);
+               			ll = line.split("/")
+               			system("rm /tmp/" + ll[ll.size-1]);
                		end
                	end
         #        sleep (10);
