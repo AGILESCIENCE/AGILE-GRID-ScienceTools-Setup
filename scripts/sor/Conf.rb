@@ -418,29 +418,33 @@ class Conf
 			end
 		
 			Dir[sourceexpr].each do | source |
-				cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source"
+				sname = source.split("/")
+				sname = sname[sname.size-1];
+				cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + sname + ".source"
 				puts cmd
 				system cmd
-				cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source.reg"
+				cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + sname + ".source.reg"
 				puts cmd
 				system cmd
-				cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source.con"
+				cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + sname + ".source.con"
 				puts cmd
 				system cmd
 			end
 		else
 			if @analysis_result_minSqrtTS.to_f > 0
-				Dir[mle+"_*.source"].each do | file |
+				Dir[mle+"_*.source"].each do | source |
 					mo = MultiOutput.new
-					mo.readDataSingleSource(file)
+					mo.readDataSingleSource(source)
 					if mo.sqrtTS.to_f > @analysis_result_minSqrtTS.to_f
-						cmd = "cp " + file + " " + pathanalysis + "/" + @run_name + "_" + file
+						sname = source.split("/")
+						sname = sname[sname.size-1];
+						cmd = "cp " + file + " " + pathanalysis + "/" + @run_name + "_" + sname
 						puts cmd
 						system cmd
-						cmd = "cp " + file + ".reg " + pathanalysis + "/" + @run_name + "_" + file
+						cmd = "cp " + file + ".reg " + pathanalysis + "/" + @run_name + "_" + sname
 						puts cmd
 						system cmd
-						cmd = "cp " + file + ".con " + pathanalysis + "/" + @run_name + "_" + file
+						cmd = "cp " + file + ".con " + pathanalysis + "/" + @run_name + "_" + sname
 						puts cmd
 						system cmd
 					end
