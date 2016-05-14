@@ -417,15 +417,17 @@ class Conf
 				sourceexpr = mle + "_" + @analysis_result_sourcename + ".source"
 			end
 		
-			cmd = "cp " + sourceexpr + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source"
-			puts cmd
-			system cmd
-			cmd = "cp " + sourceexpr + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source.reg"
-			puts cmd
-			system cmd
-			cmd = "cp " + sourceexpr + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source.con"
-			puts cmd
-			system cmd
+			Dir[sourceexpr].each do | source |
+				cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source"
+				puts cmd
+				system cmd
+				cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source.reg"
+				puts cmd
+				system cmd
+				cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + mle + "_" + @analysis_result_sourcename + ".source.con"
+				puts cmd
+				system cmd
+			end
 		else
 			if @analysis_result_minSqrtTS.to_f > 0
 				Dir[mle+"_*.source"].each do | file |
