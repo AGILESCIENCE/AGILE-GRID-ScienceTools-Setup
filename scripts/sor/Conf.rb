@@ -408,7 +408,7 @@ class Conf
 		puts cmd
 		system cmd
 
-		if @analysis_result_sourcename != "nop"
+		if @analysis_result_sourcename.to_s != "nop"
 		
 			sourceexpr = ""
 			if @analysis_result_sourcename == "all"
