@@ -1,56 +1,6 @@
 #! /usr/bin/ruby
 #0) config file name
 
-#/ANALYSIS3/dir_run_output/run_name/runid(.conf)
-#/ANALYSIS3/dir_analysis_result/analysis_name
-#FILTER_ARCHIVE_IRF
-#template_ID, skyregion_id
-
-#The config file name has the following configuration
-#single (single analysis) - spot6 - analysis_name,dir_analysis_result,analysis_result_minSqrtTS (default 0),analysis_result_sourcename (default nop) (0)
-#filter_archive_matrix, template_ID, skyregion_id (1)
-#tstart (2)
-#tstop (3)
-#UTC, MJD, TT, CONTACT (4)
-#l (5)
-#b (6)
-#proj: AIT, ARC (7)
-#gal or -1 (8)
-#iso or -1 (9)
-#OP: map params (10) skytype=X mapsize=Y binsize=Z eb=K1 dq=K2 ulcl loccl
-#OP: hypothesisgen_lowpriority = spotfinder | cat | nop params (11)
-#OP: hypothesisgen_mediumpriority = spotfinder | cat | nop params (12)
-#radius selection merger or 0 (13) 
-#OP: multi params (14)
-#OP: ts map mode (15) - nop or op (op=execute TS map generator)
-#ds9 = default, none, additional parameters (16) - ARC/AIT = cts
-#ds9 = default, none, additional parameters (17) - ARC/AIT = int
-#ds9 = default, none, additional parameters (18) - ARC/AIT = exp
-#ds9 = default, none, additional parameters (19) - ARC = cts2
-#reg file name (to be added to ds9 map generation)
-#detGIF (21) - the name of the source used to determina gal and iso parameter fixed (use [tstart-7days, tstart]) 
-#iddisp - for push notifications (22)
-#dir_run_output,queue,load_build_command (23) - dir_run_output = where the files of the run are saved (under (ANALYSSI3)), queue (the queue of the cluster, optional), load_build_command the command to load the environment (e.g. agile-B23-r5, optional)
-#email or none (24): the send e-mails with results
-#run_name (25) (under dir_run_output): the name of the run. 
-#comments or none (26)
-#use reg/con section: yes or no (27) or nop/reg/con (27). NB: yes=reg
-#----- (28)
-#multi list to be analyzed
-#-----
-#reg/con section
-#
-#Example
-# spotfinder 0 2 10 0.7 1 50 {1}
-# NB: l'ultimo parametro e' l'indice del file nel MAP.maplist4 usato per fare la ricerca degli spot.
-# Gli altri parametri sono quelli passato direttamente a spotfinder
-# cat cat2b_4.multi 15 0 20 0 30 0 0
-#NB: copy the catalogs (in .multi format) in ENV["AGILE"] + "/share/catalogs/"
-#
-#Save results
-#The analysis is saved in /ANALYSIS3/dir_run_output/proj_dir_run_output
-#A selection of the analysis is saved using dir_analysis_result,analysis_result_minSqrtTS,analysis_result_sourcename --> save results in /ANALYSIS3/dir_analysis_result (save .source) with sqrt(TS) >= analysis_result_minSqrtTS and of a source named 'sourcename' or 'all' (analysis_result_sourcename)
-#For cluster: use queue
 
 #TODO
 #/scratch/prod/agile-B23/scripts/polygonfilter/polygonfilter_2.py -l 1 -b 2 -g MLE0000display.con.galactic TSMAPMLE0001.scanlist TSMAPMLE0001_filtered.scanlist
@@ -99,13 +49,6 @@ def spotfinder(hypothesisgen, outfile, eb, mapsize)
 	system cmd
 end
 
-def existsFile(filename)
-	if File.exists?(filename)
-		return filename
-	else
-		return ""
-	end
-end
 
 
 datautils = DataUtils.new

@@ -683,6 +683,8 @@ class MultiOutputList
 		freg = File.new(dir + "/" + resname + ".reg", "w")
 		fhtml = File.new(dir + "/" + resname + ".html", "w")
 		fhtmlsel = File.new(dir + "/" + resname + ".sel.html", "w")
+		fob = File.new(dir + "/" + resname + ".ob", "w")
+		flc = File.new(dir + "/" + resname + ".lc", "w")
 		multioutput = MultiOutput.new()
 		fhtml.write(multioutput.multiOutputLineFull3HTMLheader(flag))
 		fhtmlsel.write(multioutput.multiOutputLineFull3HTMLheader(flag))
@@ -708,6 +710,8 @@ class MultiOutputList
 		freg.close();
 		fhtml.close();
 		fhtmlsel.close();
+		fob.close();
+		flc.close();
 	end
 	
 	def sources
