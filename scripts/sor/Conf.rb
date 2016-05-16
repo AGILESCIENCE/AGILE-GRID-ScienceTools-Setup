@@ -505,13 +505,13 @@ class Conf
 				if ccp == true
 					sname = source.split("/")
 					sname = sname[sname.size-1];
-					cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + sname + ".source"
+					cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + sname 
 					puts cmd
 					system cmd
-					cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + sname + ".source.reg"
+					cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + sname + ".reg"
 					puts cmd
 					system cmd
-					cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + sname + ".source.con"
+					cmd = "cp " + source + " " + pathanalysis + "/" + @run_name + "_" + sname + ".con"
 					puts cmd
 					system cmd
 				end
