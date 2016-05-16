@@ -491,13 +491,13 @@ class Conf
 						ccp = true;
 					end
 				end
-				if @analysis_result_userrorbox.to_f >= 0
+				if @analysis_result_useerrorbox.to_f >= 0
 					du = DataUtils.new
-					if du.distance(mo.l, mo.b, mo.startL, mo.startB) <= mo.r.to_f + @analysis_result_userrorbox.to_f
+					if du.distance(mo.l, mo.b, mo.startL, mo.startB) <= mo.r.to_f + @analysis_result_useerrorbox.to_f
 						ccp = true;
 					end
 				end
-				if @analysis_result_maxdistance_to_original_position.to_f < 0 and @analysis_result_userrorbox.to_f < 0
+				if @analysis_result_maxdistance_to_original_position.to_f < 0 and @analysis_result_useerrorbox.to_f < 0
 					ccp = true
 				end
 				#2) analysis_result_useerrorbox = original_position is within the error box (if present)
