@@ -15,7 +15,7 @@ begin
                	 		puts cmd
                 		system(cmd);
                 		file = line.split("/")[line.split("/").size-1]
-               			cmd = "cd /tmp; clusteranalysis5.rb " + file
+               			cmd = "cd /tmp; clusteranalysis.rb " + file
                			puts cmd;
                			system(cmd)
                			sleep(1)

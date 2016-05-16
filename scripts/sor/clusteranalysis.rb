@@ -68,7 +68,7 @@ f.write("\#\@ queue\n")
 
 f.write("date\n")
 f.write("module load " + conffile.load_build_command + "\n")
-f.write("analysis5.rb " + mle + ".conf" + "\n")
+f.write("analysis.rb " + mle + ".conf" + "\n")
 f.close()
 
 puts basedir
