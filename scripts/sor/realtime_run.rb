@@ -16,7 +16,7 @@ def runait(lastcontacttime, day, hours_shift)
 			lastprocessing2 = line.to_i
 		end
 	else
-		fout = File.new(bspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"", "w")
+		fout = File.new(abspath + "/commands/lastprocessing_aitoff_rt"+format("%02i", day)+"", "w")
 		fout.write(lastcontacttime.to_s + "\n")
 		fout.close();
 	end
@@ -323,10 +323,14 @@ begin
 					system("chmod -R g+w " + apppath);
         		end
         		
-        		cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_" + ARCHIVE + "/INDEX/EVT.index | tail -1 > " + PATH_RES + "/commands/lastorbit "
-        		puts cmd
-        		system(cmd)
+        		#cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_" + ARCHIVE + "/INDEX/EVT.index | tail -1 > " + PATH_RES + "/commands/lastorbit "
+        		#puts cmd
+        		#system(cmd)
         		lastcontacttime = 0
+        		
+        		#cmd = "sort --key=3 " + PATH_DATA + "/FM3.119_" + ARCHIVE + "/INDEX/EVT.index | head -1 > " + PATH_RES + "/commands/firstorbit "
+                #puts cmd
+                #system(cmd)
         		
         		File.open(PATH_RES + "/commands/lastorbit", "r").each_line do | line |
         			lastcontacttime = line.split(" ")[2].to_i
@@ -383,7 +387,7 @@ begin
 					
 					
                 rescue
-                	puts "error in file system"
+                	puts "warning: no file found"
                 end
                 
                 begin
@@ -392,7 +396,7 @@ begin
                 	genaitoffspot6("RT04")
                 	genaitoffspot6("RT07")
                 rescue
-                	puts "error in file system "
+                	puts "error or warning in file system "
                 end
                 
                 #copy images to agile.iasfbo.inaf.it

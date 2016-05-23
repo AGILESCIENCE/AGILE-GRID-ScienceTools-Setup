@@ -57,6 +57,8 @@ class Conf
 			
 	end
 	
+	attr_accessor :analysis_name
+	
 	def process(filenameconf, fnhyp0, fndisplayreg)
 		@fndisplayreg = fndisplayreg
 		@analysis_name = ""
@@ -92,7 +94,7 @@ class Conf
 		@binsize = 0.3
 
 		@queue = nil
-		@load_build_command = "agile-B23"
+		@load_build_command = MODULELOAD
 		@dir_analysis_result = nil
 		@analysis_result_minSqrtTS = 0
 		@analysis_result_sourcename = "all"
@@ -292,6 +294,11 @@ class Conf
 			fr.close()
 		end
 
+	end
+	
+	def setArchive()
+		out1 = @filter.split(",")[0]
+		@filter = out1.split("_")[0] + "_" + ARCHIVE.to_s + "_" + out1.split("_")[2].chomp
 	end
 	
 	def existsFile(filename)
@@ -522,52 +529,29 @@ class Conf
 		puts "error analysis results"
 	end
 	end
-
-		
-	def analysis_name
-		@analysis_name
-	end
 	
-	def filter
-		@filter
-	end
+	attr_accessor :filter
 	
-	def template_id
-		@template_id
-	end
+	attr_accessor :template_id
 	
-	def skyregion_id
-		@skyregion_id
-	end
+	attr_accessor :skyregion_id
 	
 	def smooth
 		@smooth
 	end
 	
-	def tstart
-		@tstart
-	end
+	attr_accessor :tstart
 	
-	def tstop
-		@tstop
-	end
+	attr_accessor :tstop
 	
-	def timetype
-		@timetype
-	end
+	attr_accessor :timetype
 	
-	def l
-		@l
-	end
+	attr_accessor :l
 	
-	def b
-		@b
-	end
+	attr_accessor :b
 	
-	def proj
-		@proj
-	end
-	
+	attr_accessor :proj
+		
 	def galcoeff
 		@galcoeff
 	end
@@ -600,22 +584,14 @@ class Conf
 		@tsmapparam
 	end
 	
-	def iddisp
-		@iddisp
-	end
+	attr_accessor :iddisp
 	
-	def dir_run_output
-		@dir_run_output
-	end
+	attr_accessor :dir_run_output
 	
-	def mail
-		@mail
-	end
+	attr_accessor :mail
 	
-	def run_name
-		@run_name
-	end
-	
+	attr_accessor :run_name
+		
 	def ds91
 		@ds91
 	end
@@ -652,31 +628,53 @@ class Conf
 		@binsize
 	end
 	
-	def queue
-		@queue
-	end
+	attr_accessor :queue
 	
-	def load_build_command
-		@load_build_command
-	end
+	attr_accessor :load_build_command
+		
+	attr_accessor :dir_analysis_result
 	
-	def dir_analysis_result
-		@dir_analysis_result
-	end
+	attr_accessor :analysis_result_minSqrtTS
+		
+	attr_accessor :analysis_result_sourcename
 	
-	def analysis_result_minSqrtTS
-		@analysis_result_minSqrtTS
-	end
+	attr_accessor :analysis_result_maxdistance_to_original_position
+		
+	attr_accessor :analysis_result_useerrorbox
 	
-	def analysis_result_sourcename
-		@analysis_result_sourcename
-	end
-	
-	def analysis_result_maxdistance_to_original_position
-		@analysis_result_maxdistance_to_original_position
-	end
-	
-	def analysis_result_useerrorbox
-		@analysis_result_useerrorbox
+	def write(filename)
+		fout = File.new(filename, "w")
+		fout.write(@analysis_name.to_s + "," + @dir_analysis_result.to_s + "," + @analysis_result_minSqrtTS.to_s + "," + @analysis_result_sourcename.to_s + "," + @analysis_result_maxdistance_to_original_position.to_s + "," + analysis_result_useerrorbox.to_s + "\n");
+		fout.write(@filter.to_s + "," + @template_id.to_s + "," + @skyregion_id.to_s + "\n")
+		fout.write(@tstart.to_s + "\n")		
+		fout.write(@tstop.to_s + "\n")	
+		fout.write(@timetype.to_s + "\n")
+		fout.write(@l.to_s + "\n")
+		fout.write(@b.to_s + "\n")
+		fout.write(@proj.to_s + "\n")
+		fout.write(@galcoeff.to_s + "\n")
+		fout.write(@isocoeff.to_s + "\n")
+		fout.write(@mapparam.to_s + "\n")
+		fout.write(@hypothesisgen1.to_s + "\n")
+		fout.write(@hypothesisgen2.to_s + "\n")
+		fout.write(@radmerger.to_s + "\n")
+		fout.write(@multiparam.to_s + "\n")
+		fout.write(@tsmapparam.to_s + "\n")
+		fout.write(@ds91.to_s + "\n")
+		fout.write(@ds92.to_s + "\n")
+		fout.write(@ds93.to_s + "\n")
+		fout.write(@ds94.to_s + "\n")
+		rname = regfile.split("/")
+		fout.write(rname[rname.size()-1].to_s + "\n")
+		fout.write(@detGIF.to_s + "\n")
+		fout.write(@iddisp.to_s + "\n")
+		fout.write(@dir_run_output.to_s + "," + @queue.to_s + "," + @load_build_command.to_s + "\n")
+		fout.write(@mail + "\n")
+		fout.write(@run_name + "\n")
+		fout.write(@comments + "\n")
+		fout.write(@reg + "\n")
+		fout.write("-----\n")
+		fout.write("-----\n")
+		fout.close();
 	end
 end
