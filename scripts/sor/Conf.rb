@@ -101,6 +101,8 @@ class Conf
 		@analysis_result_maxdistance_to_original_position = -1
 		@analysis_result_useerrorbox = -1
 		
+		@confregsection = ""
+		
 		if fnhyp0 != nil
 			f = File.new(fnhyp0 , "w")
 		else
@@ -628,6 +630,8 @@ class Conf
 		@binsize
 	end
 	
+	attr_accessor :confregsection
+	
 	attr_accessor :queue
 	
 	attr_accessor :load_build_command
@@ -675,6 +679,7 @@ class Conf
 		fout.write(@reg + "\n")
 		fout.write("-----\n")
 		fout.write("-----\n")
+		fout.write(@confregsection.to_s + "\n")
 		fout.close();
 	end
 end
