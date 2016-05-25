@@ -125,7 +125,7 @@ if region != ""
         command += " -region " + region.to_s + " ";
     end
     if region.include?(".con") == true
-        command += " -contour load " + region.to_s + " wcs fk5 yellow 2 yes"
+        command += " -contour load " + region.to_s + " wcs galactic yellow 2 yes"
     end
 end
 
@@ -134,7 +134,7 @@ if addregion.to_s != ""
         command += " -region " + addregion.to_s + " ";
     end
     if addregion.include?(".con") == true
-        command += " -contour load " + addregion.to_s + " wcs fk5 yellow 2 yes"
+        command += " -contour load " + addregion.to_s + " wcs galactic yellow 2 yes"
     end
 end
 
@@ -143,7 +143,7 @@ if addregion2.to_s != ""
         command += " -region " + addregion2.to_s + " ";
     end
     if addregion2.include?(".con") == true
-        command += " -contour load " + addregion2.to_s + " wcs fk5 yellow 2 yes"
+        command += " -contour load " + addregion2.to_s + " wcs galactic yellow 2 yes"
     end
 end
 
