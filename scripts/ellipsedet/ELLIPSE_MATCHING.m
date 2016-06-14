@@ -5,18 +5,24 @@ clear all
 close all
 clc
 
-fname1   = 'ABPH3_100_50000_FF7.ell';
-fname2   = '3FGL_FermiLAT.ell';
+arg_list = argv ();
 
-outfname = 'ABPH3_100_50000_FF7.assoc';
+fname1 = arg_list{1};
+fname2 = arg_list{2};
+outfname = arg_list{3};
+
+notincludedfilename = arg_list{4};
+includelistfilename = arg_list{5};
+errorlistfilename = arg_list{6};
+
 
 e1 = ellload(fname1);
 e2 = ellload(fname2);
 
 fid = fopen(outfname, 'w');
-fid2 = fopen('notincluded', 'w')
-fid3 = fopen('ABPH3_100_50000_FF7.includedlist', 'w')
-fid4 = fopen('errorlist', 'w')
+fid2 = fopen(notincludedfilename, 'w')
+fid3 = fopen(includelistfilename, 'w')
+fid4 = fopen(errorlistfilename, 'w')
 
 fprintf(fid, 'Match %s with %s\n', fname1, fname2)
 
