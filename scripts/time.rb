@@ -105,9 +105,9 @@ else
 
 	puts "TT " + tt1_A.to_s
 	puts "UTC " + utc1_A.to_s
-	puts "MJD " + format("%.3f", mjd1_A).to_s
+	puts "MJD " + format("%.7f", mjd1_A).to_s
 
-	puts tt1_A.to_s + " " + utc1_A.to_s + " " + format("%.2f", mjd1_A).to_s + " " + orbit.to_s
+	puts tt1_A.to_s + " " + utc1_A.to_s + " " + format("%.7f", mjd1_A).to_s + " " + orbit.to_s
 
 end
 
