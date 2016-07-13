@@ -1,6 +1,7 @@
 class Parameters
 	public
 		def initialize() 
+			@execap = 0
 			@filter = "FM3.119_ASDCe_" + TYPE_MATRIX
 			@listsourceextended = ""
 			@prefix=-1
@@ -148,6 +149,10 @@ class Parameters
 		
 		def seed
 			@seed
+		end
+		
+		def execap
+			@execap
 		end
 		
 		def outputtype
@@ -428,6 +433,7 @@ class Parameters
 				a = a + "flag=" + @flag.to_s + " "
 				a = a + "filter=" + @filter.to_s + " "
 				a = a + "dq=" + @dq.to_s + " "
+				a = a + "execap=" + @execap.to_s + " "
 				a = a + "gammaextractbin=" + @gammaextractbin.to_s + " "
 				a = a + "disablespotfinder=" + @disablespotfinder.to_s + " "
 				a = a + "makealikesingle=" + @makealikesingle.to_s + " "
@@ -511,6 +517,8 @@ class Parameters
 					@nruns = value;
 				when "dq"
 					@dq = value;
+				when "execap"
+					@execap = value;
 				when "filter"
 					@filter = value;
 				when "useEDPmatrixforEXP"
