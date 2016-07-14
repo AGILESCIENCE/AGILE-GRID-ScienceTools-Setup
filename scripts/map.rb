@@ -338,7 +338,6 @@ while time.to_f < tstop.to_f
 			createdmap = false
 		
 			#BUILD22
-			filtercode = 5 #TODO
 			lonpole = 180.0
 			
 			if parameters.execap.to_i == 0
@@ -348,7 +347,7 @@ while time.to_f < tstop.to_f
 					cmd = "cp " + PATH + "share/AG_ctsmapgen5.par . "
 					datautils.execute(prefix, cmd);
 				
-					cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_ctsmapgen5 " + cts2.to_s  + " " + indexfilter.to_s + " " + parameters.timelist.to_s  + "  " + parameters.mapsize.to_s + " " + parameters.binsize.to_s + " "  + l.to_s + " " + b.to_s + " " + lonpole.to_s + " " + " " + parameters.albedorad.to_s + " " + parameters.phasecode.to_s + " " + filtercode.to_s + " "  + parameters.proj.to_s + " "+ t0.to_s + " " + t1.to_s + " " + emin.to_s + " " + emax.to_s + " " + fovmin.to_s + " " + fovmax.to_s;
+					cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_ctsmapgen5 " + cts2.to_s  + " " + indexfilter.to_s + " " + parameters.timelist.to_s  + "  " + parameters.mapsize.to_s + " " + parameters.binsize.to_s + " "  + l.to_s + " " + b.to_s + " " + lonpole.to_s + " " + " " + parameters.albedorad.to_s + " " + parameters.phasecode.to_s + " " + parameters.filtercode.to_s + " "  + parameters.proj.to_s + " "+ t0.to_s + " " + t1.to_s + " " + emin.to_s + " " + emax.to_s + " " + fovmin.to_s + " " + fovmax.to_s;
 					datautils.execute(prefix, cmd);
 					createdmap = true
 					cmd = "rm ./AG_ctsmapgen5.par"
@@ -409,8 +408,7 @@ while time.to_f < tstop.to_f
 			else
 
 				# execute ap
-				listfile=prefixi.to_s + name + ".list"
-				timeslot = 3600
+				listfile=prefixi.to_s + name + ".ap"
 				sarmatrixfull = PATHMODEL + sarmatrix
 				edpmatrixfull = " None "
 				if parameters.useEDPmatrixforEXP.to_i == 1
@@ -421,7 +419,7 @@ while time.to_f < tstop.to_f
 				cmd = "export PFILES=.:$PFILES; "+PATH+"bin/AG_ap5 "+listfile+" "+indexlog.to_s+" "+indexfilter.to_s+" "+sarmatrixfull.to_s+" "+edpmatrixfull.to_s+" "+
 					  parameters.timelist.to_s+" "+parameters.binsize.to_s+" "+l.to_s+" "+b.to_s+" "+lonpole.to_s+" "+" "+parameters.albedorad.to_s+" 0.5 360.0 5.0 "+
 					  parameters.phasecode.to_s+" "+parameters.timestep.to_s+" "+parameters.spectralindex.to_s+" "+t0.to_s+" "+t1.to_s+" "+emin.to_s+" "+emax.to_s+" "+
-					  fovmin.to_s+" "+fovmax.to_s+" "+filtercode.to_s+" "+timeslot.to_s
+					  fovmin.to_s+" "+fovmax.to_s+" "+parameters.filtercode.to_s+" "+parameters.timeslot.to_s
 				datautils.execute(prefix, cmd);
 			end
 		
@@ -432,6 +430,7 @@ while time.to_f < tstop.to_f
 
 	if parameters.execap.to_i == 0
 		fconf4.close()
+	end
 end
 
 if parameters.makelc != nil

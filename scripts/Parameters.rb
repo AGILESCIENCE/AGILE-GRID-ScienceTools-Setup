@@ -2,6 +2,8 @@ class Parameters
 	public
 		def initialize() 
 			@execap = 0
+			@filtercode = 5
+			@timeslot = 100
 			@filter = "FM3.119_ASDCe_" + TYPE_MATRIX
 			@listsourceextended = ""
 			@prefix=-1
@@ -155,6 +157,14 @@ class Parameters
 			@execap
 		end
 		
+		def filtercode
+			@filtercode
+		end
+
+		def timeslot
+			@timeslot
+		end
+
 		def outputtype
 			@outputtype
 		end
@@ -434,6 +444,8 @@ class Parameters
 				a = a + "filter=" + @filter.to_s + " "
 				a = a + "dq=" + @dq.to_s + " "
 				a = a + "execap=" + @execap.to_s + " "
+				a = a + "filtercode=" + @filtercode.to_s + " "
+				a = a + "timeslot=" + @timeslot.to_s + " "
 				a = a + "gammaextractbin=" + @gammaextractbin.to_s + " "
 				a = a + "disablespotfinder=" + @disablespotfinder.to_s + " "
 				a = a + "makealikesingle=" + @makealikesingle.to_s + " "
@@ -519,6 +531,10 @@ class Parameters
 					@dq = value;
 				when "execap"
 					@execap = value;
+				when "filtercode"
+					@filtercode = value;
+				when "timeslot"
+					@timeslot = value;
 				when "filter"
 					@filter = value;
 				when "useEDPmatrixforEXP"
