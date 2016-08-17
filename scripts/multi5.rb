@@ -300,8 +300,8 @@ for i in 1..stepi
 			alikeutils.rewriteMultiInputWithSingleSourcenewFixFlag(newlistsource, newlistsource2, checksource_name, "1");
 			
 			#clean results
-			puts "rm " + newoutfile "*"
-			system("rm " + newoutfile "*")
+			puts "rm " + newoutfile + "*"
+			system("rm " + newoutfile + "*")
 			
 			if p.listsourceextended == ""
 	
