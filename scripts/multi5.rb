@@ -28,8 +28,8 @@
 #19) emax_sources, default 50000: energy min of the input .multi
 #20) listsourceextended
 #21) checksourceposition - default 0 = do not use, or specify the name of the source. if fixflag > 1, check the position of the source. If the position of the source is too far, set fixflag=1 and recalculate the result. The parameters are the following:
-- name of the source
-- max distance wrt the initial position
+#- name of the source
+#- max distance wrt the initial position
 
 # MAPLIST
 #Each line contains a set of maps:
