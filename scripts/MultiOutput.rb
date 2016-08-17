@@ -234,7 +234,7 @@ class MultiOutput
 	def multiOutputLineFull4(flag)
 		multiOutputLineFull3(flag);
 		@multiOutputLineFull4 = @multiOutputLineFull3.chomp
-		@multiOutputLineFull4 = @multiOutputLineFull4 + @mlestep_res.chomp + " " + @mlestep_cts.chomp
+		@multiOutputLineFull4 = @multiOutputLineFull4 + " " + @mlestep_res.chomp + " " + @mlestep_cts.chomp
 		
 	end
 	
