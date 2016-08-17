@@ -27,6 +27,9 @@
 #18) emin_sources, default 100: energy min of the input .multi
 #19) emax_sources, default 50000: energy min of the input .multi
 #20) listsourceextended
+#21) checksourceposition - default 0 = do not use, or specify the name of the source. if fixflag > 1, check the position of the source. If the position of the source is too far, set fixflag=1 and recalculate the result. The parameters are the following:
+- name of the source
+- max distance wrt the initial position
 
 # MAPLIST
 #Each line contains a set of maps:
@@ -110,7 +113,7 @@ end
 puts "MAPS: emin " + emin_sin.to_s + " emax " + emax_sin.to_s
 
 #if different from default energy range of input source list, generate a new sourcelist with the energy range of the input maps
-if(emin_sin != p.emin_sources or emax_sin != p.emax_sources)
+if(emin_sin.to_f != p.emin_sources.to_f or emax_sin.to_f != p.emax_sources.to_f)
 	puts "change the flux"
 	listsourceold = listsource
 	listsource = format("en_%05d_%05d_", emin_sin, emax_sin) + listsource 
@@ -283,6 +286,33 @@ for i in 1..stepi
 		
 		cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5ext " + inputfilemaps.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource.to_s + " " + p.listsourceextended.to_s + " " + newoutfile + " " + ulcl.to_s + " " + loccl.to_s;
 		
+	end
+	
+	if p.checksourceposition != nil
+		checksource_name = p.checksourceposition.split(",")[0]
+		checksource_maxR = p.checksourceposition.split(",")[1]
+		multioutput.readDataSingleSource2(newoutfile, checksource_name);
+		
+		#check if ff>1 and check if too far
+		if multioutput.fix.to_i > 1 and multioutput.dist.to_f > checksource_maxR.to_f
+			#repeat analysis
+			newlistsource2 = "far." + newlistsource.to_s
+			alikeutils.rewriteMultiInputWithSingleSourcenewFixFlag(newlistsource, newlistsource2, checksource_name, "1");
+			
+			#clean results
+			puts "rm " + newoutfile "*"
+			system("rm " + newoutfile "*")
+			
+			if p.listsourceextended == ""
+	
+				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5 " + inputfilemaps.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource2.to_s + "  " + newoutfile + " " + ulcl.to_s + " " + loccl.to_s;
+	
+			else
+		
+				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5ext " + inputfilemaps.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource2.to_s + " " + p.listsourceextended.to_s + " " + newoutfile + " " + ulcl.to_s + " " + loccl.to_s;
+		
+			end
+		end
 	end
 
 	#ablitazione del token

@@ -1,6 +1,7 @@
 class Parameters
 	public
 		def initialize() 
+			@checksourceposition = nil
 			@execap = 0
 			@filter = "FM3.119_ASDCe_" + TYPE_MATRIX
 			@listsourceextended = ""
@@ -89,6 +90,10 @@ class Parameters
 					@phasecode = 18 #POIN
 				end
 			end
+		end
+		
+		def checksourceposition
+			@checksourceposition
 		end
 		
 		def skytype
@@ -426,6 +431,9 @@ class Parameters
 				if @timelist != nil
 					a = a + "timelist=" + @timelist.to_s + " "
 				end
+				if @checksourceposition != nil
+					a = a + "checksourceposition=" + @checksourceposition + " "
+				end
 				a = a + "enablespotfinder=" + @enablespotfinder.to_s + " "
 				a = a + "prefix=" + @prefix.to_s + " "
 				a = a + "useEDPmatrixforEXP=" + @useEDPmatrixforEXP + " "
@@ -507,6 +515,8 @@ class Parameters
 			value = argv.split("=")[1];
 			puts keyw.to_s + " " + value.to_s
 			case keyw
+				when "checksourceposition"
+					@checksourceposition = value;
 				when "outputtype"
 					@outputtype = value;
 				when "listsourceextended"

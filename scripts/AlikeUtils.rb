@@ -45,6 +45,25 @@ class AlikeUtils
 			fout.close()
 		end
 		
+		def rewriteMultiInputWithSingleSourcenewFixFlag(multifileinput, multifileoutput, sourcename, fixflag)
+			fout = File.new(multifileoutput, "w")
+			File.open(multifileinput).each_line do | line |
+				ll = line.split(" ")
+				fixflagw  = ll[4].to_s
+				if ll[6].to_s == sourcename.to_s
+					fixflagw = fixflag
+				end
+				fout.write(ll[0].to_s + " " + ll[1].to_s + " " + ll[2].to_s + " " + ll[3].to_s + " " + fixflagw.to_s + " " + ll[5].to_s + " " + ll[6].to_s)
+				if ll.size == 8
+					fout.write(" " + ll[7].to_s + "\n")
+				else
+					fout.write("\n")
+				end
+				
+			end
+			fout.close()
+		end
+		
 		def rewriteMaplist(oldmaplist, newmaplist, galcoeff, isocoeff)
 			nmaps = 0
 			File.open(oldmaplist).each_line do | line |
