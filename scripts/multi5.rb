@@ -288,6 +288,8 @@ for i in 1..stepi
 		
 	end
 	
+	datautils.execute(outfile2, cmd)
+	
 	if p.checksourceposition != nil
 		checksource_name = p.checksourceposition.split(",")[0]
 		checksource_maxR = p.checksourceposition.split(",")[1]
@@ -300,8 +302,9 @@ for i in 1..stepi
 			alikeutils.rewriteMultiInputWithSingleSourcenewFixFlag(newlistsource, newlistsource2, checksource_name, "1");
 			
 			#clean results
-			puts "rm " + newoutfile + "*"
-			system("rm " + newoutfile + "*")
+			puts "rm " + newoutfile + ".res* *.source"
+            system("rm " + newoutfile + ".res*")
+            system("rm " + newoutfile + "*.source*")
 			
 			if p.listsourceextended == ""
 	
