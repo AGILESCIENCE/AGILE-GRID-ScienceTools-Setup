@@ -419,7 +419,7 @@ while time.to_f < tstop.to_f
 				cmd = "cp " + PATH + "share/AG_ap5.par . "
 				datautils.execute(prefix, cmd);
 				cmd = "export PFILES=.:$PFILES; "+PATH+"bin/AG_ap5 "+listfile+" "+indexlog.to_s+" "+indexfilter.to_s+" "+sarmatrixfull.to_s+" "+edpmatrixfull.to_s+" "+
-					  parameters.timelist.to_s+" "+parameters.ranal.to_s+" "+l.to_s+" "+b.to_s+" "+lonpole.to_s+" "+" "+parameters.albedorad.to_s+" 0.5 360.0 5.0 "+
+					  parameters.timelist.to_s+" "+(parameters.ranal.to_f * 2.0).to_s+" "+l.to_s+" "+b.to_s+" "+lonpole.to_s+" "+" "+parameters.albedorad.to_s+" 0.5 360.0 5.0 "+
 					  parameters.phasecode.to_s+" "+parameters.timestep.to_s+" "+parameters.spectralindex.to_s+" "+t0.to_s+" "+t1.to_s+" "+emin.to_s+" "+emax.to_s+" "+
 					  fovmin.to_s+" "+fovmax.to_s+" "+parameters.filtercode.to_s+" "+parameters.timeslot.to_s
 				datautils.execute(prefix, cmd);
