@@ -53,6 +53,7 @@
 #30) dq: data quality, default 0. dq = 1 -> albedorad=80,fovradmax=60. dq = 2 -> albedorad=80,fovradmax=50. dq = 3 -> albedorad=90,fovradmax=60. dq = 4 -> albedorad=90,fovradmax=50. dq=0 use standard albedorad and fovradmax
 #31) execap, AP: exec aperture photometry (default 0) 
 #32) timeslot, AP: timeslot for aperture photometry
+#33) ranal, AP: radius of analysis to extract event, for aperture photometry
 
 #Lo script crea le mappe mancanti, e se ne crea almeno uno aggiunge la corrispondente riga nel .maplitsX. Attenzione quindi alle duplicazioni
 
@@ -68,7 +69,7 @@ datautils = DataUtils.new
 parameters = Parameters.new
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -64 " + $0 );
+	system("head -65 " + $0 );
 	exit;
 end
 
@@ -418,7 +419,7 @@ while time.to_f < tstop.to_f
 				cmd = "cp " + PATH + "share/AG_ap5.par . "
 				datautils.execute(prefix, cmd);
 				cmd = "export PFILES=.:$PFILES; "+PATH+"bin/AG_ap5 "+listfile+" "+indexlog.to_s+" "+indexfilter.to_s+" "+sarmatrixfull.to_s+" "+edpmatrixfull.to_s+" "+
-					  parameters.timelist.to_s+" "+parameters.binsize.to_s+" "+l.to_s+" "+b.to_s+" "+lonpole.to_s+" "+" "+parameters.albedorad.to_s+" 0.5 360.0 5.0 "+
+					  parameters.timelist.to_s+" "+parameters.ranal.to_s+" "+l.to_s+" "+b.to_s+" "+lonpole.to_s+" "+" "+parameters.albedorad.to_s+" 0.5 360.0 5.0 "+
 					  parameters.phasecode.to_s+" "+parameters.timestep.to_s+" "+parameters.spectralindex.to_s+" "+t0.to_s+" "+t1.to_s+" "+emin.to_s+" "+emax.to_s+" "+
 					  fovmin.to_s+" "+fovmax.to_s+" "+parameters.filtercode.to_s+" "+parameters.timeslot.to_s
 				datautils.execute(prefix, cmd);
