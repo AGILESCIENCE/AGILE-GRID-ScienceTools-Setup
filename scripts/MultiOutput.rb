@@ -731,16 +731,16 @@ class MultiOutputList
 			if multioutput.sqrtTS.to_f < 3
 				flux = multioutput.flux_ul
 				fluxerror = "0"
-				fluxtype = "1"
+				fluxtype = "0"
 			else
 				flux = multioutput.flux
 				fluxerror = multioutput.flux_error
-				fluxtype = "0"
+				fluxtype = "1"
 			end
 			mjdsize = multioutput.timestop_mjd.to_f - multioutput.timestart_mjd.to_f
 			mjdcenter = multioutput.timestart_mjd.to_f + mjdsize.to_f / 2.0
 			#calculate distance between lpointing, bpointing to l, b. NOW is -1
-			flc.write(format("%.2E",flux.to_s) + " " + format("%.2E", fluxerror.to_s)  + " " + fluxtype.to_s  + " " + format("%.7f", mjdcenter.to_s)  + " " + mjdsize.to_s + " " + distpointcalc.to_s + " " + runname + " " +  format("%.2f", multioutput.sqrtTS.to_s) + " " + format("%.2E", multioutput.exposure.to_s) + " " + multioutput.galcoeff.chomp.to_s + " " + multioutput.isocoeff.chomp.to_s + " " + multioutput.dist.to_s + " ( " + multioutput.fullellipseline  + " )\n");
+			flc.write(format("%.2E",flux.to_s) + " " + format("%.2E", fluxerror.to_s)  + " " + fluxtype.to_s  + " " + format("%.7f", mjdcenter.to_s)  + " " + mjdsize.to_s + " " + distpointcalc.to_s + " " + runname + " " +  format("%.2f", multioutput.sqrtTS.to_s) + " " + format("%.2E", multioutput.exposure.to_s) + " " + multioutput.galcoeff.chomp.to_s + " " + multioutput.isocoeff.chomp.to_s + " " + format("%.7f", multioutput.timestart_mjd.to_s) + " " + format("%.7f", multioutput.timestop_mjd.to_s) + " " + format("%.2f", multioutput.timestart_tt.to_s) + " " + format("%.2f", multioutput.timestop_tt.to_s) + " " + format("%.3f", multioutput.dist.to_s) + " ( " + multioutput.fullellipseline  + " )\n");
 		end
 		f.close();
 		f1.close();
