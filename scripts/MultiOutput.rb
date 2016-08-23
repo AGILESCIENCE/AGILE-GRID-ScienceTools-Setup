@@ -711,13 +711,13 @@ class MultiOutputList
 			runname = rn[rn.size - 1]
 			distpoint = " -1 -1 "
 			distpointcalc = -1
-			if multioutput.timestop_tt.to_f < 178804734
+			if multioutput.timestop_tt.to_f < 182692800
 				File.open(ENV["AGILE"] + "/scripts/AGILEPOINTING").each_line do | linetime |
 					ll = linetime.split(" ")
 					if multioutput.timestop_tt.to_f > ll[0].to_f and multioutput.timestop_tt.to_f <= ll[1].to_f
 						distpoint = ll[2].to_s + " " + ll[3].to_s + " "
 						du = DataUtils.new
-						distpointcalc = du.distance(multioutput.l_peak, multioutput.b_preak, ll[2].to_f, ll[3].to_f)
+						distpointcalc = du.distance(multioutput.l_peak, multioutput.b_peak, ll[2].to_f, ll[3].to_f)
 					end
 				end
 			end
