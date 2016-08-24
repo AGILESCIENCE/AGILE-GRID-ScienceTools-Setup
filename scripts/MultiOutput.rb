@@ -712,12 +712,12 @@ class MultiOutputList
 			distpoint = " -1 -1 "
 			distpointcalc = -1
 			if multioutput.timestop_tt.to_f < 182692800
-				File.open(ENV["AGILE"] + "/scripts/AGILEPOINTING").each_line do | linetime |
+				File.open(ENV["AGILE"] + "/scripts/AGILEOBPOINT.list").each_line do | linetime |
 					ll = linetime.split(" ")
-					if multioutput.timestop_tt.to_f > ll[0].to_f and multioutput.timestop_tt.to_f <= ll[1].to_f
-						distpoint = ll[2].to_s + " " + ll[3].to_s + " "
+					if multioutput.timestop_tt.to_f >= ll[5].to_f and multioutput.timestop_tt.to_f <= ll[6].to_f
+						distpoint = ll[1].to_s + " " + ll[2].to_s + " "
 						du = DataUtils.new
-						distpointcalc = du.distance(multioutput.l_peak, multioutput.b_peak, ll[2].to_f, ll[3].to_f)
+						distpointcalc = du.distance(multioutput.l_peak, multioutput.b_peak, ll[1].to_f, ll[2].to_f)
 						break
 					end
 				end
@@ -741,7 +741,7 @@ class MultiOutputList
 			mjdsize = multioutput.timestop_mjd.to_f - multioutput.timestart_mjd.to_f
 			mjdcenter = multioutput.timestart_mjd.to_f + mjdsize.to_f / 2.0
 			#calculate distance between lpointing, bpointing to l, b. NOW is -1
-			flc.write(format("%.2E",flux.to_s) + " " + format("%.2E", fluxerror.to_s)  + " " + fluxtype.to_s  + " " + format("%.7f", mjdcenter.to_s)  + " " + mjdsize.to_s + " " + format("%.2f", distpointcalc.to_s) + " " + runname + " " +  format("%.2f", multioutput.sqrtTS.to_s) + " " + format("%.2E", multioutput.exposure.to_s) + " " + multioutput.galcoeff.chomp.to_s + " " + multioutput.isocoeff.chomp.to_s + " " + format("%.7f", multioutput.timestart_mjd.to_s) + " " + format("%.7f", multioutput.timestop_mjd.to_s) + " " + format("%.2f", multioutput.timestart_tt.to_s) + " " + format("%.2f", multioutput.timestop_tt.to_s) + " " + format("%.3f", multioutput.dist.to_s) + " ( " + multioutput.fullellipseline  + " ) " + multioutput.fix + "\n");
+			flc.write(format("%.2E",flux.to_s) + " " + format("%.2E", fluxerror.to_s)  + " " + fluxtype.to_s  + " " + format("%.7f", mjdcenter.to_s)  + " " + format("%.4f",mjdsize.to_s) + " " + format("%.2f", distpointcalc.to_s) + " " + runname + " " +  format("%.2f", multioutput.sqrtTS.to_s) + " " + format("%.2E", multioutput.exposure.to_s) + " " + multioutput.galcoeff.chomp.to_s + " " + multioutput.isocoeff.chomp.to_s + " " + format("%.7f", multioutput.timestart_mjd.to_s) + " " + format("%.7f", multioutput.timestop_mjd.to_s) + " " + format("%.2f", multioutput.timestart_tt.to_s) + " " + format("%.2f", multioutput.timestop_tt.to_s) + " " + format("%.3f", multioutput.dist.to_s) + " ( " + multioutput.fullellipseline  + " ) " + multioutput.fix + "\n");
 		end
 		f.close();
 		f1.close();
