@@ -392,3 +392,5 @@ end
 
 cmd = "rm ./AG_multi5.par"
 #datautils.execute(outfile2, cmd);
+
+exit(0)

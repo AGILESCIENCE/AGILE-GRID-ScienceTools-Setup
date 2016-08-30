@@ -438,3 +438,6 @@ end
 if parameters.makelc != nil
 	flc.close()
 end
+
+exit(0)
+

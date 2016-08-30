@@ -75,7 +75,11 @@ class DataUtils
 			puts "This is the command:"
 			puts cmd
 			if cluster.to_i == 0
-				system(cmd)
+				valret = system(cmd)
+				if valret == false
+					puts "EXECUTION ERROR"
+					exit(1)
+				end
 			end
 		end
 		
