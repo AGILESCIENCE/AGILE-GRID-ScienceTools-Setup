@@ -8,16 +8,17 @@
 #5) outfile
 
 #optional
-#opmode	 Integer	 Operation Mode
-#blocks	 Integer	 Block
-#nruns	 Integer	 Number of runs
-#seed	Integer	 Seed
-#7) ranal
-#8) galmode
-#9) isomode
-#10) ulcl
-#11) loccl
-#12) outputtype (defalt 0)
+#6) opmode	 Integer	 Operation Mode
+#7) blocks	 Integer	 Block
+#8) nruns	 Integer	 Number of runs
+#9) seed	Integer	 Seed
+
+#10) ranal
+#11) galmode
+#12) isomode
+#13) ulcl
+#14) loccl
+#15) outputtype (defalt 0)
 
 
 #Parametri di input del task
@@ -80,7 +81,7 @@ edpmatrix = datautils.edpmatrix
 psdmatrix = datautils.psdmatrix
 matrixconf = datautils.getResponseMatrixString(filter);
 
-datautils.getSkyMatrix(filter, parameters.emin, parameters.emax, parameters.skytype)
+datautils.getSkyMatrix(filter, p.emin, p.emax, p.skytype)
 skymapL =  datautils.skymatrixL;
 skymapH =  datautils.skymatrixH;
 puts "skymap LOW res: " + skymapL.to_s
@@ -90,7 +91,9 @@ puts "skymap HIGH res: " + skymapH.to_s
 # outfile2 = prefix.to_s + "_" + listsourcesim.to_s + "_iso" + iso.to_s
 logfile = outfile.to_s + ".log"
 
-
-cmd = PATH + "bin/AG_multisim5 " + p.opmode.to_s + " " + p.blocks.to_s + " " + p.nruns.to_s + " " + p.seed.to_s + " "  + matrixconf.to_s + " " + maplistsim.to_s + " " + listsourcesim.to_s + " " + outfile.to_s + " " + maplistana.to_s + " " + listsourceana.to_s + " " + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s + " " + p.ulcl.to_s + " " + p.loccl.to_s + " " + skymapL.to_s + " " + skymapH.to_s;
+cmd = "cp " + PATH + "share/AG_multisim5.par . "
+datautils.execute(prefix, cmd);
+						
+cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multisim5 " + p.opmode.to_s + " " + p.blocks.to_s + " " + p.nruns.to_s + " " + p.seed.to_s + " "  + matrixconf.to_s + " " + maplistsim.to_s + " " + listsourcesim.to_s + " " + outfile.to_s + " " + maplistana.to_s + " " + listsourceana.to_s + " " + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s + " " + p.ulcl.to_s + " " + p.loccl.to_s + " " + skymapL.to_s + " " + skymapH.to_s;
 datautils.execute(logfile, cmd);
 
