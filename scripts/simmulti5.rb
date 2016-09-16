@@ -18,6 +18,7 @@
 #11) loccl
 #12) outputtype (defalt 0)
 
+
 #Parametri di input del task
 #Name	Type	Description
 #opmode	 Integer	 Operation Mode
@@ -49,6 +50,7 @@
 #If the bit 1 is on and the bit 3 is off no output is generated
 #If bit 1 is set, command line options 10 to 17 are optional and, if present, are ignored
 
+#parameters.emin, parameters.emax, parameters.skytype
 
 #Istruzioni: devono essere presenti la exp e la gas map e la maplist4. VERSIONE: loccl to 95
 
@@ -77,10 +79,17 @@ edpmatrix = datautils.edpmatrix
 psdmatrix = datautils.psdmatrix
 matrixconf = datautils.getResponseMatrixString(filter);
 
+datautils.getSkyMatrix(filter, parameters.emin, parameters.emax, parameters.skytype)
+skymapL =  datautils.skymatrixL;
+skymapH =  datautils.skymatrixH;
+puts "skymap LOW res: " + skymapL.to_s
+puts "skymap HIGH res: " + skymapH.to_s
+
+
 # outfile2 = prefix.to_s + "_" + listsourcesim.to_s + "_iso" + iso.to_s
 logfile = outfile.to_s + ".log"
 
 
-cmd = PATH + "bin/AG_multisim5 " + p.opmode.to_s + " " + p.blocks.to_s + " " + p.nruns.to_s + " " + p.seed.to_s + " "  + matrixconf.to_s + " " + maplistsim.to_s + " " + listsourcesim.to_s + " " + outfile.to_s + " " + maplistana.to_s + " " + listsourceana.to_s + " " + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s + " " + p.ulcl.to_s + " " + p.loccl.to_s;
+cmd = PATH + "bin/AG_multisim5 " + p.opmode.to_s + " " + p.blocks.to_s + " " + p.nruns.to_s + " " + p.seed.to_s + " "  + matrixconf.to_s + " " + maplistsim.to_s + " " + listsourcesim.to_s + " " + outfile.to_s + " " + maplistana.to_s + " " + listsourceana.to_s + " " + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s + " " + p.ulcl.to_s + " " + p.loccl.to_s + " " + skymapL.to_s + " " + skymapH.to_s;
 datautils.execute(logfile, cmd);
 
