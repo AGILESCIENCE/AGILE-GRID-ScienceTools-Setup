@@ -2,6 +2,7 @@
 """
   Copyright (c) prior to 2016 S. Cutini, A. Giuliani
   Copyright (c) 2016 S. Cutini, A. Giuliani, V. Fioretti, A. Zoli
+  Copyright (c) 2017 S. Cutini, A. Giuliani, V. Fioretti, A. Zoli, A. Bulgarelli
 
   Dependencies:
     - python 2.7
@@ -33,7 +34,8 @@ def grb_pipe(ofd, sigmafd, evt_file='', log_file='', GRB_time = 0., GRB_l = 0., 
 
     print >> ofd, ''
     print >> ofd, 'GRB T0:', GRB_time
-    print >> ofd, 'GRB T1:', GRB_time + t2s
+    print >> ofd, 'GRB T0 - t1s:', GRB_time + t1s
+    print >> ofd, 'GRB T1 + t2s:', GRB_time + t2s
     print >> ofd, 'GRB (L, B):', GRB_l, GRB_b
     print >> ofd, 'GRB (Ra, Dec):', GRB_ra, GRB_dec
     print >> ofd, 'Ricerca eventi (Raggio):', raggio
@@ -142,7 +144,8 @@ def grb_pipe(ofd, sigmafd, evt_file='', log_file='', GRB_time = 0., GRB_l = 0., 
     bkg = 0
 
     for k in range(len(dec)):
-        if DELTA[k] <raggio:  # if the event is within the ring
+#        if EVcol[k] != 'L':
+	  if DELTA[k] <raggio:  # if the event is within the ring
             if Enecol[k] > 0.:        # if the event energy is > 0
              if PH_col[k] >ea_th:        # removing the events from albedo
                 if PHASEcol[k] != 1:      # requiring PHASE not equal 1     ??????????
@@ -150,13 +153,17 @@ def grb_pipe(ofd, sigmafd, evt_file='', log_file='', GRB_time = 0., GRB_l = 0., 
                     if TIMEnew[k] > t1s:
                         if TIMEnew[k] < t2s: # if the event time is within the T1-T2 of the source
                             source = source + 1   # counting the events that pass the selection
-                            print >> ofd, '      trovato (t-T0) : ', TIMEnew[k]
+                            print >> ofd, '      evento (t-T0) : ', TIMEnew[k], ' energia (MeV): ', Enecol[k], ' TT: ', TIMEcol[k], ' flag: ', EVcol[k]
                     if (TIMEnew[k] > t1b) and (TIMEnew[k] <t1s) or (TIMEnew[k] > t2s) and (TIMEnew[k] <t2b):
                         bkg = bkg + 1
+			print >> ofd, '      fondo  (t-T0) : ', TIMEnew[k], ' energia: ', Enecol[k], ' TT: ', TIMEcol[k], ' flag: ', EVcol[k]
 
     print >> ofd, ''
     print >> ofd, "Source :", source
     print >> ofd, "Bkg :", bkg
+    print >> ofd, ''
+    print >> ofd, "N_on :", source + bkg
+    print >> ofd, "N_off :", bkg
     print >> ofd, ''
 
     # calcolo delle significativita con il metodo di Li&Ma
@@ -207,8 +214,8 @@ def grb_pipe(ofd, sigmafd, evt_file='', log_file='', GRB_time = 0., GRB_l = 0., 
             summ_bkg = exposure[i] + summ_bkg
             ntot_bkg = ntot_bkg+1
 
-    print >> ofd, "mean src occulted ", summ_src / ntot_src
-    print >> ofd, "mean bkg occulted", summ_bkg / ntot_bkg
+    print >> ofd, "mean src not occulted ", summ_src / ntot_src
+    print >> ofd, "mean bkg not occulted", summ_bkg / ntot_bkg
     mean_src = summ_src / ntot_src
     mean_bkg = summ_bkg / ntot_bkg
 
@@ -266,7 +273,6 @@ if __name__ == '__main__':
     t2b = float(argv[8])
     fov = float(argv[9])
     albedo = float(argv[10])
-
     print ("Run with parameters: " + str(l) + " " + str(b) + " " + str(radius) + " " + str(time_tt)
            + " " + str(t1s) + " " + str(t2s) + " " + str(t1b) + " " + str(t2b) + " " + str(radius)
            + " " + str(fov) + " " + str(albedo))
