@@ -23,7 +23,7 @@ cd libagilesci
 git checkout $TAG_LIBSCI
 cd ..
 
-git clone https://github.com/AGILESCIENCE/agilesc1.git
+git clone https://github.com/AGILESCIENCE/agilesci1.git
 cd agilesci1
 git checkout $TAG_SCI1
 cd ..
