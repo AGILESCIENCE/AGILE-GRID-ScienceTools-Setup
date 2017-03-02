@@ -693,6 +693,7 @@ class MultiOutputList
 			#puts name
 			multioutput = MultiOutput.new()
 			multioutput.readDataSingleSource(name)
+			#puts name
 			f.write(multioutput.multiOutputLineFull4(flag) + "\n"); #3 old, 4 new
 			if multioutput.fix.to_i >= 1
 				f1.write(multioutput.multiOutputLineFull4(flag) + "\n"); #3 old, 4 new

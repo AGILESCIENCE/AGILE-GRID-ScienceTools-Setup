@@ -3,6 +3,13 @@ class Parameters
 		def initialize() 
 			@checksourceposition = nil
 			@execap = 0
+			@radius = 10
+			@t1s = 0
+			@t2s = 10
+			@t1b = 600
+			@shiftt1b = 0
+			@t2b = 600
+			@shiftt2b = 0
 			@filtercode = 5
 			@timeslot = 100
 			@filter = "FM3.119_ASDCe_" + TYPE_MATRIX
@@ -160,6 +167,34 @@ class Parameters
 		
 		def execap
 			@execap
+		end
+		
+		def radius
+			@radius
+		end
+		
+		def t1s
+			@t1s
+		end
+		
+		def t2s
+			@t2s
+		end
+		
+		def t1b
+			@t1b
+		end
+		
+		def t2b
+			@t2b
+		end
+		
+		def shiftt1b
+			@shiftt1b
+		end
+		
+		def shiftt2b
+			@shiftt2b
 		end
 		
 		def filtercode
@@ -452,6 +487,13 @@ class Parameters
 				a = a + "filter=" + @filter.to_s + " "
 				a = a + "dq=" + @dq.to_s + " "
 				a = a + "execap=" + @execap.to_s + " "
+				a = a + "radius=" + @radius.to_s + " "
+				a = a + "t1s=" + @t1s.to_s + " "
+				a = a + "t2s=" + @t2s.to_s + " "
+				a = a + "t1b=" + @t1b.to_s + " "
+				a = a + "t2b=" + @t2b.to_s + " "
+				a = a + "shiftt1b=" + @shiftt1b.to_s + " "
+				a = a + "shiftt2b=" + @shiftt2b.to_s + " "
 				a = a + "filtercode=" + @filtercode.to_s + " "
 				a = a + "timeslot=" + @timeslot.to_s + " "
 				a = a + "gammaextractbin=" + @gammaextractbin.to_s + " "
@@ -541,6 +583,20 @@ class Parameters
 					@dq = value;
 				when "execap"
 					@execap = value;
+				when "radius"
+					@radius = value;
+				when "t1s"
+					@t1s = value;
+				when "t2s"
+					@t2s = value;
+				when "t1b"
+					@t1b = value;
+				when "t2b"
+					@t2b = value;
+				when "shiftt1b"
+					@shiftt1b = value;
+				when "shiftt2b"
+					@shiftt2b = value;
 				when "filtercode"
 					@filtercode = value;
 				when "timeslot"

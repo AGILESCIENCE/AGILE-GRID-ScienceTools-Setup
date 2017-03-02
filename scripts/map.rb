@@ -34,7 +34,7 @@
 #   =13 activate [00100-00400], [00400-01000], [01000-03000]
 #   =14 activate [00100-00400], [00400-01000]
 #   =15 activete [00030-00050], [00050-00100], [00100-50000]
-#17) phasecode: optional, default 2. If -1 => automatic determination ==>  if (time end  > 182692800.0 (MJD 55119.5, UTC 2009-10-15T12:00:00, fine pointing) && phasecode == -1) then phasecode = 2 (SPIN) else phasecode = 18 (POIN)
+#17) phasecode: optional, default 2. If -1 => automatic determination ==>  if (time end  > 182692800.0 (MJD 55119.5, UTC 2009-10-15T12:00:00, fine pointing) && phasecode == -1) then phasecode = 6 (SPIN) else phasecode = 18 (POIN)
 #18) timelist: a file with a list of tstart/stop
 #19) timebinsize: optional, default 999999999
 #20) makelc: optional, default 0
@@ -61,7 +61,7 @@
 #2 -> per lo spinning, esclude la SAA con metodo conteggi AC
 #6 -> per lo spinngin, esclude la SAA in base ad intensità campo magnetico (TPZ)
 #18 -> per il pointing, esclude la SAA e il recovery
-# Normalmente usate il phasecode = 2 nei dati in spinning. Questo phasecode esclude i fotoni presenti nella SAA ridefinita con i conteggi dell'AC. Se invece vuoi usare la vecchia definizione della SAA (in base all'intensità del campo magnetico così come definito da TPZ) devi usare il phasecode = 6.
+# Normalmente usate il phasecode = 6 nei dati in spinning. Questo phasecode esclude i fotoni presenti nella SAA ridefinita con i conteggi dell'AC. Se invece vuoi usare la vecchia definizione della SAA (in base all'intensità del campo magnetico così come definito da TPZ) devi usare il phasecode = 6.
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 
