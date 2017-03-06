@@ -43,59 +43,48 @@ filterbase2 = filter.split("_")[0] + "_" + filter.split("_")[1];
 
 parameters.processInput(5, ARGV, filter)
 
-if parameters.timestep.to_i == 160
-	parameters.timestep = 1
-end
-
 emin1 = parameters.emin;
 emax1 = parameters.emax;
 indexlog = datautils.logindex(filterbase2)
 indexfilter = datautils.evtindex(filterbase2)
 puts "indexfilter: " + indexfilter.to_s
-puts "Sky map: " + skymap.to_s;
+
 
 index_name_cor = BASEDIR_ARCHIVE.to_s + "/DATA/INDEX/3901.cor.index"
 puts "index name cor: " + index_name_cor;
 tstart = 0
-tstop = 0	
+
 if(parameters.timetype == "CONTACT")
 	#estrazione dei tempi min e max dal corfileindex
 
-	datautils.extractTimeMinMaxForContact(index_name_cor, contact0);
+	datautils.extractTimeMinMaxForContact(index_name_cor, t0);
 	tstart = datautils.tmin;
 
-	datautils.extractTimeMinMaxForContact(index_name_cor, contact1);
-	tstop = datautils.tmax;
 end
 if(parameters.timetype == "TT")
-	tstart = contact0;
-	tstop = contact1
+	tstart = t0;
+
 end
 if(parameters.timetype == "MJD")
-	tstart = datautils.time_mjd_to_tt(contact0);
-	tstop = datautils.time_mjd_to_tt(contact1);
+	tstart = datautils.time_mjd_to_tt(t0);
 end
 
 if(parameters.timetype == "UTC")
-	tstart = datautils.time_utc_to_tt(contact0)
-	tstop = datautils.time_utc_to_tt(contact1)
+	tstart = datautils.time_utc_to_tt(t0)
 end
 
-puts "TMIN: " + tstart.to_s;
-puts "TMAX: " + tstop.to_s;
+puts "T0 (TT): " + tstart.to_s;
+
 
 if tstart.to_f == 0
 	puts "Error in TMIN, exit"
 	exit(1)
 end
-if tstop.to_f == 0
-	puts "Error in TMAX, exit"
-	exit(1)
-end
+
 
 #phasecode
 
-parameters.setPhaseCode(tstop)
+parameters.setPhaseCode(tstart)
 
 lonpole = 180.0
 
@@ -113,10 +102,10 @@ edpmatrix = datautils.edpmatrix;
 		edpmatrixfull =  PATHMODEL + edpmatrix
 	end
 	cmd = "cp " + PATH + "share/AG_lm5.par . "
-	datautils.execute(prefix, cmd);
+	datautils.execute("", cmd);
 	cmd = "export PFILES=.:$PFILES; "+PATH+"bin/AG_lm5 "+listfile+" "+indexlog.to_s+" "+indexfilter.to_s+" "+sarmatrixfull.to_s+" "+edpmatrixfull.to_s+" "+
 		  parameters.timelist.to_s+" "+lonpole.to_s+" "+" "+parameters.albedorad.to_s+" 0.5 360.0 5.0 "+
-		  parameters.phasecode.to_s+" "+parameters.timestep.to_s+" "+parameters.spectralindex.to_s+" "+emin.to_s+" "+emax.to_s+" "+
-		  fovmin.to_s+" "+fovmax.to_s+" "+parameters.filtercode.to_s+" "+t0.to_s+" "+l.to_s+" "+b.to_s+" "+parameters.radius.to_s+" "+parameters.t1s.to_s+" "+parameters.t2s.to_s+" "+parameters.t1b.to_s+" "+parameters.shiftt1b.to_s+" "+parameters.t2b.to_s+" "+parameters.shiftt2b.to_s+" 0 0 0"
+		  parameters.phasecode.to_s+" "+parameters.timestep.to_s+" "+parameters.spectralindex.to_s+" "+parameters.emin.to_s+" "+parameters.emax.to_s+" "+
+		  parameters.fovradmin.to_s+" "+parameters.fovradmax.to_s+" "+parameters.filtercode.to_s+" "+tstart.to_s+" "+l.to_s+" "+b.to_s+" "+parameters.radius.to_s+" "+parameters.t1s.to_s+" "+parameters.t2s.to_s+" "+parameters.t1b.to_s+" "+parameters.shiftt1b.to_s+" "+parameters.t2b.to_s+" "+parameters.shiftt2b.to_s + " 0 0 0 "
 		  
-	datautils.execute(prefix, cmd);
+	datautils.execute("", cmd);
