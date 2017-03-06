@@ -11,7 +11,9 @@ class Parameters
 			@t2b = 600
 			@shiftt2b = 0
 			@filtercode = 5
-			@timeslot = 100
+			@timeslot = 0
+			@timeslotstart = 0
+			@timeslotend = 0
 			@filter = "FM3.119_ASDCe_" + TYPE_MATRIX
 			@listsourceextended = ""
 			@prefix=-1
@@ -203,6 +205,14 @@ class Parameters
 
 		def timeslot
 			@timeslot
+		end
+		
+		def timeslotstart
+			@timeslotstart
+		end
+		
+		def timeslotend
+			@timeslotend
 		end
 
 		def outputtype
@@ -496,6 +506,8 @@ class Parameters
 				a = a + "shiftt2b=" + @shiftt2b.to_s + " "
 				a = a + "filtercode=" + @filtercode.to_s + " "
 				a = a + "timeslot=" + @timeslot.to_s + " "
+				a = a + "timeslotstart=" + @timeslotstart.to_s + " "
+				a = a + "timeslotend=" + @timeslotend.to_s + " "
 				a = a + "gammaextractbin=" + @gammaextractbin.to_s + " "
 				a = a + "disablespotfinder=" + @disablespotfinder.to_s + " "
 				a = a + "makealikesingle=" + @makealikesingle.to_s + " "
@@ -601,6 +613,10 @@ class Parameters
 					@filtercode = value;
 				when "timeslot"
 					@timeslot = value;
+				when "timeslotstart"
+					@timeslotstart = value;
+				when "timeslotend"
+					@timeslotend = value;
 				when "filter"
 					@filter = value;
 				when "useEDPmatrixforEXP"

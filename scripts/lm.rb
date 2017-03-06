@@ -20,13 +20,19 @@
 #14) timelist: a file with a list of tstart/stop
 #15) timetype: CONTACT, MJD, UTC, TT, default TT
 
+#scan
+
+#16) timeslot
+#17) timeslotstart
+#18) timeslotstop
+
 load ENV["AGILE"] + "/scripts/conf.rb"
 
 datautils = DataUtils.new
 parameters = Parameters.new
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -22 " + $0 );
+	system("head -28 " + $0 );
 	exit;
 end
 
@@ -106,6 +112,6 @@ edpmatrix = datautils.edpmatrix;
 	cmd = "export PFILES=.:$PFILES; "+PATH+"bin/AG_lm5 "+listfile+" "+indexlog.to_s+" "+indexfilter.to_s+" "+sarmatrixfull.to_s+" "+edpmatrixfull.to_s+" "+
 		  parameters.timelist.to_s+" "+lonpole.to_s+" "+" "+parameters.albedorad.to_s+" 0.5 360.0 5.0 "+
 		  parameters.phasecode.to_s+" "+parameters.timestep.to_s+" "+parameters.spectralindex.to_s+" "+parameters.emin.to_s+" "+parameters.emax.to_s+" "+
-		  parameters.fovradmin.to_s+" "+parameters.fovradmax.to_s+" "+parameters.filtercode.to_s+" "+tstart.to_s+" "+l.to_s+" "+b.to_s+" "+parameters.radius.to_s+" "+parameters.t1s.to_s+" "+parameters.t2s.to_s+" "+parameters.t1b.to_s+" "+parameters.shiftt1b.to_s+" "+parameters.t2b.to_s+" "+parameters.shiftt2b.to_s + " 0 0 0 "
+		  parameters.fovradmin.to_s+" "+parameters.fovradmax.to_s+" "+parameters.filtercode.to_s+" "+tstart.to_s+" "+l.to_s+" "+b.to_s+" "+parameters.radius.to_s+" "+parameters.t1s.to_s+" "+parameters.t2s.to_s+" "+parameters.t1b.to_s+" "+parameters.shiftt1b.to_s+" "+parameters.t2b.to_s+" "+parameters.shiftt2b.to_s + " " + timeslot.to_s + " " + timeslotstart.to_s + " " + timeslotend.to_s
 		  
 	datautils.execute("", cmd);
