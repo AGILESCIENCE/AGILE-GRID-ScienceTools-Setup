@@ -43,6 +43,10 @@ filterbase2 = filter.split("_")[0] + "_" + filter.split("_")[1];
 
 parameters.processInput(5, ARGV, filter)
 
+if parameters.timestep.to_i == 160
+	parameters.timestep = 1
+end
+
 emin1 = parameters.emin;
 emax1 = parameters.emax;
 indexlog = datautils.logindex(filterbase2)
@@ -113,6 +117,6 @@ edpmatrix = datautils.edpmatrix;
 	cmd = "export PFILES=.:$PFILES; "+PATH+"bin/AG_lm5 "+listfile+" "+indexlog.to_s+" "+indexfilter.to_s+" "+sarmatrixfull.to_s+" "+edpmatrixfull.to_s+" "+
 		  parameters.timelist.to_s+" "+lonpole.to_s+" "+" "+parameters.albedorad.to_s+" 0.5 360.0 5.0 "+
 		  parameters.phasecode.to_s+" "+parameters.timestep.to_s+" "+parameters.spectralindex.to_s+" "+emin.to_s+" "+emax.to_s+" "+
-		  fovmin.to_s+" "+fovmax.to_s+" "+parameters.filtercode.to_s+" "+t0.to_s+" "+l.to_s+" "+b.to_s+" "+parameters.radius.to_s+" "+parameters.t1s.to_s+" "+parameters.t2s.to_s+" "+parameters.t1b.to_s+" "+parameters.shiftt1b.to_s+" "+parameters.t2b.to_s+" "+parameters.shiftt2b.to_s
+		  fovmin.to_s+" "+fovmax.to_s+" "+parameters.filtercode.to_s+" "+t0.to_s+" "+l.to_s+" "+b.to_s+" "+parameters.radius.to_s+" "+parameters.t1s.to_s+" "+parameters.t2s.to_s+" "+parameters.t1b.to_s+" "+parameters.shiftt1b.to_s+" "+parameters.t2b.to_s+" "+parameters.shiftt2b.to_s+" 0 0 0"
 		  
 	datautils.execute(prefix, cmd);
