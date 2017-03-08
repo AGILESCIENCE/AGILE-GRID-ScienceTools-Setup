@@ -695,7 +695,7 @@ class MultiOutputList
 			multioutput.readDataSingleSource(name)
 			#puts name
 			f.write(multioutput.multiOutputLineFull4(flag) + "\n"); #3 old, 4 new
-			if multioutput.fix.to_i >= 1
+			if multioutput.fix.to_i >= 1 and multioutput.sqrtTS.to_f > thrsqrtts.to_f
 				f1.write(multioutput.multiOutputLineFull4(flag) + "\n"); #3 old, 4 new
 			end
 			
