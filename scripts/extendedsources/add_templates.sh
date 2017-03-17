@@ -70,5 +70,6 @@ for i in ${!expfiles[*]} ; do
     fcarith ${dispfile}+1 ${dispsum} \!temp_${dispfile} DIV
     fappend temp_${dispfile}+0 norm_${dispfile}
     rm temp_${dispfile}
-    AG_gasmapgen5 expfile=${expfiles[i]} outfile=\!${templatebase}.template.gz diffusefile=$AGILE/scripts/extendedsources/diffuse_null.fits hiresdiffusefile=norm_${dispfile} > ${templatebase}.template.out 2>&1
+    # was outfile=\!
+    AG_gasmapgen5 expfile=${expfiles[i]} outfile=${templatebase}.template.gz diffusefile=$AGILE/scripts/extendedsources/diffuse_null.fits hiresdiffusefile=norm_${dispfile} > ${templatebase}.template.out 2>&1
 done

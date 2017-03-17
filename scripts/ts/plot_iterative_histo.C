@@ -721,7 +721,7 @@ TTree* plot_iterative_histo(TString filenameinput, int inputtype=1, double enabl
 	double scalefactor_integral2 = hCDF->GetBinContent(cumTSdisbinx-1);
 	hCDF->Scale(1.0/scalefactor_integral2);
 	
-
+	//calcolo errore nei bin
 	h1->Scale(1.0/scalefactor);
 	for(int ii1=1; ii1<=h1->GetNbinsX(); ii1++) {
 		double ct2 = h1cl->GetBinContent(ii1);
