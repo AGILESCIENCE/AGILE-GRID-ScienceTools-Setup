@@ -29,7 +29,7 @@
 #20) listsourceextended
 #21) checksourceposition - default 0 = do not use, or specify the name of the source. if fixflag > 1, check the position of the source. If the position of the source is too far, set fixflag=1 and recalculate the result. The parameters are the following:
 #- name of the source
-#- max distance wrt the initial position
+#- max distance wrt the initial position. If the ellipse is present, the radius is used instead of the user parameter
 
 # MAPLIST
 #Each line contains a set of maps:
@@ -294,6 +294,10 @@ for i in 1..stepi
 		checksource_name = p.checksourceposition.split(",")[0]
 		checksource_maxR = p.checksourceposition.split(",")[1]
 		multioutput.readDataSingleSource2(newoutfile, checksource_name);
+		#usa r se e' presente l'ellisse
+		if multioutput.r.to_f > 0
+			checksource_maxR = multioutput.r.to_f
+		end
 		
 		#check if ff>1 and check if too far
 		if multioutput.fix.to_i > 1 and multioutput.dist.to_f > checksource_maxR.to_f
