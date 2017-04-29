@@ -161,7 +161,7 @@ edpmatrix = datautils.edpmatrix
 psdmatrix = datautils.psdmatrix
 matrixconf = datautils.getResponseMatrixString(filter);
 
-
+prefix=""
 
 # outfile2 = prefix.to_s + "_" + listsourcesim.to_s + "_iso" + iso.to_s
 logfile = outfile.to_s + ".log"
