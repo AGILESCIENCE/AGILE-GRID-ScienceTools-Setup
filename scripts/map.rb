@@ -51,9 +51,10 @@
 #28) skymapL: sky map low resolution
 #29) skymapH: sky map high resolution
 #30) dq: data quality, default 0. dq = 1 -> albedorad=80,fovradmax=60. dq = 2 -> albedorad=80,fovradmax=50. dq = 3 -> albedorad=90,fovradmax=60. dq = 4 -> albedorad=90,fovradmax=50. dq=0 use standard albedorad and fovradmax
-#31) execap, AP: exec aperture photometry (default 0) 
-#32) timeslot, AP: timeslot for aperture photometry
-#33) ranal, AP: radius of analysis to extract event, for aperture photometry
+#31) filtercode = 0 G+L+S, filtercode=5 only G
+#32) execap, AP: exec aperture photometry (default 0) 
+#33) timeslot, AP: timeslot for aperture photometry
+#34) ranal, AP: radius of analysis to extract event, for aperture photometry
 
 #Lo script crea le mappe mancanti, e se ne crea almeno uno aggiunge la corrispondente riga nel .maplitsX. Attenzione quindi alle duplicazioni
 
@@ -69,7 +70,7 @@ datautils = DataUtils.new
 parameters = Parameters.new
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -65 " + $0 );
+	system("head -66 " + $0 );
 	exit;
 end
 
