@@ -16,7 +16,6 @@
 #11) ulcl    - upper limit confidence level (default 2),  espressed as sqrt(TS)
 #12) loccl   - source location contour confidence level (default 95 (%)confidence level) Vales: 99, 95, 68, 50
 #13) flag    - a flag of the analysis (that is written in the final file)
-#14) token (enabled if host,token with token >= 1)
 #15) fixisogalstep0 - default 0 = do not calculate, otherwise specify the name of the source to calculate the gal and iso (if not specified by galcoeff or isocoeff parameters, otherwise use these values also in this step): calculate gal and iso setting fixflag=1 for the source under analysis
 #16) findermultimode - default 0 = do not use, or the name of the source to be found. Analysis in 2 steps:
 #	(1) ulcl=0, loccl=0, fixflag=3 to perform the first search
@@ -200,14 +199,12 @@ for i in 1..stepi
 		alikeutils.rewriteMultiInputWithSingleSourceToAnalyze(listsource, newlistsource, p.fixisogalstep0, "1");
 		
 		if p.listsourceextended == "" 
-			cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5 " + inputfilemaps22.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource.to_s + " " + outfile22.to_s + " " + ulcl.to_s + " " + loccl.to_s;	
+			cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5 " + inputfilemaps22.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource.to_s + " " + outfile22.to_s + " " + ulcl.to_s + " " + loccl.to_s;
+			datautils.execute(outfile2, cmd)	
 		else
 			cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5ext " + inputfilemaps22.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource.to_s + " " + p.listsourceextended + " " + outfile22.to_s + " " + ulcl.to_s + " " + loccl.to_s;
+			datautils.execute(outfile2, cmd)
 		end
-		
-		datautils.execute(outfile2, cmd)
-		
-		
 		
 		#step0b: prendi il valore di gal e iso calcolati e genera il maplist4 per le analisi successive
 		multioutput.readDataSingleSource2(outfile22, p.fixisogalstep0);
@@ -281,14 +278,16 @@ for i in 1..stepi
 	if p.listsourceextended == ""
 	
 		cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5 " + inputfilemaps.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource.to_s + "  " + newoutfile + " " + ulcl.to_s + " " + loccl.to_s;
+		datautils.execute(outfile2, cmd)
 	
 	else
 		
 		cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5ext " + inputfilemaps.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource.to_s + " " + p.listsourceextended.to_s + " " + newoutfile + " " + ulcl.to_s + " " + loccl.to_s;
+		datautils.execute(outfile2, cmd)
 		
 	end
 	
-	datautils.execute(outfile2, cmd)
+	
 	
 	if p.checksourceposition != nil
 		checksource_name = p.checksourceposition.split(",")[0]
@@ -313,48 +312,15 @@ for i in 1..stepi
 			if p.listsourceextended == ""
 	
 				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5 " + inputfilemaps.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource2.to_s + "  " + newoutfile + " " + ulcl.to_s + " " + loccl.to_s;
-	
+				datautils.execute(outfile2, cmd)
+				
 			else
 		
 				cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multi5ext " + inputfilemaps.to_s + " " + matrixconf.to_s + " "  + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s +  " " + newlistsource2.to_s + " " + p.listsourceextended.to_s + " " + newoutfile + " " + ulcl.to_s + " " + loccl.to_s;
+				datautils.execute(outfile2, cmd)
 		
 			end
 		end
-	end
-
-	#ablitazione del token
-	cmd2 = "";
-	cmd3 = "";
-	host = ""
-	tokennum = -1;
-	host = p.token.split(",")[0].strip;
-	tokennum = p.token.split(",")[1].strip;
-	if tokennum.to_i == 0 
-		cmd2 = "ssh " + host.to_s + " \"cd " + Dir.pwd().to_s + "; "
-		cmd3 = "\"";
-	end
-	cdir= Dir.pwd().strip.to_s;
-	if tokennum.to_i >= 1
-	
-		cmd = "ssh " + host.to_s + " mkdir ~/" + tokennum.to_s;
-		puts cmd
-		system(cmd)
-		cmd = "rsync -avz --delete " + cdir.to_s + "/ " + host.to_s + ":~/" + tokennum.to_s + "/";
-		puts cmd
-		system cmd
-
-		cmd2 = "ssh " + host.to_s + " \"cd ~/" + tokennum.to_s + "; "
-		cmd3 = "\"";
-	end
-
-	cmd = cmd2 + cmd;
-
-	datautils.execute(outfile2, cmd)
-	
-	if tokennum.to_i >= 1
-		cmd = "rsync -avz  " + host.to_s + ":~/" + tokennum.to_s + "/ " + cdir.to_s + "/"
-		puts cmd
-		system cmd
 	end
 
 	#cmd = "ruby ~/grid_scripts3/convertMultiResToReg.rb " + outfile.to_s + " white";
