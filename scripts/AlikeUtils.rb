@@ -257,15 +257,21 @@ class AlikeUtils
 						sl = sourcel.split(" ");
 						ll = sl[1];
 						bl = sl[2];
+						namel = sl[6];
 						sf = sourcef.split(" ");
 						lf = sf[1];
 						bf = sf[2];
+						namef = sf[6];
 						
 						#d3 = Math.sqrt(d1.to_f*d1.to_f + d2.to_f * d2.to_f);
 						d3 = datautil.distance(ll, bl, lf, bf)
 						
 						if d3.to_f < radiousremove.to_f
 							#remove the source from list of spot finder
+							listinsert[indexk] = 0;
+						end
+						if namel == namef
+							#remove the source from list if the name is the same
 							listinsert[indexk] = 0;
 						end
 					end
