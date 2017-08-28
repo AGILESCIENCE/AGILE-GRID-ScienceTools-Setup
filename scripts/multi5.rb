@@ -9,8 +9,8 @@
 #04) prefix (if specify a prefix, use only 1 map, if -999 use all the maps in the directory) - disabled with parameter maplist
 #05) offaxis - off axix pointing (default 30) - set into .maplist4
 #06) ranal   - radius of analysis (default 10)
-#07) galcoeff     - gal coefficient (default -1) - set into .maplist4
-#08) isocoeff     - iso coefficient (default -1) - set into .maplist4
+#07) galcoeff     - gal coefficient (default -1) - set into .maplist4. If -2, use the same coeff of the input maplist4
+#08) isocoeff     - iso coefficient (default -1) - set into .maplist4. If -2, use the same coeff of the input maplist4
 #09) galmode     - gal mode, default 1 - See below for more details.
 #10) isomode     - iso mode, default 1 - See below for more details.
 #11) ulcl    - upper limit confidence level (default 2),  espressed as sqrt(TS)
@@ -217,7 +217,11 @@ for i in 1..stepi
 	if p.fixisogalstep0 == nil
 		#copy the .maplist4 in .maplist
 		maplist = outfile.to_s + ".maplist4"
-		alikeutils.rewriteMaplist(inputmaplist, maplist, p.galcoeff, p.isocoeff);
+		if p.galcoeff.to_f >= -1 and p.isocoeff.to_f >= -1
+			alikeutils.rewriteMaplist(inputmaplist, maplist, p.galcoeff, p.isocoeff);
+		else	
+			system("cp " + inputmaplist + " " + maplist)
+		end
 	end
 	
 	#si esce dai due step precedenti con il maplist corretto
