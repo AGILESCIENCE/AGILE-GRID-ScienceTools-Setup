@@ -122,10 +122,10 @@ if(emin_sin.to_f != p.emin_sources.to_f or emax_sin.to_f != p.emax_sources.to_f)
         gamma = l[3].to_f
         fl = l[0].to_f
 		
-		c = p.emin_sources
-		d = p.emax_sources
-		a = emin_sin
-		b = emax_sin
+		c = p.emin_sources.to_f
+		d = p.emax_sources.to_f
+		a = emin_sin.to_f
+		b = emax_sin.to_f
         
         p1 = fl * (gamma-1) / ( c ** (1-gamma) - d ** (1-gamma) )
         
