@@ -161,14 +161,14 @@ edpmatrix = datautils.edpmatrix
 psdmatrix = datautils.psdmatrix
 matrixconf = datautils.getResponseMatrixString(filter);
 
-prefix="run"
+
 
 # outfile2 = prefix.to_s + "_" + listsourcesim.to_s + "_iso" + iso.to_s
 logfile = outfile.to_s + ".log"
 
 cmd = "cp " + PATH + "share/AG_multisim5.par . "
-datautils.execute(prefix, cmd);
+datautils.execute("", cmd);
 						
-cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multisim5 " + p.opmode.to_s + " " + p.blocks.to_s + " " + p.nruns.to_s + " " + p.seed.to_s + " "  + matrixconf.to_s + " " + maplistsim.to_s + " " + listsourcesim.to_s + " " + outfile.to_s + " " + maplistana.to_s + " " + listsourceana.to_s + " " + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s + " " + p.ulcl.to_s + " " + p.loccl.to_s + " " + calmatrix.to_s + " " + ENV["AGILE"] + "/model/scientific_analysis/data/";
+cmd = "export PFILES=.:$PFILES; " + PATH + "bin/AG_multisim5 " + p.opmode.to_s + " " + p.blocks.to_s + " " + p.nruns.to_s + " " + p.seed.to_s + " "  + matrixconf.to_s + " " + maplistsim.to_s + " " + listsourcesim.to_s + " " + outfile.to_s + " " + maplistana.to_s + " " + listsourceana.to_s + " " + p.ranal.to_s + " " + p.galmode.to_s + " " + p.isomode.to_s + " " + p.ulcl.to_s + " " + p.loccl.to_s + " " + calmatrix.to_s + " " + ENV["AGILE"];
 datautils.execute(logfile, cmd);
 
