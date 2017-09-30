@@ -23,7 +23,7 @@ addparams = ARGV[3];
 runtype = ARGV[4];
 
 p = Parameters.new
-p.processInput(5, ARGV)
+p.processInput(5, ARGV, nil)
 
 #catfile = ""
 sleepsecs = 10
