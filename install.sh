@@ -32,18 +32,22 @@ if [ "$1" == "clean" ] ; then
     exit
 fi
 
+echo "install libagilepil"
 cd libagilepil
 make ${parallel} install prefix=$AGILE
 cd ..
 
+echo "install libagilewcs"
 cd libagilewcs
 make ${parallel} install prefix=$AGILE
 cd ..
 
+echo "install libagilesci"
 cd libagilesci
 make ${parallel} install prefix=$AGILE
 cd ..
 
+echo "install agilesci1"
 cd agilesci1
 make ${parallel} install prefix=$AGILE
 cd ..
