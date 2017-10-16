@@ -34,6 +34,8 @@
 #   =13 activate [00100-00400], [00400-01000], [01000-03000]
 #   =14 activate [00100-00400], [00400-01000]
 #   =15 activete [00030-00050], [00050-00100], [00100-50000]
+#   =16 activate [00050-00100], [00100-00[3|4]00], [00[3|4]00-01000], [01000-03000], [03000, 100000], [10000, 50000])
+#   =17 activate [00050-00100], [00100-00200], [00200-00400], [00400-01000], [01000-03000], [03000, 10000], [10000, 50000])
 #17) phasecode: optional, default 2. If -1 => automatic determination ==>  if (time end  > 182692800.0 (MJD 55119.5, UTC 2009-10-15T12:00:00, fine pointing) && phasecode == -1) then phasecode = 6 (SPIN) else phasecode = 18 (POIN)
 #18) timelist: a file with a list of tstart/stop
 #19) timebinsize: optional, default 999999999
@@ -70,7 +72,7 @@ datautils = DataUtils.new
 parameters = Parameters.new
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-	system("head -66 " + $0 );
+	system("head -68 " + $0 );
 	exit;
 end
 
@@ -194,6 +196,18 @@ if parameters.energybin.to_i == 15
 	eminarr = [30, 50, 100]
 	emaxarr = [50, 100, 50000]
 	energybinnumber = 3
+end
+
+if parameters.energybin.to_i == 16
+	eminarr = [50, 100,  parameters.eboundaryIF, 1000, 3000, 10000]
+	emaxarr = [100, parameters.eboundaryIF, 1000, 3000, 10000, 50000]
+	energybinnumber = 6
+end
+
+if parameters.energybin.to_i == 17
+	eminarr = [ 50, 100, 200,  400, 1000,  3000, 10000]
+	emaxarr = [100, 200, 400, 1000, 3000, 10000, 50000]
+	energybinnumber = 7
 end
 
 index_name_cor = BASEDIR_ARCHIVE.to_s + "/DATA/INDEX/3901.cor.index"
