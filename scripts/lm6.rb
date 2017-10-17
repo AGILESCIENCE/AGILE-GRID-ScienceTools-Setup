@@ -113,19 +113,19 @@ edpmatrix = datautils.edpmatrix;
 	#S
 	tmin = tstart.to_f - parameters.t1s.to_f
 	tmax = tstart.to_f + parameters.t2s.to_f
-	cmd = "map.rb FM3.119_ASDC2_I0025 " + output + "_S " + tmin.to_s + " " + tmax.to_s + " "+l.to_s+" "+b.to_s+" emin="+parameters.emin.to_s+" emax="+parameters.emax.to_s+" filtercode="+parameters.filtercode.to_s+" mapsize=25 binsize=0.5 fovradmax="+parameters.fovradmax.to_s+" albedorad="+parameters.albedorad.to_s
+	cmd = "map.rb FM3.119_ASDC2_I0025 " + output + "_S " + tmin.to_s + " " + tmax.to_s + " "+l.to_s+" "+b.to_s+" emin="+parameters.emin.to_s+" emax="+parameters.emax.to_s+" filtercode="+parameters.filtercode.to_s+" timestep=1 mapsize=25 binsize=0.5 fovradmax="+parameters.fovradmax.to_s+" albedorad="+parameters.albedorad.to_s
 	datautils.execute("", cmd);
 
 	#B1
 	tmin = tstart.to_f - parameters.t1s.to_f - parameters.shiftt1b.to_f - parameters.t1b.to_f
 	tmax = tstart.to_f - parameters.t1s.to_f - parameters.shiftt1b.to_f
-	cmd = "map.rb FM3.119_ASDC2_I0025 " + output + "_B1 " + tmin.to_s + " " + tmax.to_s + " "+l.to_s+" "+b.to_s+" emin="+parameters.emin.to_s+" emax="+parameters.emax.to_s+" filtercode="+parameters.filtercode.to_s+" mapsize=25 binsize=0.5 fovradmax="+parameters.fovradmax.to_s+" albedorad="+parameters.albedorad.to_s
+	cmd = "map.rb FM3.119_ASDC2_I0025 " + output + "_B1 " + tmin.to_s + " " + tmax.to_s + " "+l.to_s+" "+b.to_s+" emin="+parameters.emin.to_s+" emax="+parameters.emax.to_s+" filtercode="+parameters.filtercode.to_s+" timestep=1 mapsize=25 binsize=0.5 fovradmax="+parameters.fovradmax.to_s+" albedorad="+parameters.albedorad.to_s
 	datautils.execute("", cmd);
 
 	#B2
 	tmin = tstart.to_f + parameters.t2s.to_f + parameters.shiftt2b.to_f
 	tmax = tstart.to_f + parameters.t2s.to_f + parameters.shiftt2b.to_f + parameters.t2b.to_f
-	cmd = "map.rb FM3.119_ASDC2_I0025 " + output + "_B2 " + tmin.to_s + " " + tmax.to_s + " "+l.to_s+" "+b.to_s+" emin="+parameters.emin.to_s+" emax="+parameters.emax.to_s+" filtercode="+parameters.filtercode.to_s+" mapsize=25 binsize=0.5 fovradmax="+parameters.fovradmax.to_s+" albedorad="+parameters.albedorad.to_s
+	cmd = "map.rb FM3.119_ASDC2_I0025 " + output + "_B2 " + tmin.to_s + " " + tmax.to_s + " "+l.to_s+" "+b.to_s+" emin="+parameters.emin.to_s+" emax="+parameters.emax.to_s+" filtercode="+parameters.filtercode.to_s+" timestep=1 mapsize=25 binsize=0.5 fovradmax="+parameters.fovradmax.to_s+" albedorad="+parameters.albedorad.to_s
 	datautils.execute("", cmd);
 
 
