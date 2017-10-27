@@ -131,6 +131,6 @@ edpmatrix = datautils.edpmatrix;
 
 	cmd = "cp " + PATH + "share/AG_lm6.par . "
 	datautils.execute("", cmd);
-	cmd = "export PFILES=.:$PFILES; "+PATH+"bin/AG_lm6 "+output+".lm "+output+"_S.cts.gz "+output+"_S.exp.gz "+output+"_B1.cts.gz "+output+"_B1.exp.gz "+output+"_B2.cts.gz "+output+"_B2.exp.gz false "+l.to_s+" "+b.to_s+" 10 true false false 0 15 10"
+	cmd = "export PFILES=.:$PFILES; "+PATH+"bin/AG_lm6 "+output+".lm "+output+"_S.cts.gz "+output+"_S.exp.gz "+output+"_B1.cts.gz "+output+"_B1.exp.gz "+output+"_B2.cts.gz "+output+"_B2.exp.gz false "+l.to_s+" "+b.to_s+" 10 false false false 0 15 10"
 	puts cmd
 	datautils.execute("", cmd);
