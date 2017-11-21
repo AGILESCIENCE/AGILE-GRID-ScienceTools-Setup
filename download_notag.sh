@@ -27,3 +27,13 @@ git clone https://$1@github.com/AGILESCIENCE/agilesci1.git
 cd agilesci1
 #git checkout $TAG_SCI1
 cd ..
+
+git clone https://$1@github.com/Leofaber/AG_lm6.git
+cd AG_lm6
+#git checkout $TAG_AG_lm6
+cd ..
+
+git clone https://$1@github.com/Leofaber/agextspot-v2.git
+cd agextspot-v2
+#git checkout $TAG_AG_EXTSPOT
+cd ..

@@ -63,3 +63,13 @@ echo "install catalogs"
 test -d $AGILE/catalogs || mkdir -p $AGILE/catalogs
 cp -rf catalogs/* $AGILE/catalogs
 
+echo "install AG_lm6"
+cd AG_lm6
+make ${parallel} install prefix=$AGILE
+cd ..
+
+echo "install AG_extspot"
+cd agextspot-v2
+make ${parallel} install prefix=$AGILE
+cd ..
+
