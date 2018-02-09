@@ -35,7 +35,7 @@ Double_t logparabola(Double_t *x, Double_t *par)
 		//alpha = par[1]
 		//beta par[2]
 		//Eb = $E_0$ par[3]
-        Double_t f = par[0] * pow((x[0]/par[3]), -(-par[1] + par[2] * TMath::Log10(x[0] / par[3])));
+        Double_t f = par[0] * pow((x[0]/par[3]), -(-par[1] + par[2] * TMath::Log(x[0] / par[3])));
         return f;
 }
 
@@ -121,6 +121,8 @@ int loadFERMISpectra(TString filename) {
 
 void fitSpectra(string filename) {
 
+	ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2");
+
 	//int n = loadAGILESpectra(filename);
 	int n = loadFERMISpectra(filename);
 
@@ -155,19 +157,27 @@ void fitSpectra(string filename) {
     logp->SetParName(2, "beta");
     logp->SetParName(3, "eb");
     
+    //N0
+    //logp->SetParLimits(0, 0, 1);
+    logp->FixParameter(0, 1e-10);
     
-    logp->SetParLimits(0, 0, 1);
-    logp->SetParLimits(1, 0, 2);
-    logp->FixParameter(1, 1.88);
+    //alpha
+    //logp->SetParLimits(1, 1, 3);
+    logp->FixParameter(1, 1.8);
     
-    logp->SetParLimits(2, 0, 15);
-    logp->FixParameter(2, 0.0386);
+    //beta
+    logp->SetParLimits(2, 0.2, 0.4);
+    //logp->FixParameter(2, 0.3);//0.0386
     
-    //logp->SetParLimits(0, 0, 5);
+    //EB
     logp->SetParLimits(3, minenergy, maxenergy);
+    //logp->FixParameter(3, 110);
+    
+    
     
     logp->SetLineColor(kRed);
     
+    gr->Fit(logp);
     gr->Fit(logp);
     //f3sf->Draw("L");
 
