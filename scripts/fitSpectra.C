@@ -13,6 +13,7 @@ TVectorF exl(100);
 TVectorF exh(100);
 TVectorF eyl(100);
 TVectorF eyh(100);
+Double_t* edges;
 float spectral_index = 0;
 
 //funzione per fare il fitting
@@ -132,7 +133,7 @@ int loadAGILESpectra(TString filename) {
 	TTree* t = new TTree("DATA", "");
 	//METTERE IL DATA TYPE IN MODO ESPLICITO:
 	Long64_t nlines = t->ReadFile(filename, "SQRTTS/F:FLUX/F:FLUXE/F:ERG/F:ERGE/F:EMIN/F:EMAX/F:ELOGC/F:EXP/F:FLUXUL/F:SI/F:SIE/F:ID/F");
-
+	edges = new Double_t[nlines + 1];
 	cout << nlines << endl;
 
 
@@ -142,16 +143,19 @@ int loadAGILESpectra(TString filename) {
 	t->SetBranchAddress("EMAX", &emax);
 	t->SetBranchAddress("ELOGC", &e_log_center);
 	t->SetBranchAddress("SI", &spectral_index);
+	t->SetBranchAddress("FLUX", &flux);
 	Long64_t j = 0;
 	for(j = 0; j<nlines; j++) {
     	t->GetEntry(j);
     	x[j] = e_log_center;
-    	y[j] = erg;
+    	y[j] = flux;
+    	edges[j] = emin;
     	exl[j] = e_log_center - emin;
     	exh[j] = emax - e_log_center;
     	eyl[j] = eyh[j] = erg_err;
-    	cout << x[j] << " " << exl[j] << " " << exh[j] << " erg " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
+    	cout << x[j] << " " << exl[j] << " " << exh[j] << " ph " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
 	}
+	edges[nlines] = emax;
 	cout << "dim " << x.GetNrows() << endl;
 	x.ResizeTo(j);
 	y.ResizeTo(j);
@@ -172,7 +176,7 @@ int loadFERMISpectra(TString filename) {
 	TTree* t = new TTree("DATA", "");
 	//METTERE IL DATA TYPE IN MODO ESPLICITO:
 	Long64_t nlines = t->ReadFile(filename, "SQRTTS/F:FLUX/F:ERG/F:EMIN/F:EMAX/F:ELOGC/F:SI/F");
-
+	edges = new Double_t[nlines + 1];
 	cout << nlines << endl;
 
 	t->SetBranchAddress("FLUX", &flux);
@@ -186,11 +190,13 @@ int loadFERMISpectra(TString filename) {
     	t->GetEntry(j);
     	x[j] = e_log_center;
     	y[j] = flux; //erg
+    	edges[j] = emin;
     	exl[j] = e_log_center - emin;
     	exh[j] = emax - e_log_center;
     	eyl[j] = eyh[j] = y[j] / 100.;
-    	cout << x[j] << " " << exl[j] << " " << exh[j] << " erg " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
+    	cout << x[j] << " " << exl[j] << " " << exh[j] << " ph " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
 	}
+	edges[nlines] = emax;
 	cout << "dim " << x.GetNrows() << endl;
 	x.ResizeTo(j);
 	y.ResizeTo(j);
@@ -217,22 +223,46 @@ void fitSpectra(string filename) {
    	gPad->SetLogy();
 
 
-	//int n = loadAGILESpectra(filename);
-	int n = loadFERMISpectra(filename);
-
-	//TGraphAsymmErrors* gr = new TGraphAsymmErrors(x,y,exl,exh,eyl,eyh);
-	TGraph* gr = new TGraph(x, y); 
+	int n = loadAGILESpectra(filename);
+	//int n = loadFERMISpectra(filename);
+	double maxenergy = x[n-1] + exh[n-1];
+   	double minenergy = x[0];// - exl[0];
+   	cout << "min energy: " << minenergy << endl;
+   	cout << "max energy: " << maxenergy << endl;
 	TString tit = filename;
+	
+	//////////////graphs
+	//TGraphAsymmErrors* gr = new TGraphAsymmErrors(x,y,exl,exh,eyl,eyh);
+	//TGraph* gr = new TGraph(x, y); 
+   	
+	//////////////histos
+	
+	TH1D* gr = new TH1D("spectra", tit, n, edges);
+	for(int i=0; i<n+1; i++)
+		cout << edges[i] << endl;
+	for(int i=1; i<=n; i++) {
+		gr->SetBinContent(i, y[i-1]);
+		cout << "integral [" << edges[i-1] << ", " << edges[i] << "] " << ": " << gr->Integral(i, i) << endl;
+		//correctoin
+		/*if(i == 3) {
+			Double_t integpre = gr->Integral(i, i);
+			gr->SetBinContent(i, y[i-1] * 2.5);
+			Double_t integpost = gr->Integral(i, i);
+			Double_t diffint = integpost - integpre;
+			cout << "integral B [" << edges[i-1] << ", " << edges[i] << "] " << ": " << gr->Integral(i, i) << endl;
+			Double_t intprebinold = gr->Integral(i-1, i-1);
+			intprebinold -= diffint;
+			//Double_t newv = intprebinold  / (edges[i-2] - edges[i-1]);
+			//gr->SetBinContent(i-1, newv);
+		}*/
+	}
+	
    	gr->SetTitle(tit);
    	gr->SetMarkerColor(4);
    	gr->SetMarkerStyle(21);
    	c1->cd(1);
-   	gr->Draw("ALP");
+   	gr->Draw("P*");
    	
-   	double maxenergy = x[n-1] + exh[n-1];
-   	double minenergy = x[0] - exl[0];
-   	cout << "min energy: " << minenergy << endl;
-   	cout << "max energy: " << maxenergy << endl;
    	
 	////////////////////////////////////////////////////////////////////////////////
    	//Prefactor = $N_0$ par[0]
@@ -246,7 +276,7 @@ void fitSpectra(string filename) {
     //<parameter free="1" max="1000.0" min="0.001" name="Prefactor" scale="1e-09" value="1"/>
     plaw->SetParLimits(0, 1e-12, 1e-5);
     plaw->SetParameter(0, 1e-9);
-    plaw->FixParameter(0, 1e-9);
+    //plaw->FixParameter(0, 1e-9);
     
     //<parameter free="1" max="-1.0" min="-5." name="Index" scale="1.0" value="-2.1"/>
     plaw->SetParLimits(1, 1, 5);
@@ -256,7 +286,7 @@ void fitSpectra(string filename) {
     //<parameter free="0" max="2000.0" min="30.0" name="Scale" scale="1.0" value="100.0"/>
     plaw->SetParLimits(2, 30, 2000);
     plaw->SetParameter(2, 100);
-    plaw->FixParameter(2, 100);
+    //plaw->FixParameter(2, 100);
     
     plaw->SetLineColor(kBlue);
     
@@ -325,10 +355,10 @@ void fitSpectra(string filename) {
 
 	TF1* psle = new TF1("plsuperexpcutoff", plexpcutoff, minenergy, maxenergy, 5);
     psle->SetParName(0, "Prefactor");
-    psle->SetParName(1, "Index1");
+    psle->SetParName(1, "Index1-spectral_index");
     psle->SetParName(2, "Scale");
     psle->SetParName(3, "Ecutoff");	//cutoff
-	psle->SetParName(4, "Index2");
+	psle->SetParName(4, "Index2-exp_index");
 	
 	//<parameter free="1" max="1000" min="1e-05" name="Prefactor" scale="1e-07" value="1"/>
 	psle->SetParLimits(0, 1e-12, 1e-4);	
@@ -339,7 +369,7 @@ void fitSpectra(string filename) {
     //3FGL Spectral_Index
     psle->SetParLimits(1, 0, 5);
     psle->SetParameter(1, 1.7);
-    //psle->FixParameter(1, 1.00295);
+    //psle->FixParameter(1, 1.63463);
     
     //<parameter free="0" max="1000" min="50" name="Scale" scale="1" value="200"/>
     psle->SetParLimits(2, 50, 1000);
@@ -350,13 +380,13 @@ void fitSpectra(string filename) {
     //Cutoff 3FGL
     psle->SetParLimits(3, 500, 30000);
     psle->SetParameter(3, 3000);
-    //psle->FixParameter(3, 255.80); 
+    //psle->FixParameter(3, 250.64); 
     
     //<parameter free="1" max="5" min="0" name="Index2" scale="1" value="1.5"/>
     //Exp_Index 
     psle->SetParLimits(4, 0, 5);
     psle->SetParameter(4, 1.5);
-    //psle->FixParameter(4, 0.4759);
+    //psle->FixParameter(4, 0.2827);
     
     
     ////////////////////////////////////////////////////////
@@ -368,17 +398,71 @@ void fitSpectra(string filename) {
     //psle -> PLSuperExpCutoff
     TF1* fitfun = psle;
     
-    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit");
+    /*
+
+* Minuit (library libMinuit). Old version of Minuit, based on the TMinuit class. The list of possible algorithms are:
+Migrad (default one)
+Simplex
+Minimize (it is a combination of Migrad and Simplex)
+MigradImproved
+Scan
+Seek
+
+* Minuit2 (library libMinuit2). New C++ version of Minuit. The list of possible algorithm is :
+Migrad (default)
+Simplex
+Minimize
+Scan
+
+*Fumili . This is the same algorithm of TFumili, but implemented in the Minuit2 library.
+
+* GSLMultiMin (library libMathMore). Minimizer based on the Multidimensional Minimization routines of the Gnu Scientific Library (GSL). The list of available algorithms is
+BFGS2 (default) : second version of the vector Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm;
+BFGS : old version of the vector Broyden-Fletcher-Goldfarb-Shanno (BFGS) algorithm;
+ConjugateFR : Fletcher-Reeves conjugate gradient algorithm;
+ConjugatePR : Polak-Ribiere conjugate gradient algorithm;
+SteepestDescent: steepest descent algorithm;
+
+* GSLMultiFit (library libMathMore). Minimizer based on the Non-Linear Least-Square routines of GSL. This minimizer can be used only for least-square fits.
+
+* GSLSimAn (library libMathMore). Minimizer based on simulated annealing.
+
+* Genetic (library libGenetic). Genetic minimizer based on an algorithm implemented in the TMVA package.
+*/
+
+/*
+Each minimizer can be configured using the ROOT::Math::MinimizerOptions class. The list of possible option that can be set are:
+
+* Minimizer type (MinimizerOptions::SetMinimizerType(const char *)) .
+* Minimizer algorithm (MinimizerOptions::SetMinimizerAlgorithm(const char *)).
+* Print Level (MinimizerOptions::SetPrintLevel(int )) to set the verbose printing level (default is 0).
+* Tolerance (MinimizerOptions::SetTolerance(double )) tolerance used to control the iterations.
+* Maximum number of function calls (MinimizerOptions::SetMaxFunctionCalls(int )).
+* Maximum number of iterations (MinimizerOptions::SetMaxIterations(int )). Note that this is not used by Minuit
+FCN Upper value for Error Definition (MinimizerOptions::SetMaxIterations(int )). Value in the minimization function used to compute the parameter errors. The default is to get the uncertainties at the 68% CL is a value of 1 for a chi-squared function minimization and 0.5 for a log-likelihood function.
+* Strategy (MinimizerOptions::SetStrategy(int )), minimization strategy used. For each minimization strategy Minuit uses different configuration parameters (e.g. different requirements in computing derivatives, computing full Hessian (strategy = 2) or an approximate version. The default is a value of 1. In this case the full Hessian matrix is computed only after the minimization.
+* Precision (MinimizerOptions::SetTolerance(double )). Precision value in the evaluation of the minimization function. Default is numerical double precision.
+*/
+    
+    ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit2", "Migrad");
+    ROOT::Math::MinimizerOptions::SetDefaultStrategy(2);
 	//cout << ROOT::Math::MinimizerOptions::DefaultTolerance() << endl;
 	//cout << ROOT::Math::MinimizerOptions::DefaultPrecision() << endl;
-	//ROOT::Math::MinimizerOptions::SetDefaultTolerance(0.000001);
+	ROOT::Math::MinimizerOptions::SetDefaultTolerance(0.000000000001);
+	ROOT::Math::MinimizerOptions::SetDefaultPrecision(0.0000000001);
+	ROOT::Math::MinimizerOptions::SetDefaultPrintLevel(2 );
+	ROOT::Math::MinimizerOptions opt;
+	opt.Print();
 
     
     gr->Fit(fitfun);
     //ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit");
-    //gr->Fit(fitfun);
-    //gr->Fit(fitfun);
-    //gr->Fit(fitfun);
+	//gr->Fit(fitfun);
+   
+    gr->Fit(fitfun);
+    gr->Fit(fitfun);
+    gr->Fit(fitfun);
+    
     
     c1->cd(2);
     fitfun->Draw("");
