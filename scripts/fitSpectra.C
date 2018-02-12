@@ -123,6 +123,8 @@ Double_t plsuperexpcutoff(Double_t *x, Double_t *par)
         return f;
 }
 
+//(TMath::Log10(400)-TMath::Log10(200))/2 + TMath::Log10(200)
+
 int loadAGILESpectra(TString filename) {
 	//(0)sqrtts (1)flux[ph/cm2/s] (2)flux_err (3)erg[erg/cm2/s] (4)Erg_err (5)Emin (6)Emax (7)E_log_center (8)exp (9)flux_ul (10)spectral_index (11)spectral_index_err (12)id_detection
 	
@@ -144,16 +146,45 @@ int loadAGILESpectra(TString filename) {
 	t->SetBranchAddress("ELOGC", &e_log_center);
 	t->SetBranchAddress("SI", &spectral_index);
 	t->SetBranchAddress("FLUX", &flux);
+	t->SetBranchAddress("FLUXE", &flux_err);
+	t->SetBranchAddress("FLUXUL", &flux_ul);
+	t->SetBranchAddress("SQRTTS", &sqrtts);
 	Long64_t j = 0;
 	for(j = 0; j<nlines; j++) {
     	t->GetEntry(j);
+    	/*
+    	//use this if you are working with erg
     	x[j] = e_log_center;
-    	y[j] = flux;
-    	edges[j] = emin;
     	exl[j] = e_log_center - emin;
     	exh[j] = emax - e_log_center;
-    	eyl[j] = eyh[j] = erg_err;
-    	cout << x[j] << " " << exl[j] << " " << exh[j] << " ph " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
+    	*/
+    	
+    	//use this if are working with ph/cm2/s
+    	
+    	x[j] = emin + (emax-emin)/2.0;
+    	exl[j] = (emax-emin)/2.0;
+    	exh[j] = (emax-emin)/2.0;
+		
+		if(sqrtts >= 3) {
+    		y[j] = flux; //erg
+    		eyl[j] = eyh[j] = flux_err;
+  		} else {
+  			cout << j << " considering flux ul " << endl;
+  			y[j] = flux_ul; //erg
+    		eyl[j] = eyh[j] = flux_ul / 2.0;
+  		}
+  		/*
+    	if(j == 3)
+    		y[j] *= 1.4;
+    	if(j == 4)
+    		y[j] *= 1.8;
+    	*/
+    	//edges[j] = emin + (emax-emin)/2 ;
+    	//edges[j] = e_log_center;
+  
+    	edges[j] = emin;
+  	
+    	cout << j << ":" << x[j] << " " << exl[j] << " " << exh[j] << " ph " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
 	}
 	edges[nlines] = emax;
 	cout << "dim " << x.GetNrows() << endl;
@@ -188,15 +219,35 @@ int loadFERMISpectra(TString filename) {
 	Long64_t j = 0;
 	for(j = 0; j<nlines; j++) {
     	t->GetEntry(j);
+    	
+    	//use this if you are working with erg
     	x[j] = e_log_center;
-    	y[j] = flux; //erg
-    	edges[j] = emin;
     	exl[j] = e_log_center - emin;
     	exh[j] = emax - e_log_center;
+    	
+    	
+    	/*
+    	//use this if are working with ph/cm2/s
+    	x[j] = emin + (emax-emin)/2.0;
+    	exl[j] = (emax-emin)/2.0;
+    	exh[j] = (emax-emin)/2.0;
+    	*/
+    	y[j] = flux; //erg
     	eyl[j] = eyh[j] = y[j] / 100.;
+    	
+    	//edges[j] = emin + (emax-emin)/2 ;
+    	//edges[j] = e_log_center;
+    	edges[j] = emin;
+    	
+    	eyl[j] = eyh[j] = flux / 10.;
+    	
     	cout << x[j] << " " << exl[j] << " " << exh[j] << " ph " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
 	}
 	edges[nlines] = emax;
+	cout << "Edges" << endl;
+	for(int i=0; i<nlines; i++) {
+		cout << i << ": " << edges[i] << " " << edges[i+1] << " center: " << x[i] << endl;
+	}
 	cout << "dim " << x.GetNrows() << endl;
 	x.ResizeTo(j);
 	y.ResizeTo(j);
@@ -211,10 +262,14 @@ void drawSpectra() {
 
 }
 
-void fitSpectra(string filename) {
+//experimen AGILE=0, Fermi=1
+//TCanvas* c1 = new TCanvas; c1->Divide(2,1);
+void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap) {
 
-	TCanvas* c1 = new TCanvas();
-	c1->Divide(2,1);
+	if(c1 == 0) {
+		c1 = new TCanvas();
+		c1->Divide(2,1);
+	}
 	c1->cd(1);
 	gPad->SetLogx();
    	gPad->SetLogy();
@@ -222,9 +277,12 @@ void fitSpectra(string filename) {
    	gPad->SetLogx();
    	gPad->SetLogy();
 
-
-	int n = loadAGILESpectra(filename);
-	//int n = loadFERMISpectra(filename);
+	int n=0;
+	if(experiment == 0)
+		n = loadAGILESpectra(filename);
+	if(experiment == 1)
+		n = loadFERMISpectra(filename);
+		
 	double maxenergy = x[n-1] + exh[n-1];
    	double minenergy = x[0];// - exl[0];
    	cout << "min energy: " << minenergy << endl;
@@ -232,11 +290,11 @@ void fitSpectra(string filename) {
 	TString tit = filename;
 	
 	//////////////graphs
-	//TGraphAsymmErrors* gr = new TGraphAsymmErrors(x,y,exl,exh,eyl,eyh);
+	TGraphAsymmErrors* gr = new TGraphAsymmErrors(x,y,exl,exh,eyl,eyh);
 	//TGraph* gr = new TGraph(x, y); 
    	
 	//////////////histos
-	
+	/*
 	TH1D* gr = new TH1D("spectra", tit, n, edges);
 	for(int i=0; i<n+1; i++)
 		cout << edges[i] << endl;
@@ -244,7 +302,8 @@ void fitSpectra(string filename) {
 		gr->SetBinContent(i, y[i-1]);
 		cout << "integral [" << edges[i-1] << ", " << edges[i] << "] " << ": " << gr->Integral(i, i) << endl;
 		//correctoin
-		/*if(i == 3) {
+		
+		if(i == -1) {
 			Double_t integpre = gr->Integral(i, i);
 			gr->SetBinContent(i, y[i-1] * 2.5);
 			Double_t integpost = gr->Integral(i, i);
@@ -254,16 +313,20 @@ void fitSpectra(string filename) {
 			intprebinold -= diffint;
 			//Double_t newv = intprebinold  / (edges[i-2] - edges[i-1]);
 			//gr->SetBinContent(i-1, newv);
-		}*/
+		}
 	}
-	
+	*/
    	gr->SetTitle(tit);
    	gr->SetMarkerColor(4);
    	gr->SetMarkerStyle(21);
    	c1->cd(1);
-   	gr->Draw("P*");
-   	
-   	
+   	if(overlap == 1) {
+   		gr->Draw("LP*"); //also AL for histos   
+   		gr->SetLineColor(kBlue);	
+   	} else {
+   		gr->Draw("ALP*");
+   		gr->SetLineColor(kBlack);	
+   	}
 	////////////////////////////////////////////////////////////////////////////////
    	//Prefactor = $N_0$ par[0]
 		//Index = $\gamma$ par[1]
@@ -288,7 +351,10 @@ void fitSpectra(string filename) {
     plaw->SetParameter(2, 100);
     //plaw->FixParameter(2, 100);
     
-    plaw->SetLineColor(kBlue);
+    if(overlap == 1) 
+    	plaw->SetLineColor(kBlue);
+    else
+    	plaw->SetLineColor(kBlack);
     
     ///////////////////////////////////////////////////////////////////////////////
     TF1* logp = new TF1("logparabola", logparabola, minenergy, maxenergy, 4);
@@ -307,21 +373,24 @@ void fitSpectra(string filename) {
     //<parameter free="1" max="10" min="0" name="alpha" scale="1.0" value="1"/>
     logp->SetParLimits(1, 0, 10);
     logp->SetParameter(1, 1);
-    //logp->FixParameter(1, 1.879);
+    //logp->FixParameter(1, 2.44);
     
     //beta
     //<parameter free="1" max="10" min="0" name="beta" scale="1.0" value="2"/>
-    logp->SetParLimits(2, 0.0, 10);
+    logp->SetParLimits(2, 0.2, 10);
     logp->SetParameter(2, 2);
-    //logp->FixParameter(2, 0.0386); //0.0386
+    //logp->FixParameter(2, 0.25); //0.0386
     
     //EB
     //<parameter free="1" max="1e4" min="20" name="Eb" scale="1" value="300."/>
     logp->SetParLimits(3, 20, 1e4);
     logp->SetParameter(3, 300);
-    //logp->FixParameter(3, 120);
+    //logp->FixParameter(3, 1894.78);
 
-    logp->SetLineColor(kRed);
+    if(overlap == 1) 
+    	logp->SetLineColor(kBlue);
+    else
+    	logp->SetLineColor(kBlack);
     
     //////////////////////////////////////////////////////////////////////////////
 	TF1* ple = new TF1("plexpcutoff", plexpcutoff, minenergy, maxenergy, 4);
@@ -337,18 +406,23 @@ void fitSpectra(string filename) {
     
     //<parameter free="1" max="0" min="-5" name="Index1" scale="1" value="-1.7"/>
     ple->SetParLimits(1, 0, 5);
-    ple->SetParameter(1, 1.7);
-    //ple->FixParameter(1, 1.00295);
+    ple->SetParameter(1, 0.5);
+    //ple->FixParameter(1, 0.5);
     
     //<parameter free="0" max="1000" min="50" name="Scale" scale="1" value="200"/>
     ple->SetParLimits(2, 50, 1000);
     ple->SetParameter(2, 200);
-    //ple->FixParameter(2, 200);
+    //ple->FixParameter(2, 1000);
     
     //<parameter free="1" max="30000" min="500" name="Cutoff" scale="1" value="3000"/>
     ple->SetParLimits(3, 500, 30000);
     ple->SetParameter(3, 3000);
-    //ple->FixParameter(3, 255.80); //500, 30000
+    ple->FixParameter(3,2119.98); //500, 30000
+    
+    if(overlap == 1) 
+    	ple->SetLineColor(kBlue);
+    else
+    	ple->SetLineColor(kBlack);
     
     ///////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
@@ -369,26 +443,29 @@ void fitSpectra(string filename) {
     //3FGL Spectral_Index
     psle->SetParLimits(1, 0, 5);
     psle->SetParameter(1, 1.7);
-    //psle->FixParameter(1, 1.63463);
+    psle->FixParameter(1, 1.0295);
     
     //<parameter free="0" max="1000" min="50" name="Scale" scale="1" value="200"/>
     psle->SetParLimits(2, 50, 1000);
     psle->SetParameter(2, 200);
-    //psle->FixParameter(2, 127.589);
+    //psle->FixParameter(2, 72);
     
     //<parameter free="1" max="30000" min="500" name="Cutoff" scale="1" value="3000"/>
     //Cutoff 3FGL
     psle->SetParLimits(3, 500, 30000);
     psle->SetParameter(3, 3000);
-    //psle->FixParameter(3, 250.64); 
+    //psle->FixParameter(3, 3700); 
     
     //<parameter free="1" max="5" min="0" name="Index2" scale="1" value="1.5"/>
     //Exp_Index 
     psle->SetParLimits(4, 0, 5);
     psle->SetParameter(4, 1.5);
-    //psle->FixParameter(4, 0.2827);
+    //psle->FixParameter(4, 5);
     
-    
+    if(overlap == 1) 
+    	psle->SetLineColor(kBlue);
+    else
+    	psle->SetLineColor(kBlack);
     ////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////
     
@@ -396,8 +473,8 @@ void fitSpectra(string filename) {
     //logp -> LogParabole
     //ple -> PLExpCutoff
     //psle -> PLSuperExpCutoff
-    TF1* fitfun = psle;
-    
+    TF1* fitfun = logp;
+
     /*
 
 * Minuit (library libMinuit). Old version of Minuit, based on the TMinuit class. The list of possible algorithms are:
@@ -450,7 +527,7 @@ FCN Upper value for Error Definition (MinimizerOptions::SetMaxIterations(int )).
 	//cout << ROOT::Math::MinimizerOptions::DefaultPrecision() << endl;
 	ROOT::Math::MinimizerOptions::SetDefaultTolerance(0.000000000001);
 	ROOT::Math::MinimizerOptions::SetDefaultPrecision(0.0000000001);
-	ROOT::Math::MinimizerOptions::SetDefaultPrintLevel(2 );
+	//ROOT::Math::MinimizerOptions::SetDefaultPrintLevel(2 );
 	ROOT::Math::MinimizerOptions opt;
 	opt.Print();
 
