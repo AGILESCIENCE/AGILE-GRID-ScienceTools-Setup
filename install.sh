@@ -44,12 +44,12 @@ cd ..
 
 echo "install libagilesci"
 cd libagilesci
-make ${parallel} install prefix=$AGILE
+make ${parallel} install prefix=$AGILE CFLAGS=-g
 cd ..
 
 echo "install agilesci1"
 cd agilesci1
-make ${parallel} install prefix=$AGILE
+make ${parallel} install prefix=$AGILE CFLAGS=-g
 cd ..
 
 cp profile $AGILE

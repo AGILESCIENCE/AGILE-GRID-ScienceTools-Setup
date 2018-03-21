@@ -128,7 +128,16 @@ Double_t plsuperexpcutoff(Double_t *x, Double_t *par)
 int loadAGILESpectra(TString filename) {
 	//(0)sqrtts (1)flux[ph/cm2/s] (2)flux_err (3)erg[erg/cm2/s] (4)Erg_err (5)Emin (6)Emax (7)E_log_center (8)exp (9)flux_ul (10)spectral_index (11)spectral_index_err (12)id_detection
 	
-
+	double correctionfactor = 1.0;
+	double corrfact[100];
+	for(int i=0; i<100; i++ ) corrfact[i] = 1;
+	/*
+	corrfact[0] = 2.66;
+	corrfact[1] = 2.88;
+	corrfact[2] = 2.20;
+	corrfact[3] = 1.23;
+	corrfact[4] = 1.00;
+	*/
 	int i = 0;
 	float sqrtts, flux, flux_err, erg, erg_err, emin, emax, e_log_center, exp, flux_ul;
 	
@@ -152,26 +161,26 @@ int loadAGILESpectra(TString filename) {
 	Long64_t j = 0;
 	for(j = 0; j<nlines; j++) {
     	t->GetEntry(j);
-    	/*
+		
     	//use this if you are working with erg
     	x[j] = e_log_center;
     	exl[j] = e_log_center - emin;
     	exh[j] = emax - e_log_center;
-    	*/
+		
     	
     	//use this if are working with ph/cm2/s
-    	
+    	/*
     	x[j] = emin + (emax-emin)/2.0;
     	exl[j] = (emax-emin)/2.0;
     	exh[j] = (emax-emin)/2.0;
-		
+		*/
 		if(sqrtts >= 3) {
-    		y[j] = flux; //erg
-    		eyl[j] = eyh[j] = flux_err;
+    		y[j] = flux * corrfact[j];
+    		eyl[j] = eyh[j] = flux_err * corrfact[j];
   		} else {
   			cout << j << " considering flux ul " << endl;
-  			y[j] = flux_ul; //erg
-    		eyl[j] = eyh[j] = flux_ul / 2.0;
+  			y[j] = flux_ul * corrfact[j];
+    		eyl[j] = eyh[j] = corrfact[j] * flux_ul / 2.0;
   		}
   		/*
     	if(j == 3)
@@ -184,7 +193,7 @@ int loadAGILESpectra(TString filename) {
   
     	edges[j] = emin;
   	
-    	cout << j << ":" << x[j] << " " << exl[j] << " " << exh[j] << " ph " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
+		cout << j << ": energy " << x[j] << " [" << emin << "-" << emax << "] ph " << y[j] << " +/- " << " (-" << eyl[j] << ", " << eyh[j] << ") cor factor " << corrfact[j] << endl;
 	}
 	edges[nlines] = emax;
 	cout << "dim " << x.GetNrows() << endl;
@@ -264,11 +273,11 @@ void drawSpectra() {
 
 //experimen AGILE=0, Fermi=1
 //TCanvas* c1 = new TCanvas; c1->Divide(2,1);
-void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap) {
+void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap, int color=kBlue) {
 
 	if(c1 == 0) {
 		c1 = new TCanvas();
-		c1->Divide(2,1);
+		c1->Divide(3,1);
 	}
 	c1->cd(1);
 	gPad->SetLogx();
@@ -276,6 +285,9 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap) {
    	c1->cd(2);
    	gPad->SetLogx();
    	gPad->SetLogy();
+	c1->cd(3);
+	gPad->SetLogx();
+	gPad->SetLogy();
 
 	int n=0;
 	if(experiment == 0)
@@ -322,10 +334,10 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap) {
    	c1->cd(1);
    	if(overlap == 1) {
    		gr->Draw("LP*"); //also AL for histos   
-   		gr->SetLineColor(kBlue);	
+   		gr->SetLineColor(color);
    	} else {
    		gr->Draw("ALP*");
-   		gr->SetLineColor(kBlack);	
+   		gr->SetLineColor(color);
    	}
 	////////////////////////////////////////////////////////////////////////////////
    	//Prefactor = $N_0$ par[0]
@@ -337,24 +349,24 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap) {
     plaw->SetParName(2, "E0");
     
     //<parameter free="1" max="1000.0" min="0.001" name="Prefactor" scale="1e-09" value="1"/>
-    plaw->SetParLimits(0, 1e-12, 1e-5);
+   // plaw->SetParLimits(0, 1e-12, 1e-5);
     plaw->SetParameter(0, 1e-9);
     //plaw->FixParameter(0, 1e-9);
     
     //<parameter free="1" max="-1.0" min="-5." name="Index" scale="1.0" value="-2.1"/>
-    plaw->SetParLimits(1, 1, 5);
+    plaw->SetParLimits(1, 0.1, 5);
     plaw->SetParameter(1, 2.1);
     //plaw->FixParameter(1, 2.1);
     
     //<parameter free="0" max="2000.0" min="30.0" name="Scale" scale="1.0" value="100.0"/>
-    plaw->SetParLimits(2, 30, 2000);
+    //plaw->SetParLimits(2, 30, 200000);
     plaw->SetParameter(2, 100);
     //plaw->FixParameter(2, 100);
     
     if(overlap == 1) 
-    	plaw->SetLineColor(kBlue);
+    	plaw->SetLineColor(color);
     else
-    	plaw->SetLineColor(kBlack);
+    	plaw->SetLineColor(color);
     
     ///////////////////////////////////////////////////////////////////////////////
     TF1* logp = new TF1("logparabola", logparabola, minenergy, maxenergy, 4);
@@ -388,9 +400,9 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap) {
     //logp->FixParameter(3, 1894.78);
 
     if(overlap == 1) 
-    	logp->SetLineColor(kBlue);
+    	logp->SetLineColor(color);
     else
-    	logp->SetLineColor(kBlack);
+    	logp->SetLineColor(color);
     
     //////////////////////////////////////////////////////////////////////////////
 	TF1* ple = new TF1("plexpcutoff", plexpcutoff, minenergy, maxenergy, 4);
@@ -407,22 +419,22 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap) {
     //<parameter free="1" max="0" min="-5" name="Index1" scale="1" value="-1.7"/>
     ple->SetParLimits(1, 0, 5);
     ple->SetParameter(1, 0.5);
-    //ple->FixParameter(1, 0.5);
+    //ple->FixParameter(1, 1.45);
     
     //<parameter free="0" max="1000" min="50" name="Scale" scale="1" value="200"/>
-    ple->SetParLimits(2, 50, 1000);
+    ple->SetParLimits(2, 50, 10000);
     ple->SetParameter(2, 200);
     //ple->FixParameter(2, 1000);
     
     //<parameter free="1" max="30000" min="500" name="Cutoff" scale="1" value="3000"/>
     ple->SetParLimits(3, 500, 30000);
     ple->SetParameter(3, 3000);
-    ple->FixParameter(3,2119.98); //500, 30000
+    //ple->FixParameter(3,2100); //500, 30000
     
     if(overlap == 1) 
-    	ple->SetLineColor(kBlue);
+    	ple->SetLineColor(color);
     else
-    	ple->SetLineColor(kBlack);
+    	ple->SetLineColor(color);
     
     ///////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
@@ -463,9 +475,9 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap) {
     //psle->FixParameter(4, 5);
     
     if(overlap == 1) 
-    	psle->SetLineColor(kBlue);
+    	psle->SetLineColor(color);
     else
-    	psle->SetLineColor(kBlack);
+    	psle->SetLineColor(color);
     ////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////
     
@@ -473,7 +485,7 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap) {
     //logp -> LogParabole
     //ple -> PLExpCutoff
     //psle -> PLSuperExpCutoff
-    TF1* fitfun = logp;
+    TF1* fitfun = ple;
 
     /*
 
@@ -532,16 +544,19 @@ FCN Upper value for Error Definition (MinimizerOptions::SetMaxIterations(int )).
 	opt.Print();
 
     
-    gr->Fit(fitfun);
+    gr->Fit(fitfun, "");
     //ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit");
 	//gr->Fit(fitfun);
    
-    gr->Fit(fitfun);
-    gr->Fit(fitfun);
-    gr->Fit(fitfun);
+   // gr->Fit(fitfun);
+    //gr->Fit(fitfun);
+    //gr->Fit(fitfun);
     
-    
-    c1->cd(2);
+	
+	if(overlap == 0)
+    	c1->cd(2);
+	else
+		c1->cd(3);
     fitfun->Draw("");
     gr->Draw("LP");
 
