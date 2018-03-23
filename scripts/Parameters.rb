@@ -91,6 +91,16 @@ class Parameters
 			@energybin = 0;
 			@emin_sources = 100
 			@emax_sources = 50000
+			@galmode2 = 0
+			@galmode2fit = 0
+			@isomode2 = 0
+			@isomode2fit = 0
+			@minimizertype = "Minuit"
+			@minimizeralg = "Migrad"
+			@minimizerdefstrategy = 2
+			@mindefaulttolerance = 0.01
+			@edpcorrection = 0
+			@fluxcorrection = 0
 		end
 		
 		def setPhaseCode(tstop)
@@ -456,6 +466,46 @@ class Parameters
 			@energybin
 		end
 		
+		def galmode2
+			@galmode2
+		end
+		
+		def galmode2fit
+			@galmode2fit
+		end
+		
+		def isomode2
+			@isomode2
+		end
+		
+		def isomode2fit
+			@isomode2fit
+		end
+		
+		def minimizertype
+			@minimizertype
+		end
+		
+		def minimizeralg
+			@minimizeralg
+		end
+		
+		def minimizerdefstrategy
+			@minimizerdefstrategy
+		end
+		
+		def mindefaulttolerance
+			@mindefaulttolerance
+		end
+		
+		def edpcorrection
+			@edpcorrection
+		end
+		
+		def fluxcorrection
+			@fluxcorrection
+		end
+		
 		def processInput(startindex, s, filter)
 			for i in startindex...s.size
 				if s[i] == nil
@@ -764,6 +814,26 @@ class Parameters
 					@energybin = value;
 				when "eb"
 					@energybin = value;
+				when "galmode2"
+					@galmode2 = value;
+				when "galmode2fit"
+					@galmode2fit = value;
+				when "isomode2"
+					@isomode2 = value;
+				when "isomode2fit"
+					@isomode2fit = value;
+				when "minimizertype"
+					@minimizertype = value;
+				when "minimizeralg"
+					@minimizeralg = value;
+				when "minimizerdefstrategy"
+					@minimizerdefstrategy = value;
+				when "mindefaulttolerance"
+					@mindefaulttolerance = value;
+				when "edpcorrection"
+					@edpcorrection = value;
+				when "fluxcorrection"
+					@fluxcorrection = value;
 				else
 					puts "Keyword " + argv.to_s + " error."
 					#exit;
