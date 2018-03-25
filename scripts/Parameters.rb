@@ -101,6 +101,7 @@ class Parameters
 			@mindefaulttolerance = 0.01
 			@edpcorrection = 0
 			@fluxcorrection = 0
+			@scanmaplist = 0
 		end
 		
 		def setPhaseCode(tstop)
@@ -124,6 +125,10 @@ class Parameters
         def eboundaryIF
         	@eboundaryIF
         end
+		
+		def scanmaplist
+			@scanmaplist
+		end
         
         def dq
             @dq
@@ -631,6 +636,8 @@ class Parameters
 			value = argv.split("=")[1];
 			puts keyw.to_s + " " + value.to_s
 			case keyw
+				when "scanmaplist"
+					@scanmaplist = value;
 				when "checksourceposition"
 					@checksourceposition = value;
 				when "outputtype"

@@ -39,7 +39,7 @@
 #29) mindefaulttolerance. Defaul 0.01
 #30) edpcorrection, default 0 (no), 1 yes. EDP cleaning correction NOT IMPLEMENTED YET
 #31) fluxcorrection, defaul 0 (no), 1 yes. Flux calculation correction for spectral shape
-#32) scanmaplist - default 0 = do not calculate one TS for each map, otherwise specify the name of the source
+#32) scanmaplist - default 0. Calculate one TS for each map -> specify the name of the source and the prefix e.g. VELA,pl
 # MAPLIST
 #Each line contains a set of maps:
 #	<countsMap> <exposureMap> <gasMap> <offAxisAngle> <galCoeff> <isoCoeff>
@@ -115,11 +115,12 @@
 
 
 load ENV["AGILE"] + "/scripts/conf.rb"
+load ENV["AGILE"] + "/scripts/MultiOutput6.rb"
 datautils = DataUtils.new
 fits = Fits.new
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
-	system("head -64 " + $0 );
+	system("head -116 " + $0 );
 	exit;
 end
 
@@ -132,7 +133,7 @@ baseoutfile2 = ARGV[3];
 p = Parameters.new
 p.processInput(3, ARGV, filter)
 alikeutils = AlikeUtils.new
-multioutput = MultiOutput.new
+multioutput = MultiOutput6.new
 
 prefix = p.prefix
 cts = ""
@@ -411,6 +412,70 @@ for i in 1..stepi
 	system("cat " + newoutfile.to_s + "")
 
 	lastoutfile = newoutfile
+	
+	if p.scanmaplist != 0
+		sourcename = p.scanmaplist.split(",")[0]
+		prefixscan = p.scanmaplist.split(",")[1]
+		mouthe = MultiOutput6.new
+		mouthe.readDataSingleSource(newoutfile + "_"+sourcename+".source")
+		puts mouthe.sicalc
+		puts mouthe.galcoeff
+		puts mouthe.isocoeff
+		
+		newoutfile2 = prefixscan + "_" + newoutfile;
+		
+		fheso = File.new(newoutfile2 + "_1.multi", "w")
+		File.open(newoutfile + ".multi").each_line do | line |
+			ll = line.split(" ")
+			if ll[6] == sourcename
+				fheso.write(ll[0].to_s + " " + ll[1].to_s + " " + ll[2].to_s + " " + mouthe.sicalc + " 1 " + ll[5].to_s + " " + ll[6].to_s + " " + ll[7].to_s + " " + mouthe.typefun + " " + mouthe.par2 + " " + mouthe.par3 + "\n")
+			else
+				fheso.write(line)
+			end
+		end
+		fheso.close()
+		
+		cmd = $0 + " " +  filter + " " + newoutfile + ".maplist4 " + newoutfile2 + "_1.multi " + newoutfile2 + "_1 galcoeff=" + mouthe.galcoeff + " isocoeff=" + mouthe.isocoeff + " fluxcorrection=" + p.fluxcorrection.to_s + " edpcorrection=" + p.edpcorrection.to_s
+		puts cmd
+		system cmd
+		
+		
+		indexmapl = 0;
+		fres = File.new(prefixscan + "_1.spe", "w")
+		puts "open " + newoutfile + ".maplist4"
+		File.open(newoutfile + ".maplist4").each_line do | line |
+			lname = prefixscan + "_" + line.split(" ")[0].split(".cts.gz")[0]
+			fml = File.new(lname + "_1.maplist4", "w")
+			fml.write(line)
+			fml.close()
+			cmd = $0 + " " +  filter + " " + lname + "_1.maplist4 " + newoutfile2 + "_1.multi " + lname + " galcoeff=" + mouthe.galcoeff.split(",")[indexmapl] + " isocoeff=" + mouthe.isocoeff.split(",")[indexmapl] + " fluxcorrection=" + p.fluxcorrection.to_s + " edpcorrection=" + p.edpcorrection.to_s
+			puts cmd
+			system cmd
+			
+			mouthe2 = MultiOutput6.new
+			mouthe2.readDataSingleSource(lname + "_"+sourcename+".source")
+			#(0)sqrtts (1)flux[ph/cm2/s] (2)flux_err (3)erg[erg/cm2/s] (4)Erg_err (5)Emin (6)Emax (7)E_log_center (8)exp (9)flux_ul (10)spectral_index (11)spectral_index_err (12)id_detection or expcorfactor
+			alpha = -mouthe2.sicalc.to_f;
+			e_min = mouthe2.energyrange.split("..")[0].to_f
+			e_max = mouthe2.energyrange.split("..")[1].to_f
+			ec = 0
+			if alpha != -2
+				ec = ( 1 / (alpha+2) ) *  (( e_max ** (alpha+2))  -  (e_min ** (alpha+2)) )  /  ( ( 1 / (alpha+1) ) * ( e_max ** (alpha+1))  -  e_min ** (alpha+1));
+			else
+				ec = Math.log(e_max/e_min) / ( ( ( e_max ** (alpha+1))  -  (e_min ** (alpha+1))) / (alpha + 1 ) );
+			end
+			
+			ec = format("%.3f", e_min - ec)
+			
+			fres.write(mouthe2.sqrtTS.to_s + " " + mouthe2.flux.to_s + " " + mouthe2.flux_error.to_s + " " + " 0.0 " + " 0.0 " + e_min.to_s + " " + + e_max.to_s + " " + ec.to_s + " " + mouthe2.expspectracorfactor.to_s + " " + mouthe2.flux_ul.to_s + " " + mouthe2.sicalc.to_s + " " + mouthe2.sicalc_error.to_s + " " + mouthe2.likelihood1.to_s + "\n")
+			indexmapl = indexmapl.to_i + 1
+		end
+		fres.close()
+		
+		
+		
+
+	end
 
 end
 
