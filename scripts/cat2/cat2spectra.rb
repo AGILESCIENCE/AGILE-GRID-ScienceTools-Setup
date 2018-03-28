@@ -1,4 +1,4 @@
-
+#! /usr/bin/ruby
 sourcename = ARGV[0]
 spectratype = ARGV[1] #pl plec plsec lp
 energyrange = ARGV[2] #00100-10000 00100-50000
