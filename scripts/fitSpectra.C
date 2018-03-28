@@ -180,7 +180,8 @@ int loadAGILESpectra(TString filename) {
   		} else {
   			cout << j << " considering flux ul " << endl;
   			y[j] = flux_ul * corrfact[j];
-    		eyl[j] = eyh[j] = corrfact[j] * flux_ul / 2.0;
+    		eyl[j]  = corrfact[j] * flux_ul / 2.0;
+			eyh[j] = 0;
   		}
   		/*
     	if(j == 3)
@@ -193,7 +194,7 @@ int loadAGILESpectra(TString filename) {
   
     	edges[j] = emin;
   	
-		cout << j << ": energy " << x[j] << " [" << emin << "-" << emax << "] ph " << y[j] << " +/- " << " (-" << eyl[j] << ", " << eyh[j] << ") cor factor " << corrfact[j] << endl;
+		cout << j << ": sqrtts: " << sqrtts << " energy " << x[j] << " [" << emin << "-" << emax << "] ph " << y[j] << " +/- " << " (-" << eyl[j] << ", " << eyh[j] << ") cor factor " << corrfact[j] << endl;
 	}
 	edges[nlines] = emax;
 	cout << "dim " << x.GetNrows() << endl;
@@ -219,6 +220,7 @@ int loadFERMISpectra(TString filename) {
 	edges = new Double_t[nlines + 1];
 	cout << nlines << endl;
 
+	t->SetBranchAddress("SQRTTS", &sqrtts);
 	t->SetBranchAddress("FLUX", &flux);
 	t->SetBranchAddress("ERG", &erg);
 	t->SetBranchAddress("EMIN", &emin);
@@ -250,12 +252,14 @@ int loadFERMISpectra(TString filename) {
     	
     	eyl[j] = eyh[j] = flux / 10.;
     	
-    	cout << x[j] << " " << exl[j] << " " << exh[j] << " ph " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
+    	//cout << x[j] << " " << exl[j] << " " << exh[j] << " ph " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
+		cout << j << ": sqrtts: " << sqrtts << " energy " << x[j] << " [" << emin << "-" << emax << "] ph " << y[j] << " +/- " << " (-" << eyl[j] << ", " << eyh[j] << ") " << endl;
 	}
 	edges[nlines] = emax;
 	cout << "Edges" << endl;
 	for(int i=0; i<nlines; i++) {
 		cout << i << ": " << edges[i] << " " << edges[i+1] << " center: " << x[i] << endl;
+		
 	}
 	cout << "dim " << x.GetNrows() << endl;
 	x.ResizeTo(j);
@@ -272,7 +276,7 @@ void drawSpectra() {
 }
 
 //experimen AGILE=0, Fermi=1
-//TCanvas* c1 = new TCanvas; c1->Divide(2,1);
+//TCanvas* c1 = new TCanvas; c1->Divide(3,1);
 void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap, int color=kBlue) {
 
 	if(c1 == 0) {
@@ -333,12 +337,19 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap, int c
    	gr->SetMarkerStyle(21);
    	c1->cd(1);
    	if(overlap == 1) {
-   		gr->Draw("LP*"); //also AL for histos   
+   		gr->Draw("LP*"); //also AL for histos
+		gr->GetXaxis()->SetTitle("MeV");
+		gr->GetYaxis()->SetTitle("#ph/cm_{2}/s");
    		gr->SetLineColor(color);
+		gr->SetLineWidth(2);
    	} else {
    		gr->Draw("ALP*");
+		gr->GetXaxis()->SetTitle("MeV");
+		gr->GetYaxis()->SetTitle("ph/cm_{2}/s");
    		gr->SetLineColor(color);
+		gr->SetLineWidth(2);
    	}
+	
 	////////////////////////////////////////////////////////////////////////////////
    	//Prefactor = $N_0$ par[0]
 		//Index = $\gamma$ par[1]
@@ -485,7 +496,7 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap, int c
     //logp -> LogParabole
     //ple -> PLExpCutoff
     //psle -> PLSuperExpCutoff
-    TF1* fitfun = ple;
+    TF1* fitfun = plaw;
 
     /*
 
@@ -544,7 +555,7 @@ FCN Upper value for Error Definition (MinimizerOptions::SetMaxIterations(int )).
 	opt.Print();
 
     
-    gr->Fit(fitfun, "");
+    //OK gr->Fit(fitfun, "");
     //ROOT::Math::MinimizerOptions::SetDefaultMinimizer("Minuit");
 	//gr->Fit(fitfun);
    
@@ -552,14 +563,17 @@ FCN Upper value for Error Definition (MinimizerOptions::SetMaxIterations(int )).
     //gr->Fit(fitfun);
     //gr->Fit(fitfun);
     
+	/*
+	 
+	if(overlap > 0)
+    	c1->cd(overlap);
+	*/
 	
-	if(overlap == 0)
-    	c1->cd(2);
-	else
-		c1->cd(3);
+	/*
+	 OK
     fitfun->Draw("");
     gr->Draw("LP");
-
+	*/
    // gr->Fit(ple);
     //f3sf->Draw("L");
 

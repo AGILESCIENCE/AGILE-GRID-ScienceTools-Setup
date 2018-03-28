@@ -1,6 +1,8 @@
 class Parameters
 	public
-		def initialize() 
+		def initialize()
+			@addcat = ""
+			@catpath = "/ANALYSIS3/catalogs/cat2_phase6_highflux.multi"
 			@checksourceposition = nil
 			@execap = 0
 			@radius = 10
@@ -116,6 +118,14 @@ class Parameters
 		
 		def checksourceposition
 			@checksourceposition
+		end
+		
+		def addcat
+			@addcat
+		end
+		
+		def catpath
+			@catpath
 		end
 		
 		def skytype
@@ -636,6 +646,10 @@ class Parameters
 			value = argv.split("=")[1];
 			puts keyw.to_s + " " + value.to_s
 			case keyw
+				when "addcat"
+					@addcat = value;
+				when "catpath"
+					@catpath = value;
 				when "scanmaplist"
 					@scanmaplist = value;
 				when "checksourceposition"

@@ -3,7 +3,7 @@
 ################ Mandatory and ordered parameters:
 #00) filter (default FM3.119_2_I0025)
 #01) maplist - Note that the extension .maplist4 is mandatory. See below for more details.
-#02) listsource - extension .multi - file name of the list (in alike multi format - example 73.0e-08 80.27227 0.73223 2.1 1 2 3EGJ2033+4118). See below for more details.
+#02) listsource - extension .multi - file name of the list (in alike multi format - example 73.0e-08 80.27227 0.73223 2.1 1 2 3EGJ2033+4118). See below for more details. Or none if the .multi must be generated with the addcat2 procedure (otherwise will be appended)
 #03) outfile - output file name
 ################ Optional parameters
 #04) prefix (if specify a prefix, use only 1 map, if -999 use all the maps in the directory) - disabled with parameter maplist
@@ -39,7 +39,10 @@
 #29) mindefaulttolerance. Defaul 0.01
 #30) edpcorrection, default 0 (no), 1 yes. EDP cleaning correction NOT IMPLEMENTED YET
 #31) fluxcorrection, defaul 0 (no), 1 yes. Flux calculation correction for spectral shape
-#32) scanmaplist - default 0. Calculate one TS for each map -> specify the name of the source and the prefix e.g. VELA,pl
+#32) scanmaplist - default 0. Calculate one TS for each map of the maplist4 provided as input -> specify the name of the source and the prefix e.g. VELA,pl . Warning: it works only for energy bins or theta bin, and not for theta bin AND energy bin
+#33) (CAT2) addcat. Specify the string of the source to be analysed". e.g. addcat2="2.0e-07 34.7  -0.5  2.5 12 2 W44 0.0 1 2000.0 0.0". Remove sources with the same name, to avoid duplicate
+#34) (CAT2) catpath, the path of the cat file (.multi). Default is /ANALYSIS3/catalogs/cat2_phase6_highflux.multi
+
 # MAPLIST
 #Each line contains a set of maps:
 #	<countsMap> <exposureMap> <gasMap> <offAxisAngle> <galCoeff> <isoCoeff>
@@ -113,6 +116,8 @@
 #	1 pol0 fit
 #	2 powerlaw fit
 
+#Extract list from CAT2
+#extract_catalog.rb /ANALYSIS3/catalogs/cat2_phase6_highflux.multi 195.09 4.28 list.multi 0.1 1 5 0 10 0 0
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 load ENV["AGILE"] + "/scripts/MultiOutput6.rb"
@@ -120,7 +125,7 @@ datautils = DataUtils.new
 fits = Fits.new
 
 if ARGV[0].to_s == "help" || ARGV[0].to_s == "h" || ARGV[0] == nil
-	system("head -116 " + $0 );
+	system("head -118 " + $0 );
 	exit;
 end
 
@@ -131,7 +136,7 @@ baseoutfile = ARGV[3];
 baseoutfile2 = ARGV[3];
 
 p = Parameters.new
-p.processInput(3, ARGV, filter)
+p.processInput(4, ARGV, filter)
 alikeutils = AlikeUtils.new
 multioutput = MultiOutput6.new
 
@@ -161,6 +166,32 @@ File.open(inputmaplist).each_line do | line |
 	gas = line.split(" ")[2];
 end
 puts "MAPS: emin " + emin_sin.to_s + " emax " + emax_sin.to_s
+
+if p.addcat != ""
+	if listsource == "none"
+		listsource = baseoutfile + ".tmp.multi"
+		system("touch " + listsource)
+		puts listsource
+	end
+	
+	listsourcetmp1 = listsource + ".tmp1"
+	fout1 = File.new(listsourcetmp1, "w")
+	fout1.write(p.addcat + "\n")
+	fout1.close()
+	
+	ll = p.addcat.split(" ")
+	listsourcetmp2 = listsource + ".tmp2"
+	cmd = "extract_catalog.rb " + p.catpath + " " + ll[1].to_s + " " + ll[2].to_s + " " + listsourcetmp2 + " 0.1 1 5 0 10 0 0"
+	puts cmd
+	system cmd
+	
+	listsourcetmp3 = listsource + ".tmp3"
+	listsourcetmp4 = listsource + ".tmp4"
+	alikeutils.appendMulti(listsourcetmp2, listsourcetmp1, listsourcetmp3, 0.1)
+	alikeutils.appendMulti(listsource, listsourcetmp3, listsourcetmp4, 0.1)
+	listsource = listsourcetmp4
+end
+
 
 #if different from default energy range of input source list, generate a new sourcelist with the energy range of the input maps
 if(emin_sin.to_f != p.emin_sources.to_f or emax_sin.to_f != p.emax_sources.to_f)
@@ -404,16 +435,12 @@ for i in 1..stepi
 	#cmd = "ruby ~/grid_scripts3/convertMultiResToRegData.rb " + outfile.to_s;
 	#datautils.execute(outfile2, cmd)
 
-	if PARALLEL_OR_ITERATIVE.to_i == 1
-		#cmd = "ruby ~/grid_scripts3/convertMultiResToHTML.rb " + outfile.to_s;
-		#datautils.execute(outfile2, cmd)
-	end
-
 	system("cat " + newoutfile.to_s + "")
 
 	lastoutfile = newoutfile
 	
 	if p.scanmaplist != 0
+		
 		sourcename = p.scanmaplist.split(",")[0]
 		prefixscan = p.scanmaplist.split(",")[1]
 		mouthe = MultiOutput6.new
@@ -423,8 +450,10 @@ for i in 1..stepi
 		puts mouthe.isocoeff
 		
 		newoutfile2 = prefixscan + "_" + newoutfile;
-		
-		fheso = File.new(newoutfile2 + "_1.multi", "w")
+		system("cp " + lastoutfile + " " + newoutfile2 + ".originalres")
+		system("cp " + lastoutfile + ".multi " + newoutfile2 + ".multi.originalres")
+		system("cp " + newoutfile + "_"+sourcename+".source " + newoutfile2 + "_"+sourcename+".source.originalres")
+		fheso = File.new(newoutfile2 + ".multi", "w")
 		File.open(newoutfile + ".multi").each_line do | line |
 			ll = line.split(" ")
 			if ll[6] == sourcename
@@ -435,20 +464,28 @@ for i in 1..stepi
 		end
 		fheso.close()
 		
-		cmd = $0 + " " +  filter + " " + newoutfile + ".maplist4 " + newoutfile2 + "_1.multi " + newoutfile2 + "_1 galcoeff=" + mouthe.galcoeff + " isocoeff=" + mouthe.isocoeff + " fluxcorrection=" + p.fluxcorrection.to_s + " edpcorrection=" + p.edpcorrection.to_s
+		cmd = $0 + " " +  filter + " " + newoutfile + ".maplist4 " + newoutfile2 + ".multi " + newoutfile2 + " galcoeff=" + mouthe.galcoeff + " isocoeff=" + mouthe.isocoeff + " fluxcorrection=" + p.fluxcorrection.to_s + " edpcorrection=" + p.edpcorrection.to_s
 		puts cmd
 		system cmd
 		
 		
 		indexmapl = 0;
-		fres = File.new(prefixscan + "_1.spe", "w")
+		fres = File.new(prefixscan + ".spe", "w")
 		puts "open " + newoutfile + ".maplist4"
 		File.open(newoutfile + ".maplist4").each_line do | line |
-			lname = prefixscan + "_" + line.split(" ")[0].split(".cts.gz")[0]
-			fml = File.new(lname + "_1.maplist4", "w")
+			
+			lname = prefixscan + "_" + line.split(" ")[0].split(".cts.gz")[0] + "_s"
+			puts "Processing ... " + line + " in file " + lname
+			fml = File.new(lname + ".maplist4", "w")
 			fml.write(line)
 			fml.close()
-			cmd = $0 + " " +  filter + " " + lname + "_1.maplist4 " + newoutfile2 + "_1.multi " + lname + " galcoeff=" + mouthe.galcoeff.split(",")[indexmapl] + " isocoeff=" + mouthe.isocoeff.split(",")[indexmapl] + " fluxcorrection=" + p.fluxcorrection.to_s + " edpcorrection=" + p.edpcorrection.to_s
+		end
+		
+		File.open(newoutfile + ".maplist4").each_line do | line |
+			
+			lname = prefixscan + "_" + line.split(" ")[0].split(".cts.gz")[0]
+			
+			cmd = $0 + " " +  filter + " " + lname + "_s.maplist4 " + newoutfile2 + ".multi " + lname + " galcoeff=" + mouthe.galcoeff.split(",")[indexmapl] + " isocoeff=" + mouthe.isocoeff.split(",")[indexmapl] + " fluxcorrection=" + p.fluxcorrection.to_s + " edpcorrection=" + p.edpcorrection.to_s
 			puts cmd
 			system cmd
 			
@@ -472,7 +509,15 @@ for i in 1..stepi
 		end
 		fres.close()
 		
-		
+		puts "-----------------------------------------------"
+		system("cat " + newoutfile2 + ".multi.originalres")
+		puts "-----------------------------------------------"
+		system("cat " + newoutfile2 + ".originalres")
+		puts "-----------------------------------------------"
+		system("cat " + newoutfile2 + "_"+sourcename+".source.originalres")
+		puts "-----------------------------------------------"
+		system("cat " + prefixscan + ".spe")
+		puts "-----------------------------------------------"
 		
 
 	end
