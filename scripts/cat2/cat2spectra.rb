@@ -57,7 +57,7 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 			endline = "3 2000.0 1.0"
 		end
 		
-		catline = catline + fixflag + " " + ll[5] + " " + ll[6] + " " + ll[7] + " " + endline
+		catline = catline + " " + fixflag + " " + ll[5] + " " + ll[6] + " " + ll[7] + " " + endline
 		
 		break
 	end
@@ -66,7 +66,9 @@ end
 
 
 system("rm INT"+fan+"*")
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT"+fan+" addcat=\""+ catline +"\" fluxcorrection=1 scanmaplist=" + sourcename + "," + fan + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 galmode2=3 isomode2=3 "
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT"+fan+" addcat=\""+ catline +"\" fluxcorrection=1 scanmaplist=" + sourcename + "," + fan + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2  "
+#galmode2=3 isomode2=3
 puts cmd
+system cmd
 #fluxcorrection=1 #isomode2=1 isomode2fit=2  # galmode2=1 isomode2=1 galmode2fit=1 isomode2fit=2
 
