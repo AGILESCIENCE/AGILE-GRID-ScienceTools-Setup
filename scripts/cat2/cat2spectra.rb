@@ -4,6 +4,7 @@ spectratype = ARGV[1] #pl plec plsec lp
 energyrange = ARGV[2] #00100-10000 00100-50000
 analysisname = ARGV[3] #EDP1-EB01-FB01
 irf = ARGV[4]
+inttype = ARGV[5]
 
 fan = ARGV[1] + "-" + ARGV[2] + "-" + ARGV[3] + "-" + ARGV[4]
 
@@ -66,7 +67,7 @@ end
 
 
 system("rm INT"+fan+"*")
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT"+fan+" addcat=\""+ catline +"\" fluxcorrection=1 scanmaplist=" + sourcename + "," + fan + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2  "
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT"+fan+" addcat=\""+ catline +"\" fluxcorrection=1 scanmaplist=" + sourcename + "," + fan + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 integratortype=" + inttype.to_s
 #galmode2=3 isomode2=3
 puts cmd
 system cmd

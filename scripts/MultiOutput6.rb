@@ -29,6 +29,9 @@ class MultiOutput6
 			
 			@sicalc = 0
 			@sicalc_error = 0
+			
+			@erg = 0
+			@erg_error = 0
 
 			#read upper limit
 			index2 = 0;
@@ -124,6 +127,8 @@ class MultiOutput6
 					@flux_ul = lll[4];
 					@exposure = lll[5]
 					@expspectracorfactor = lll[6]
+					@erg = lll[7]
+					@erg_error = lll[8]
 				end
 				if index2.to_i == indexstart + 7
 					@sicalc = lll[0]
@@ -251,7 +256,7 @@ class MultiOutput6
 	end
 	
 	def multiOutputLineFull3(flag)
-		@multiOutputLineFull3 = flag + " " + @label.to_s + " " + format("%.2f", @sqrtTS) + " POS " + @l_peak.to_s + " " + @b_peak.to_s + " " + @dist.to_s + " " + @l.to_s + " " + @b.to_s + " " + @distellipse.to_s + " " + @r.to_s + " " + @ell_a.to_s +  " " + @ell_b.to_s + " " + @ell_phi.to_s + " CTS " + @counts.to_s + " " + @counts_error.to_s + " " + @counts_error_p.to_s + " " + @counts_error_m.to_s + " " + @counts_ul.to_s + " FL " + @flux.to_s + " " + @flux_error.to_s + " " + @flux_error_p.to_s + " " + @flux_error_m.to_s + " " + @flux_ul.to_s + " " + @expspectracorfactor + " EXP " + @exposure.to_s + " " + @expratio + " SPE " + @typefun + " " + @sicalc.to_s + " " + @sicalc_error.to_s + " " + @par2 + " " + @par2_error + " " + @par3 + " " + @par3_error + " TI " + @timestart_utc.to_s + " " + @timestop_utc.to_s + " " + @timestart_mjd.to_s + " " + @timestop_mjd.to_s + " " + @timestart_tt.to_s + " " + @timestop_tt.to_s + " GI " + @galcoeffzero + " " + @galcoeffzero_err + " " + @galcoeff + " " + @galcoeff_err + " "  + @isocoeffzero + " " + @isocoeffzero_err + " "  + @isocoeff + " " + @isocoeff_err + " FIT " + @fit_cts + " "  + @fit_fcn0 + " " + @fit_fcn1 + " " + @fit_edm0 + " " + @fit_edm1 + " " + @fit_iter0 + " " + @fit_iter1  + " ANA " + @fix.to_s + " " + @si_start.to_s + " " + @ulconflevel.to_s + " " + @srcconflevel.to_s + " " + @startL.to_s + " " + @startB.to_s + " " + @startFlux.to_s + " [ " + @lmin.to_s + " , " + @lmax.to_s + " ] [ " + @bmin.to_s + " , " + @bmax.to_s + " ] " + " " + @energyrange + " " + @fovrange + " " + @albedo + " " + @binsize + " " + @expstep + " " + @phasecode + " " + @likelihood1 + " ORBPH " + format("%.3f", @orbitalphase);
+		@multiOutputLineFull3 = flag + " " + @label.to_s + " " + format("%.2f", @sqrtTS) + " POS " + @l_peak.to_s + " " + @b_peak.to_s + " " + @dist.to_s + " " + @l.to_s + " " + @b.to_s + " " + @distellipse.to_s + " " + @r.to_s + " " + @ell_a.to_s +  " " + @ell_b.to_s + " " + @ell_phi.to_s + " CTS " + @counts.to_s + " " + @counts_error.to_s + " " + @counts_error_p.to_s + " " + @counts_error_m.to_s + " " + @counts_ul.to_s + " FL " + @flux.to_s + " " + @flux_error.to_s + " " + @flux_error_p.to_s + " " + @flux_error_m.to_s + " " + @flux_ul.to_s + " " + @expspectracorfactor + " EXP " + @exposure.to_s + " " + @expratio + " SPE " + @typefun + " " + @sicalc.to_s + " " + @sicalc_error.to_s + " " + @par2 + " " + @par2_error + " " + @par3 + " " + @par3_error + " TI " + @timestart_utc.to_s + " " + @timestop_utc.to_s + " " + @timestart_mjd.to_s + " " + @timestop_mjd.to_s + " " + @timestart_tt.to_s + " " + @timestop_tt.to_s + " GI " + @galcoeffzero + " " + @galcoeffzero_err + " " + @galcoeff + " " + @galcoeff_err + " "  + @isocoeffzero + " " + @isocoeffzero_err + " "  + @isocoeff + " " + @isocoeff_err + " FIT " + @fit_cts + " "  + @fit_fcn0 + " " + @fit_fcn1 + " " + @fit_edm0 + " " + @fit_edm1 + " " + @fit_iter0 + " " + @fit_iter1  + " ANA " + @fix.to_s + " " + @si_start.to_s + " " + @ulconflevel.to_s + " " + @srcconflevel.to_s + " " + @startL.to_s + " " + @startB.to_s + " " + @startFlux.to_s + " [ " + @lmin.to_s + " , " + @lmax.to_s + " ] [ " + @bmin.to_s + " , " + @bmax.to_s + " ] " + " " + @energyrange + " " + @fovrange + " " + @albedo + " " + @binsize + " " + @expstep + " " + @phasecode + " " + @likelihood1 + " ORBPH " + format("%.3f", @orbitalphase) + " ERG " + @erg.to_s + " " + erg_error.to_s;
 		
 	end
 	
@@ -306,13 +311,13 @@ class MultiOutput6
 		
 		assoccat("<br>")
 		
-		@multiOutputLineFull3HTML = "<tr><td>" + @label.to_s + "</td><td>" + name.to_s + "</td><td>" + format("%.2f", @sqrtTS) + "</td><td>" + format("%.2E", @flux) + " +/- " + format("%.2E", @flux_error) + "</td><td>" + format("%.2E", @flux_ul) + "</td><td>"  + @fluxcor.to_s + "</td><td>" + @l_peak.to_s + "</td><td>" + @b_peak.to_s + "</td><td>" + format("%.2f", @dist) + "</td><td>" + isnil(@l).to_s + "</td><td>" + isnil(@b).to_s + "</td><td>" + format("%.2f", isnil(@distellipse)) + "</td><td>" + format("%.2f", isnil(@r)) + "</td><td>" + format("%.2f", isnil(@ell_a)) +  "</td><td>" + format("%.2f", isnil(@ell_b)) + "</td><td>" + format("%.2f", isnil(@ell_phi)) + "</td><td>" + format("%.2f", @counts) + " +/- " + format("%.2f", @counts_error) + "</td><td>" + format("%.2f", @counts_ul) + "</td><td>" + @assoc.to_s + "</td><td>" + format("%.3E", @exposure) + "</td><td>" +  @expratio.to_s + "</td><td>" + @typefun + " " + @sicalc.to_s + " +/- " + @sicalc_error.to_s + " " + @par2.to_s + " +/- " + @par2_error.to_s + " " + @par3.to_s + " +/- " + @par3_error.to_s + "</td><td>" + @timestart_utc.to_s + "</td><td>" + @timestop_utc.to_s + "</td><td>" + format("%.2f", @timestart_mjd) + "</td><td>" + format("%.2f", @timestop_mjd) + "</td><td>" + @timestart_tt.to_s + "</td><td>" + @timestop_tt.to_s + "</td><td>" + @galcoeffzero.to_s + "</td><td>" + @galcoeffzero_err.to_s + "</td><td>" + @galcoeff.to_s + "</td><td>" + @galcoeff_err.to_s + "</td><td>"  + @isocoeffzero.to_s + "</td><td>" + @isocoeffzero_err.to_s + "</td><td>"  + @isocoeff.to_s + "</td><td>" + @isocoeff_err.to_s + "</td><td>" + @fit_cts.to_s + "</td><td>"  + @fit_fcn0.to_s + "</td><td>" + @fit_fcn1.to_s + "</td><td>" + @fit_edm0.to_s + "</td><td>" + @fit_edm1.to_s + "</td><td>" + @fit_iter0.to_s + "</td><td>" + @fit_iter1.to_s  + "</td><td>" + @fix.to_s + "</td><td>" + @si_start.to_s + "</td><td>" + @ulconflevel.to_s + "</td><td>" + @srcconflevel.to_s + "</td><td>" + @startL.to_s + "</td><td>" + @startB.to_s + "</td><td>" + @startFlux.to_s + "</td><td>[ " + @lmin.to_s + " , " + @lmax.to_s + " ] [ " + @bmin.to_s + " , " + @bmax.to_s + " ] " + "</td><td>" + @energyrange.to_s + "</td><td>" + @fovrange.to_s + "</td><td>" + @albedo.to_s + "</td><td>" + @binsize.to_s + "</td><td>" + @expstep.to_s + "</td><td>" + @phasecode.to_s + "</td><td>" + @mlestep_res.to_s + "</td><td>" + @mlestep_cts.to_s + "</td><td>" + @likelihood1.to_s + "</td></tr>";
+		@multiOutputLineFull3HTML = "<tr><td>" + @label.to_s + "</td><td>" + name.to_s + "</td><td>" + format("%.2f", @sqrtTS) + "</td><td>" + format("%.2E", @flux) + " +/- " + format("%.2E", @flux_error) + "</td><td>" + format("%.2E", @flux_ul) + "</td><td>"  + @fluxcor.to_s + "</td><td>" + @l_peak.to_s + "</td><td>" + @b_peak.to_s + "</td><td>" + format("%.2f", @dist) + "</td><td>" + isnil(@l).to_s + "</td><td>" + isnil(@b).to_s + "</td><td>" + format("%.2f", isnil(@distellipse)) + "</td><td>" + format("%.2f", isnil(@r)) + "</td><td>" + format("%.2f", isnil(@ell_a)) +  "</td><td>" + format("%.2f", isnil(@ell_b)) + "</td><td>" + format("%.2f", isnil(@ell_phi)) + "</td><td>" + format("%.2f", @counts) + " +/- " + format("%.2f", @counts_error) + "</td><td>" + format("%.2f", @counts_ul) + "</td><td>" + @assoc.to_s + "</td><td>" + format("%.3E", @exposure) + "</td><td>" +  @expratio.to_s + "</td><td>" + @typefun + " " + @sicalc.to_s + " +/- " + @sicalc_error.to_s + " " + @par2.to_s + " +/- " + @par2_error.to_s + " " + @par3.to_s + " +/- " + @par3_error.to_s + "</td><td>" + @timestart_utc.to_s + "</td><td>" + @timestop_utc.to_s + "</td><td>" + format("%.2f", @timestart_mjd) + "</td><td>" + format("%.2f", @timestop_mjd) + "</td><td>" + @timestart_tt.to_s + "</td><td>" + @timestop_tt.to_s + "</td><td>" + @galcoeffzero.to_s + "</td><td>" + @galcoeffzero_err.to_s + "</td><td>" + @galcoeff.to_s + "</td><td>" + @galcoeff_err.to_s + "</td><td>"  + @isocoeffzero.to_s + "</td><td>" + @isocoeffzero_err.to_s + "</td><td>"  + @isocoeff.to_s + "</td><td>" + @isocoeff_err.to_s + "</td><td>" + @fit_cts.to_s + "</td><td>"  + @fit_fcn0.to_s + "</td><td>" + @fit_fcn1.to_s + "</td><td>" + @fit_edm0.to_s + "</td><td>" + @fit_edm1.to_s + "</td><td>" + @fit_iter0.to_s + "</td><td>" + @fit_iter1.to_s  + "</td><td>" + @fix.to_s + "</td><td>" + @si_start.to_s + "</td><td>" + @ulconflevel.to_s + "</td><td>" + @srcconflevel.to_s + "</td><td>" + @startL.to_s + "</td><td>" + @startB.to_s + "</td><td>" + @startFlux.to_s + "</td><td>[ " + @lmin.to_s + " , " + @lmax.to_s + " ] [ " + @bmin.to_s + " , " + @bmax.to_s + " ] " + "</td><td>" + @energyrange.to_s + "</td><td>" + @fovrange.to_s + "</td><td>" + @albedo.to_s + "</td><td>" + @binsize.to_s + "</td><td>" + @expstep.to_s + "</td><td>" + @phasecode.to_s + "</td><td>" + @mlestep_res.to_s + "</td><td>" + @mlestep_cts.to_s + "</td><td>" + @likelihood1.to_s + "</td><td>" + @erg.to_s + " +/- " + @erg_error.to_s + "</td></tr>";
 		
 	end
 	
 	def multiOutputLineFull3HTMLheader(flag)
 		
-		@multiOutputLineFull3HTMLheader = "<table border=1><tr><th>Name</th><th>dir</th><th>sqrt(TS)</th><th>Flux</th><th>Flux UL</th><th>Flux Corr. Factor</th><th>l peak</th><th>b peak</th><th>dist</th><th>l</th><th>b</th><th>dist ell</th><th>R</th><th>a</th><th>b</th><th>phi</th><th>Counts</th><th>Counts UL</th><th>Assoc</th><th>Exp</th><th>Exp Ratio</th><th>Spectra</th><th>tstart UTC</th><th>tstop UTC</th><th>tstart MJD</th><th>tstop MJD</th><th>tstart TT</th><th>tstop TT</th><th>galcoeffzero</th><th>galcoeffzero_err</th><th>galcoeff</th><th>galcoeff_err</th><th>isocoeffzero</th><th>isocoeffzero_err</th><th>isocoeff</th><th>isocoeff_err</th><th>fit_cts</th><th>fit_fcn0</th><th>fit_fcn1</th><th>fit_edm0</th><th>fit_edm1</th><th>fit_iter0</th><th>fit_iter1</th><th>fix.to_s</th><th>si_start</th><th>ulconflevel</th><th>srcconflevel</th><th>startL</th><th>startB</th><th>startFlux</th><th>posrange</th><th>energyrange</th><th>fovrange</th><th>albedo</th><th>binsize</th><th>expstep</th><th>phasecode</th><th>MLE phase res</th><th>MLE phase cts</th><th>Likelihood1</th></tr>";
+		@multiOutputLineFull3HTMLheader = "<table border=1><tr><th>Name</th><th>dir</th><th>sqrt(TS)</th><th>Flux</th><th>Flux UL</th><th>Flux Corr. Factor</th><th>l peak</th><th>b peak</th><th>dist</th><th>l</th><th>b</th><th>dist ell</th><th>R</th><th>a</th><th>b</th><th>phi</th><th>Counts</th><th>Counts UL</th><th>Assoc</th><th>Exp</th><th>Exp Ratio</th><th>Spectra</th><th>tstart UTC</th><th>tstop UTC</th><th>tstart MJD</th><th>tstop MJD</th><th>tstart TT</th><th>tstop TT</th><th>galcoeffzero</th><th>galcoeffzero_err</th><th>galcoeff</th><th>galcoeff_err</th><th>isocoeffzero</th><th>isocoeffzero_err</th><th>isocoeff</th><th>isocoeff_err</th><th>fit_cts</th><th>fit_fcn0</th><th>fit_fcn1</th><th>fit_edm0</th><th>fit_edm1</th><th>fit_iter0</th><th>fit_iter1</th><th>fix.to_s</th><th>si_start</th><th>ulconflevel</th><th>srcconflevel</th><th>startL</th><th>startB</th><th>startFlux</th><th>posrange</th><th>energyrange</th><th>fovrange</th><th>albedo</th><th>binsize</th><th>expstep</th><th>phasecode</th><th>MLE phase res</th><th>MLE phase cts</th><th>Likelihood1</th><th>Erg</th></tr>";
 		
 	end
 	
@@ -383,6 +388,14 @@ class MultiOutput6
 
 	def likelihood1
 		@likelihood1
+	end
+	
+	def erg
+		@erg
+	end
+	
+	def erg_error
+		@erg_error
 	end
 	
 	def mlestep_res
