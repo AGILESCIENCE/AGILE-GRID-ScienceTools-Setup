@@ -32,6 +32,7 @@ class MultiOutput6
 			
 			@erg = 0
 			@erg_error = 0
+			@sensitivity = 0.0;
 
 			#read upper limit
 			index2 = 0;
@@ -129,6 +130,7 @@ class MultiOutput6
 					@expspectracorfactor = lll[6]
 					@erg = lll[7]
 					@erg_error = lll[8]
+					@sensitivity = lll[9]
 				end
 				if index2.to_i == indexstart + 7
 					@sicalc = lll[0]
@@ -396,6 +398,10 @@ class MultiOutput6
 	
 	def erg_error
 		@erg_error
+	end
+	
+	def sensitivity
+		@sensitivity
 	end
 	
 	def mlestep_res
