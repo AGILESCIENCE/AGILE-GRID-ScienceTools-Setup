@@ -2,6 +2,7 @@ class Parameters
 	public
 		def initialize()
 			@addcat = ""
+			@catminflux = "25e-08"
 			@integratortype = "1"
 			@catpath = "/ANALYSIS3/catalogs/cat2_phase6_highflux.multi"
 			@checksourceposition = nil
@@ -123,6 +124,10 @@ class Parameters
 		
 		def integratortype
 			@integratortype
+		end
+		
+		def catminflux
+			@catminflux
 		end
 		
 		def addcat
@@ -651,6 +656,8 @@ class Parameters
 			value = argv.split("=")[1];
 			puts keyw.to_s + " " + value.to_s
 			case keyw
+				when "catminflux"
+					@catminflux = value
 				when "integratortype"
 					@integratortype = value;
 				when "addcat"

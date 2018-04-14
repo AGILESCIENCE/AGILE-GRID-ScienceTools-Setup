@@ -51,7 +51,7 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 			galcoeff = gcf
 		end
 		if spectratype == "pl"
-			fixflag = "4"
+			fixflag = "4" #4
 			endline = "0 0.0 0.0"
 		end
 		if spectratype == "plec"
@@ -75,8 +75,8 @@ end
 
 
 
-system("rm INT"+fan+"*")
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT"+fan+" addcat=\""+ catline +"\" fluxcorrection=1 scanmaplist=" + sourcename + "," + fan + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 galmode2=3 isomode2=3 isomode2fit=2 integratortype=" + inttype.to_s + " galcoeff=" + galcoeff.to_s
+system("rm INT_"+fan+"*")
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT_"+fan+" addcat=\""+ catline +"\" catminflux=25e-08 fluxcorrection=1 scanmaplist=" + sourcename + "," + fan + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 galmode2=3 isomode2=3 isomode2fit=2 integratortype=" + inttype.to_s + " galcoeff=" + galcoeff.to_s
 #galmode2=3 isomode2=3
 puts cmd
 system cmd

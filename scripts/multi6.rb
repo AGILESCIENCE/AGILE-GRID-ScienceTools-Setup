@@ -3,7 +3,7 @@
 ################ Mandatory and ordered parameters:
 #00) filter (default FM3.119_2_I0025)
 #01) maplist - Note that the extension .maplist4 is mandatory. See below for more details.
-#02) listsource - extension .multi - file name of the list (in alike multi format - example 73.0e-08 80.27227 0.73223 2.1 1 2 3EGJ2033+4118). See below for more details. Or none if the .multi must be generated with the addcat2 procedure (otherwise will be appended)
+#02) listsource - extension .multi - file name of the list (in alike multi format - example 73.0e-08 80.27227 0.73223 2.1 1 2 3EGJ2033+4118). See below for more details. Or none if the .multi must be generated with the addcat procedure (otherwise will be appended)
 #03) outfile - output file name
 ################ Optional parameters
 #04) prefix (if specify a prefix, use only 1 map, if -999 use all the maps in the directory) - disabled with parameter maplist
@@ -42,7 +42,8 @@
 #31) fluxcorrection, defaul 0 (no), 1 yes. Flux calculation correction for spectral shape
 #32) scanmaplist - default 0. Calculate one TS for each map of the maplist4 provided as input -> specify the name of the source and the prefix e.g. VELA,pl . Warning: it works only for energy bins or theta bin, and not for theta bin AND energy bin
 #33) (CAT2) addcat. Specify the string of the source to be analysed". e.g. addcat2="2.0e-07 34.7  -0.5  2.5 12 2 W44 0.0 1 2000.0 0.0". Remove sources with the same name, to avoid duplicate
-#34) (CAT2) catpath, the path of the cat file (.multi). Default is /ANALYSIS3/catalogs/cat2_phase6_highflux.multi
+#34) (CAT2) catpath, the path of the cat file list (.multi). Default is /ANALYSIS3/catalogs/cat2_phase6_highflux.multi
+#35) (CAT2) minflux, the min flux to be selected from the cat list
 
 # MAPLIST
 #Each line contains a set of maps:
@@ -118,7 +119,7 @@
 #	2 powerlaw fit
 
 #Extract list from CAT2
-#extract_catalog.rb /ANALYSIS3/catalogs/cat2_phase6_highflux.multi 195.09 4.28 list.multi 0.1 1 5 0 10 0 0
+#extract_catalog.rb /ANALYSIS3/catalogs/cat2_phase6_highflux.multi 195.09 4.28 list.multi 0.1 1 5 0 10 0 0 25e-06
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 load ENV["AGILE"] + "/scripts/MultiOutput6.rb"
@@ -182,7 +183,7 @@ if p.addcat != ""
 	
 	ll = p.addcat.split(" ")
 	listsourcetmp2 = listsource + ".tmp2"
-	cmd = "extract_catalog.rb " + p.catpath + " " + ll[1].to_s + " " + ll[2].to_s + " " + listsourcetmp2 + " 0.1 1 5 0 10 0 0"
+	cmd = "extract_catalog.rb " + p.catpath + " " + ll[1].to_s + " " + ll[2].to_s + " " + listsourcetmp2 + " 0.1 1 5 0 10 0 0 " + p.catminflux.to_s
 	puts cmd
 	system cmd
 	
@@ -335,9 +336,9 @@ for i in 1..stepi
 	#list source
 	newlistsource = outfile.to_s + prefixi.to_s + ".multi" 
 	#if p.findermultimode != nil && i.to_i == 1
-		if File.exists?(newlistsource) == false
+	#if File.exists?(newlistsource) == false #WARNING, BE CAREFUL
 			datautils.execute(outfile2, "cp " + listsource.to_s + " " + newlistsource.to_s)
-		end
+		#end
 	#end
 	if p.findermultimode != nil && i.to_i == 2
 		#rewrite newlistsource
