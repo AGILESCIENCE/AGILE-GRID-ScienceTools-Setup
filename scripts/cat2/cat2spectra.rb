@@ -8,7 +8,7 @@ inttype = ARGV[5] #1-8
 
 fan = "R" + inttype.to_s  + "-" + ARGV[1] + "-" + ARGV[2] + "-" + ARGV[3] + "-" + ARGV[4]
 
-maplist4name = "FM3.119_ASDCe_"+irf+"_B01_"+energyrange+".maplist4"
+maplist4name = fan + "_FM3.119_ASDCe_"+irf+"_B01_"+energyrange+".maplist4"
 
 f1 = File.new(maplist4name, "w")
 gcf = ""
