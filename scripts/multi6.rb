@@ -506,7 +506,7 @@ for i in 1..stepi
 			
 			ec = format("%.3f", e_min - ec)
 			
-			fres.write(mouthe2.sqrtTS.to_s + " " + mouthe2.flux.to_s + " " + mouthe2.flux_error.to_s + " " + " " + mouthe2.erg + " " + mouthe2.erg_error + " " + e_min.to_s + " " + + e_max.to_s + " " + ec.to_s + " " + mouthe2.expspectracorfactor.to_s + " " + mouthe2.flux_ul.to_s + " " + mouthe2.sicalc.to_s + " " + mouthe2.sicalc_error.to_s + " " + mouthe2.likelihood1.to_s + "\n")
+			fres.write(mouthe2.sqrtTS.to_s + " " + mouthe2.flux.to_s + " " + mouthe2.flux_error.to_s + " " + " " + mouthe2.erg.to_s + " " + mouthe2.erg_error.to_s + " " + e_min.to_s + " " + e_max.to_s + " " + ec.to_s + " " + mouthe2.expspectracorfactor.to_s + " " + mouthe2.flux_ul.to_s + " " + mouthe2.sicalc.to_s + " " + mouthe2.sicalc_error.to_s + " " + mouthe2.likelihood1.to_s + "\n")
 			indexmapl = indexmapl.to_i + 1
 		end
 		fres.close()
