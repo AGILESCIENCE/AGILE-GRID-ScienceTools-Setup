@@ -32,8 +32,10 @@ class MultiOutput6
 			
 			@erg = 0
 			@erg_error = 0
+			@erglog = 0
+			@erglog_error = 0
 			@sensitivity = 0.0;
-
+			@integratortype = 0.0;
 			#read upper limit
 			index2 = 0;
 			@r = -1;
@@ -94,6 +96,7 @@ class MultiOutput6
 					@isomode2fit = lll[24];
 					@edpcor = lll[25];
 					@fluxcor = lll[26];
+					@integratortype = lll[27];
 				end
 				if index2.to_i == indexstart + 2
 					@sqrtTS =lll[0];
@@ -130,7 +133,9 @@ class MultiOutput6
 					@expspectracorfactor = lll[6]
 					@erg = lll[7]
 					@erg_error = lll[8]
-					@sensitivity = lll[9]
+					@erglog = lll[9]
+					@erglog_error = lll[10]
+					@sensitivity = lll[11]
 				end
 				if index2.to_i == indexstart + 7
 					@sicalc = lll[0]
@@ -399,6 +404,18 @@ class MultiOutput6
 	def erg_error
 		@erg_error
 	end
+	
+	def erglog
+		@erglog
+	end
+	
+	def erglog_error
+		@erglog_error
+	end
+	
+	def integratortype
+		@integratortype
+	end	
 	
 	def sensitivity
 		@sensitivity
