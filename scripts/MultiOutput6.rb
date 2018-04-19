@@ -36,6 +36,10 @@ class MultiOutput6
 			@erglog_error = 0
 			@sensitivity = 0.0;
 			@integratortype = 0.0;
+			@expratioEval = 0;
+			@expratio_minthr = 0;
+			@expratio_maxthr = 0;
+			@expratio_size = 0;
 			#read upper limit
 			index2 = 0;
 			@r = -1;
@@ -97,6 +101,10 @@ class MultiOutput6
 					@edpcor = lll[25];
 					@fluxcor = lll[26];
 					@integratortype = lll[27];
+					@expratioEval = lll[28];
+					@expratio_minthr = lll[29];
+					@expratio_maxthr = lll[30];
+					@expratio_size = lll[31];
 				end
 				if index2.to_i == indexstart + 2
 					@sqrtTS =lll[0];
@@ -129,13 +137,14 @@ class MultiOutput6
 					@flux_error_p = lll[2]
 					@flux_error_m = lll[3]
 					@flux_ul = lll[4];
-					@exposure = lll[5]
-					@expspectracorfactor = lll[6]
-					@erg = lll[7]
-					@erg_error = lll[8]
-					@erglog = lll[9]
-					@erglog_error = lll[10]
-					@sensitivity = lll[11]
+					@flux_ul_bayes = lll[5];
+					@exposure = lll[6]
+					@expspectracorfactor = lll[7]
+					@erg = lll[8]
+					@erg_error = lll[9]
+					@erglog = lll[10]
+					@erglog_error = lll[11]
+					@sensitivity = lll[12]
 				end
 				if index2.to_i == indexstart + 7
 					@sicalc = lll[0]
@@ -365,6 +374,22 @@ class MultiOutput6
 		@multiOutputLineShort4 = @multiOutputLineShort3 + " RING " + ring.to_s + " " + dist.to_s;
 	end
 	
+	def expratioEval
+		@expratioEval
+	end
+		
+	def expratio_minthr
+		@expratio_minthr
+	end
+	
+	def expratio_maxthr
+		@expratio_maxthr
+	end
+	
+	def expratio_size
+		@expratio_size
+	end
+	
 	def fit_status0
 		@fit_status0
 	end
@@ -415,7 +440,7 @@ class MultiOutput6
 	
 	def integratortype
 		@integratortype
-	end	
+	end
 	
 	def sensitivity
 		@sensitivity
@@ -795,6 +820,9 @@ class MultiOutput6
 	end
 	def flux_ul
 		@flux_ul
+	end
+	def flux_ul_bayes
+		@flux_ul_bayes
 	end
 	def exposure
 		@exposure
