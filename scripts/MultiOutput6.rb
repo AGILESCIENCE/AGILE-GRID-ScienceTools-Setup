@@ -142,9 +142,11 @@ class MultiOutput6
 					@expspectracorfactor = lll[7]
 					@erg = lll[8]
 					@erg_error = lll[9]
-					@erglog = lll[10]
-					@erglog_error = lll[11]
-					@sensitivity = lll[12]
+					@ergul = lll[10]
+					@erglog = lll[11]
+					@erglog_error = lll[12]
+					@erglogul = lll[13]
+					@sensitivity = lll[14]
 				end
 				if index2.to_i == indexstart + 7
 					@sicalc = lll[0]
