@@ -11,6 +11,7 @@
 #9) 2) fixflag for source with d1 < dist <= d2
 #10) radius of search (last column of the .multi) - 0 do not specify
 #11) min flux e.g. 25e-08
+#12) min radius e.g. 1 -> do not select source with a distance less than minradius
 
 load ENV["AGILE"] + "/scripts/DataUtils.rb"
 
@@ -32,7 +33,7 @@ d2 = ARGV[8]
 fixflag2 = ARGV[9]
 radius = ARGV[10]
 minflux = ARGV[11]
-
+minradius = ARGV[12]
 
 
 datautils = DataUtils.new
@@ -48,6 +49,14 @@ File.open(input).each_line do |x|
 	end
 
 	d = datautils.distance(a[1], a[2], l, b);
+	
+	if minradius.to_f > 0
+			if d.to_f != 0
+				if d <= minradius
+					next
+				end
+			end
+	end
 	
 	fixflag=-1;
 	

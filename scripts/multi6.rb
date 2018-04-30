@@ -41,9 +41,10 @@
 #30) edpcorrection, default 0 (no), 1 yes. EDP cleaning correction NOT IMPLEMENTED YET
 #31) fluxcorrection, defaul 0 (no), 1 yes. Flux calculation correction for spectral shape
 #32) scanmaplist - default 0. Calculate one TS for each map of the maplist4 provided as input -> specify the name of the source and the prefix e.g. VELA,pl . Warning: it works only for energy bins or theta bin, and not for theta bin AND energy bin
-#33) (CAT2) addcat. Specify the string of the source to be analysed". e.g. addcat2="2.0e-07 34.7  -0.5  2.5 12 2 W44 0.0 1 2000.0 0.0". Remove sources with the same name, to avoid duplicate
-#34) (CAT2) catpath, the path of the cat file list (.multi). Default is /ANALYSIS3/catalogs/cat2_phase6_highflux.multi
-#35) (CAT2) minflux, the min flux to be selected from the cat list
+#33) (CAT) addcat. Specify the string of the source to be analysed". e.g. addcat2="2.0e-07 34.7  -0.5  2.5 12 2 W44 0.0 1 2000.0 0.0". Remove sources with the same name, to avoid duplicate
+#34) (CAT) catpath, the path of the cat file list (.multi). Default is /ANALYSIS3/catalogs/cat2_phase6_highflux.multi
+#35) (CAT) catminflux, the min flux to be selected from the cat list
+#36) (CAT) catminradius, the min radius to be selected from the cat list
 
 # MAPLIST
 #Each line contains a set of maps:
@@ -183,7 +184,7 @@ if p.addcat != ""
 	
 	ll = p.addcat.split(" ")
 	listsourcetmp2 = listsource + ".tmp2"
-	cmd = "extract_catalog.rb " + p.catpath + " " + ll[1].to_s + " " + ll[2].to_s + " " + listsourcetmp2 + " 0.1 1 5 0 10 0 0 " + p.catminflux.to_s
+	cmd = "extract_catalog.rb " + p.catpath + " " + ll[1].to_s + " " + ll[2].to_s + " " + listsourcetmp2 + " 0.1 1 5 0 10 0 0 " + p.catminflux.to_s + " " +  p.catminradius
 	puts cmd
 	system cmd
 	

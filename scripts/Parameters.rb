@@ -3,6 +3,7 @@ class Parameters
 		def initialize()
 			@addcat = ""
 			@catminflux = "25e-08"
+			@catminradius = "0"
 			@integratortype = "1"
 			@catpath = "/ANALYSIS3/catalogs/cat2_phase6_highflux.multi"
 			@checksourceposition = nil
@@ -128,6 +129,10 @@ class Parameters
 		
 		def catminflux
 			@catminflux
+		end
+		
+		def catminradius
+			@catminradius
 		end
 		
 		def addcat
@@ -658,6 +663,8 @@ class Parameters
 			case keyw
 				when "catminflux"
 					@catminflux = value
+				when "catminradius"
+					@catminradius = value
 				when "integratortype"
 					@integratortype = value;
 				when "addcat"
