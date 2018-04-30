@@ -5,6 +5,7 @@ energyrange = ARGV[2] #00100-10000 00100-50000
 analysisname = ARGV[3] #EDP1-EB01-FB01
 irf = ARGV[4]
 inttype = ARGV[5] #1-8
+minradius = ARGV[6]
 
 fan = "R" + inttype.to_s  + "-" + ARGV[1] + "-" + ARGV[2] + "-" + ARGV[3] + "-" + ARGV[4]
 
@@ -76,7 +77,7 @@ end
 
 
 system("rm INT_"+fan+"*")
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT_"+fan+" addcat=\""+ catline +"\" catminflux=25e-08 fluxcorrection=1 scanmaplist=" + sourcename + "," + fan + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 galmode2=3 isomode2=3 isomode2fit=2 integratortype=" + inttype.to_s + " galcoeff=" + galcoeff.to_s
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT_"+fan+" addcat=\""+ catline +"\" catminradius=" + minradius.to_s + " catminflux=25e-08 fluxcorrection=1 scanmaplist=" + sourcename + "," + fan + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 galmode2=3 isomode2=3 isomode2fit=2 integratortype=" + inttype.to_s + " galcoeff=" + galcoeff.to_s
 #galmode2=3 isomode2=3
 puts cmd
 system cmd
