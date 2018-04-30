@@ -7,7 +7,7 @@ irf = ARGV[4]
 inttype = ARGV[5] #1-8
 minradius = ARGV[6]
 
-fan = "R" + inttype.to_s  + "_C" + format("%02d", minradius*10) + "-" + ARGV[1] + "-" + ARGV[2] + "-" + ARGV[3] + "-" + ARGV[4]
+fan = "R" + inttype.to_s  + "_C" + format("%02d", minradius.to_f*10) + "-" + ARGV[1] + "-" + ARGV[2] + "-" + ARGV[3] + "-" + ARGV[4]
 
 maplist4name = fan + "_FM3.119_ASDCe_"+irf+"_B01_"+energyrange+".maplist4"
 
