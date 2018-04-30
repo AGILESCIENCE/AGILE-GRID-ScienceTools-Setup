@@ -52,7 +52,7 @@ File.open(input).each_line do |x|
 	
 	if minradius.to_f > 0
 			if d.to_f != 0
-				if d <= minradius
+				if d.to_f <= minradius.to_f
 					next
 				end
 			end
