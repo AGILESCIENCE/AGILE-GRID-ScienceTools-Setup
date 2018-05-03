@@ -125,30 +125,32 @@ Double_t plsuperexpcutoff(Double_t *x, Double_t *par)
 
 //(TMath::Log10(400)-TMath::Log10(200))/2 + TMath::Log10(200)
 
-int loadAGILESpectra(TString filename) {
+int loadAGILESpectra(TString filename, int um) {
 	//(0)sqrtts (1)flux[ph/cm2/s] (2)flux_err (3)erg[erg/cm2/s] (4)Erg_err (5)Emin (6)Emax (7)E_log_center (8)exp (9)flux_ul (10)spectral_index (11)spectral_index_err (12)id_detection
 	
 	double correctionfactor = 1.0;
 	double corrfact[100];
 	for(int i=0; i<100; i++ ) corrfact[i] = 1;
 	/*
-	corrfact[0] = 2.66;
-	corrfact[1] = 2.88;
-	corrfact[2] = 2.20;
-	corrfact[3] = 1.23;
-	corrfact[4] = 1.00;
+	corrfact[0] = 1.79421;
+	corrfact[1] = 2.06059;
+	corrfact[2] = 2.73078*0.75;
+	corrfact[3] = 1.7181*0.75;
+	corrfact[4] = 0.08104;
 	*/
+
 	int i = 0;
-	float sqrtts, flux, flux_err, erg, erg_err, emin, emax, e_log_center, exp, flux_ul;
+	float sqrtts, flux, flux_err, erg, erg_err, emin, emax, e_log_center, exp, flux_ul, erglogul;
 	
 	TTree* t = new TTree("DATA", "");
 	//METTERE IL DATA TYPE IN MODO ESPLICITO:
-	Long64_t nlines = t->ReadFile(filename, "SQRTTS/F:FLUX/F:FLUXE/F:ERG/F:ERGE/F:EMIN/F:EMAX/F:ELOGC/F:EXP/F:FLUXUL/F:SI/F:SIE/F:ID/F");
+	Long64_t nlines = t->ReadFile(filename, "SQRTTS/F:FLUX/F:FLUXE/F:ERG/F:ERGE/F:EMIN/F:EMAX/F:ELOGC/F:EXP/F:FLUXUL/F:SI/F:SIE/F:ID/F:ERGLOGUL/F");
 	edges = new Double_t[nlines + 1];
 	cout << nlines << endl;
 
 
 	t->SetBranchAddress("ERG", &erg);
+	t->SetBranchAddress("ERGLOGUL", &erglogul);
 	t->SetBranchAddress("ERGE", &erg_err);
 	t->SetBranchAddress("EMIN", &emin);
 	t->SetBranchAddress("EMAX", &emax);
@@ -174,13 +176,23 @@ int loadAGILESpectra(TString filename) {
     	exl[j] = (emax-emin)/2.0;
     	exh[j] = (emax-emin)/2.0;
 		*/
+		double fp, fpe, ful;
+		if(um == 0) {
+			fp = flux;
+			fpe = flux_err;
+			ful = flux_ul;
+		} else {
+			fp = erg;
+			fpe = erg_err;
+			ful = erglogul;
+		}
 		if(sqrtts >= 3) {
-    		y[j] = flux * corrfact[j];
-    		eyl[j] = eyh[j] = flux_err * corrfact[j];
+    		y[j] = fp * corrfact[j];
+    		eyl[j] = eyh[j] = fpe * corrfact[j];
   		} else {
   			cout << j << " considering flux ul " << endl;
-  			y[j] = flux_ul * corrfact[j];
-    		eyl[j]  = corrfact[j] * flux_ul / 2.0;
+  			y[j] = ful * corrfact[j];
+    		eyl[j]  = corrfact[j] * ful / 2.0;
 			eyh[j] = 0;
   		}
   		/*
@@ -207,7 +219,7 @@ int loadAGILESpectra(TString filename) {
 	return x.GetNrows();
 }
 
-int loadFERMISpectra(TString filename) {
+int loadFERMISpectra(TString filename, int um) {
 	//(0)sqrtts (1)flux[ph/cm2/s] (2)erg[erg/cm2/s] (3)Emin (4)Emax (5)E_log_center
 	
 
@@ -243,14 +255,21 @@ int loadFERMISpectra(TString filename) {
     	exl[j] = (emax-emin)/2.0;
     	exh[j] = (emax-emin)/2.0;
     	*/
-    	y[j] = flux; //erg
-    	eyl[j] = eyh[j] = y[j] / 100.;
+		if(um == 0) {
+    		y[j] = flux; //erg
+			eyl[j] = eyh[j] = y[j] / 100.;
+		}
+		if(um == 1) {
+			y[j] = erg;
+			eyl[j] = eyh[j] = 0;
+		}
+		
     	
     	//edges[j] = emin + (emax-emin)/2 ;
     	//edges[j] = e_log_center;
     	edges[j] = emin;
     	
-    	eyl[j] = eyh[j] = flux / 10.;
+    	//eyl[j] = eyh[j] = flux / 10.;
     	
     	//cout << x[j] << " " << exl[j] << " " << exh[j] << " ph " << y[j] << " " << " " << eyl[j] << " " << eyh[j] << endl;
 		cout << j << ": sqrtts: " << sqrtts << " energy " << x[j] << " [" << emin << "-" << emax << "] ph " << y[j] << " +/- " << " (-" << eyl[j] << ", " << eyh[j] << ") " << endl;
@@ -275,9 +294,11 @@ void drawSpectra() {
 
 }
 
-//experimen AGILE=0, Fermi=1
+//experiment AGILE=0, Fermi=1
+//overlap 0=do not overlap, 1=overlap
+//um 0=ph cm-2 s-1 1=erg
 //TCanvas* c1 = new TCanvas; c1->Divide(3,1);
-void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap, int color=kBlue) {
+void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap, int color=kBlue, int um = 0) {
 
 	if(c1 == 0) {
 		c1 = new TCanvas();
@@ -295,9 +316,9 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap, int c
 
 	int n=0;
 	if(experiment == 0)
-		n = loadAGILESpectra(filename);
+		n = loadAGILESpectra(filename, um);
 	if(experiment == 1)
-		n = loadFERMISpectra(filename);
+		n = loadFERMISpectra(filename, um);
 		
 	double maxenergy = x[n-1] + exh[n-1];
    	double minenergy = x[0];// - exl[0];
@@ -339,13 +360,19 @@ void fitSpectra(string filename, int experiment, TCanvas* c1, int overlap, int c
    	if(overlap == 1) {
    		gr->Draw("LP*"); //also AL for histos
 		gr->GetXaxis()->SetTitle("MeV");
-		gr->GetYaxis()->SetTitle("#ph/cm_{2}/s");
+		if(um==0)
+			gr->GetYaxis()->SetTitle("#ph/cm^{2}/s");
+		else
+			gr->GetYaxis()->SetTitle("#erg/cm^{2}/s");
    		gr->SetLineColor(color);
 		gr->SetLineWidth(2);
    	} else {
    		gr->Draw("ALP*");
 		gr->GetXaxis()->SetTitle("MeV");
-		gr->GetYaxis()->SetTitle("ph/cm_{2}/s");
+		if(um==0)
+			gr->GetYaxis()->SetTitle("ph/cm^{2}/s");
+		else
+			gr->GetYaxis()->SetTitle("#erg/cm^{2}/s");
    		gr->SetLineColor(color);
 		gr->SetLineWidth(2);
    	}

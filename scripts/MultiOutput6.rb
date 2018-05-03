@@ -31,8 +31,10 @@ class MultiOutput6
 			@sicalc_error = 0
 			
 			@erg = 0
+			@ergul = 0
 			@erg_error = 0
 			@erglog = 0
+			@erglogul = 0
 			@erglog_error = 0
 			@sensitivity = 0.0;
 			@integratortype = 0.0;
@@ -428,12 +430,20 @@ class MultiOutput6
 		@erg
 	end
 	
+	def ergul
+		@ergul
+	end
+	
 	def erg_error
 		@erg_error
 	end
 	
 	def erglog
 		@erglog
+	end
+	
+	def erglogul
+		@erglogul
 	end
 	
 	def erglog_error
