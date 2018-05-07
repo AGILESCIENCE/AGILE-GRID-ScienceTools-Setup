@@ -480,7 +480,13 @@ class AlikeUtils
 				if name[0] == 49 || name[0] == "_"
 					fixflag = "0"
 				end
-				fout.write(lll1[0] + " " + lll1[1] + " " + lll1[2] + " " + lll1[3] + " " + fixflag + " " + lll1[5] + " " + lll1[6] + " " + dist + "\n")
+				fout.write(lll1[0] + " " + lll1[1] + " " + lll1[2] + " " + lll1[3] + " " + fixflag + " " + lll1[5] + " " + lll1[6] + " " + dist)
+				if lll1.size >= 8
+					for i in 7..ll.size-1
+						fout.write(" " + lll1[i].to_s )
+					end
+				end
+				fout.write("\n")
 			end
 			fout.close()
 		end

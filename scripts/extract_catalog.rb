@@ -88,11 +88,17 @@ File.open(input).each_line do |x|
 	end
 	outline += a[6].to_s;
 	outline += " ";
-	if fixflag.to_i == 3 or fixflag.to_i == 7
+	if fixflag.to_i >= 3
 		outline += radius.to_f.to_s;
 	else
 		outline += "0.0"
 	end
+	
+	for iii in 9...a.size
+		outline += " ";
+		outline += a[iii].to_s;
+	end
+		
 	outline += "\n";
 		
 	if(fixflag.to_i != -1)

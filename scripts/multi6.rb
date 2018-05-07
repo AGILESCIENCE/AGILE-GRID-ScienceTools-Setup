@@ -184,7 +184,7 @@ if p.addcat != ""
 	
 	ll = p.addcat.split(" ")
 	listsourcetmp2 = listsource + ".tmp2"
-	cmd = "extract_catalog.rb " + p.catpath + " " + ll[1].to_s + " " + ll[2].to_s + " " + listsourcetmp2 + " 0.1 1 5 0 10 0 0 " + p.catminflux.to_s + " " +  p.catminradius
+	cmd = "extract_catalog.rb " + p.catpath + " " + ll[1].to_s + " " + ll[2].to_s + " " + listsourcetmp2 + " 0.1 1 5 0 10 0 0 " + p.catminflux.to_s + " " +  p.catminradius.to_s
 	puts cmd
 	system cmd
 	
@@ -466,6 +466,7 @@ for i in 1..stepi
 			end
 		end
 		fheso.close()
+		system("cp " + newoutfile2 + ".multi " + prefixscan + ".multi")
 		
 		cmd = $0 + " " +  filter + " " + newoutfile + ".maplist4 " + newoutfile2 + ".multi " + newoutfile2 + " galcoeff=" + mouthe.galcoeff + " isocoeff=" + mouthe.isocoeff + " fluxcorrection=" + p.fluxcorrection.to_s + " edpcorrection=" + p.edpcorrection.to_s
 		puts cmd
@@ -513,15 +514,15 @@ for i in 1..stepi
 		fres.close()
 		
 		puts "-----------------------------------------------"
-		system("cat " + newoutfile2 + ".multi.originalres")
+		system("cat " + newoutfile2 + ".multi.originalres > " + prefixscan + ".sum")
 		puts "-----------------------------------------------"
-		system("cat " + newoutfile2 + ".originalres")
+		system("cat " + newoutfile2 + ".originalres >> " + prefixscan + ".sum")
 		puts "-----------------------------------------------"
-		system("cat " + newoutfile2 + "_"+sourcename+".source.originalres")
+		system("cat " + newoutfile2 + "_"+sourcename+".source.originalres >> " + prefixscan + ".sum")
 		puts "-----------------------------------------------"
-		system("cat " + prefixscan + ".spe")
+		system("cat " + prefixscan + ".spe >> " + prefixscan + ".sum")
 		puts "-----------------------------------------------"
-		
+		system("cat " + prefixscan + ".sum")
 
 	end
 
