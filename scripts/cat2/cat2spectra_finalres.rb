@@ -122,7 +122,7 @@ puts "### STEP 1 - determination of the parameters"
 puts "##############################################"
 
 system("rm INT_"+fan+"*")
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT_"+fan+" addcat=\""+ catline +"\" catminradius=" + minradius.to_s + " catminflux=25e-08 fluxcorrection=1 edpcorrection=1 minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 scanmaplist=" + sourcename + "," + fan + " fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoeff.to_s
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT_"+fan+" addcat=\""+ catline +"\" catminradius=" + minradius.to_s + " catminflux=25e-08 fluxcorrection=1 edpcorrection=0.75 minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 scanmaplist=" + sourcename + "," + fan + " fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoeff.to_s
 #galmode2=3 isomode2=3
 puts cmd
 system cmd
@@ -147,7 +147,7 @@ puts "####################################################"
 suffix = "R" + inttype.to_s  + "_C" + format("%02d", minradius.to_f*10) + "-" + ARGV[1] + "-00030-50000-" + ARGV[3] + "-" + ARGV[4]
 fan1 = prefix + "_FF1_" + suffix
 
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4namefull +" " + newlistsource2 + " INT_"+fan1+" fluxcorrection=1 edpcorrection=1 scanmaplist=" + sourcename + "," + fan1 + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoefffull.to_s
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4namefull +" " + newlistsource2 + " INT_"+fan1+" fluxcorrection=1 edpcorrection=0.75 scanmaplist=" + sourcename + "," + fan1 + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoefffull.to_s
 puts cmd
 system cmd
 
@@ -159,7 +159,7 @@ puts "####################################################"
 suffix = "R" + inttype.to_s  + "_C" + format("%02d", minradius.to_f*10) + "-" + ARGV[1] + "-00100-50000-" + ARGV[3] + "-" + ARGV[4]
 fan1 = prefix + "_FF1_" + suffix
 
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4namehe +" " + newlistsource2 + " INT_"+fan1+" fluxcorrection=1 edpcorrection=1 scanmaplist=" + sourcename + "," + fan1 + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoeffhe.to_s
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4namehe +" " + newlistsource2 + " INT_"+fan1+" fluxcorrection=1 edpcorrection=0.75 scanmaplist=" + sourcename + "," + fan1 + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoeffhe.to_s
 puts cmd
 system cmd
 
