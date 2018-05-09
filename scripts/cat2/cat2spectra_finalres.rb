@@ -54,7 +54,7 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 		#+ " " + endline
 		
 		
-		if ll.size >= 8
+		if ll.size > 8
 			for i in 8..ll.size-1
 				catline += " "
 				catline += ll[i].to_s
