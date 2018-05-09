@@ -23,7 +23,7 @@ galcoefffull = "-1"
 galcoeffhe = "-1"
 fixflag = 1
 coordb = 0
-File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
+File.open("/ANALYSIS3/catalogs/cat2_phase6_314all.multi").each do | line |
 	ll = line.split(" ")
 	if ll[6] == sourcename
 		catline = ll[0] + " " + ll[1] + " " + ll[2] + " " + ll[3]
@@ -121,8 +121,15 @@ puts "##############################################"
 puts "### STEP 1 - determination of the parameters"
 puts "##############################################"
 
+if addff.to_i == 1
+	minf = "25e-08"
+else
+	minf = "0e-08"
+end
+
+
 system("rm INT_"+fan+"*")
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT_"+fan+" addcat=\""+ catline +"\" catminradius=" + minradius.to_s + " catminflux=25e-08 fluxcorrection=1 emin_sources=100 emax_sources=50000 edpcorrection=0.75 minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 scanmaplist=" + sourcename + "," + fan + " fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoeff.to_s
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT_"+fan+" addcat=\""+ catline +"\" catminradius=" + minradius.to_s + " catminflux="+minf.to_s+" fluxcorrection=1 emin_sources=100 emax_sources=50000 edpcorrection=0.75 minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 scanmaplist=" + sourcename + "," + fan + " fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoeff.to_s
 #galmode2=3 isomode2=3
 puts cmd
 system cmd
