@@ -44,7 +44,8 @@ f1.close()
 #detcatline
 catline = " "
 galcoeff = "-1"
-File.open("/ANALYSIS3/catalogs/cat2_phase6_314all.multi").each do | line |
+#192 314
+File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 	ll = line.split(" ")
 	if ll[6] == sourcename
 		catline = ll[0] + " " + ll[1] + " " + ll[2] + " " + ll[3]
