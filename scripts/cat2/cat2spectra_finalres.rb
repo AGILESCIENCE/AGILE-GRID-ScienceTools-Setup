@@ -48,8 +48,20 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_314all.multi").each do | line |
 		
 		fixflag = fixflag.to_i +  addff.to_i
 		
-		catline = catline + " " + fixflag.to_s + " " + ll[5] + " " + ll[6] + " " + ll[7] + " " + endline
+		catline = catline + " " + fixflag.to_s + " " + ll[5] + " " + ll[6] + " " + ll[7];
 		
+		#+ " " + endline
+		
+		
+		if ll.size >= 8
+			for i in 8..ll.size-1
+				catline += " "
+				catline += ll[i].to_s
+			end
+			else
+			catline += " "
+			catline += endline
+		end
 		
 		break
 	end

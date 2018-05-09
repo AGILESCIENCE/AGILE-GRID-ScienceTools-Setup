@@ -68,7 +68,18 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_314all.multi").each do | line |
 			endline = "3 2000.0 1.0"
 		end
 		
-		catline = catline + " " + fixflag + " " + ll[5] + " " + ll[6] + " " + ll[7] + " " + endline
+		catline = catline + " " + fixflag + " " + ll[5] + " " + ll[6] + " " + ll[7]
+		
+		if ll.size >= 8
+			for i in 8..ll.size-1
+				catline += " "
+				catline += ll[i].to_s
+			end
+		else
+			catline += " "
+			catline += endline
+		end
+		
 		
 		break
 	end
