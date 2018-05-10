@@ -7,6 +7,11 @@ irf = ARGV[4]
 inttype = ARGV[5] #1-8
 minradius = ARGV[6]
 
+fixsi = nil
+if ARGV[7] != nil
+	fixsi = ARGV[7].to_s;
+end
+
 fan = "R" + inttype.to_s  + "_C" + format("%02d", minradius.to_f*10) + "-" + ARGV[1] + "-" + ARGV[2] + "-" + ARGV[3] + "-" + ARGV[4]
 
 maplist4name = fan + "_FM3.119_ASDCe_"+irf+"_B01_"+energyrange+".maplist4"
@@ -52,6 +57,7 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 		if ll[2].to_f < -10 or ll[2].to_f > 10
 			galcoeff = gcf
 		end
+		
 		if spectratype == "pl"
 			fixflag = "4" #4
 			endline = "0 0.0 0.0"
@@ -69,7 +75,11 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 			endline = "3 2000.0 1.0"
 		end
 		
-		catline = catline + " " + fixflag + " " + ll[5] + " " + ll[6] + " " + ll[7]
+		if fixsi != nil
+			catline = ll[0] + " " + ll[1] + " " + ll[2]  + fixsi.to_s + " 1 " + ll[5] + " " + ll[6] + " " + ll[7] + "0 0.0 0.0"
+		else
+			catline = catline + " " + fixflag + " " + ll[5] + " " + ll[6] + " " + ll[7]
+		end
 		
 		if ll.size > 8
 			for i in 8..ll.size-1
