@@ -29,7 +29,7 @@ galcoeffhe = "-1"
 fixflag = 1
 coordb = 0
 #192 314
-File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
+File.open("/ANALYSIS3/catalogs/cat2.multi").each do | line |
 	ll = line.split(" ")
 	if ll[6] == sourcename
 		catline = ll[0] + " " + ll[1] + " " + ll[2] + " 2.1 " # + ll[3]

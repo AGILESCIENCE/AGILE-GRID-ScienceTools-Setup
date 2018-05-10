@@ -5,7 +5,7 @@ class Parameters
 			@catminflux = "25e-08"
 			@catminradius = "0"
 			@integratortype = "1"
-			@catpath = "/ANALYSIS3/catalogs/cat2_phase6_highflux.multi"
+			@catpath = "/ANALYSIS3/catalogs/cat2.multi"
 			@checksourceposition = nil
 			@execap = 0
 			@radius = 10

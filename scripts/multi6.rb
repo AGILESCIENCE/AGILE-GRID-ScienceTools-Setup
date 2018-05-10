@@ -42,7 +42,7 @@
 #31) fluxcorrection, defaul 0 (no), 1 yes. Flux calculation correction for spectral shape
 #32) scanmaplist - default 0. Calculate one TS for each map of the maplist4 provided as input -> specify the name of the source and the prefix e.g. VELA,pl . Warning: it works only for energy bins or theta bin, and not for theta bin AND energy bin
 #33) (CAT) addcat. Specify the string of the source to be analysed". e.g. addcat2="2.0e-07 34.7  -0.5  2.5 12 2 W44 0.0 1 2000.0 0.0". Remove sources with the same name, to avoid duplicate
-#34) (CAT) catpath, the path of the cat file list (.multi). Default is /ANALYSIS3/catalogs/cat2_phase6_highflux.multi
+#34) (CAT) catpath, the path of the cat file list (.multi). Default is /ANALYSIS3/catalogs/cat2.multi
 #35) (CAT) catminflux, the min flux to be selected from the cat list
 #36) (CAT) catminradius, the min radius to be selected from the cat list
 
@@ -120,7 +120,7 @@
 #	2 powerlaw fit
 
 #Extract list from CAT2
-#extract_catalog.rb /ANALYSIS3/catalogs/cat2_phase6_highflux.multi 195.09 4.28 list.multi 0.1 1 5 0 10 0 0 25e-06
+#extract_catalog.rb /ANALYSIS3/catalogs/cat2.multi 195.09 4.28 list.multi 0.1 1 5 0 10 0 0 25e-06
 
 load ENV["AGILE"] + "/scripts/conf.rb"
 load ENV["AGILE"] + "/scripts/MultiOutput6.rb"
