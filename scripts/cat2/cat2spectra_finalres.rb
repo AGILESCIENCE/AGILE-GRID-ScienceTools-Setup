@@ -60,7 +60,7 @@ File.open("/ANALYSIS3/catalogs/cat2.multi").each do | line |
 		if fixsi != nil
 			catline = ll[0] + " " + ll[1] + " " + ll[2]  + " " + fixsi.to_s + " " + fixflag.to_s + " " + ll[5] + " " + ll[6] + " " + ll[7] + " 0 0.0 0.0"
 		else
-			catline = catline + " " + fixflag + " " + ll[5] + " " + ll[6] + " " + ll[7]
+			catline = catline + " " + fixflag.to_s + " " + ll[5] + " " + ll[6] + " " + ll[7]
 			catline += " "
 			catline += endline
 		end
