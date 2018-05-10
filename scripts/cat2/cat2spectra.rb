@@ -53,7 +53,8 @@ galcoeff = "-1"
 File.open("/ANALYSIS3/catalogs/cat2.multi").each do | line |
 	ll = line.split(" ")
 	if ll[6] == sourcename
-		catline = ll[0] + " " + ll[1] + " " + ll[2] + " 2.1 "
+		catline = ll[0] + " " + ll[1] + " " + ll[2] + " " + ll[3]
+		# " 2.1 "
 		#+ ll[3]
 		
 		if ll[2].to_f < -10 or ll[2].to_f > 10
