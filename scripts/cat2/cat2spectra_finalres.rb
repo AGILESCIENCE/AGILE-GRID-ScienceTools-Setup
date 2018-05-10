@@ -9,6 +9,11 @@ minradius = ARGV[6]
 prefix = ARGV[7]
 addff = ARGV[8] #1 (only flux free) or 3 (flux and position free)
 
+fixsi = nil
+if ARGV[9] != nil
+	fixsi = ARGV[9].to_s;
+end
+
 load ENV["AGILE"] + "/scripts/conf.rb"
 
 alikeutils = AlikeUtils.new
@@ -27,11 +32,14 @@ coordb = 0
 File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 	ll = line.split(" ")
 	if ll[6] == sourcename
-		catline = ll[0] + " " + ll[1] + " " + ll[2] + " " + ll[3]
+		catline = ll[0] + " " + ll[1] + " " + ll[2] + " 2.1 " # + ll[3]
 		coordb = ll[2].to_f
 		
 		if spectratype == "pl"
 			fixflag = 4 #4
+			if fixsi != nil
+				fixflag = 0
+			end
 			endline = "0 0.0 0.0"
 		end
 		if spectratype == "plec"
@@ -49,19 +57,21 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 		
 		fixflag = fixflag.to_i +  addff.to_i
 		
-		catline = catline + " " + fixflag.to_s + " " + ll[5] + " " + ll[6] + " " + ll[7];
+		if fixsi != nil
+			catline = ll[0] + " " + ll[1] + " " + ll[2]  + fixsi.to_s + " " + fixflag.to_s + " " + ll[5] + " " + ll[6] + " " + ll[7] + " 0 0.0 0.0"
+		else
+			catline = catline + " " + fixflag + " " + ll[5] + " " + ll[6] + " " + ll[7]
+			catline += " "
+			catline += endline
+		end
 		
-		#+ " " + endline
-		
-		
-		if ll.size > 8
-			for i in 8..ll.size-1
+		if ll.size > 11
+			for i in 11..ll.size-1
 				catline += " "
 				catline += ll[i].to_s
 			end
 			else
-			catline += " "
-			catline += endline
+			
 		end
 		
 		break
