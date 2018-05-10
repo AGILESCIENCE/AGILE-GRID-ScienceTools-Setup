@@ -69,9 +69,7 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 			for i in 11..ll.size-1
 				catline += " "
 				catline += ll[i].to_s
-			end
-			else
-			
+			end			
 		end
 		
 		break

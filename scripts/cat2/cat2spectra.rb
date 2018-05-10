@@ -53,7 +53,8 @@ galcoeff = "-1"
 File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 	ll = line.split(" ")
 	if ll[6] == sourcename
-		catline = ll[0] + " " + ll[1] + " " + ll[2] + " 2.1 " #+ ll[3]
+		catline = ll[0] + " " + ll[1] + " " + ll[2] + " 2.1 "
+		#+ ll[3]
 		
 		if ll[2].to_f < -10 or ll[2].to_f > 10
 			galcoeff = gcf
@@ -77,9 +78,9 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 		end
 		
 		if fixsi != nil
-			catline = ll[0] + " " + ll[1] + " " + ll[2]  + fixsi.to_s + " 1 " + ll[5] + " " + ll[6] + " " + ll[7] + "0 0.0 0.0"
+			catline = ll[0] + " " + ll[1] + " " + ll[2]  + fixsi.to_s + " 1 " + ll[5] + " " + ll[6] + " " + ll[7] + " 0 0.0 0.0"
 		else
-			catline = catline + " " + fixflag + " " + ll[5] + " " + ll[6] + " " + ll[7]
+			catline = catline + " " + fixflag.to_s + " " + ll[5] + " " + ll[6] + " " + ll[7]
 			catline += " "
 			catline += endline
 		end
@@ -89,7 +90,7 @@ File.open("/ANALYSIS3/catalogs/cat2_phase6_192all.multi").each do | line |
 				catline += " "
 				catline += ll[i].to_s
 			end
-		else
+		end
 		
 		
 		
