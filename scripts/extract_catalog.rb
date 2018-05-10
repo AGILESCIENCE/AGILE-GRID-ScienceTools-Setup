@@ -94,7 +94,7 @@ File.open(input).each_line do |x|
 		outline += "0.0"
 	end
 	
-	for iii in 9...a.size
+	for iii in 8...a.size
 		outline += " ";
 		outline += a[iii].to_s;
 	end
