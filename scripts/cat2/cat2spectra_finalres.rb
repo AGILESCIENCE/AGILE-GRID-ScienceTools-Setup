@@ -32,7 +32,8 @@ coordb = 0
 File.open("/ANALYSIS3/catalogs/cat2.multi").each do | line |
 	ll = line.split(" ")
 	if ll[6] == sourcename
-		catline = ll[0] + " " + ll[1] + " " + ll[2] + " 2.1 " # + ll[3]
+		#catline = ll[0] + " " + ll[1] + " " + ll[2] + " 2.1 " # + ll[3]
+		catline = ll[0] + " " + ll[1] + " " + ll[2] + " " + ll[3]
 		coordb = ll[2].to_f
 		
 		if spectratype == "pl"
