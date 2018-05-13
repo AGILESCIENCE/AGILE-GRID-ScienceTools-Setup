@@ -1,4 +1,15 @@
 #! /usr/bin/ruby
+#0) cat sourcename
+#1) spectral shape: pl plec plsec lp
+#2) energyrange where to perform optimisation parameters: 00100-10000 00100-50000
+#3) analysisname, e.g. EDP1-EB01-FB01
+#4) IRF name, e.g. H0025
+#5) integrator type: 1..8
+#6) selection from cat multi: minradius around cat sourcename
+#7) predfix (to be added to analysis name)
+#8) fix spectral index (optional or -1 do not fix)
+#9) selection from cat multi: mincatflux (optional or e.g 25e-08)
+
 sourcename = ARGV[0]
 spectratype = ARGV[1] #pl plec plsec lp
 energyrange = ARGV[2] #00100-10000 00100-50000
@@ -12,6 +23,10 @@ addff = ARGV[8] #1 (only flux free) or 3 (flux and position free)
 fixsi = nil
 if ARGV[9] != nil
 	fixsi = ARGV[9].to_s;
+end
+mincatflux = nil
+if ARGV[10] != nil
+	mincatflux = ARGV[10].to_s;
 end
 
 load ENV["AGILE"] + "/scripts/conf.rb"
@@ -38,7 +53,7 @@ File.open("/ANALYSIS3/catalogs/cat2.multi").each do | line |
 		
 		if spectratype == "pl"
 			fixflag = 4 #4
-			if fixsi != nil
+			if fixsi != nil or fixsi.to_i > 0
 				fixflag = 0
 			end
 			endline = "0 0.0 0.0"
@@ -58,7 +73,7 @@ File.open("/ANALYSIS3/catalogs/cat2.multi").each do | line |
 		
 		fixflag = fixflag.to_i +  addff.to_i
 		
-		if fixsi != nil
+		if fixsi != nil or fixsi.to_i > 0
 			catline = ll[0] + " " + ll[1] + " " + ll[2]  + " " + fixsi.to_s + " " + fixflag.to_s + " " + ll[5] + " " + ll[6] + " " + ll[7] + " 0 0.0 0.0"
 		else
 			catline = catline + " " + fixflag.to_s + " " + ll[5] + " " + ll[6] + " " + ll[7]
@@ -147,6 +162,9 @@ if addff.to_i == 1
 	minf = "25e-08"
 else
 	minf = "0e-08"
+end
+if mincatflux != nil
+	minf = mincatflux.to_s
 end
 
 
