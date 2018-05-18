@@ -113,7 +113,12 @@ end
 
 suffix = "R" + inttype.to_s  + "_C" + format("%02d", minradius.to_f*10) + "-" + ARGV[1] + "-" + ARGV[2] + "-" + ARGV[3] + "-" + ARGV[4]
 
-fan = prefix + "_FF"+fixflag.to_s+"_" +  suffix
+if fixflag.to_i == 1
+	fan = prefix + "_FF2_" +  suffix
+else
+	fan = prefix + "_FF2"+fixflag.to_s+"_" +  suffix
+end
+
 
 maplist4name = fan + "_FM3.119_ASDCe_"+irf+"_B01_"+energyrange+".maplist4"
 
