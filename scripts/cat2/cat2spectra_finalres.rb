@@ -6,10 +6,11 @@
 #4) IRF name, e.g. H0025
 #5) integrator type: 1..8
 #6) selection from cat multi: minradius around cat sourcename
-#7) prefix (to be added to analysis name)
+#7) prefix (to be added to analysis name) e.g. FINAL
 #8) add fix flag: 1 (only flux free) or 3 (flux and position free)
-#9) fix spectral index (optional or -1 do not fix)
-#10) selection from cat multi: mincatflux (optional or e.g 25e-08)
+#9) fix spectral index (optional, set the value if >=0 or do not fix if < 0, e.g. -1)
+#10) fix galactic coeff (optional, set the value if >=0 or keep free if < 0, e.g. -1)
+#11) selection from cat multi: mincatflux (optional or e.g 25e-08)
 
 sourcename = ARGV[0]
 spectratype = ARGV[1] #pl plec plsec lp
@@ -25,9 +26,22 @@ fixsi = nil
 if ARGV[9] != nil
 	fixsi = ARGV[9].to_s;
 end
-mincatflux = nil
+
+fixgal = 1;
+fixgalcoeff = "0.7"
 if ARGV[10] != nil
-	mincatflux = ARGV[10].to_s;
+	fixgalcoeff = ARGV[10].to_s;
+	if fixgalcoeff.to_f >= 0
+		fixgal = 1
+	else
+		fixgal = 0
+	end
+end
+puts fixgalcoeff
+
+mincatflux = nil
+if ARGV[11] != nil
+	mincatflux = ARGV[11].to_s;
 end
 
 load ENV["AGILE"] + "/scripts/conf.rb"
@@ -114,10 +128,10 @@ if irf == "H0025"
 	f1.write("EMIN00300_EMAX01000_FM3.119_ASDCe_H0025_B01.cts.gz EMIN00300_EMAX01000_FM3.119_ASDCe_H0025_B01.exp.gz EMIN00300_EMAX01000_FM3.119_ASDCe_H0025_B01.gas.gz 25 -1 -1\n")
 	f1.write("EMIN01000_EMAX03000_FM3.119_ASDCe_H0025_B01.cts.gz EMIN01000_EMAX03000_FM3.119_ASDCe_H0025_B01.exp.gz EMIN01000_EMAX03000_FM3.119_ASDCe_H0025_B01.gas.gz 25 -1 -1\n")
 	f1.write("EMIN03000_EMAX10000_FM3.119_ASDCe_H0025_B01.cts.gz EMIN03000_EMAX10000_FM3.119_ASDCe_H0025_B01.exp.gz EMIN03000_EMAX10000_FM3.119_ASDCe_H0025_B01.gas.gz 25 -1 -1\n")
-	gcf = "0.7,0.7,0.7,0.7"
+	gcf = fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s
 	if energyrange.split("-")[1].to_i == 50000
 		f1.write("EMIN10000_EMAX50000_FM3.119_ASDCe_H0025_B01.cts.gz EMIN10000_EMAX50000_FM3.119_ASDCe_H0025_B01.exp.gz EMIN10000_EMAX50000_FM3.119_ASDCe_H0025_B01.gas.gz 25 -1 -1\n")
-		gcf = "0.7,0.7,0.7,0.7,0.7"
+		gcf = fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s
 	end
 	
 end
@@ -133,7 +147,7 @@ if irf == "H0025"
 	f2.write("EMIN01000_EMAX03000_FM3.119_ASDCe_H0025_B01.cts.gz EMIN01000_EMAX03000_FM3.119_ASDCe_H0025_B01.exp.gz EMIN01000_EMAX03000_FM3.119_ASDCe_H0025_B01.gas.gz 25 -1 -1\n")
 	f2.write("EMIN03000_EMAX10000_FM3.119_ASDCe_H0025_B01.cts.gz EMIN03000_EMAX10000_FM3.119_ASDCe_H0025_B01.exp.gz EMIN03000_EMAX10000_FM3.119_ASDCe_H0025_B01.gas.gz 25 -1 -1\n")
 	f2.write("EMIN10000_EMAX50000_FM3.119_ASDCe_H0025_B01.cts.gz EMIN10000_EMAX50000_FM3.119_ASDCe_H0025_B01.exp.gz EMIN10000_EMAX50000_FM3.119_ASDCe_H0025_B01.gas.gz 25 -1 -1\n")
-	gcffull = "0.7,0.7,0.7,0.7,0.7,0.7,0.7"
+	gcffull = fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s
 end
 f2.close()
 
@@ -145,14 +159,16 @@ if irf == "H0025"
 	f3.write("EMIN01000_EMAX03000_FM3.119_ASDCe_H0025_B01.cts.gz EMIN01000_EMAX03000_FM3.119_ASDCe_H0025_B01.exp.gz EMIN01000_EMAX03000_FM3.119_ASDCe_H0025_B01.gas.gz 25 -1 -1\n")
 	f3.write("EMIN03000_EMAX10000_FM3.119_ASDCe_H0025_B01.cts.gz EMIN03000_EMAX10000_FM3.119_ASDCe_H0025_B01.exp.gz EMIN03000_EMAX10000_FM3.119_ASDCe_H0025_B01.gas.gz 25 -1 -1\n")
 	f3.write("EMIN10000_EMAX50000_FM3.119_ASDCe_H0025_B01.cts.gz EMIN10000_EMAX50000_FM3.119_ASDCe_H0025_B01.exp.gz EMIN10000_EMAX50000_FM3.119_ASDCe_H0025_B01.gas.gz 25 -1 -1\n")
-	gcfhe = "0.7,0.7,0.7,0.7,0.7"
+	gcfhe = fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s + "," + fixgalcoeff.to_s
 end
 f3.close()
 
-if coordb.to_f < -10 or coordb.to_f > 10
-	galcoeff = gcf
-	galcoefffull = gcffull
-	galcoeffhe = gcfhe
+if fixgal.to_i >= 0
+	if coordb.to_f < -10 or coordb.to_f > 10
+		galcoeff = gcf
+		galcoefffull = gcffull
+		galcoeffhe = gcfhe
+	end
 end
 
 puts "##############################################"
