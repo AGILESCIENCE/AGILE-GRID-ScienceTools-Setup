@@ -10,7 +10,8 @@
 #8) add fix flag: 1 (only flux free) or 3 (flux and position free)
 #9) fix spectral index (optional, set the value if >=0 or do not fix if < 0, e.g. -1)
 #10) fix galactic coeff (optional, set the value if >=0 or keep free if < 0, e.g. -1)
-#11) selection from cat multi: mincatflux (optional or e.g 25e-08)
+#11) fix galiso step2 (optional, fix value if >=0 or keep free if < 0, e.g. -1)
+#12) selection from cat multi: mincatflux (optional or e.g 25e-08)
 
 sourcename = ARGV[0]
 spectratype = ARGV[1] #pl plec plsec lp
@@ -39,9 +40,14 @@ if ARGV[10] != nil
 end
 puts fixgalcoeff
 
-mincatflux = nil
+fixgalisostep2 = 1;
 if ARGV[11] != nil
-	mincatflux = ARGV[11].to_s;
+	fixgalisostep2 = ARGV[11].to_s
+end
+
+mincatflux = nil
+if ARGV[12] != nil
+	mincatflux = ARGV[12].to_s;
 end
 
 load ENV["AGILE"] + "/scripts/conf.rb"
@@ -189,9 +195,14 @@ if mincatflux != nil
 	minf = mincatflux.to_s
 end
 
+if fixgalisostep2.to_i >= 0
+	cmdadd = " galmode2=3 isomode2=3 "
+else
+	cmdadd = " galmode2=0 isomode2=0 "
+end
 
 system("rm INT_"+fan+"*")
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT_"+fan+" addcat=\""+ catline +"\" catminradius=" + minradius.to_s + " catminflux="+minf.to_s+" fluxcorrection=1 emin_sources=100 emax_sources=50000 edpcorrection=0.75 minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 scanmaplist=" + sourcename + "," + fan + " fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoeff.to_s
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4name +" none INT_"+fan+" addcat=\""+ catline +"\" catminradius=" + minradius.to_s + " catminflux="+minf.to_s+" fluxcorrection=1 emin_sources=100 emax_sources=50000 edpcorrection=0.75 minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 scanmaplist=" + sourcename + "," + fan + " fluxcorrection=1 " + cmdadd.to_s + " integratortype=" + inttype.to_s + " galcoeff=" + galcoeff.to_s
 #galmode2=3 isomode2=3
 puts cmd
 system cmd
@@ -216,7 +227,7 @@ puts "####################################################"
 suffix = "R" + inttype.to_s  + "_C" + format("%02d", minradius.to_f*10) + "-" + ARGV[1] + "-00030-50000-" + ARGV[3] + "-" + ARGV[4]
 fan1 = prefix + "_FF1_" + suffix
 
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4namefull +" " + newlistsource2 + " INT_"+fan1+" fluxcorrection=1 emin_sources=100 emax_sources=50000 edpcorrection=0.75 scanmaplist=" + sourcename + "," + fan1 + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoefffull.to_s
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4namefull +" " + newlistsource2 + " INT_"+fan1+" fluxcorrection=1 emin_sources=100 emax_sources=50000 edpcorrection=0.75 scanmaplist=" + sourcename + "," + fan1 + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 " + cmdadd.to_s + " galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoefffull.to_s
 puts cmd
 system cmd
 
@@ -228,7 +239,7 @@ puts "####################################################"
 suffix = "R" + inttype.to_s  + "_C" + format("%02d", minradius.to_f*10) + "-" + ARGV[1] + "-00100-50000-" + ARGV[3] + "-" + ARGV[4]
 fan1 = prefix + "_FF1_" + suffix
 
-cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4namehe +" " + newlistsource2 + " INT_"+fan1+" fluxcorrection=1 emin_sources=100 emax_sources=50000 edpcorrection=0.75 scanmaplist=" + sourcename + "," + fan1 + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 galmode2=3 isomode2=3 galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoeffhe.to_s
+cmd = "multi6.rb FM3.119_ASDC2_"+irf+" " + maplist4namehe +" " + newlistsource2 + " INT_"+fan1+" fluxcorrection=1 emin_sources=100 emax_sources=50000 edpcorrection=0.75 scanmaplist=" + sourcename + "," + fan1 + " minimizertype=Minuit minimizeralg=Migrad minimizerdefstrategy=2 fluxcorrection=1 " + cmdadd.to_s + " galmode2fit=0 isomode2fit=0 integratortype=" + inttype.to_s + " galcoeff=" + galcoeffhe.to_s
 puts cmd
 system cmd
 
