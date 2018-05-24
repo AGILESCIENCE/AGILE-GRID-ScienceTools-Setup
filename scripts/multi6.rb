@@ -184,7 +184,7 @@ if p.addcat != ""
 	
 	ll = p.addcat.split(" ")
 	listsourcetmp2 = listsource + ".tmp2"
-	cmd = "extract_catalog.rb " + p.catpath + " " + ll[1].to_s + " " + ll[2].to_s + " " + listsourcetmp2 + " 0.1 1 5 0 10 0 0 " + p.catminflux.to_s + " " +  p.catminradius.to_s
+	cmd = "extract_catalog.rb " + p.catpath + " " + ll[1].to_s + " " + ll[2].to_s + " " + listsourcetmp2 + " 0.1 1 5 0 15 0 0 " + p.catminflux.to_s + " " +  p.catminradius.to_s
 	puts cmd
 	system cmd
 	

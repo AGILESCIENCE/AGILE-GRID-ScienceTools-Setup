@@ -16,7 +16,7 @@
 load ENV["AGILE"] + "/scripts/DataUtils.rb"
 
 if ARGV[0].to_s == "help" || ARGV[0] == nil || ARGV[0] == "h"
-		system("head -13 " + $0 );
+		system("head -14 " + $0 );
 		exit;
 	end
 
