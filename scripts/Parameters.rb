@@ -105,7 +105,7 @@ class Parameters
 			@minimizerdefstrategy = 2
 			@mindefaulttolerance = 0.01
 			@edpcorrection = 1.0
-			@fluxcorrection = 0
+			@fluxcorrection = 1
 			@scanmaplist = 0
 		end
 		

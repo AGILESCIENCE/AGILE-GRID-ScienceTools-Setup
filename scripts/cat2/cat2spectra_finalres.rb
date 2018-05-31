@@ -13,6 +13,14 @@
 #11) fix galiso step2 (optional, fix value if >=0 or keep free if < 0, e.g. -1)
 #12) selection from cat multi: mincatflux (optional or e.g 25e-08)
 
+#Get all sources for ff=1
+# R1-G10 2AGL0161 localhost cat2 0 pl FINAL 1 2.1 -1 1 0e-08
+#Standard set
+# R1-G10 2AGL0161 localhost cat2 0 pl FINAL 1
+# R1-G10 2AGL0161 localhost cat2 0 pl FINAL 3
+# R1-G10 2AGL0161 localhost cat2 0 pl FINALgcf 3 -1 -1
+# R1-G10 2AGL0161 localhost cat2 0 pl FINALgif 3 -1 -1 -1
+
 sourcename = ARGV[0]
 spectratype = ARGV[1] #pl plec plsec lp
 energyrange = ARGV[2] #00100-10000 00100-50000
