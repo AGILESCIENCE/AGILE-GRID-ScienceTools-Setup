@@ -37,3 +37,8 @@ git clone https://$1@github.com/Leofaber/agextspot-v2.git
 cd agextspot-v2
 #git checkout $TAG_AG_EXTSPOT
 cd ..
+
+git clone https://github.com/AGILESCIENCE/EllipseMatching.git
+cd EllipseMatching/EllipseMatchingC++
+#git checkout $TAG_AG_EXTSPOT
+cd ..
