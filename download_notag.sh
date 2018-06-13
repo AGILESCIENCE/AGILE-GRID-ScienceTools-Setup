@@ -39,6 +39,6 @@ cd agextspot-v2
 cd ..
 
 git clone https://github.com/AGILESCIENCE/EllipseMatching.git
-cd EllipseMatching/EllipseMatchingC++
+cd EllipseMatching
 #git checkout $TAG_AG_EXTSPOT
 cd ..
