@@ -73,3 +73,7 @@ cd agextspot-v2
 make ${parallel} install prefix=$AGILE
 cd ..
 
+echo "install ellipse matching"
+cd EllipseMatching 
+./install.sh
+cd ..
