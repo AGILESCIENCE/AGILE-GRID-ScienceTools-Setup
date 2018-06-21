@@ -7,10 +7,9 @@ TAG_PIL=v1.0.2
 TAG_WCS=v1.0.2
 TAG_LIBSCI=v1.5.0
 TAG_SCI1=v1.5.0
-TAG_AG_EXTSPOT=1.1.2
-TAG_AG_lm6=1.0.9
+TAG_AG_EXTSPOT=v1.3.1
 
-git clone https://github.com/AGILESCIENCE/libagilepil.git 
+git clone https://github.com/AGILESCIENCE/libagilepil.git
 cd libagilepil
 git checkout $TAG_PIL
 cd ..
@@ -20,7 +19,7 @@ cd libagilewcs
 git checkout $TAG_WCS
 cd ..
 
-git clone https://github.com/ASTRO-EDU/libagilesci.git    
+git clone https://github.com/ASTRO-EDU/libagilesci.git
 cd libagilesci
 git checkout $TAG_LIBSCI
 cd ..
@@ -30,13 +29,7 @@ cd agilesci1
 git checkout $TAG_SCI1
 cd ..
 
-git clone https://$1@github.com/Leofaber/AG_lm6.git
-cd AG_lm6
-git checkout $TAG_AG_lm6
-cd ..
-
 git clone https://$1@github.com/Leofaber/agextspot-v2.git
 cd agextspot-v2
 git checkout $TAG_AG_EXTSPOT
 cd ..
-
