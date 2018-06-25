@@ -6,7 +6,7 @@ trap exit ERR
 TAG_PIL=v1.0.2
 TAG_WCS=v1.0.2
 TAG_LIBSCI=v1.5.0
-TAG_SCI1=v1.5.0
+TAG_SCI1=v1.5.2
 TAG_AG_EXTSPOT=v1.3.1
 
 git clone https://github.com/AGILESCIENCE/libagilepil.git
