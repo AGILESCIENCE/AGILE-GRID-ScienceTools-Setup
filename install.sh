@@ -67,6 +67,11 @@ cp profile $AGILE
 #test -d $AGILE/catalogs || mkdir -p $AGILE/catalogs
 #cp -rf catalogs/* $AGILE/catalogs
 
+echo "install AGILE scripts"
+cd AGILE-GRID-scripts
+./install.sh
+cd ..
+
 echo "install AG_extspot"
 cd agextspot-v2
 #make ${parallel} install prefix=$AGILE
