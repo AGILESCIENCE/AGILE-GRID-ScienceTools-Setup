@@ -19,10 +19,6 @@ if [ -z "$ROOTSYS" ] || [ -z $(env | grep "ROOTSYS=") ] ; then
     echo "ROOTSYS environment variable not set. Abort."
     exit
 fi
-if [ -z "$GSL" ] || [ -z $(env | grep "GSL=") ] ; then
-    echo "GSL environment variable not set. Abort."
-    exit
-fi
 
 if [ "$1" == "clean" ] ; then
     cd libagilepil
@@ -63,17 +59,26 @@ cd AGILE-GRID-scripts
 ./install.sh
 cd ..
 
-echo "install AG_extspot"
-cd agextspot-v2
-make ${parallel} install prefix=$AGILE
-cd ..
-
 echo "install ellipse matching"
 cd EllipseMatching
 ./install.sh
 cd ..
 
-echo "install WTOOLS"
-cd WTOOLS
-./install.sh
-cd ..
+if [ -z "$OPENCV" ] || [ -z $(env | grep "OPENCV=") ] ; then
+    	echo "OPENCV environment variable not set. AG_extspot not installed."
+else
+	echo "install AG_extspot"
+	cd agextspot-v2
+	make ${parallel} install prefix=$AGILE
+	cd ..
+fi
+
+if [ -z "$GSL" ] || [ -z $(env | grep "GSL=") ] ; then
+    	echo "GSL environment variable not set. WTOOLS not installed"
+else
+	echo "install WTOOLS"
+	cd WTOOLS
+	./install.sh
+	cd ..
+fi
+
