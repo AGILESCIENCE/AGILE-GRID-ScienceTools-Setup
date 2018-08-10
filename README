@@ -38,7 +38,7 @@ module load opencv-2.4.13
 set path /opt/prod/agile-B25-r5/
 setenv AGILE                 $path
 prepend-path LD_LIBRARY_PATH /usr/lib:/usr/lib64:$path/lib
-prepend-path PATH            $path/bin:$path/scripts:$path/scripts/sor:$env(HOME)/sor
+prepend-path PATH            $path/bin:$path/scripts
 prepend-path --delim ";"     PFILES ".;$path/share"
 
 setenv GSL                   /opt/prod/gsl-1.15/
