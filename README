@@ -2,20 +2,25 @@ AGILE build environment
 
 We need only 3 environment variables to compile the code
 
-- CFITSIO
-- ROOTSYS
-- AGILE=...
+export CFITSIO=<path>
+export ROOTSYS=<path>
+export AGILE=<path>
 
-And the following variable to run the code
+And the following variable to run the code of the AGILE Science Tools core
 
 export PFILES=$AGILE/share:$PFILES
 
-To install the system
+To install the system:
 
-git clone git@github.com:AGILESCIENCE/BUILD_GRID_SCI_git.git
+git clone https://github.com/AGILESCIENCE/BUILD_GRID_SCI_git.git
 cd BUILD_GRID_SCI_git
-./download.sh
+git checkout <TAGNAME>
+./download.sh <username>
 ./install.sh
+./downloadIRF.sh <username>
 
 To recompile the code
 ./install.sh
+
+To install also agextspot-v2 the OPENCV variabel must be set.
+To install also WTOOLS the GSL variable must be set.
