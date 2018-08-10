@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
+#First parameter: git username
 
 trap exit ERR
 
-#preBUILD25_2
 TAG_PIL=v1.0.2
 TAG_WCS=v1.0.2
-TAG_LIBSCI=v1.5.0
-TAG_SCI1=v1.5.2
-TAG_AG_EXTSPOT=v1.3.2
+TAG_LIBSCI=v2.0.0
+TAG_SCI1=v2.0.0
+TAG_SCRIPTS=v2.0.0
+TAG_AG_EXTSPOT=v1.2.3
+TAG_EM=v1.4.0
+TAG_WTOOLS=v1.0.0
 
 git clone https://github.com/AGILESCIENCE/libagilepil.git
 cd libagilepil
@@ -19,7 +22,7 @@ cd libagilewcs
 git checkout $TAG_WCS
 cd ..
 
-git clone https://github.com/ASTRO-EDU/libagilesci.git
+git clone https://$1@github.com/ASTRO-EDU/libagilesci.git
 cd libagilesci
 git checkout $TAG_LIBSCI
 cd ..
@@ -29,7 +32,22 @@ cd agilesci1
 git checkout $TAG_SCI1
 cd ..
 
-git clone https://$1@github.com/Leofaber/agextspot-v2.git
+git clone https://github.com/AGILESCIENCE/AGILE-GRID-scripts.git
+cd AGILE-GRID-scripts
+git checkout $TAG_SCRIPTS
+cd ..
+
+git clone https://github.com/AGILESCIENCE/agextspot-v2.git
 cd agextspot-v2
 git checkout $TAG_AG_EXTSPOT
+cd ..
+
+git clone https://github.com/AGILESCIENCE/EllipseMatching.git
+cd EllipseMatching
+git checkout $TAG_EM
+cd ..
+
+git clone https://github.com/AGILESCIENCE/WTOOLS.git
+cd WTOOLS
+git checkout $TAG_WTOOLS
 cd ..

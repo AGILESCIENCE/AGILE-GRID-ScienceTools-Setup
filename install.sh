@@ -58,15 +58,6 @@ cd ..
 
 cp profile $AGILE
 
-#echo "install scripts"
-#test -d $AGILE/scripts || mkdir -p $AGILE/scripts
-
-#cp -rf scripts/* $AGILE/scripts
-
-#echo "install catalogs"
-#test -d $AGILE/catalogs || mkdir -p $AGILE/catalogs
-#cp -rf catalogs/* $AGILE/catalogs
-
 echo "install AGILE scripts"
 cd AGILE-GRID-scripts
 ./install.sh
@@ -74,7 +65,7 @@ cd ..
 
 echo "install AG_extspot"
 cd agextspot-v2
-#make ${parallel} install prefix=$AGILE
+make ${parallel} install prefix=$AGILE
 cd ..
 
 echo "install ellipse matching"
