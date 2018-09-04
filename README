@@ -14,13 +14,15 @@ export PATH=$AGILE/bin:$AGILE/scripts:$PATH
 
 To install the system:
 
-git clone https://github.com/AGILESCIENCE/BUILD_GRID_SCI_git.git
-cd BUILD_GRID_SCI_git
+git clone https://github.com/AGILESCIENCE/AGILE-GRID-ScienceTools-Setup.git
+cd AGILE-GRID-ScienceTools-Setup
 git checkout <TAGNAME>
 ./downloadScienceTools.sh <username>
 ./installScienceTools.sh
 ./downloadIRF.sh <username>
 ./installIRF.sh
+
+e.g. TAGNAME = BUILD25
 
 To recompile the code
 ./installScienceTools.sh
