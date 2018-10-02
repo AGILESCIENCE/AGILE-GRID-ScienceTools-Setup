@@ -1,3 +1,13 @@
+4 Oct 2018
+TAG GIT: BUILD25
++ added energy disperions in AG_expmapgen e AG_multi
++ added new spectral model in the AG_multi tool: LogParabola, PLExpCutOff, PLSuperExpCutOff. It is possible to use different integrators for spectal evaluation
++ AG_multi: added the possibility to use different minimizers: Minuit, Fumuli, Minuit2, GSL
++ AG_ap -> aperture photometry for AGILE
++ Li&Ma: AG_lm5, AG_lm6
++ blind search with Bayesian technique: agextspot-v2
++ Wavelet analysis of AGILE GRID data
+
 21 Nov 2017
 TAG GIT: preBUILD25_iteration2-r5
 Added new repository: AG_lm6,agextspot-v2
