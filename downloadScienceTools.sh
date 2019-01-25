@@ -5,8 +5,8 @@ trap exit ERR
 
 TAG_PIL=v1.0.2
 TAG_WCS=v1.0.2
-TAG_LIBSCI=v2.0.0
-TAG_SCI1=v2.0.0
+TAG_LIBSCI=v2.0.1
+TAG_SCI1=v2.0.1
 TAG_SCRIPTS=v2.1.0
 TAG_AG_EXTSPOT=v1.4.1
 TAG_EM=v1.4.0
@@ -22,7 +22,7 @@ cd libagilewcs
 git checkout $TAG_WCS
 cd ..
 
-git clone https://$1@github.com/ASTRO-EDU/libagilesci.git
+git clone https://github.com/AGILESCIENCE/libagilesci.git
 cd libagilesci
 git checkout $TAG_LIBSCI
 cd ..
