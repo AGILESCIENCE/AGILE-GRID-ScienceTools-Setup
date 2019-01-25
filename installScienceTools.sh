@@ -11,6 +11,10 @@ if [ -z "$AGILE" ] || [ -z $(env | grep "AGILE=") ] ; then
     echo "AGILE environment variable not set. Abort."
     exit
 fi
+if [ -z "$AGILEPIPE" ] || [ -z $(env | grep "AGILEPIPE=") ] ; then
+    export AGILEPIPE=$AGILE/AGILEPIPE
+    echo "AGILEPIPE environment variable not set. Use $AGILEPIPE"
+fi
 if [ -z "$CFITSIO" ] || [ -z $(env | grep "CFITSIO=") ] ; then
     echo "CFITSIO environment variable not set. Abort."
     exit
