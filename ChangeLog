@@ -1,4 +1,4 @@
-4 Oct 2018
+14 Feb 2019
 TAG GIT: BUILD25
 + added energy disperions in AG_expmapgen e AG_multi
 + added new spectral model in the AG_multi tool: LogParabola, PLExpCutOff, PLSuperExpCutOff. It is possible to use different integrators for spectal evaluation

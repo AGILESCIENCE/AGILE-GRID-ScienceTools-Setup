@@ -8,7 +8,7 @@ export AGILE=<path>
 
 The following variable are needed to run the code of the AGILE Science Tools
 
-export PFILES=$AGILE/share:$PFILES
+export PFILES=$PFILES:$AGILE/share
 export LD_LIBRARY_PATH=$AGILE/lib:$LD_LIBRARY_PATH
 export PATH=$AGILE/bin:$AGILE/scripts:$PATH
 
@@ -27,7 +27,7 @@ e.g. TAGNAME = BUILD25
 To recompile the code
 ./installScienceTools.sh
 
-To install agextspot-v2 the OPENCV variabel must be set.
+To install agextspot-v2 the OPENCV variable must be set.
 To install WTOOLS the GSL variable must be set.
 
 A possibile module file could be
@@ -46,3 +46,13 @@ prepend-path --delim ";"     PFILES ".;$path/share"
 
 setenv GSL                   /opt/prod/gsl-1.15/
 ----
+A possible profile file could be
+
+export AGILE=/opt/prod/agile-B25-r5/
+export PFILES=$PFILES:$AGILE/share
+export ROOTSYS=/usr/local
+export CFITSIO=/usr/local
+export GSL=/usr/local
+export OPENCV=/usr/local
+export PATH=$AGILE/bin:$AGILE/scripts:$AGILE/scripts/extendesources:$PATH
+export LD_LIBRARY_PATH=/usr/lib:/usr/lib64:$AGILE/lib:$LD_LIBRARY_PATH
