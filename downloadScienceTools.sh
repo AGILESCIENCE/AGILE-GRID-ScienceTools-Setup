@@ -8,8 +8,8 @@ TAG_WCS=v1.0.3
 TAG_LIBSCI=v2.0.3
 TAG_SCI1=v2.0.3
 TAG_SCRIPTS=v2.2.1
-TAG_AG_EXTSPOT=v1.4.1
-TAG_EM=v1.4.0
+TAG_AG_EXTSPOT=v1.4.2
+TAG_EM=v1.4.1
 TAG_WTOOLS=v1.0.0
 
 git clone https://github.com/AGILESCIENCE/libagilepil.git
