@@ -22,7 +22,7 @@ cd libagilewcs
 #git checkout $TAG_WCS
 cd ..
 
-git clone https://$1@github.com/ASTRO-EDU/libagilesci.git
+git clone https://github.com/ASTRO-EDU/libagilesci.git
 cd libagilesci
 #git checkout $TAG_LIBSCI
 cd ..
