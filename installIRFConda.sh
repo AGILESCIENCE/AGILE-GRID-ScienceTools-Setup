@@ -3,8 +3,8 @@
 trap exit ERR
 
 
-cd Agilepy-extra/model
+cd Agilepy-extra
 make install prefix=$AGILE
-cd ../..
+cd ../
 
 
