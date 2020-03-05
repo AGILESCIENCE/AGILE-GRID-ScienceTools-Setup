@@ -18,7 +18,7 @@ export BUILD_ANACONDA=true
 ########################################
 # AGILE ScienceTools
 ########################################
-./downloadScienceTools.sh
+./downloadScienceTools_notag.sh
 ./installScienceTools.sh
 ./downloadIRFConda.sh
 ./installIRFConda.sh

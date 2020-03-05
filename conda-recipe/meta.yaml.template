@@ -1,10 +1,10 @@
 package:
-  name: "agile-grid-sciencetools"
-  version: {{package_version}}
+  name: "agile-sciencetools"
+  version: {{package_tag}}
 
 source:
   git_url: https://github.com/AGILESCIENCE/AGILE-GRID-ScienceTools-Setup.git
-  git_rev: {{package_version}}
+  git_rev: {{package_tag}}
 
 build:
   number: 0
