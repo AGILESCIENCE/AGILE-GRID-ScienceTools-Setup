@@ -1,5 +1,6 @@
 
-export AGILE=~/local.B252AGL
+export AGILE=/data01/projects/IGRJ17354-3255/dev/local
+export AGILEPIPE=$AGILE/AGILEPIPE
 export CFITSIO=/opt/local
 export ROOTSYS=/opt/local
 export GSL=/opt/local
