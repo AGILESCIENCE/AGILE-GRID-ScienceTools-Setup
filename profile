@@ -1,5 +1,6 @@
 
 export AGILE=~/local.B25
+export AGILEPIPE=$AGILE/AGILEPIPE
 export CFITSIO=/opt/local
 export ROOTSYS=/opt/local
 export GSL=/opt/local
