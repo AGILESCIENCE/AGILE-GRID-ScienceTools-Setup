@@ -1,5 +1,5 @@
 
-export AGILE=~/local.B252AGL
+export AGILE=~/local.B25
 export CFITSIO=/opt/local
 export ROOTSYS=/opt/local
 export GSL=/opt/local
