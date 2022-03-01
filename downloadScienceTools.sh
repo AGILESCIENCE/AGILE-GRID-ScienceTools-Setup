@@ -10,7 +10,7 @@ TAG_SCI1=v2.1.3
 TAG_SCRIPTS=v2.5.3
 TAG_AG_EXTSPOT=v1.4.2
 TAG_EM=v1.4.1
-TAG_WTOOLS=v1.0.0
+TAG_WTOOLS=v1.0.1
 
 git clone https://github.com/AGILESCIENCE/libagilepil.git
 cd libagilepil
