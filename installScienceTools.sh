@@ -77,12 +77,16 @@ else
 	cd ..
 fi
 
+echo "install WTOOLS Python version"
+cd WTOOLS
+./installPythonVersion.sh
+
+echo "install WTOOLS C++ version"
 if [ -z "$GSL" ] || [ -z $(env | grep "GSL=") ] ; then
-    	echo "GSL environment variable not set. WTOOLS not installed"
+    	echo "GSL environment variable not set. WTOOLS C++ version not installed"
 else
 	echo "install WTOOLS"
 	cd WTOOLS
 	./install.sh
 	cd ..
 fi
-

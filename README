@@ -28,7 +28,8 @@ To recompile the code
 ./installScienceTools.sh
 
 To install agextspot-v2 the OPENCV variable must be set.
-To install WTOOLS the GSL variable must be set.
+To install WTOOLS C++ version the GSL variable must be set.
+It is also possible to install WTOOLS Python version (the default)
 
 A possibile module file could be
 ----
