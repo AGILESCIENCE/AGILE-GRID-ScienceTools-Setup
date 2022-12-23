@@ -1,3 +1,8 @@
+23 Dec 2022
+TAG GIT: BUILD25b6
++ changes for python 3
++ remove scripts/offaxis, now in agilepy
+
 24 Nov 2022
 TAG GIT: BUILD25b4
 + AG_ap with evstatus
