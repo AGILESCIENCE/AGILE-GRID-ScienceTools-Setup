@@ -1,3 +1,8 @@
+15 September 2023
+TAG: BUILD25b11
++ psd3 v1.3.0
++ bug on .source
+
 12 September 2023
 TAG: BUILD25b10
 + output 0 in .source when exposure = 0
